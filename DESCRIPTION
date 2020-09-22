@@ -1,0 +1,42 @@
+Package: PCAGenomicSignaturesPaper
+Title: Information to reproduce PCAGenomicSignatures paper
+Version: 0.0.1
+Date: 2020-9-22
+Authors@R: person("Sehyun", "Oh", email = "Sehyun.Oh@sph.cuny.edu", role = c("aut", "cre"))
+Description: This package provides data, methods, results covered in PCAGenomicSignatures. 
+Depends: R (>= 3.5)
+Imports:
+  SummarizedExperiment,
+  methods,
+  dplyr,
+  S4Vectors,
+  Biobase,
+  ComplexHeatmap,
+  circlize,
+  grid,
+  cluster,
+  clusterProfiler,
+  enrichplot,
+  ggplot2,
+  magrittr,
+  plotly,
+  wordcloud,
+  RColorBrewer,
+  stats,
+  msigdbr,
+  EnrichmentBrowser
+Suggests:
+  knitr,
+  rmarkdown,
+  devtools,
+  roxygen2,
+  pkgdown,
+  usethis,
+  BiocStyle,
+  forcats,
+  AnVIL
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1.9000
+VignetteBuilder: knitr
