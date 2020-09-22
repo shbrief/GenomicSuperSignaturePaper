@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+
+inst/extdata/*.rds
+Results/CRC/data/eSets/new/*
+Results/CRC/data/eSets_new/*
