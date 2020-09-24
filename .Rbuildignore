@@ -1,6 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 
-inst/extdata/*.rds
+inst/extdata/*
 Results/CRC/data/eSets/new/*
 Results/CRC/data/eSets_new/*
+Methods/*
+
+*.html
+*.pdf
+*.log

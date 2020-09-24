@@ -23,6 +23,7 @@
 # produced vignettes
 *.html
 *.pdf
+*.log
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
@@ -43,3 +44,7 @@
 ## CRC raw data
 Results/CRC/data/eSets/new/*
 Results/CRC/data/eSets_new/*
+
+## Large files
+inst/extdata/*
+Results/SLE-WB/data/*

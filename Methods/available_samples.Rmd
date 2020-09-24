@@ -1,0 +1,264 @@
+---
+title: "Available samples from refine.bio"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
+```
+
+```{r echo=FALSE, eval=TRUE}
+suppressPackageStartupMessages({
+  library(dplyr)
+})
+```
+
+# Information on training datasets
+`studyMeta.tsv` table is available through `PCAGenomicSignatures` package. In this
+table, we summarized the details on PCAGenomicSignatures models and their training
+datasets. More detail is described below.
+
+```{r eval=TRUE}
+extdata <- system.file("extdata", package = "PCAGenomicSignatures")
+studyMeta <- read.table(file.path(extdata, "studyMeta.tsv"))
+head(studyMeta)
+```
+
+
+
+# Available datasets
+## From metadata
+`aggregated_metadata.json` is downloaded along with the dataset we downloaded
+from [refine.bio](https://www.refine.bio/). We collect the number of samples per 
+study based on this metadata.
+
+```{r}
+data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+meta_json <- jsonlite::fromJSON(file.path(data.dir, 
+                                          "aggregated_metadata.json"))
+experiments <- meta_json[[2]]   # experiments
+```
+
+```{r}
+studies <- list()
+for (i in seq_along(experiments)) {
+  studies <- append(studies, list(experiments[[i]]$sample_accession_codes))
+  names(studies)[i] <- names(experiments)[i]
+}
+
+sampleNum <- sapply(studies, function(x) length(x))
+```
+
+
+## Downloaded samples
+I summarized the number of samples based on `aggregated_metadata.json` under `metadata`
+column and the number of actually downloaded `_quant.sf` sample files under `downloaded`
+column in a data frame, `studyMeta`.  
+
+```{r echo=FALSE, eval=TRUE}
+## Directory where refine.bio human samples were downloaded
+download.dir <- "/nobackup/16tb_b/refinebio/rna_seq"
+```
+
+```{r}
+# download.dir <- "path/to/download/directory"
+dirNames <- list.files(download.dir)
+
+ind_rm <- which(dirNames %in% 
+                  c("aggregated_metadata.json", "README.md", "LICENSE.TXT"))
+if (length(ind_rm) != 0) {dirNames <- dirNames[-ind_rm]}
+length(dirNames) # 6457 samples were downloaded
+
+studyMeta <- as.data.frame(matrix(NA, nrow = length(dirNames), ncol = 3))
+colnames(studyMeta) <- c("studyName", "downloaded", "metadata") 
+studyMeta$studyName <- dirNames
+
+for (i in seq_along(dirNames)) {
+  dir_path <- file.path(download.dir, dirNames[i])
+  
+  ## actually downloaded samples
+  ind1 <- which(studyMeta$studyName == dirNames[i]) 
+  studyMeta$downloaded[ind1] <- grep("_quant.sf", 
+                                     list.files(dir_path)) %>% length
+   
+  ## availalbe samples based on metadata
+  ind2 <- which(names(sampleNum) == dirNames[i])  
+  studyMeta$metadata[ind2] <- sampleNum[ind2]
+}
+```
+
+## Imported samples
+The number samples succesfully imported by `tximport::tximport` 
+```{r echo=FALSE}
+download.dir2 <- "/nobackup/16tb_b/GenomicSignatures/refinebio/rna_seq_v2"
+```
+
+```{r}
+studyNames <- studyMeta$studyName
+importedFiles <- c()
+
+for (i in seq_along(studyNames)) {
+  out.path <- file.path(download.dir2, studyNames[i])
+  fname <- file.path(out.path, paste0(studyNames[i], ".rds"))
+  if (file.exists(fname)) {
+    importedFiles <- c(importedFiles, studyNames[i])
+  }
+}
+
+# 1399 studies > 20 samples were successfully tximport-ed
+length(importedFiles) 
+```
+
+```{r}
+imported_ind <- which(studyMeta$studyName %in% importedFiles)
+studyMeta$imported <- FALSE
+studyMeta$imported[imported_ind] <- TRUE 
+```
+
+## Title of the studies
+```{r}
+for (i in seq_along(experiments)) {
+  title <- experiments[[i]]$title
+  studyMeta$title[i] <- title
+}
+```
+
+
+
+# Compare
+```{r eval=TRUE}
+## Cases where all the available samples (based on metadata) were downloaded
+sum(studyMeta$downloaded == studyMeta$metadata)
+
+## The number of studies with more than 100 samples: 
+## Actually downloaded vs. expected by metadata
+sum(studyMeta$downloaded > 100)
+sum(studyMeta$metadata > 100)
+```
+
+## Sample availability in histogram
+```{r fig.width=6, fig.height=4.5, echo=FALSE, eval=TRUE}
+## Colors
+c1 <- rgb(173,216,230, max = 255, alpha = 95, names = "lt.blue")
+c2 <- rgb(255,192,203, max = 255, alpha = 95, names = "lt.pink")
+ax <- seq(0, 100, 5)
+
+meta <- studyMeta$metadata[which(studyMeta$metadata < 100)]
+dl <- studyMeta$downloaded[which(studyMeta$downloaded < 100)]
+
+hg_meta <- hist(meta, breaks = ax, plot = FALSE) 
+hg_download <- hist(dl, breaks = ax, plot = FALSE) 
+
+plot(hg_meta, col = c1, ylim = c(1, 2000), main = "Data Availability", 
+     xlab = "# of samples/study", ylab = "# of studies") 
+plot(hg_download, col = c2, ylim = c(1, 2000), add = TRUE) 
+legend("topright", c("metadata", "downloaded"), col = c(c1, c2), lwd = 10)
+```
+
+
+## Example
+Example study, `SRP152576`:   
+- 13,127 samples are available based on `aggregated_metadata.json`.     
+- No sample is available based on [refine.bio](https://www.refine.bio/) webpage.      
+- 100 samples are actually downloaded.    
+- 3,927 samples are available based on `metadata_SRP152576.csv`.     
+
+```{r eval=TRUE}
+ind <- which.max(studyMeta$metadata)  
+studyMeta[ind,]
+```
+
+```{r eval=TRUE}
+file_dir <- file.path(download.dir, studyMeta$studyName[ind])
+fname <- paste0("metadata_", studyMeta$studyName[ind], ".tsv")
+sampleMeta <- read.table(file.path(file_dir, fname), header = TRUE, sep = "\t")
+dim(sampleMeta)
+
+head(sampleMeta, 3)
+```
+
+
+
+
+# Studies used for model buildling
+## PCAmodel_677
+`studies_with_error.csv` file contains the sample names that were failed to be 
+downloaded/imported when I tried to use studies > 50 samples based on the metadata.
+You can find more documentation on this under `Methods/model_building`.
+
+```{r echo=FALSE}
+gsig.dir <- "/nobackup/16tb_b/GenomicSignatures/refinebio"
+lib.dir <- "~/data2/PCAGenomicSignatureLibrary/refinebioRseq/canonicalPathways"
+```
+
+```{r eval=FALSE}
+## Name of studies that tximport failed due to malformed quant.sf
+# gsig.dir <- "path/to/tximport/directory"
+errors <- read.table(file.path(gsig.dir, "studies_with_error.csv"))
+studies.errors <- gsub("ERROR with study ", "", errors$V1) %>%
+  stringr::str_split(., " :") %>%
+  sapply(., function(x) unlist(x)[1])
+
+## Studies with more than 20 downloaded samples 
+# lib.dir <- "path/to/PCAGenomicSignaturesLibrary"
+dat <- readRDS(file.path(lib.dir, "allZ.rds"))
+final <- gsub(".PC.*$", "", colnames(dat)) %>% unique   # 677 studies
+ind_677 <- which(studyMeta$studyName %in% final)
+
+studyMeta$PCAmodel_677 <- FALSE
+studyMeta$PCAmodel_677[ind_677] <- TRUE 
+```
+
+## PCAmodel_1399
+All the studies that have more than 20 successfully imported samples. So, it's 
+practically same as `imported` column.
+
+```{r}
+studyMeta$PCAmodel_1399 <- studyMeta$imported
+```
+
+## PCAmodel_536
+These 536 studies meet the criteria, > 50 (downloaded) and <1000 (metadata) samples 
+per study. Also, any study with “Single-Cell Analysis” MeSH term was removed.
+
+```{r}
+mesh <- readRDS(file.path(extdata, "MeSH_terms_1399refinebio.rds"))
+sc <- which(mesh$name %in% "Single-Cell Analysis")
+sc_studies <- mesh$identifier[sc]   # single-cell associated studies to exclude
+
+sc_ind <- which(studyMeta$studyName %in% sc_studies)
+sn_ind <- which(studyMeta$downloaded > 50 & 
+                  studyMeta$metadata < 1000 & 
+                  studyMeta$imported == "TRUE")
+ind_536 <- setdiff(sn_ind, sc_ind)
+
+studyMeta$PCAmodel_536 <- FALSE
+studyMeta$PCAmodel_536[ind_536] <- TRUE 
+```
+
+
+
+
+```{r fig.width=6, fig.height=4.5, echo=FALSE, eval=FALSE}
+## Save summary table
+write.table(studyMeta, "~/data2/PCAGenomicSignatures/inst/extdata/studyMeta.tsv")
+
+## Save histogram comparing metadata vs. downloaded data
+## `available_samples.png` is moved to `Results/others` 
+png("available_samples.png")
+plot(hg_meta, col = c1, ylim = c(1, 2000), main = "Data Availability", 
+     xlab = "# of samples/study", ylab = "# of studies") 
+plot(hg_download, col = c2, ylim = c(1, 2000), add = TRUE) 
+legend("topright", c("metadata", "downloaded"), col = c(c1, c2), lwd = 10)
+dev.off()
+```

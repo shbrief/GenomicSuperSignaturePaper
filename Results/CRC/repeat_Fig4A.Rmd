@@ -1,0 +1,296 @@
+---
+title: "Repeat CRC paper's Figure 4A"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+suppressPackageStartupMessages({
+  library(Biobase)
+  library(tidyverse)
+  library(PCAGenomicSignatures)
+  library(PCAGenomicSignaturesPaper)
+})
+```
+
+# Setup
+In this vignette, we are reproducing Figure 4A of the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4)
+using PCAGenomicSignatures.
+
+## PCAmodel
+```{r message=FALSE, warning=FALSE, collapse=FALSE}
+data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
+PCAmodel
+updateNote(PCAmodel)
+```
+
+## CRC validation datasets
+```{r}
+load("data/eSets/setNames.RData")
+```
+
+```{r echo=FALSE, eval=FALSE}
+## CRC paper actually used both training and validation datasets (total of 18)
+## for Figure 4. So here, we are using all of them. However, for Figure 4C, we'll
+## try to use only 10 validation datasets. 
+# load(file.path(wd, "trainingSetNames.RData"))
+# validationSetNames <- setdiff(setNames, trainingSetNames)
+```
+
+```{r}
+## Load validation samples
+for (set in setNames) {
+  load(paste0("data/eSets_new/", set, '.RData'))
+}
+```
+
+
+
+# By PCSS1/PCSS2 
+First, we simply reproduced the Figure 4A using PCSS1 and PCSS2.
+
+```{r out.width="80%", out.height="80%", echo=FALSE, message=FALSE, warning=FALSE}
+## dist’n of PCSS scores -------------------------------------------------------
+df.results <- setNames %>% lapply(function(set) {
+  eSet <- get(set)
+  pdata <- pData(eSet)
+  eSet_tmp <- eSet[, pdata$sample_type %in% "tumor"]
+  exprs_tmp <- exprs(eSet_tmp)
+  pdata_tmp <- pData(eSet_tmp)
+
+  pdata_tmp$study <- set
+  ind_rm <- grep("CRIS_", colnames(pdata_tmp))  # remove CIRS_* pData assigned to training datasets
+  if (length(ind_rm) != 0) {pdata_tmp <- pdata_tmp[,-ind_rm]}
+  return(pdata_tmp)
+  
+}) %>% Reduce('rbind', .)
+
+## Subset with 'cms_label_SSP'
+df.results <- df.results %>%
+  mutate(cms_label_SSP = cms_label_SSP %>%
+           recode("unlabeled" = "not labeled"))
+
+df.results <- df.results %>%
+  group_by(study, cms_label_SSP) %>%
+  dplyr::summarise(mean_PCSS1 = mean(PCSS1),
+                   mean_PCSS2 = mean(PCSS2),
+                   sd_PCSS1 = sd(PCSS1),
+                   sd_PCSS2 = sd(PCSS2))
+
+## Plot Figure 4A
+colors <- gg_color_hue(4)
+colors.toplot <- c(colors, 'grey')
+names(colors.toplot) <- c(paste0('CMS', 1:4), 'not labeled')
+
+pA <- ggplot(df.results,
+             aes(x = mean_PCSS1, y = mean_PCSS2, color = cms_label_SSP)) +
+  geom_point() +
+  geom_errorbar(aes(x = mean_PCSS1,
+                    ymin = mean_PCSS2 - sd_PCSS2,
+                    ymax = mean_PCSS2 + sd_PCSS2)) +
+  geom_errorbarh(aes(y = mean_PCSS2,
+                    xmin = mean_PCSS1 - sd_PCSS1,
+                    xmax = mean_PCSS1 + sd_PCSS1)) +
+  scale_color_manual(values = colors.toplot, name = "CMS Subtype") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()) +
+  geom_hline(yintercept = 0, linetype = 'dashed') +
+  geom_vline(xintercept = 0, linetype = 'dashed') +
+  xlab('PCSS1') + ylab('PCSS2') +
+  coord_cartesian(xlim = c(-2, 2.5)) +
+  theme(legend.direction = "horizontal", legend.justification=c(0,1), legend.position=c(0,1),
+        legend.background = element_rect(colour='black'))
+
+print(pA)
+```
+
+```{r echo=FALSE}
+saveRDS(pA, "outputs/scatter_PCSS.rds")
+```
+
+# By PCAGenomicSignatures
+## Most similar to PCSS1/PCSS2
+```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%"}
+sampleScore1 <- 1575
+sampleScore2 <- 834
+source("R/Fig4A_plotting.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4A_plotting.R")
+saveRDS(x, "outputs/scatter_1575_834.rds")
+```
+
+### wordcloud
+```{r out.width="60%", out.height="60%"}
+drawWordcloud(PCAmodel, sampleScore1)
+drawWordcloud(PCAmodel, sampleScore2)
+```
+
+### GSEA
+```{r}
+annotatePCcluster(PCAmodel, sampleScore1)
+annotatePCcluster(PCAmodel, sampleScore2)
+```
+
+
+## Best validation scores overall on CRC validation datasets
+
+### Validation
+Before applying `validate` function, any NA or Inf values in CRC datasets were
+removed and the expression matrix was centered.
+ 
+```{r message=FALSE, warning=FALSE}
+validated_ind_all <- vector(mode = "list", length = length(setNames))
+names(validated_ind_all) <- setNames
+
+for (set in setNames) {
+  eSet <- get(set)
+  exprs <- exprs(eSet) %>% rmNaInf
+  exprs <- apply(exprs, 1, function(x) x - mean(x)) %>% t
+  val_all <- validate(exprs, PCAmodel)
+  validated_ind_all[[set]] <- validatedSignatures(val_all, num.out = 10, indexOnly = TRUE)
+}
+```
+
+We combined the top validated RAVs from all 18 studies and checked the frequency 
+of them. Any RAV that appeared more often means they are consistently associated
+with the common feature of CRC datasets. 
+
+Top row is RAV number and the bottom row is the frequency of it making top validation.
+Because there were 18 datasets, the maximum frequeny of showing up is 18.
+
+```{r}
+## Top 10 validated
+validated_ind_all %>% unlist %>% table %>% sort(., decreasing = TRUE)
+
+## Top 5 validated
+lapply(validated_ind_all, function(x) x[1:5]) %>%
+  unlist %>% table %>% sort(., decreasing = TRUE)
+```
+
+
+### Top validated RAVs
+```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%"}
+sampleScore1 <- 832
+sampleScore2 <- 188
+source("R/Fig4A_plotting.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4A_plotting.R")
+saveRDS(x, "outputs/scatter_832_188.rds")
+```
+
+```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%", echo=FALSE, eval=FALSE}
+sampleScore1 <- 832
+sampleScore2 <- 833
+source("R/Fig4A_plotting.R", print.eval = TRUE)
+```
+
+### wordcloud
+```{r out.width="60%", out.height="60%"}
+drawWordcloud(PCAmodel, sampleScore1)
+drawWordcloud(PCAmodel, sampleScore2)
+```
+
+### GSEA
+```{r}
+annotatePCcluster(PCAmodel, sampleScore1)
+annotatePCcluster(PCAmodel, sampleScore2)
+```
+
+
+
+## Identified using metadata, CMS
+We find the metadata-associated RAVs using Kruskal-Wallis Rank Sum Test.
+
+```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%"}
+sampleScore1 <- 834
+sampleScore2 <- 833
+source("R/Fig4A_plotting.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4A_plotting.R")
+saveRDS(x, "outputs/scatter_834_833.rds")
+```
+
+### wordcloud
+```{r out.width="60%", out.height="60%"}
+drawWordcloud(PCAmodel, sampleScore1)
+drawWordcloud(PCAmodel, sampleScore2)
+```
+
+### GSEA
+```{r}
+annotatePCcluster(PCAmodel, sampleScore1)
+annotatePCcluster(PCAmodel, sampleScore2)
+```
+
+
+
+
+
+```{r fig.width=4, fig.height=4, echo=FALSE, eval=FALSE}
+## CMS by Candidate PCclusters
+dat <- readRDS("data/SummaryForFig4.rds")
+score_ind <- grep("PCcluster", colnames(dat))
+
+## Subset with 'cms_label_SSP'
+dat <- dat %>%
+  mutate(cms_label_SSP = cms_label_SSP %>%
+           recode("unlabeled" = "not labeled"))
+
+dat <- dat %>%
+  group_by(study, cms_label_SSP) %>%
+  dplyr::summarise(mean_cl1575 = mean(PCcluster1575),
+                   mean_cl834 = mean(PCcluster834),
+                   mean_cl833 = mean(PCcluster833),
+                   sd_cl1575 = sd(PCcluster1575),
+                   sd_cl834 = sd(PCcluster834),
+                   sd_cl833 = sd(PCcluster833))
+
+## Plot
+cl_ind <- c(1575, 834, 833)
+mean_names <- paste0("mean_cl", cl_ind)
+
+for (i in seq_along(mean_names)) {
+  ordered.dat <- dat[order(dat[,mean_names[i]]),]
+  plot(dplyr::pull(ordered.dat, mean_names[i]),
+       col = ordered.dat$cms_label_SSP,
+       xlab = "", ylab = paste0("Score from PCcluster", cl_ind[i]))
+}
+```
+
+
+
+
+
+
+```{r echo=FALSE}
+## This chunk was executed only to save the summary table, not for vignettes.
+CRC_validation_df <- data.frame(matrix(unlist(validated_ind_all), 
+                                       nrow = length(validated_ind_all), 
+                                       byrow = TRUE), 
+                                stringsAsFactors=FALSE)
+rownames(CRC_validation_df) <- names(validated_ind_all)
+colnames(CRC_validation_df) <- paste0("val_ind_", 1:10)
+
+write.table(CRC_validation_df, "outputs/CRC_top10_validated_ind.tsv")
+```

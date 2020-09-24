@@ -6,25 +6,10 @@ Authors@R: person("Sehyun", "Oh", email = "Sehyun.Oh@sph.cuny.edu", role = c("au
 Description: This package provides data, methods, results covered in PCAGenomicSignatures. 
 Depends: R (>= 3.5)
 Imports:
-  SummarizedExperiment,
-  methods,
+  PCAGenomicSignatures,
   dplyr,
-  S4Vectors,
   Biobase,
-  ComplexHeatmap,
-  circlize,
-  grid,
-  cluster,
-  clusterProfiler,
-  enrichplot,
-  ggplot2,
-  magrittr,
-  plotly,
-  wordcloud,
-  RColorBrewer,
-  stats,
-  msigdbr,
-  EnrichmentBrowser
+  ggplot2
 Suggests:
   knitr,
   rmarkdown,
