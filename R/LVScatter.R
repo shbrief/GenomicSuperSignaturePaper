@@ -1,9 +1,11 @@
-calculateRsq <- function (x, y) cor(x, y) ^ 2
+calculateRsq <- function (x, y) stats::cor(x, y) ^ 2
 
 #' Draw scatter plot with R-squared value
-#' @param dat A data frame.
-#' @param lv A character.
-#' @param y.var
+#'
+#' @param dat A data frame containing the summary of scores and metadata.
+#' @param lv A PCcluster name for x-axis.
+#' @param y.var A name of y-axis.
+#' @param ylab A label for y-axis.
 #'
 #' @return A scatter plot.
 #'
@@ -18,8 +20,8 @@ LVScatter <- function(dat, lv, y.var = "Neutrophil.Count", ylab = "") {
   y.range <- max(neutro.df[, y.var]) - min(neutro.df[, y.var])
   y.coord <- max(neutro.df[, y.var]) - (y.range * 0.05)
 
-  rsq <- calculateRsq(neutro.df[, lv], neutro.df[, y.var]) %>%
-    round(., 3)
+  rsq <- calculateRsq(neutro.df[, lv], neutro.df[, y.var])
+  rsq <- round(rsq, 3)
 
   ggplot2::ggplot(neutro.df, ggplot2::aes_string(x = lv, y = y.var)) +
     ggplot2::geom_point(alpha = 0.7) +

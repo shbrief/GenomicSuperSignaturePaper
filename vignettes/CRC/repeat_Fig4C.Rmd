@@ -1,0 +1,161 @@
+---
+title: "Repeat CRC paper's Figure 4C"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+```
+
+# Setup
+* CRC paper actually used both training and validation datasets (total of 18)
+for Figure 4. `Fig4C_CMSvs.R` and `Fig4C_contScores.R` scripts are using only 10
+validation datasets. If you want to use all 18 datasets, block the line 11-13 of
+those scripts.   
+
+```{r eval=FALSE}
+## line 11-13
+# load("data/eSets/trainingSetNames.RData")
+# validationSetNames <- setdiff(setNames, trainingSetNames)
+# setNames <- validationSetNames
+```
+
+* Fig4C_CMSvs.R script requires three environmental variables set before running:
+`m2_name` (column name for the model to be compared to CMS), `m2_1` and `m2_2` (names
+of the two model variables that form the group to be compared to CMS)   
+
+* Fig4C_contScores.R script requires six environmental variables set before running:
+`m1_name`, `m1_1`, `m1_2` for one model, `m2_name`, `m2_1`, `m2_2` for the other.
+
+
+# Compare to CMS
+## CMS vs. PCSS1/2
+```{r fig.width=5, fig.height=3.5}
+m2_name <- "PCSS"
+m2_1 <- "PCSS1"
+m2_2 <- "PCSS2"
+source("R/Fig4C_CMSvs.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_CMSvs.R")
+saveRDS(x, "outputs/boxplot_CMS_vs_PCSS.rds")
+```
+
+
+## CMS vs. PCcluster1575/834
+PCcluster1575/834 are the most similar PCclsuters to PCSS1/2, respectively, based 
+on Pearson correlation.
+
+```{r fig.width=5, fig.height=3.5}
+m2_name <- "RAV"
+m2_1 <- "PCcluster1575"
+m2_2 <- "PCcluster834"
+source("R/Fig4C_CMSvs.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_CMSvs.R")
+saveRDS(x, "outputs/boxplot_CMS_vs_1575_834.rds")
+```
+
+## CMS vs. PCcluster834/833
+PCcluster834/833 have the largest r-squared score when we compared the samples
+scores against the metadata, CMS.
+
+```{r fig.width=5, fig.height=3.5}
+m2_name <- "RAV"
+m2_1 <- "PCcluster834"
+m2_2 <- "PCcluster833"
+source("R/Fig4C_CMSvs.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_CMSvs.R")
+saveRDS(x, "outputs/boxplot_CMS_vs_834_833.rds")
+```
+
+
+
+# Compare continuous scores
+## PCSS vs. PCcluster1575/834
+```{r fig.width=5, fig.height=3.5}
+m1_name <- "PCSS"
+m1_1 <- "PCSS1"
+m1_2 <- "PCSS2"
+m2_name <- "RAV"
+m2_1 <- "PCcluster1575"
+m2_2 <- "PCcluster834"
+
+source("R/Fig4C_contScores.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_contScores.R")
+saveRDS(x, "outputs/boxplot_PCSS_vs_1575_834.rds")
+```
+
+## PCSS vs. PCcluster834/833
+```{r fig.width=5, fig.height=3.5}
+m1_name <- "PCSS"
+m1_1 <- "PCSS1"
+m1_2 <- "PCSS2"
+m2_name <- "RAV"
+m2_1 <- "PCcluster834"
+m2_2 <- "PCcluster833"
+
+source("R/Fig4C_contScores.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_contScores.R")
+saveRDS(x, "outputs/boxplot_PCSS_vs_834_833.rds")
+```
+
+## PCSS vs. PCcluster834/3290
+RAV3290 is associated with "stage" metadata of CRC datasets.
+
+```{r fig.width=5, fig.height=3.5}
+m1_name <- "PCSS"
+m1_1 <- "PCSS1"
+m1_2 <- "PCSS2"
+m2_name <- "RAV"
+m2_1 <- "PCcluster834"
+m2_2 <- "PCcluster3290"
+
+source("R/Fig4C_contScores.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_contScores.R")
+saveRDS(x, "outputs/boxplot_PCSS_vs_834_3290.rds")
+```
+
+## PCSS vs. PCcluster834/596
+RAV596 is associated with "grade" metadata of CRC datasets.
+
+```{r fig.width=5, fig.height=3.5}
+m1_name <- "PCSS"
+m1_1 <- "PCSS1"
+m1_2 <- "PCSS2"
+m2_name <- "RAV"
+m2_1 <- "PCcluster834"
+m2_2 <- "PCcluster596"
+
+source("R/Fig4C_contScores.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_contScores.R")
+saveRDS(x, "outputs/PCSS_vs_834_596.rds")
+```

@@ -9,11 +9,11 @@ getAssociatedPCclusters(PCAmodel, pathwaySet, cutoff_nes, cutoff_n)
 \arguments{
 \item{PCAmodel}{A PCAGenomicSignatures object.}
 
+\item{pathwaySet}{A character vector. Keywords you are looking for.}
+
 \item{cutoff_nes}{A minimum NES to be kept.}
 
-\item{pathway}{A character vector. Keywords you are looking for.}
-
-\item{cutoof_n}{A number of pathways to keep.}
+\item{cutoff_n}{A number of pathways to keep.}
 }
 \description{
 check whether your pathway of interest is in the model

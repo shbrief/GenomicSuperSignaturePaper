@@ -1,9 +1,9 @@
 #' check whether your pathway of interest is in the model
 #'
 #' @param PCAmodel A PCAGenomicSignatures object.
-#' @param pathway A character vector. Keywords you are looking for.
+#' @param pathwaySet A character vector. Keywords you are looking for.
 #' @param cutoff_nes A minimum NES to be kept.
-#' @param cutoof_n A number of pathways to keep.
+#' @param cutoff_n A number of pathways to keep.
 #'
 #'
 getAssociatedPCclusters <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) {
@@ -12,7 +12,7 @@ getAssociatedPCclusters <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) 
 
   for (i in seq_len(ncol(PCAmodel))) {
     search_pattern <- paste(pathwaySet, collapse = "|")
-    annotatedCluster <- gsea(PCAmodel)[[i]]
+    annotatedCluster <- PCAGenomicSignatures::gsea(PCAmodel)[[i]]
     topAnnotation <- annotatedCluster[order(abs(annotatedCluster$NES), decreasing = TRUE),]
 
     # Filtering
@@ -31,11 +31,15 @@ getAssociatedPCclusters <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) 
 
 #' Check a pair of pathways are captured in the signature model
 #'
+#' Arguments \code{pathway1} and \code{pathway2} are character vectors containing
+#' lists of pathways that you want to separate through the model.
+#'
 #' @param PCAmodel PCAGenomicSignatures object.
-#' @param pathway A character vector. Keywords you are looking for.
+#' @param pathway1 A character vector. Keywords you are looking for.
+#' @param pathway2 A character vector. Keywords you are looking for.
 #' @param cutoff_nes A minimum NES to be kept. Under the default (\code{NULL}), this
 #' filter is not used.
-#' @param cutoof_n A number of pathways to keep.Default is 5. If you don't want to
+#' @param cutoff_n A number of pathways to keep.Default is 5. If you don't want to
 #' use this filter, assign it as \code{NULL}.
 #'
 #' @note https://github.com/greenelab/multi-plier/blob/master/32-explore_pathway_separation.Rmd

@@ -42,9 +42,9 @@
 
 
 ## CRC raw data
-Results/CRC/data/eSets/new/*
-Results/CRC/data/eSets_new/*
+vignettes/CRC/data/eSets/new/*
+vignettes/CRC/data/eSets_new/*
 
 ## Large files
 inst/extdata/*
-Results/SLE-WB/data/*
+vignettes/SLE-WB/data/*

@@ -2,10 +2,8 @@
 ^\.Rproj\.user$
 
 inst/extdata/*
-Results/CRC/data/eSets/new/*
-Results/CRC/data/eSets_new/*
+vignettes/CRC/data/eSets/new/*
+vignettes/CRC/data/eSets_new/*
+vignettes/SLE-WB/data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl
 Methods/*
 
-*.html
-*.pdf
-*.log

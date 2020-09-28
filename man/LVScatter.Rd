@@ -7,11 +7,13 @@
 LVScatter(dat, lv, y.var = "Neutrophil.Count", ylab = "")
 }
 \arguments{
-\item{dat}{A data frame.}
+\item{dat}{A data frame containing the summary of scores and metadata.}
 
-\item{lv}{A character.}
+\item{lv}{A PCcluster name for x-axis.}
 
-\item{y.var}{}
+\item{y.var}{A name of y-axis.}
+
+\item{ylab}{A label for y-axis.}
 }
 \value{
 A scatter plot.

@@ -1,0 +1,290 @@
+---
+title: "Find the signature using metadata"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+  library(PCAGenomicSignatures)
+  library(PCAGenomicSignaturesPaper)
+  library(ggplot2)
+  library(ggpubr)
+  library(dplyr)
+  library(Biobase)
+})
+```
+
+# Setup
+## PCAmodel
+```{r message=FALSE, warning=FALSE, collapse=FALSE}
+data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
+PCAmodel
+updateNote(PCAmodel)
+```
+
+## CRC validation datasets
+```{r}
+load("data/eSets/setNames.RData")
+```
+
+```{r echo=FALSE, eval=FALSE}
+## CRC paper actually used both training and validation datasets (total of 18)
+## for Figure 4. So here, we are using all of them. However, for Figure 4C, we'll
+## try to use only 10 validation datasets. 
+# load(file.path(wd, "trainingSetNames.RData"))
+# validationSetNames <- setdiff(setNames, trainingSetNames)
+```
+
+```{r}
+## Load validation samples
+for (set in setNames) {
+  load(paste0("data/eSets_new/", set, '.RData'))
+}
+```
+
+
+
+# Processing datasets
+## Get phenotype data
+Combine all the phenotype data from CRC validation datasets.
+```{r}
+## phenotype tables combined
+pdata_df <- setNames %>% lapply(function(set) {
+  eSet <- get(set)
+  pdata <- pData(eSet)
+  eSet_tmp <- eSet[, pdata$sample_type %in% "tumor"]
+  pdata_tmp <- pData(eSet_tmp)
+  
+  ind_rm <- grep("CRIS_", colnames(pdata_tmp))
+  if (length(ind_rm) != 0) {pdata_tmp <- pdata_tmp[,-ind_rm]}
+  return(pdata_tmp)
+}) %>% Reduce('rbind', .)
+```
+
+## Get expression data
+Combine all expression profiles from CRC validation datasets, subset with the common
+genes among them.
+
+```{r}
+## common genes between all validation datasets
+all_genes <- list()
+for (set in setNames) {
+  eSet <- get(set)
+  exprs <- exprs(eSet) %>% rmNaInf
+  all_genes[[set]] <- rownames(exprs)
+}
+cg <- Reduce(intersect, all_genes)
+
+## expression matrix combined
+exprs_df <- setNames %>% lapply(function(set) {
+  eSet <- get(set)
+  pdata <- pData(eSet)
+  eSet_tmp <- eSet[cg, pdata$sample_type %in% "tumor"]
+  exprs_tmp <- exprs(eSet_tmp) %>% rmNaInf
+  exprs_tmp <- apply(exprs_tmp, 1, function(x) x - mean(x)) %>% t
+  return(exprs_tmp)  
+}) %>% Reduce('cbind', .)   # 8219 genes x 3567 samples
+```
+
+## Calculate Score
+Calculate score and combine it with phenotype data.
+```{r}
+sampleScore <- calculateScore(exprs_df, PCAmodel)
+data_all <- cbind(sampleScore, pdata_df)
+```
+
+```{r rm_duplicated, echo=FALSE}
+## I added the scores from a few major PCclusters to a pData. So remove duplicates.
+rm_ind <- which(duplicated(colnames(data_all)))
+data_all <- data_all[, -rm_ind]
+```
+
+
+
+
+# Multivariable
+Here, I'm using 4 CMS subtypes of CRC validation datasets as an example of identifying 
+signifcant RAVs using discrete, multivariable metdata.
+
+## ANOVA
+```{r ANOVA}
+f.stat.all <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+  res.aov <- aov(data_all[,x] ~ data_all$cms_label_SSP)
+  f.stat <- summary(res.aov)[[1]][1,4]   # extract F-statistics from ANOVA 
+  return(f.stat)
+})
+
+names(f.stat.all) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+head(f.stat.all[order(f.stat.all, decreasing = TRUE)])
+```
+
+## Kruskal-Wallis Rank Sum Test
+Normality assumption is not met. Below example is a Q-Q plot from PCcluster834.
+```{r fig.width=4, fig.height=4}
+res.aov <- aov(data_all[,"PCcluster834"] ~ data_all[,"cms_label_SSP"])
+plot(res.aov, 2)
+```
+
+```{r normality_test, echo=FALSE, eval=FALSE}
+## Test normality using Shapiro.test :
+## [Wikipedia] The null-hypothesis of this test is that the population is normally 
+## distributed. Thus, if the p value is less than the chosen alpha level, then the 
+## null hypothesis is rejected and there is evidence that the data tested are not 
+## normally distributed. 
+
+## Shapiro.test is too sensitive to normality. For example, even if the sample size
+## is large enough to ignore normality, Shapiro.test can alarm the normality issue 
+## with really high power (with large dataset). Just use Q-Q plot.
+
+normality <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+  res.aov <- aov(data_all[,x] ~ data_all$cms_label_SSP)
+  aov_residuals <- residuals(object = res.aov)  # Extract the residuals
+  res <- shapiro.test(x = aov_residuals)$p.value  # Run Shapiro-Wilk test
+  return(res)
+})
+
+names(normality) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+summary(normality)
+```
+
+Try Kruskal-Wallis Rank Sum Test
+```{r Kruskal-Wallis}
+# Kruskal-Wallis Rank Sum Test
+# a non-parametric alternative to one-way ANOVA = when normality assumption is not met
+kw.chi.sqr <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+  kw.test <- kruskal.test(data_all[,x] ~ data_all$cms_label_SSP)
+  kw.stat <- kw.test$statistic
+  return(kw.stat)
+})
+
+names(kw.chi.sqr) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
+```
+
+## CMS-associated RAVs
+Top 2 PCclusters (834 and 833) are same from both ANOVA and Kruskal-Wallis Rank Sum Test.
+
+```{r message=FALSE, warning=FALSE, fig.width=5.5, fig.height=5}
+sampleScore1 <- 834
+sampleScore2 <- 833
+source("R/Fig4A_plotting.R", print.eval = TRUE)
+```
+
+Plots with different mean comparing methods.
+```{r collapse=FALSE, fig.width=5, fig.height=4}
+## t.test for a few pairs
+my_comparisons <- list(c("CMS1", "CMS2"),c("CMS1", "CMS3"),c("CMS1", "CMS4"))
+ggboxplot(data_all, x = "cms_label_SSP", y = "PCcluster834", fill = "cms_label_SSP") +
+  stat_compare_means(comparisons = my_comparisons, method = "t.test", aes(label = ..p.adj..))
+
+## ANOVA
+ggboxplot(data_all, x = "cms_label_SSP", y = "PCcluster834", fill = "cms_label_SSP") +
+  stat_compare_means(method = "anova", label.y = 7) # Add global p-value
+
+## Kruskal-Wallis Rank Sum Test 
+ggboxplot(data_all, x = "cms_label_SSP", y = "PCcluster834", fill = "cms_label_SSP") +
+  stat_compare_means(method = 'kruskal.test', label.y = 7) # Add global p-value
+```
+
+
+
+
+
+# Binary variables
+We ran `t.test` between the below clinical variables and all sample scores. The test 
+results were ordered based on p-value and top 6 of them are printed.
+
+```{r}
+vars <- c("msi", "summarylocation", "summarygrade", "summarystage")
+```
+
+## MSI
+```{r echo=FALSE}
+# MSI
+var <- vars[1]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+msi.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  p <- res$p.value
+  return(p)
+})
+
+names(msi.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+msi.t.test <- msi.t.test[order(msi.t.test)]
+# head(names(msi.t.test))
+head(msi.t.test)
+```
+
+## Location
+```{r echo=FALSE}
+# Location
+var <- vars[2]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+location.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  p <- res$p.value
+  return(p)
+})
+
+names(location.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+location.t.test <- location.t.test[order(location.t.test)]
+# head(names(location.t.test))
+head(location.t.test)
+```
+
+## Grade
+```{r echo=FALSE}
+# Grade
+var <- vars[3]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+grade.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  p <- res$p.value
+  return(p)
+})
+
+names(grade.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+grade.t.test <- grade.t.test[order(grade.t.test)]
+# head(names(grade.t.test))
+head(grade.t.test)
+```
+
+## Stage
+```{r echo=FALSE}
+# Stage
+var <- vars[4]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+stage.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  p <- res$p.value
+  return(p)
+})
+
+names(stage.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+stage.t.test <- stage.t.test[order(stage.t.test)]
+# head(names(stage.t.test))
+head(stage.t.test)
+```

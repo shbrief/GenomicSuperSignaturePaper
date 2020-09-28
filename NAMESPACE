@@ -3,3 +3,4 @@
 export(LVScatter)
 export(checkPathwaySeparation)
 export(gg_color_hue)
+importFrom(grDevices,hcl)

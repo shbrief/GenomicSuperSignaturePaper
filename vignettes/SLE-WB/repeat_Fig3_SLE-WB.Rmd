@@ -1,0 +1,313 @@
+---
+title: "Reproduce multiPLIER Figure 3 - SLE WB Compendium"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Quickstart}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    number_sections: no
+    toc: yes
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>", collapse = TRUE, message = FALSE, warning = FALSE
+)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+  library(PCAGenomicSignatures)
+  library(PCAGenomicSignaturesPaper)
+  library(dplyr)
+})
+```
+
+# Setup
+In this vignette, we are reproducing Figure 3 of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
+using PCAGenomicSignatures.
+
+## PCAmodel
+To directly compare with the results from multiPLIER paper, we used the PCAmodel
+annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
+
+```{r message=FALSE, warning=FALSE, collapse=FALSE}
+data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_PLIERpriors.rds"))
+PCAmodel
+updateNote(PCAmodel)
+```
+
+## SLE-WB data (E-GEOD-65391)
+### Expression data
+Processed expression data is downloaded from [here](https://github.com/greenelab/multi-plier/blob/master/data/expression_data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl).
+
+```{r}
+fname <- "data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl"
+exprs <- readr::read_tsv(fname) %>% as.data.frame
+
+rownames(exprs) <- exprs$GeneSymbol
+dataset <- as.matrix(exprs[,3:ncol(exprs)])
+dataset[1:2, 1:4]
+```
+
+### Metadata
+Metadata is downloaded from [here](https://github.com/greenelab/rheum-plier-data/blob/master/sle-wb/arrayexpress/E-GEOD-65391/E-GEOD-65391.sdrf.txt).
+
+```{r}
+meta <- read.table("data/E-GEOD-65391.sdrf.txt", sep = "\t", header = TRUE)
+## 966 samples have metadata
+dim(meta)   
+
+## Neutrophil count
+ind <- grep("neutrophil", colnames(meta), ignore.case = TRUE)
+colnames(meta)[ind]
+neutrophilCount <- meta[,c("Source.Name", "Characteristics..neutrophil_count.")]
+```
+
+```{r}
+## Clean the `Source.Name` column
+cleaned_name <- sapply(neutrophilCount[,1], 
+                       function(x) stringr::str_split(x, " ")[[1]][1])
+neutrophilCount[,1] <- cleaned_name
+
+## 143 NAs introduced by coercion due to the missing data
+neutrophilCount[,2] <- as.numeric(neutrophilCount[,2])
+na_ind <- which(is.na(as.numeric(neutrophilCount[,2]))) 
+
+## 853 samples with metadata after clean-up
+neutrophilCount <- neutrophilCount[-na_ind,]   
+colnames(neutrophilCount)[2] <- "Neutrophil.Count"
+head(neutrophilCount, 3)
+```
+
+### Subset to the samples with metadata
+```{r}
+cleaned_colnames <- sapply(colnames(dataset), 
+                           function(x) stringr::str_split(x, "_")[[1]][1])
+withMeta_ind <- which(cleaned_colnames %in% neutrophilCount$Source.Name)
+dataset <- dataset[, withMeta_ind]   # 15,825 genes x 853 samples
+```
+
+### MCPCounter
+Neutrophil count itself showed a somewhat weak correlation, and the authors suggest 
+that it is likely because neutrophils are terminally differentiated cells, so it is 
+a limitation of using gene expression as a measure of neutrophil count rather than 
+a limitation intrinsic to PLIER models or the multiPLIER approach.    
+
+Use [MCPcounter](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1070-5) 
+to estimate cell type abundance in solid tissues.
+
+```{r}
+## Get cell type estimates with MCPcounter
+mcp.results <- MCPcounter::MCPcounter.estimate(expression = dataset,
+                                               featuresType = "HUGO_symbols")
+## Subset only the neutrophil estimates
+neutrophil.df <- reshape2::melt(mcp.results) %>%
+  dplyr::filter(Var1 == "Neutrophils") %>% 
+  dplyr::select(-Var1)
+colnames(neutrophil.df) <- c("Sample", "Neutrophil_estimate")
+```
+
+
+# EDA
+## Validation
+```{r fig.width=4, fig.height=2.5}
+val_all <- validate(dataset, PCAmodel) 
+validated_ind <- validatedSignatures(val_all, num.out = 5, 
+                                     swCutoff = 0, indexOnly = TRUE)
+heatmapTable(val_all, num.out = 5, swCutoff = 0)
+```
+
+## Sample score
+```{r}
+sampleScore <- calculateScore(dataset, PCAmodel)
+```
+
+```{r sample_score_heatmap, echo=FALSE, eval=FALSE}
+## Plot sample score heatmap using only the PCclusters with > 2 elements.
+# ind <- which(metadata(PCAmodel)$size > 2)
+# sampleScoreHeatmap(score = sampleScore[,ind], 
+#                    dataName = "E-GEOD-65391", 
+#                    modelName = "PCAmodel",
+#                    show_column_names = FALSE, 
+#                    row_names_gp = 4)
+```
+
+## GSEA
+```{r}
+## PCclusters containing the keyword, "neutrophil", in each GSEA result
+a <- gsea(PCAmodel)
+b <- sapply(a, function(x) {
+  y <- x[order(x$NES, decreasing = TRUE),][1:3,]   # top 3 NES
+  grep("neutrophil", y[["Description"]], ignore.case = TRUE)
+  })
+c <- sapply(b, length)
+table(c)
+
+## PCclusters with two keyword-containing pathways
+which(c == 2)
+sig_ind <- gsub("PCcluster", "", names(which(c == 2))) %>% as.numeric
+```
+
+## Metadta-associated
+
+```{r calculate_rsq}
+calculateRsq <- function (x, y) cor(x, y) ^ 2
+rsq <- function(data, lv, y.var = "Neutrophil_estimate") {
+  res <- calculateRsq(data[, lv], data[, y.var]) %>% round(., 3)
+  return(res)
+}
+```
+
+### Neutrophil count
+```{r}
+sampleScore_sub <- sampleScore[,validated_ind] %>% as.data.frame
+sampleScore_sub$Source.Name <- rownames(sampleScore_sub)
+
+dat_n.count <- dplyr::left_join(neutrophilCount, sampleScore_sub, 
+                                by = "Source.Name")
+head(dat_n.count, 3)
+```
+
+Top PCclusters with the high correlation (r-squared) with the metadata, neutrophil count. 
+```{r}
+rsq_all <- sapply(3:ncol(dat_n.count), 
+                  function(x) {rsq(dat_n.count, x, y.var = "Neutrophil.Count")})
+names(rsq_all) <- colnames(dat_n.count)[3:ncol(dat_n.count)]
+rsq_all <- sort(rsq_all, decreasing = TRUE)
+head(names(rsq_all))
+```
+
+### Neutrophil estimate
+```{r}
+sampleScore.df <- sampleScore %>% as.data.frame(.) %>% 
+  tibble::rownames_to_column(.)
+colnames(sampleScore.df)[1] <- "Sample"
+
+## Join all the scores with neutrophil estimates
+dat_n.estimate <- dplyr::inner_join(neutrophil.df, sampleScore.df, by = "Sample")
+dim(dat_n.estimate)
+dat_n.estimate[1:4, 1:4]
+```
+
+Top PCclusters with the high correlation (r-squared) with the neutrophil estimate. 
+```{r}
+rsq_all <- sapply(3:ncol(dat_n.estimate), function(x) {rsq(dat_n.estimate,x)})
+names(rsq_all) <- colnames(dat_n.estimate)[3:ncol(dat_n.estimate)]
+rsq_all <- sort(rsq_all, decreasing = TRUE)
+head(names(rsq_all))
+```
+
+
+# Interpret score
+## Score vs. Neutrophil counts
+### PCclusters selected through validation score
+Scores from the validated indexes are compared to the nuetrophil counts.
+
+```{r fig.height=7.5, fig.width=6}
+plots <- list()
+for (i in seq_along(validated_ind)) {
+  plot <- LVScatter(dat_n.count, paste0("PCcluster", validated_ind[i]), 
+                    y.var = "Neutrophil.Count",
+                    ylab = "Neutrophil Count")
+  plots[[i]] <- plot
+}
+
+gridExtra::grid.arrange(grobs = plots, cols = 2)
+```
+
+
+
+
+## Score vs. Neutrophil estimates
+### PCclusters selected through validation score
+Scores from the validated indexes are compared to the nuetrophil estimates.
+
+```{r fig.height=7.5, fig.width=6}
+plots <- list()
+for (i in seq_along(validated_ind)) {
+  plot <- LVScatter(dat_n.estimate, paste0("PCcluster", validated_ind[i]), 
+                    y.var = "Neutrophil_estimate",
+                    ylab = "MCPcounter neutrophil estimate")
+  plots[[i]] <- plot
+}
+
+gridExtra::grid.arrange(grobs = plots, cols = 2)
+```
+
+### PCclusters selected through GSEA
+We found PCclusters that contain the keyword, "neutrophil", most in their GSEA result 
+and their indexes are saved in `sig_ind`.
+
+```{r fig.height=10, fig.width=9}
+plots <- list()
+for (i in seq_along(sig_ind)) {
+  plot <- LVScatter(dat_n.estimate, paste0("PCcluster", sig_ind[i]), 
+                    y.var = "Neutrophil_estimate",
+                    ylab = "MCPcounter neutrophil estimate")
+  plots[[i]] <- plot
+}
+
+gridExtra::grid.arrange(grobs = plots, cols = 3)
+```
+
+
+
+# Summary of Neutrophil-associated PCcluster1551
+We recovered PCcluster1551 as a neutrophil-associated signature through validation,
+GSEA, metadata-association. 
+
+### Validation
+```{r out.width="40%", out.height="40%"}
+heatmapTable(val_all, 1551)
+```
+
+```{r out.width="60%", out.height="60%"}
+drawWordcloud(PCAmodel, 1551)
+```
+
+### GSEA
+```{r PCcluster1551, echo=FALSE}
+gseaRes <- gsea(PCAmodel)[[1551]]
+gseaRes <- gseaRes[order(gseaRes$NES, decreasing = TRUE),]
+keyword_ind <- grep("neutrophil", gseaRes$Description, ignore.case = TRUE)
+```
+
+All the enriched pathways for PCcluster1551 with the minimum p-value of `r min(gseaRes$qvalues)`
+```{r echo=FALSE}
+gseaRes$Description
+```
+
+`r paste("NES-ranked, keyword-containing pathways were placed", paste(keyword_ind, collapse = "/"), "out of", nrow(gseaRes))`
+```{r echo=FALSE}
+gseaRes[keyword_ind, c("Description", "NES", "qvalues")]
+```
+
+### Annotate PC1
+```{r collapse=FALSE}
+annotatePC(1:3, val_all = val_all, PCAmodel = PCAmodel)
+annotatePC(c(1,8), val_all = val_all, PCAmodel = PCAmodel, simplify = FALSE)
+```
+
+
+
+```{r save_for_paper, fig.width=4, fig.height=4, echo=FALSE}
+plot_n.count <- LVScatter(dat_n.count, paste0("PCcluster", 1551), 
+                          y.var = "Neutrophil.Count",
+                          ylab = "Neutrophil Count")
+plot_n.estimate <- LVScatter(dat_n.estimate, paste0("PCcluster", 1551), 
+                             y.var = "Neutrophil_estimate",
+                             ylab = "MCPcounter Neutrophil Estimate")
+
+plots <- list(plot_n.count, plot_n.estimate)
+saveRDS(plots, "sle_neutrophil.rds")
+```

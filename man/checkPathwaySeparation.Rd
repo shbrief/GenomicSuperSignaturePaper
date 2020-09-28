@@ -15,16 +15,19 @@ checkPathwaySeparation(
 \arguments{
 \item{PCAmodel}{PCAGenomicSignatures object.}
 
+\item{pathway1}{A character vector. Keywords you are looking for.}
+
+\item{pathway2}{A character vector. Keywords you are looking for.}
+
 \item{cutoff_nes}{A minimum NES to be kept. Under the default (\code{NULL}), this
 filter is not used.}
 
-\item{pathway}{A character vector. Keywords you are looking for.}
-
-\item{cutoof_n}{A number of pathways to keep.Default is 5. If you don't want to
+\item{cutoff_n}{A number of pathways to keep.Default is 5. If you don't want to
 use this filter, assign it as \code{NULL}.}
 }
 \description{
-Check a pair of pathways are captured in the signature model
+Arguments \code{pathway1} and \code{pathway2} are character vectors containing
+lists of pathways that you want to separate through the model.
 }
 \note{
 https://github.com/greenelab/multi-plier/blob/master/32-explore_pathway_separation.Rmd
