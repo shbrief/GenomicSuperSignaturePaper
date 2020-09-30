@@ -2,8 +2,5 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2020-09-30T17:55Z
-urls:
-  reference: https://shbrief.github.io/PCAGenomicSignaturesPaper//reference
-  article: https://shbrief.github.io/PCAGenomicSignaturesPaper//articles
+last_built: 2020-09-30T18:22Z
 
