@@ -24,7 +24,7 @@ navbar:
       - text: Neutrophil (NARES)
         href: Results/NARES/repeat_Fig3_NARES.html
       - text: Pathway separation
-        href: Results/other/repeat_Fig5_Pathway_Separation.html
+        href: Results/others/repeat_Fig5_Pathway_Separation.html
   right:
    - icon: fa-github
      href: https://shbrief.github.io/PCAGenomicSignaturesPaper/
