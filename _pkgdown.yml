@@ -1,15 +1,5 @@
-url: https://shbrief.github.io/PCAGenomicSignaturesPaper/
-
-home:
-  title: "PCAGenomicSignaturesPaper"
-  type: inverse
-
-reference:
-  - title: References
-    contents:
-      - checkPathwaySeparation
-      - gg_color_hue
-      - LVScatter
+title: "PCAGenomicSignaturesPaper"
+type: inverse
 
 navbar:
   title: ~

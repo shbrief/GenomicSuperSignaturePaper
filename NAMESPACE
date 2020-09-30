@@ -2,5 +2,6 @@
 
 export(LVScatter)
 export(checkPathwaySeparation)
+export(getAssociatedPCclusters)
 export(gg_color_hue)
 importFrom(grDevices,hcl)

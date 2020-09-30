@@ -5,7 +5,7 @@
 #' @param cutoff_nes A minimum NES to be kept.
 #' @param cutoff_n A number of pathways to keep.
 #'
-#'
+#' @export
 getAssociatedPCclusters <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) {
 
   associated_PCcluster <- c()
