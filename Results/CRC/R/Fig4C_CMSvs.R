@@ -4,6 +4,12 @@
 # - `m2_1` and `m2_2` (names of the two model variables that form the group to be compared to CMS)
 ################################################################################
 
+## BioC or CRAN packages
+pkgs <- c("Biobase", "tidyverse", "survival", "metafor", "logistf")
+new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
+if(length(new_pkgs) != 0) BiocManager::install(new_pkgs)
+
+## Load packages
 library(Biobase)
 library(tidyverse)
 library(survival)

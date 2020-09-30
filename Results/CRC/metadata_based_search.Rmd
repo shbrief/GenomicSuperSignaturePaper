@@ -18,6 +18,17 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
 ```{r echo=FALSE}
+## Packages in GitHub
+pkgs <- c("PCAGenomicSignatures", "PCAGenomicSignaturesPaper")
+new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
+if(length(new_pkgs) != 0) devtools::install_github(paste0("shbrief/", new_pkgs))
+
+## BioC or CRAN packages
+pkgs <- c("ggplot2", "ggpubr", "dplyr", "Biobase")
+new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
+if(length(new_pkgs) != 0) BiocManager::install(new_pkgs)
+
+## Load packages
 suppressPackageStartupMessages({
   library(PCAGenomicSignatures)
   library(PCAGenomicSignaturesPaper)
@@ -30,7 +41,7 @@ suppressPackageStartupMessages({
 
 # Setup
 ## PCAmodel
-```{r message=FALSE, warning=FALSE, collapse=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
 data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
 PCAmodel
