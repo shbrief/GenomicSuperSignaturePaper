@@ -30,7 +30,7 @@ navbar:
     - text: multiPLIER
       menu:
       - text: Neutrophil (SLE-WB)
-        href: Results/NARES/repeat_Fig3_SLE-WB.html
+        href: Results/SLE-WB/repeat_Fig3_SLE-WB.html
       - text: Neutrophil (NARES)
         href: Results/NARES/repeat_Fig3_NARES.html
       - text: Pathway separation

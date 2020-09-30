@@ -27,7 +27,8 @@ git pull origin gh-pages
 cp -r docs/* .
 rm -rf docs/
 git stage *
-git reset HEAD inst/extdata/PCAmodel_C2.rds   # large data file
-git reset HEAD inst/extdata/PCAmodel_PLIERpriors.rds   # large data file
+git reset HEAD inst/extdata/*   # large data file
+git reset HEAD Results/CRC/data/*   # large data file
+git reset HEAD Results/SLE-WB/data/*   # large data file
 git commit -m "update GitHub pages"
 git push origin gh-pages
