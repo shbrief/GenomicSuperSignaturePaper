@@ -1,0 +1,40 @@
+url: https://shbrief.github.io/PCAGenomicSignaturesPaper/
+
+home:
+  title: "PCAGenomicSignaturesPaper"
+  type: inverse
+
+reference:
+  - title: References
+    contents:
+      - checkPathwaySeparation
+      - gg_color_hue
+      - LVScatter
+
+navbar:
+  title: ~
+  type: default
+  left:
+    - text: Reference
+      href: reference/index.html
+    - text: CRC
+      menu:
+      - text: Metadata based search
+        href: Results/CRC/metadata_based_search.html
+      - text: Compare PCSS vs. PCclusters
+        href: Results/CRC/PCSS_vs_RAV.html
+      - text: CRC subtype scores
+        href: Results/CRC/repeat_Fig4A.html
+      - text: CRD clinical variables
+        href: Results/CRC/repeat_Fig4C.html
+    - text: multiPLIER
+      menu:
+      - text: Neutrophil (SLE-WB)
+        href: Results/NARES/repeat_Fig3_SLE-WB.html
+      - text: Neutrophil (NARES)
+        href: Results/NARES/repeat_Fig3_NARES.html
+      - text: Pathway separation
+        href: Results/other/repeat_Fig5_Pathway_Separation.html
+  right:
+   - icon: fa-github
+     href: https://shbrief.github.io/PCAGenomicSignaturesPaper/
