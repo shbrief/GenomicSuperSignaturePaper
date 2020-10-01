@@ -83,6 +83,10 @@ source("R/Fig4C_CMSvs.R", print.eval = TRUE)
 ```{r echo=FALSE}
 x <- source("R/Fig4C_CMSvs.R")
 saveRDS(x, "outputs/boxplot_CMS_vs_834_833.rds")
+
+png("outputs/png/boxplot_CMS_vs_834_833.png", width = 600, height = 500)
+print(x)$visible
+dev.off()
 ```
 
 
@@ -120,6 +124,10 @@ source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```{r echo=FALSE}
 x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_834_833.rds")
+
+png("outputs/png/boxplot_PCSS_vs_834_833.png", width = 600, height = 500)
+print(x)$visible
+dev.off()
 ```
 
 ## PCSS vs. PCcluster834/3290

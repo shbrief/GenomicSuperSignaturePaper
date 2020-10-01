@@ -206,6 +206,10 @@ source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```{r echo=FALSE}
 x <- source("R/Fig4A_plotting.R")
 saveRDS(x, "outputs/scatter_832_188.rds")
+
+png("outputs/png/scatter_834_833.png", width = 400, height = 400)
+print(x)$visible
+dev.off()
 ```
 
 ```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%", echo=FALSE, eval=FALSE}
