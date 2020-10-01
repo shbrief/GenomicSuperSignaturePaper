@@ -22,7 +22,7 @@
 
 ## For PCAGenomicSignatures package
 Rscript --vanilla -e "pkgdown::build_site(lazy=TRUE)"
-git checkout gh-pages
+git checkout --orphan gh-pages
 git pull origin gh-pages
 cp -r docs/* .
 rm -rf docs/

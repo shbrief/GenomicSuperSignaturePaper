@@ -1,0 +1,443 @@
+---
+title: "Hierarchical Clustering with controls"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+```{r}
+suppressPackageStartupMessages({
+  library(magrittr)
+  library(factoextra)
+  library(rsvd)
+  library(grid)
+  library(SummarizedExperiment)
+  library(GenomicSignatures)
+})
+
+source('~/data2/Genomic_Super_Signature/refinebio/methods/4_Hierarchical_Clustering_func.R')
+```
+
+# Preparation
+Check if there is more negative control, I need more clusters to separate them. 
+
+## Load refine.bio datasets
+```{r}
+allZ <- readRDS("~/data2/PCAGenomicSignatureLibrary/refinebioRseq/canonicalPathways/allZ.rds")
+
+# res.dist.allZ <- factoextra::get_dist(allZ, stand = FALSE, method = "spearman")
+# summary(res.dist.allZ)
+#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# 0.1261  0.9094  0.9514  0.9363  0.9772  1.2602
+dist_med <- 0.9514
+dist_max <- 1.2602
+```
+
+## Load TCGA-COAD dataset
+```{r}
+load("~/data2/GenomicSuperSignature/data/TCGA_COAD_rseq.rda")
+TCGA_COAD_rseq <- EnrichmentBrowser::idMap(TCGA_COAD_rseq, 
+                                          org = "hsa", 
+                                          from = "ENTREZID", 
+                                          to = "SYMBOL")
+count <- assay(TCGA_COAD_rseq) %>% as.matrix %>% rmNaInf
+count <- log2(count + 1)
+
+## Split TCGA-COAD dataset into two, training and testing.
+set.seed(123)
+ind <- sample(1:ncol(count), size = 100, replace = FALSE)
+coad_training <- count[,-ind]
+coad_test <- count[,ind]
+
+## For now, I just subset `allZ` with `cg`. But for later, I need to test when to 
+## subset data with common genes. 
+cg <- intersect(rownames(allZ), rownames(coad_training))   
+allZ <- allZ[cg,]
+
+## PCA on TCGA-COAD training dataset
+coad_training <- coad_training[rownames(coad_training) %in% cg,,drop=FALSE]
+pca_res <- prcomp(t(coad_training))
+coad_loading <- pca_res$rotation[,1:20]
+colnames(coad_loading) <- paste0("TCGA-COAD.PC", 1:20)
+```
+
+## Load control dataset
+Select only PC1s from the different number of synthetic datasets (= negative controls).
+`bootstrap_PCs_rowNorm_Neg_v2.rds`
+
+```{r synData}
+bs_dir <- "~/data2/Genomic_Super_Signature/refinebio/bootstrap/data"
+neg <- readRDS(file.path(bs_dir, "bootstrap_PCs_rowNorm_Neg_v2.rds"))
+data <- lapply(neg, function(x) x$rotation) %>% Reduce(cbind,.) %>% t
+
+## Select only PC1s
+numOfTopPCs <- 20
+numOfDataset <- 50
+ind <- c()
+for (i in 1:numOfDataset) {new_ind = c(1)+numOfTopPCs*(i-1); ind = c(ind, new_ind)}
+control_dat <- data[ind,]   # 10 PCs x 11,553 genes
+```
+
+Distance matrix from Spearman Correlation
+```{r eval=FALSE, echo=FALSE, fig.width=6.3, fig.height=6}
+topPCs = 20
+numOfDataset = 10
+ind <- c()
+for (i in 1:numOfDataset) {new_ind = c(1:5)+topPCs*(i-1); ind = c(ind, new_ind)}
+
+dat <- data[ind,]
+res.dist.neg <- factoextra::get_dist(data[ind,], stand = FALSE, method = "spearman")
+ComplexHeatmap::Heatmap(as.matrix(res.dist.neg),
+                        row_names_gp = gpar(fontsize = 5),
+                        column_names_gp = gpar(fontsize = 5),
+                        column_title = "Distance Method = spearman",
+                        column_title_side = "top"
+                        , col = circlize::colorRamp2(breaks = c(0, dist_med, dist_max),
+                                        colors = c("blue", "white", "red"))
+                        )
+```
+
+```{r fig.width=6, fig.height=5.5, echo=FALSE}
+res.dist.neg <- factoextra::get_dist(control_dat, stand = FALSE, method = "spearman")
+ComplexHeatmap::Heatmap(as.matrix(res.dist.neg),
+                        row_names_gp = gpar(fontsize = 5),
+                        column_names_gp = gpar(fontsize = 5),
+                        column_title = "Distance Method = spearman",
+                        column_title_side = "top",
+                        col = circlize::colorRamp2(breaks = c(0, dist_med, dist_max), 
+                                        colors = c("blue", "white", "red")))
+```
+
+
+## Combine all training datasets
+```{r}
+all <- cbind(allZ, coad_loading) %>% cbind(., t(control_dat[,cg])) %>% t  
+
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+saveRDS(all, file.path(dat_dir, paste0("all_", numOfDataset, ".rds")))
+```
+
+
+
+# Hierarchical Clustering
+## Calculate distance
+```{r eval=FALSE}
+res.dist <- factoextra::get_dist(all, method = "spearman")
+res.hclust <- stats::hclust(res.dist, method = "ward.D")
+
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+saveRDS(res.dist, file.path(dat_dir, paste0("res_dist_",numOfDataset,".rds")))
+saveRDS(res.hclust, file.path(dat_dir, paste0("res_hclust_",numOfDataset,".rds")))
+```
+
+```{r echo=FALSE}
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+res.dist <- readRDS(file.path(dat_dir, paste0("res_dist_",numOfDataset,".rds")))
+res.hclust <- readRDS(file.path(dat_dir, paste0("res_hclust_",numOfDataset,".rds")))
+```
+
+## Find the minimum number of clusters
+I manually searched the minimum number of cluster that separates all 10 PC1s from negative control.
+
+```{r fig.width=5, fig.height=2, eval=FALSE}
+# k_range <- c(round(nrow(all)/4,0), round(nrow(all)/3,0), round(nrow(all)/2,0))
+# k_range <- seq.int(4934,4942,1)
+
+k_range <- c(round(nrow(all)/7,0), round(nrow(all)/6,0), 
+             round(nrow(all)/5,0), round(nrow(all)/4,0),
+             round(nrow(all)/3,0), round(nrow(all)/2,0))
+evals <- vector(mode = "list", length = length(k_range))
+
+for (i in seq_along(k_range)) {
+    res.hcut <- factoextra::hcut(res.dist, k = k_range[i], hc_funct = "hclust", 
+                                 hc_method = "ward.D", hc_metric = "spearman")
+    eval <- evaluateCluster(res.hcut, controlType = "Neg", hmTable = FALSE)
+    # eval_summary[[i]] <- data.frame(numOfCluster = k_range[i],
+    #                                 numSeparated = sum(eval == 1),
+    #                                 sizeOfMaxCluster = max(eval))
+    evals[[i]] <- eval
+}
+
+eval_summary <- sapply(evals, function(x) {
+  data.frame(numSeparated = sum(x == 1),
+             sizeOfMaxCluster = max(x))
+  }) %>% t %>% as.data.frame
+eval_summary$numOfCluster = k_range
+
+saveRDS(evals, file.path(dat_dir, paste0("evals_",numOfDataset,".rds")))
+saveRDS(eval_summary, file.path(dat_dir, paste0("eval_summary_",numOfDataset,".rds")))
+```
+
+## Number of Negative controls and optimum k
+```{r}
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+numOfDataset <- c(10,20,30,40,50)
+eval_res <- list()
+
+for (i in numOfDataset) {
+  fname <- paste0("eval_summary_", i)
+  res <- readRDS(file.path(dat_dir, paste0(fname, ".rds"))) %>% as.data.frame 
+  eval_res[[fname]] <- res
+}
+```
+
+```{r}
+all_summary <- list(eval)
+df <- Reduce(rbind, eval_res) 
+# df$numOfControls <- rep(numOfDataset, each = length(k_range))
+df$numOfControls <- rep(numOfDataset, each = 6) %>% as.character
+df$separtedPortion <- as.numeric(df$numSeparated)/as.numeric(df$numOfControls)
+
+# plot
+ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
+  geom_line(aes(colour = numOfControls)) + 
+  geom_point()
+```
+
+```{r}
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+numOfDataset <- c(10,20,30,40,50)
+
+for (j in seq_along(numOfDataset)) {
+  all <- readRDS(file.path(dat_dir, paste0("all_", numOfDataset[j], ".rds")))
+  res.dist <- readRDS(file.path(dat_dir, paste0("res_dist_", numOfDataset[j], ".rds")))
+  k_range <- c(round(nrow(all)/3,0), round(nrow(all)/2.75,0), 
+               round(nrow(all)/2.5,0), round(nrow(all)/2.25,0), 
+               round(nrow(all)/2,0))
+  evals <- vector(mode = "list", length = length(k_range))
+  
+  for (i in seq_along(k_range)) {
+    res.hcut <- factoextra::hcut(res.dist, k = k_range[i], hc_funct = "hclust", 
+                                 hc_method = "ward.D", hc_metric = "spearman")
+    eval <- evaluateCluster(res.hcut, controlType = "Neg", hmTable = FALSE)
+    evals[[i]] <- eval
+  }
+
+  eval_summary <- sapply(evals, function(x) {
+    data.frame(numSeparated = sum(x == 1),
+               sizeOfMaxCluster = max(x))
+    }) %>% t %>% as.data.frame
+  eval_summary$numOfCluster = k_range
+
+  saveRDS(evals, file.path(dat_dir, paste0("evals2_",numOfDataset[j],".rds")))
+  saveRDS(eval_summary, file.path(dat_dir, paste0("eval_summary2_",numOfDataset[j],".rds")))
+}
+```
+
+```{r}
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+numOfDataset <- c(10,20,30,40,50)
+eval_res <- list()
+
+for (i in numOfDataset) {
+  fname <- paste0("eval_summary2_", i)
+  res <- readRDS(file.path(dat_dir, paste0(fname, ".rds"))) %>% as.data.frame 
+  eval_res[[fname]] <- res
+}
+
+df <- Reduce(rbind, eval_res) 
+# df$numOfControls <- rep(numOfDataset, each = length(k_range))
+df$numOfControls <- rep(numOfDataset, each = 5) %>% as.character
+df$separtedPortion <- as.numeric(df$numSeparated)/as.numeric(df$numOfControls)
+
+# plot1
+ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
+  geom_line(aes(colour = numOfControls)) + 
+  geom_point() + 
+  ggtitle("Proportion of separated negative controls")
+
+# plot2
+df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
+ggplot(df, aes(x = numOfCluster, y = numUnseparated)) + 
+  geom_line(aes(colour = numOfControls)) + 
+  geom_point() + 
+  ggtitle("Number of non-separated negative controls")
+```
+
+```{r}
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+numOfDataset <- c(10,20,30,40,50)
+eval_res_all <- list()
+
+
+for (i in seq_along(numOfDataset)) {
+  fname <- paste0("eval_summary_", numOfDataset[i])
+  res <- readRDS(file.path(dat_dir, paste0(fname, ".rds"))) %>% as.data.frame 
+  res <- res[1:4,]
+  
+  fname2 <- paste0("eval_summary2_", numOfDataset[i])
+  res2 <- readRDS(file.path(dat_dir, paste0(fname2, ".rds"))) %>% as.data.frame
+  
+  res_all <- rbind(res, res2)
+  eval_res_all[[fname]] <- res_all
+}
+
+
+df <- Reduce(rbind, eval_res_all) 
+# df$numOfControls <- rep(numOfDataset, each = length(k_range))
+df$numOfControls <- rep(numOfDataset, each = 9) %>% as.character
+df$separtedPortion <- as.numeric(df$numSeparated)/as.numeric(df$numOfControls)
+
+# plot1
+ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
+  geom_line(aes(colour = numOfControls)) + 
+  geom_point() + 
+  ggtitle("Proportion of separated negative controls")
+
+# plot2
+df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
+ggplot(df, aes(x = numOfCluster, y = numUnseparated)) + 
+  geom_line(aes(colour = numOfControls)) + 
+  geom_point() + 
+  ggtitle("Number of non-separated negative controls")
+```
+
+
+```{r}
+dat_dir <- "~/data2/Genomic_Super_Signature/refinebio/methods/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl"
+all <- readRDS(file.path(dat_dir, "all_10.rds"))
+res.dist <- readRDS(file.path(dat_dir, "res_dist_10.rds"))
+
+# cut the tree
+res.hcut <- factoextra::hcut(res.dist, k = round(nrow(all)/2.25,0), hc_funct = "hclust", 
+                             hc_method = "ward.D", hc_metric = "spearman")
+
+max(table(res.hcut$cluster))   # 28
+sum(table(res.hcut$cluster) == 1)   # 2331
+```
+
+
+```{r find_k_function, echo=FALSE, eval=FALSE}
+## Work on this if I need an automated search option for k.
+numHCl <- function(numPCs, min, max) {
+  
+    k_range <- seq.int(min, max, round((max-min)*0.2, 0))
+    
+    for (i in seq_along(k_range)) {
+        res.hcut <- factoextra::hcut(res.dist, k = i, hc_funct = "hclust", 
+                                 hc_method = "ward.D", hc_metric = "spearman")
+        eval <- evaluateCluster(res.hcut, controlType = "Neg", heatmap = FALSE)
+        if (length(eval) == 10) {return(i); break}
+    }
+    
+    k_range2 <- seq.int()
+}
+```
+
+
+# Build avgLoading
+```{r eval=FALSE}
+k <- 4935
+res.hcut <- factoextra::hcut(res.dist, k = k, hc_funct = "hclust", hc_method = "ward.D", hc_metric = "spearman")
+
+source('~/data2/GenomicSuperSignature/R/buildAvgLoading_temp.R')
+PCclusters <- buildAvgLoading(t(all), clustering = FALSE, cluster = res.hcut$cluster, iter.max = 100)
+```
+
+```{r echo=FALSE}
+PCclusters <- readRDS(file.path(dat_dir, "PCclusters.rds"))
+```
+
+
+# Validation
+## Multiple TCGA datasets
+```{r validate_multiple_datasets}
+# load validation datasets
+load("~/data2/GenomicSuperSignature/data/TCGA_validationDatasets.rda")
+dataset = TCGA_validationDatasets
+
+# color setup
+colfunc <- colorRampPalette(c("white", "red"))
+n <- 20
+col <- colfunc(n)[c(1,2,n)]
+
+val_all <- validate(dataset[2:5], PCclusters$avgLoading)  # remove COAD from validation
+cutoff <- 0.7
+k <- sapply(colnames(val_all), function(x) {sum(val_all[,x] > cutoff) != 0})
+validated_ind <- which(k=="TRUE")
+heatmapTable(val_all[, names(k)[validated_ind], drop=FALSE], 
+             column_title = paste0("PCAmodel (cutoff ", cutoff, ")"), 
+             # breaks = c(0, 0.3, 0.6),
+             colors = col)
+```
+
+### GSEA
+PCcluster_263 has very strong correlation with TCGA-BRCA dataset. Check whether 
+this avgLoading vector has BRCA-specific signature. (`GSEA/GSEA_on_avgLoading.Rmd`)
+
+## TCGA-COAD test dataset
+```{r fig.width=3.5, fig.height=2}
+val_test <- validate(coad_test, PCclusters$avgLoading)
+
+cutoff <- 0.66
+k = sapply(colnames(val_test), function(x) {sum(val_test[,x] > cutoff) != 0})
+validated_ind2 <- which(k=="TRUE")
+heatmapTable(val_test[, names(k)[validated_ind2], drop=FALSE], 
+             column_title = paste0("PCAmodel (cutoff ", cutoff, ")"), 
+             # breaks = c(0, 0.3, 0.6),
+             colors = col)
+```
+
+```{r}
+sapply(validated_ind2, function(x) {which(PCclusters$cluster == x) %>% names})
+```
+
+## GSEA
+```{r}
+ind <- validated_ind2[4]
+al <- PCclusters$avgLoading[, ind]
+
+names(al) <- AnnotationDbi::mapIds(org.Hs.eg.db, keys=names(al), column='ENTREZID', keytype='SYMBOL')
+al <- sort(al, decreasing = TRUE)
+
+## Formating
+geneList <- al
+gene <- names(geneList)[abs(geneList) > mean(abs(geneList))]
+keyword <- "colon"
+```
+
+### WikiPathways analysis
+```{r}
+library(clusterProfiler)
+wpgmtfile <- "~/data2/Genomic_Super_Signature/GSEA/data/wikipathways-20200510-gmt-Homo_sapiens.gmt"
+wp2gene <- read.gmt(wpgmtfile)   # 26,412 x 5
+wp2gene <- wp2gene %>% tidyr::separate(term, c("name","version","wpid","org"), "%") 
+# cg <- intersect(wp2gene$gene, gene)
+# wp2gene <- wp2gene[which(wp2gene$gene %in% cg),]
+wpid2gene <- wp2gene %>% dplyr::select(wpid, gene) #TERM2GENE
+wpid2name <- wp2gene %>% dplyr::select(wpid, name) #TERM2NAME
+
+ewp <- enricher(gene, TERM2GENE = wpid2gene, TERM2NAME = wpid2name)
+head(ewp, 20)
+
+ewp2 <- GSEA(geneList, TERM2GENE = wpid2gene, TERM2NAME = wpid2name, verbose = FALSE)
+head(ewp2, 20)
+```
+
+### Disease Analysis
+```{r}
+library(DOSE)
+x <- enrichDO(gene          = gene,
+              ont           = "DO",
+              pvalueCutoff  = 0.01,
+              pAdjustMethod = "BH",
+              universe      = names(geneList),
+              minGSSize     = 5,
+              maxGSSize     = 500,
+              qvalueCutoff  = 0.01,
+              readable      = FALSE)
+head(x, 10)
+```
+
+```{r}
+x[order(x$Count, decreasing = TRUE),][1:20, 1:5]
+```
+
