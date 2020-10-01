@@ -29,20 +29,20 @@ In this site, we are presenting the application notes of PCAGenomicSignatures.
 #### Continuous Subtype Score
 Detail on this reproducing process is described in [CRC/CRC subtype score](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4A.html).
 
-![Figure 4A from CRC paper](inst/images/CRC_Fig4A.png){width=8cm height=8cm}
-![Reproduced with RAVs](Results/CRC/outputs/png/scatter_834_833.png){width=8cm height=8cm}
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/CRC_Fig4A.png" width="300" height="300">
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/scatter_834_833.png" width="300" height="300">
 
 #### Clinical Variables
 Detail on this reproducing process is described in [CRC/CRC clinical variables](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4C.html).
 
-![Figure 4C from CRC paper](inst/images/CRC_Fig4C.png){width=12cm height=8cm}   
-![Reproduced with RAVs](Results/CRC/outputs/png/boxplot_CMS_vs_834_833.png){width=12cm height=8cm}
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/CRC_Fig4C.png" width="500" height="300">
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300">
 
 We directly compared the performanace between PCSS and RAV. Except the tumor location 
 (the last column), RAV834/833-based model out-performed PCSS1/2-based model relative
 to the combined model.
 
-![PCSS vs. RAV](Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png){width=12cm height=8cm}
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300">
 
 ### multiPLIER paper
 
