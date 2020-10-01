@@ -15,7 +15,7 @@ navbar:
         href: Results/CRC/PCSS_vs_RAV.html
       - text: CRC subtype scores
         href: Results/CRC/repeat_Fig4A.html
-      - text: CRD clinical variables
+      - text: CRC clinical variables
         href: Results/CRC/repeat_Fig4C.html
     - text: multiPLIER
       menu:

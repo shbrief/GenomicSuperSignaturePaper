@@ -24,7 +24,7 @@
 Rscript --vanilla -e "pkgdown::build_site(lazy=TRUE)"
 git checkout --orphan gh-pages
 git pull origin gh-pages
-cp -r docs/* .
+mv docs/* .
 rm -rf docs/
 git stage *
 git reset HEAD inst/extdata/*   # large data file
