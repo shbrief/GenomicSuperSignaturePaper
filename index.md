@@ -36,7 +36,7 @@ Detail on this reproducing process is described in [CRC/CRC subtype score](https
 Detail on this reproducing process is described in [CRC/CRC clinical variables](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4C.html).
 
 <img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/CRC_Fig4C.png" width="500" height="300">
-<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300">
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/boxplot_CMS_vs_834_833.png" width="500" height="300">
 
 We directly compared the performanace between PCSS and RAV. Except the tumor location 
 (the last column), RAV834/833-based model out-performed PCSS1/2-based model relative
