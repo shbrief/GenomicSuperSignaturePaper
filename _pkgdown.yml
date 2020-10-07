@@ -9,10 +9,10 @@ navbar:
       href: reference/index.html
     - text: CRC
       menu:
+      - text: RAVs similar to PCSS1/2
+        href: Results/CRC/PCSS_vs_RAV.html
       - text: Metadata based search
         href: Results/CRC/metadata_based_search.html
-      - text: Compare PCSS vs. PCclusters
-        href: Results/CRC/PCSS_vs_RAV.html
       - text: CRC subtype scores
         href: Results/CRC/repeat_Fig4A.html
       - text: CRC clinical variables
