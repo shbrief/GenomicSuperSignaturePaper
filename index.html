@@ -48,10 +48,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="Results/CRC/metadata_based_search.html">Metadata based search</a>
+      <a href="Results/CRC/PCSS_vs_RAV.html">RAVs similar to PCSS1/2</a>
     </li>
     <li>
-      <a href="Results/CRC/PCSS_vs_RAV.html">Compare PCSS vs. PCclusters</a>
+      <a href="Results/CRC/metadata_based_search.html">Metadata based search</a>
     </li>
     <li>
       <a href="Results/CRC/repeat_Fig4A.html">CRC subtype scores</a>
@@ -121,10 +121,12 @@
 <div id="crc-paper" class="section level3">
 <h3 class="hasAnchor">
 <a href="#crc-paper" class="anchor"></a>CRC paper</h3>
+<p>One of the benchmarking papers is <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">Continuity of transcriptomes among colorectal cancer subtypes based on meta-analysis</a>.</p>
 <div id="continuous-subtype-score" class="section level4">
 <h4 class="hasAnchor">
 <a href="#continuous-subtype-score" class="anchor"></a>Continuous Subtype Score</h4>
-<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4A.html">CRC/CRC subtype score</a>.</p>
+<p>Left panel is Figure 4A from CRC paper and right panel is the CRC subtype separation by PCAGenomicSignatures. CRC paper built the continuous score model based on the 8 colorectal cancer specific microarray datasets with graph-based clustering method. However, PCAGenomicSignatures was generated from 536 heterogeneous, RNA sequencing datasets and used hierarchical clustering. Despite of this major differences in model building process, PCAGenomicSignatures could reproduce the CRC paper’s result.</p>
+<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4A.html">CRC/CRC subtype score</a> tab.</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/CRC_Fig4A.png" width="300" height="300"><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/scatter_834_833.png" width="300" height="300"></p>
 </div>
 <div id="clinical-variables" class="section level4">
@@ -139,6 +141,17 @@
 <div id="multiplier-paper" class="section level3">
 <h3 class="hasAnchor">
 <a href="#multiplier-paper" class="anchor"></a>multiPLIER paper</h3>
+<p>The other benchmarking paper is <a href="https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30119-X?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121930119X%3Fshowall%3Dtrue">MultiPLIER: A Transfer Learning Framework for Transcriptomics Reveals Systemic Features of Rare Disease</a>.</p>
+<div id="neutrophil-countsestimates" class="section level4">
+<h4 class="hasAnchor">
+<a href="#neutrophil-countsestimates" class="anchor"></a>Neutrophil Counts/Estimates</h4>
+<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200"></p>
+<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_count.png" width="250" height="250"><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_estimate.png" width="250" height="250"><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/NARES/outputs/png/nares_neutrophil.png" width="250" height="250"></p>
+</div>
+<div id="cell-type-discovery" class="section level4">
+<h4 class="hasAnchor">
+<a href="#cell-type-discovery" class="anchor"></a>Cell Type Discovery</h4>
+</div>
 </div>
 </div>
 
