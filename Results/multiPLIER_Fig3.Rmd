@@ -1,0 +1,29 @@
+---
+title: "Reproduce multiPLIER Figure 3"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Quickstart}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    number_sections: no
+    toc: yes
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>", collapse = TRUE, message = FALSE, warning = FALSE
+)
+```
+
+```{r}
+gridExtra::grid.arrange(grobs = plots, cols = 3)
+```
+

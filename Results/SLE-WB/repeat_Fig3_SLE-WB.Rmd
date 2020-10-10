@@ -267,10 +267,12 @@ We recovered PCcluster1551 as a neutrophil-associated signature through validati
 GSEA, metadata-association. 
 
 ### Neutrophil Count
-```{r fig.height=4, fig.width=4}
+```{r fig.width=4, fig.height=4.5}
 count_plot <- LVScatter(dat_n.count, paste0("PCcluster", 1551), 
                         y.var = "Neutrophil.Count",
-                        ylab = "Neutrophil Count")
+                        ylab = "Neutrophil Count",
+                        title = "PCAmodel",
+                        subtitle = "SLE WB Compendium")
 count_plot
 
 saveRDS(count_plot, "outputs/neutrophil_count.rds")
@@ -280,10 +282,12 @@ dev.off()
 ```
 
 ### Neutrophil Estimate
-```{r fig.height=4, fig.width=4}
+```{r fig.width=4, fig.height=4.5}
 estimate_plot <- LVScatter(dat_n.estimate, paste0("PCcluster", 1551), 
                            y.var = "Neutrophil_estimate",
-                           ylab = "MCPcounter neutrophil estimate")
+                           ylab = "MCPcounter neutrophil estimate",
+                           title = "PCAmodel",
+                           subtitle = "SLE WB MCPcounter")
 estimate_plot
 
 saveRDS(estimate_plot, "outputs/neutrophil_estimate.rds")

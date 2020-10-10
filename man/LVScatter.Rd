@@ -4,7 +4,14 @@
 \alias{LVScatter}
 \title{Draw scatter plot with R-squared value}
 \usage{
-LVScatter(dat, lv, y.var = "Neutrophil.Count", ylab = "")
+LVScatter(
+  dat,
+  lv,
+  y.var = "Neutrophil.Count",
+  ylab = "",
+  title = NULL,
+  subtitle = NULL
+)
 }
 \arguments{
 \item{dat}{A data frame containing the summary of scores and metadata.}
@@ -14,6 +21,10 @@ LVScatter(dat, lv, y.var = "Neutrophil.Count", ylab = "")
 \item{y.var}{A name of y-axis.}
 
 \item{ylab}{A label for y-axis.}
+
+\item{title}{The text for the title.}
+
+\item{subtitle}{The text for the subtitle for the plot which will be displayed below the title.}
 }
 \value{
 A scatter plot.

@@ -58,10 +58,21 @@ to the combined model.
 The other benchmarking paper is [MultiPLIER: A Transfer Learning Framework for Transcriptomics Reveals Systemic Features of Rare Disease](https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30119-X?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121930119X%3Fshowall%3Dtrue). 
 
 #### Neutrophil Counts/Estimates
+The top panel is Figure 3 from multiPLIER paper and the bottom panel is the benchmark
+example by PCAGenomicSignatures. In multiPLIER paper, latent variables (LVs) were
+built from recount2 datasets using [Pathway-level information extractor (PLIER)](https://www.nature.com/articles/s41592-019-0456-1) method. Despite of the 
+major differences in model building process, PCAGenomicSignatures could reproduce 
+the multiPLIER paper's result.
+
+Detail on this reproducing process is described in [multiPLIER/Neutrophil (SLE-WB)](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/SLE-WB/repeat_Fig3_SLE-WB.html) 
+and [multiPLIER/Neutrophil (NARES)](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/NARES/repeat_Fig3_NARES.html) tabs.
+
 <img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200">
 
-<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_count.png" width="250" height="250">
-<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_estimate.png" width="250" height="250">
-<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/NARES/outputs/png/nares_neutrophil.png" width="250" height="250">
+
+
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_count.png" width="200" height="200">
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_estimate.png" width="200" height="200">
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/NARES/outputs/png/nares_neutrophil.png" width="200" height="200">
 
 #### Cell Type Discovery
