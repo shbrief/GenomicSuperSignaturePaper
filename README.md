@@ -11,13 +11,11 @@ with MSigDB C2: curated gene sets. Run the below snippet from your terminal.
 
 ```
 git clone https://github.com/shbrief/PCAGenomicSignaturesPaper.git
+cd PCAGenomicSignaturesPaper/inst/extdata
 
-R -e 'devtools::install_github("shbrief/PCAGenomicSignatures");
-PCAGenomicSignatures::getModel("C2", dir = "PCAGenomicSignaturesPaper/inst/extdata")'
+wget https://storage.googleapis.com/pca_genomic_signatures/PCAmodel_C2.rds
+wget https://storage.googleapis.com/pca_genomic_signatures/PCAmodel_PLIERpriors.rds
 
 cd PCAGenomicSignaturesPaper
-
 R -e 'devtools::build();devtools::install()'
 ```
-
-PCAGenomicSignatures models are ~500MB, so it will take a little time.

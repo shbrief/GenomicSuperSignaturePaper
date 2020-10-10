@@ -266,6 +266,32 @@ gridExtra::grid.arrange(grobs = plots, cols = 3)
 We recovered PCcluster1551 as a neutrophil-associated signature through validation,
 GSEA, metadata-association. 
 
+### Neutrophil Count
+```{r fig.height=4, fig.width=4}
+count_plot <- LVScatter(dat_n.count, paste0("PCcluster", 1551), 
+                        y.var = "Neutrophil.Count",
+                        ylab = "Neutrophil Count")
+count_plot
+
+saveRDS(count_plot, "outputs/neutrophil_count.rds")
+png("outputs/png/neutrophil_count.png", width = 400, height = 400)
+count_plot
+dev.off()
+```
+
+### Neutrophil Estimate
+```{r fig.height=4, fig.width=4}
+estimate_plot <- LVScatter(dat_n.estimate, paste0("PCcluster", 1551), 
+                           y.var = "Neutrophil_estimate",
+                           ylab = "MCPcounter neutrophil estimate")
+estimate_plot
+
+saveRDS(estimate_plot, "outputs/neutrophil_estimate.rds")
+png("outputs/png/neutrophil_estimate.png", width = 400, height = 400)
+estimate_plot
+dev.off()
+```
+
 ### Validation
 ```{r out.width="40%", out.height="40%"}
 heatmapTable(val_all, 1551)
@@ -296,18 +322,4 @@ gseaRes[keyword_ind, c("Description", "NES", "qvalues")]
 ```{r collapse=FALSE}
 annotatePC(1:3, val_all = val_all, PCAmodel = PCAmodel)
 annotatePC(c(1,8), val_all = val_all, PCAmodel = PCAmodel, simplify = FALSE)
-```
-
-
-
-```{r save_for_paper, fig.width=4, fig.height=4, echo=FALSE}
-plot_n.count <- LVScatter(dat_n.count, paste0("PCcluster", 1551), 
-                          y.var = "Neutrophil.Count",
-                          ylab = "Neutrophil Count")
-plot_n.estimate <- LVScatter(dat_n.estimate, paste0("PCcluster", 1551), 
-                             y.var = "Neutrophil_estimate",
-                             ylab = "MCPcounter Neutrophil Estimate")
-
-plots <- list(plot_n.count, plot_n.estimate)
-saveRDS(plots, "sle_neutrophil.rds")
 ```

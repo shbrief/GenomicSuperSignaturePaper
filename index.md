@@ -26,8 +26,18 @@ to be submitted to Bioconductor.
 In this site, we are presenting the application notes of PCAGenomicSignatures.
 
 ### CRC paper
+One of the benchmarking papers is [Continuity of transcriptomes among colorectal cancer subtypes based on meta-analysis](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4). 
+
 #### Continuous Subtype Score
-Detail on this reproducing process is described in [CRC/CRC subtype score](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4A.html).
+Left panel is Figure 4A from CRC paper and right panel is the CRC subtype separation
+by PCAGenomicSignatures. CRC paper built the continuous score model based on the 8 
+colorectal cancer specific microarray datasets with graph-based clustering method. 
+However, PCAGenomicSignatures was generated from 536 heterogeneous, RNA sequencing 
+datasets and used hierarchical clustering. Despite of this major differences in 
+model building process, PCAGenomicSignatures could reproduce the CRC paper's result.
+
+Detail on this reproducing process is described in [CRC/CRC subtype score](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4A.html) 
+tab. 
 
 <img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/CRC_Fig4A.png" width="300" height="300">
 <img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/scatter_834_833.png" width="300" height="300">
@@ -45,4 +55,13 @@ to the combined model.
 <img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300">
 
 ### multiPLIER paper
+The other benchmarking paper is [MultiPLIER: A Transfer Learning Framework for Transcriptomics Reveals Systemic Features of Rare Disease](https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30119-X?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121930119X%3Fshowall%3Dtrue). 
 
+#### Neutrophil Counts/Estimates
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200">
+
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_count.png" width="250" height="250">
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_estimate.png" width="250" height="250">
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/NARES/outputs/png/nares_neutrophil.png" width="250" height="250">
+
+#### Cell Type Discovery

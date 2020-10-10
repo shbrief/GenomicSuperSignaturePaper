@@ -228,5 +228,9 @@ gridExtra::grid.arrange(grobs = plots, cols = 2)
 plot <- LVScatter(dat2, paste0("PCcluster", 1551), 
                   y.var = "MCP_estimate",
                   ylab = "MCPcounter Neutrophil Estimate")
-saveRDS(plot, "nares_neutrophil.rds")
+
+saveRDS(plot, "outputs/nares_neutrophil.rds")
+png("outputs/png/nares_neutrophil.png", width = 400, height = 400)
+plot
+dev.off()
 ```
