@@ -51,3 +51,4 @@ Results/CRC/data/eSets_new/*
 inst/extdata/*
 vignettes/SLE-WB/data/*
 Results/SLE-WB/data/*
+Results/SLE-WB/outputs/neutrophil_estimate.rds
