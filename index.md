@@ -67,12 +67,14 @@ the multiPLIER paper's result.
 Detail on this reproducing process is described in [multiPLIER/Neutrophil (SLE-WB)](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/SLE-WB/repeat_Fig3_SLE-WB.html) 
 and [multiPLIER/Neutrophil (NARES)](https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/NARES/repeat_Fig3_NARES.html) tabs.
 
+Fig 3 from multiPLIER paper: neutrophil-associated LV, LV603 shows the positive 
+correlation with neutrophil counts/estimates of two different datasets, SLE WB 
+and NARES.
+
 <img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200">
 
+We used 
+<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/multiPLIER_Fig3.png" width="600" height="200">
 
-
-<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_count.png" width="200" height="200">
-<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_estimate.png" width="200" height="200">
-<img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/NARES/outputs/png/nares_neutrophil.png" width="200" height="200">
 
 #### Cell Type Discovery

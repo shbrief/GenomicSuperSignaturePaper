@@ -23,7 +23,32 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, echo=FALSE, results="hide", warning=FALSE, eval=FALSE}
+if (!"pathwork" %in% installed.packages())
+    devtools::install_github("thomasp85/patchwork")
+```
+
 ```{r}
-gridExtra::grid.arrange(grobs = plots, cols = 3)
+suppressPackageStartupMessages({
+  library(patchwork)
+  library(pdftools)
+})
+```
+
+```{r}
+plot1 <- readRDS("SLE-WB/outputs/neutrophil_count.rds")
+plot2 <- readRDS("SLE-WB/outputs/neutrophil_estimate.rds")
+plot3 <- readRDS("NARES/outputs/nares_neutrophil.rds")
+```
+
+```{r fig.width=11, fig.height=4.3}
+plot_all <- plot1 | plot2 | plot3
+plot_all
+```
+
+```{r}
+png("multiPLIER_Fig3.png", width = 1100, height = 430)
+plot_all
+dev.off()
 ```
 
