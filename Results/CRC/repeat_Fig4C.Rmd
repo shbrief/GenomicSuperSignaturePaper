@@ -167,3 +167,7 @@ source("R/Fig4C_contScores.R", print.eval = TRUE)
 x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/PCSS_vs_834_596.rds")
 ```
+
+```{r}
+sessionInfo()
+```

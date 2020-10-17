@@ -59,7 +59,8 @@ summary(res_dist)
 ```
 
 We tested the distance matrix with 50 'negative controls', generated from the 
-`neg_controls.R` script above. Distance ranges roughly between 1st quarter and 3rd quater. 
+`neg_controls.R` script above. Distance ranges roughly between 1st quarter and 3rd 
+quarter of training datasets' distance distribution. 
 
 ```{r collapse=FALSE}
 dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
@@ -122,6 +123,14 @@ dev.off()
 
 
 # Optimum k for different numbers of controls
+Next we combined top 20 PCs of training datasets and PC1s from varying numbers of 
+negative controls (10, 20, 30, 40, and 50) and performed hierarchical clustering 
+with different numbers of clusters. Here, we plotted the proportion of separated 
+negative controls against the number of clusters.
+
+Number of clusters for each combined datastes were rounds of the number of PCs 
+divided by 9 different numbers (7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).
+
 ```{r}
 dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
 numOfDatasets <- c(10, 20, 30, 40, 50)
@@ -172,6 +181,8 @@ plot2
 dev.off()
 ```
 
-
+```{r}
+sessionInfo()
+```
 
 

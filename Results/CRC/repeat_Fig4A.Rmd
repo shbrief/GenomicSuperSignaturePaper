@@ -258,6 +258,9 @@ annotatePCcluster(PCAmodel, sampleScore1)
 annotatePCcluster(PCAmodel, sampleScore2)
 ```
 
+```{r}
+sessionInfo()
+```
 
 
 

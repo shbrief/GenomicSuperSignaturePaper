@@ -299,3 +299,8 @@ stage.t.test <- stage.t.test[order(stage.t.test)]
 # head(names(stage.t.test))
 head(stage.t.test)
 ```
+
+```{r}
+sessionInfo()
+```
+

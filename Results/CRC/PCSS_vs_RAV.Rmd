@@ -58,3 +58,8 @@ loading_cor[2, max2, drop = FALSE]
 annotatePCcluster(PCAmodel, 1575)
 annotatePCcluster(PCAmodel, 834)
 ```
+
+```{r}
+sessionInfo()
+```
+

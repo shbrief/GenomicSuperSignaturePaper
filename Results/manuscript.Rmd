@@ -100,3 +100,6 @@ x <- readRDS("NARES/nares_neutrophil.rds")
 x
 ```
 
+```{r}
+sessionInfo()
+```

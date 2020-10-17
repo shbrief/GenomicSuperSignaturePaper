@@ -99,3 +99,6 @@ checkPathwaySeparation(PCAmodel, g1.set, g2.set,
 checkPathwaySeparation(PCAmodel, g1.set, g2.set, cutoff_n = 1)
 ```
 
+```{r}
+sessionInfo()
+```

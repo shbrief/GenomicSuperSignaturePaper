@@ -327,3 +327,7 @@ gseaRes[keyword_ind, c("Description", "NES", "qvalues")]
 annotatePC(1:3, val_all = val_all, PCAmodel = PCAmodel)
 annotatePC(c(1,8), val_all = val_all, PCAmodel = PCAmodel, simplify = FALSE)
 ```
+
+```{r}
+sessionInfo()
+```

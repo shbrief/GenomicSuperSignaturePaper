@@ -246,7 +246,9 @@ studyMeta$PCAmodel_536 <- FALSE
 studyMeta$PCAmodel_536[ind_536] <- TRUE 
 ```
 
-
+```{r}
+sessionInfo()
+```
 
 
 ```{r fig.width=6, fig.height=4.5, echo=FALSE, eval=FALSE}
