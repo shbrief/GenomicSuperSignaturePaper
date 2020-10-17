@@ -99,25 +99,10 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-<div id="pcagenomicsignatures" class="section level2">
+<div id="pcagenomicsignaturespaper" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pcagenomicsignatures" class="anchor"></a>PCAGenomicSignatures</h2>
-<div id="purpose" class="section level3">
-<h3 class="hasAnchor">
-<a href="#purpose" class="anchor"></a>PURPOSE</h3>
-<p>Thousands of RNA sequencing profiles have been deposited in public archives, yet remain unused for the interpretation of most newly performed experiments. Methods for leveraging these public resources have focused on the interpretation of existing data, or analysis of new datasets independently, but do not facilitate direct comparison of new to existing experiments. The interpretability of common unsupervised analysis methods such as Principal Component Analysis would be enhanced by efficient comparison of the results to previously published datasets.</p>
-</div>
-<div id="methods" class="section level3">
-<h3 class="hasAnchor">
-<a href="#methods" class="anchor"></a>METHODS</h3>
-<p>To help identify replicable and interpretable axes of variation in any given gene expression dataset, we performed principal component analysis (PCA) on 536 studies comprising 44,890 RNA sequencing profiles. Sufficiently similar loading vectors, when compared across studies, were combined through simple averaging. We annotated the collection of resulting average loading vectors, which we call Replicable Axes of Variation (RAV), with details from the originating studies and gene set enrichment analysis. Functions to match PCA of new datasets to RAVs from existing studies, extract interpretable annotations, and provide intuitive visualization, are implemented as the <a href="https://shbrief.github.io/PCAGenomicSignatures/">PCAGenomicSignatures</a> R package, to be submitted to Bioconductor.</p>
-</div>
-</div>
-<div id="benchmark-examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#benchmark-examples" class="anchor"></a>Benchmark Examples</h2>
-<p>In this site, we are presenting the application notes of PCAGenomicSignatures.</p>
+<a href="#pcagenomicsignaturespaper" class="anchor"></a>PCAGenomicSignaturesPaper</h2>
+<p>In this site, we are presenting the usecases and benchmarking examples of <a href="https://shbrief.github.io/PCAGenomicSignatures/">PCAGenomicSignatures</a> R package.</p>
 <div id="crc-paper" class="section level3">
 <h3 class="hasAnchor">
 <a href="#crc-paper" class="anchor"></a>CRC paper</h3>
@@ -145,8 +130,12 @@
 <div id="neutrophil-countsestimates" class="section level4">
 <h4 class="hasAnchor">
 <a href="#neutrophil-countsestimates" class="anchor"></a>Neutrophil Counts/Estimates</h4>
+<p>The top panel is Figure 3 from multiPLIER paper and the bottom panel is the benchmark example by PCAGenomicSignatures. In multiPLIER paper, latent variables (LVs) were built from recount2 datasets using <a href="https://www.nature.com/articles/s41592-019-0456-1">Pathway-level information extractor (PLIER)</a> method. Despite of the major differences in model building process, PCAGenomicSignatures could reproduce the multiPLIER paper’s result.</p>
+<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/SLE-WB/repeat_Fig3_SLE-WB.html">multiPLIER/Neutrophil (SLE-WB)</a> and <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/NARES/repeat_Fig3_NARES.html">multiPLIER/Neutrophil (NARES)</a> tabs.</p>
+<p>Fig 3 from multiPLIER paper: neutrophil-associated LV, LV603 shows the positive correlation with neutrophil counts/estimates of two different datasets, SLE WB and NARES.</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200"></p>
-<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_count.png" width="250" height="250"><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/SLE-WB/outputs/png/neutrophil_estimate.png" width="250" height="250"><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/NARES/outputs/png/nares_neutrophil.png" width="250" height="250"></p>
+<p>We used the same datasets, SLE-WB and NARES, to find the neutrophil-associated RAV.</p>
+<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/multiPLIER_Fig3.png" width="600" height="200"></p>
 </div>
 <div id="cell-type-discovery" class="section level4">
 <h4 class="hasAnchor">
@@ -154,7 +143,6 @@
 </div>
 </div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
