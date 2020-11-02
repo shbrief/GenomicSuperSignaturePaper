@@ -16,7 +16,7 @@ LVScatter(
 \arguments{
 \item{dat}{A data frame containing the summary of scores and metadata.}
 
-\item{lv}{A PCcluster name for x-axis.}
+\item{lv}{A RAV name for x-axis.}
 
 \item{y.var}{A name of y-axis.}
 
