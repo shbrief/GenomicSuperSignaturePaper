@@ -1,5 +1,5 @@
 ## PCAGenomicSignaturesPaper
-In this site, we are presenting the usecases and benchmarking examples of [PCAGenomicSignatures](https://shbrief.github.io/PCAGenomicSignatures/) R package.
+Here, we are presenting the usecases and benchmarking examples of [PCAGenomicSignatures](https://shbrief.github.io/PCAGenomicSignatures/) R package.
 
 ### CRC paper
 One of the benchmarking papers is [Continuity of transcriptomes among colorectal cancer subtypes based on meta-analysis](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4). 

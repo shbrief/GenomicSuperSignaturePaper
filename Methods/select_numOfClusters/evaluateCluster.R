@@ -31,7 +31,7 @@ evaluateCluster <- function(res, controlType, hmTable = TRUE,
 
     cl <- list()
     for (i in 1:NumOfCl) {cl[[i]] <- ClNames[ClNum == i]}
-    names(cl) <- paste0("PCcluster_", 1:NumOfCl)
+    names(cl) <- paste0("RAV_", 1:NumOfCl)
 
     if (isTRUE(onlyPC1)) {
         PC1s <- paste0(controlType, "_", c(1:NumOfControl), ".PC1")

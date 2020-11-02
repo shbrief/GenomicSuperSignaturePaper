@@ -4,8 +4,8 @@
 ################################################################################
 
 df.results <- readRDS("data/SummaryForFig4.rds")
-ind1 <- which(colnames(df.results) == paste0("PCcluster", sampleScore1))
-ind2 <- which(colnames(df.results) == paste0("PCcluster", sampleScore2))
+ind1 <- which(colnames(df.results) == paste0("RAV", sampleScore1))
+ind2 <- which(colnames(df.results) == paste0("RAV", sampleScore2))
 colnames(df.results)[ind1] <- "sampleScore1"
 colnames(df.results)[ind2] <- "sampleScore2"
 
@@ -41,7 +41,7 @@ pA <- ggplot(df.results,
         panel.grid.minor = element_blank()) +
   geom_hline(yintercept = 0, linetype = 'dashed') +
   geom_vline(xintercept = 0, linetype = 'dashed') +
-  xlab(paste0("PCcluster", sampleScore1)) + ylab(paste0("PCcuster", sampleScore2)) +
+  xlab(paste0("RAV", sampleScore1)) + ylab(paste0("RAV", sampleScore2)) +
   coord_cartesian(xlim = c(-2, 2.5)) +
   theme(legend.direction = "horizontal", legend.justification=c(0,1), legend.position=c(0,1),
         legend.background = element_rect(colour='black'))
@@ -52,4 +52,4 @@ print(pA)
 # ordered.df.results <- df.results[order(df.results$mean_sampleScore1),]
 # plot(ordered.df.results$mean_sampleScore1,
 #      col = ordered.df.results$cms_label_SSP,
-#      xlab = "", ylab = paste0("Score from PCcluster", sampleScore1))
+#      xlab = "", ylab = paste0("Score from RAV", sampleScore1))

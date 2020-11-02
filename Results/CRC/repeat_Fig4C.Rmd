@@ -53,14 +53,14 @@ saveRDS(x, "outputs/boxplot_CMS_vs_PCSS.rds")
 ```
 
 
-## CMS vs. PCcluster1575/834
-PCcluster1575/834 are the most similar PCclsuters to PCSS1/2, respectively, based 
+## CMS vs. RAV1575/834
+RAV1575/834 are the most similar PCclsuters to PCSS1/2, respectively, based 
 on Pearson correlation.
 
 ```{r fig.width=5, fig.height=3.5}
 m2_name <- "RAV"
-m2_1 <- "PCcluster1575"
-m2_2 <- "PCcluster834"
+m2_1 <- "RAV1575"
+m2_2 <- "RAV834"
 source("R/Fig4C_CMSvs.R", print.eval = TRUE)
 ```
 
@@ -69,14 +69,14 @@ x <- source("R/Fig4C_CMSvs.R")
 saveRDS(x, "outputs/boxplot_CMS_vs_1575_834.rds")
 ```
 
-## CMS vs. PCcluster834/833
-PCcluster834/833 have the largest r-squared score when we compared the samples
+## CMS vs. RAV834/833
+RAV834/833 have the largest r-squared score when we compared the samples
 scores against the metadata, CMS.
 
 ```{r fig.width=5, fig.height=3.5}
 m2_name <- "RAV"
-m2_1 <- "PCcluster834"
-m2_2 <- "PCcluster833"
+m2_1 <- "RAV834"
+m2_2 <- "RAV833"
 source("R/Fig4C_CMSvs.R", print.eval = TRUE)
 ```
 
@@ -92,14 +92,14 @@ dev.off()
 
 
 # Compare continuous scores
-## PCSS vs. PCcluster1575/834
+## PCSS vs. RAV1575/834
 ```{r fig.width=5, fig.height=3.5}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
 m2_name <- "RAV"
-m2_1 <- "PCcluster1575"
-m2_2 <- "PCcluster834"
+m2_1 <- "RAV1575"
+m2_2 <- "RAV834"
 
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
@@ -109,14 +109,14 @@ x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_1575_834.rds")
 ```
 
-## PCSS vs. PCcluster834/833
+## PCSS vs. RAV834/833
 ```{r fig.width=5, fig.height=3.5}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
 m2_name <- "RAV"
-m2_1 <- "PCcluster834"
-m2_2 <- "PCcluster833"
+m2_1 <- "RAV834"
+m2_2 <- "RAV833"
 
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
@@ -130,7 +130,7 @@ print(x)$visible
 dev.off()
 ```
 
-## PCSS vs. PCcluster834/3290
+## PCSS vs. RAV834/3290
 RAV3290 is associated with "stage" metadata of CRC datasets.
 
 ```{r fig.width=5, fig.height=3.5}
@@ -138,8 +138,8 @@ m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
 m2_name <- "RAV"
-m2_1 <- "PCcluster834"
-m2_2 <- "PCcluster3290"
+m2_1 <- "RAV834"
+m2_2 <- "RAV3290"
 
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
@@ -149,7 +149,7 @@ x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_834_3290.rds")
 ```
 
-## PCSS vs. PCcluster834/596
+## PCSS vs. RAV834/596
 RAV596 is associated with "grade" metadata of CRC datasets.
 
 ```{r fig.width=5, fig.height=3.5}
@@ -157,8 +157,8 @@ m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
 m2_name <- "RAV"
-m2_1 <- "PCcluster834"
-m2_2 <- "PCcluster596"
+m2_1 <- "RAV834"
+m2_2 <- "RAV596"
 
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```

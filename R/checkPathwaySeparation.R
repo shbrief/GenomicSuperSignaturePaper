@@ -6,9 +6,9 @@
 #' @param cutoff_n A number of pathways to keep.
 #'
 #' @export
-getAssociatedPCclusters <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) {
+getAssociatedRAVs <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) {
 
-  associated_PCcluster <- c()
+  associated_RAV <- c()
 
   for (i in seq_len(ncol(PCAmodel))) {
     search_pattern <- paste(pathwaySet, collapse = "|")
@@ -19,12 +19,12 @@ getAssociatedPCclusters <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) 
     if (!is.null(cutoff_nes)) {topAnnotation <- topAnnotation[(abs(topAnnotation$NES) >= cutoff_nes),,drop=FALSE]}
     if (!is.null(cutoff_n)) {topAnnotation <- topAnnotation[seq_along(cutoff_n),,drop=FALSE]}
 
-    # Find the PCcluster containing pathwaySet
+    # Find the RAV containing pathwaySet
     ind <- grep(search_pattern, topAnnotation$Description, ignore.case = TRUE)
-    if (length(ind) != 0) {associated_PCcluster <- c(associated_PCcluster, i)}
+    if (length(ind) != 0) {associated_RAV <- c(associated_RAV, i)}
   }
 
-  return(associated_PCcluster)
+  return(associated_RAV)
 }
 
 
@@ -46,18 +46,18 @@ getAssociatedPCclusters <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) 
 #' @export
 checkPathwaySeparation <- function(PCAmodel, pathway1, pathway2, cutoff_nes = NULL, cutoff_n = 5) {
 
-  # PCclusters associated with each set
-  PCcluster1 <- getAssociatedPCclusters(PCAmodel, pathway1, cutoff_nes = cutoff_nes, cutoff_n = cutoff_n)
-  PCcluster2 <- getAssociatedPCclusters(PCAmodel, pathway2, cutoff_nes = cutoff_nes, cutoff_n = cutoff_n)
+  # RAVs associated with each set
+  RAV1 <- getAssociatedRAVs(PCAmodel, pathway1, cutoff_nes = cutoff_nes, cutoff_n = cutoff_n)
+  RAV2 <- getAssociatedRAVs(PCAmodel, pathway2, cutoff_nes = cutoff_nes, cutoff_n = cutoff_n)
 
   # Check whether both pathways are captured
-  captured <- all(c(length(PCcluster1) > 0, length(PCcluster2) > 0))
+  captured <- all(c(length(RAV1) > 0, length(RAV2) > 0))
 
   if (!captured) {
     return(FALSE)
   } else {
-    set1.unique <- length(setdiff(PCcluster1, PCcluster2)) > 0
-    set2.unique <- length(setdiff(PCcluster2, PCcluster1)) > 0
+    set1.unique <- length(setdiff(RAV1, RAV2)) > 0
+    set2.unique <- length(setdiff(RAV2, RAV1)) > 0
     return(all(set1.unique, set2.unique))
   }
 }

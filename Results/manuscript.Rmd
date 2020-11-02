@@ -83,7 +83,7 @@ for (plot in barplots) {
 
 # Benchmark multiPLIER 
 ## sle_neutrophil.rds
-Two scatter plots of PCcluster1551 x Neutrophil count/estimate of SLE-WB dataset. 
+Two scatter plots of RAV1551 x Neutrophil count/estimate of SLE-WB dataset. 
 This plot was created in `SLE-WB/repeat_Fig3_SLE-WB.Rmd`
 
 ```{r fig.width=4, fig.height=4}
@@ -92,7 +92,7 @@ x
 ```
 
 ## nares_neutrophil.rds
-A scatter plot of PCcluster1551 x Neutrophil estimate of NARES dataset. This plot
+A scatter plot of RAV1551 x Neutrophil estimate of NARES dataset. This plot
 was created in `NARES/repeat_Fig3_NARES.Rmd`
 
 ```{r fig.width=4, fig.height=4}

@@ -41,7 +41,7 @@ suppressPackageStartupMessages({
 
 # Setup
 ## PCAmodel
-```{r message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE}
 data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
 PCAmodel
@@ -120,7 +120,7 @@ data_all <- cbind(sampleScore, pdata_df)
 ```
 
 ```{r rm_duplicated, echo=FALSE}
-## I added the scores from a few major PCclusters to a pData. So remove duplicates.
+## I added the scores from a few major RAVs to a pData. So remove duplicates.
 rm_ind <- which(duplicated(colnames(data_all)))
 data_all <- data_all[, -rm_ind]
 ```
@@ -140,14 +140,14 @@ f.stat.all <- sapply(seq_len(ncol(PCAmodel)), function(x) {
   return(f.stat)
 })
 
-names(f.stat.all) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+names(f.stat.all) <- paste0("RAV", seq_len(ncol(PCAmodel)))
 head(f.stat.all[order(f.stat.all, decreasing = TRUE)])
 ```
 
 ## Kruskal-Wallis Rank Sum Test
-Normality assumption is not met. Below example is a Q-Q plot from PCcluster834.
+Normality assumption is not met. Below example is a Q-Q plot from RAV834.
 ```{r fig.width=4, fig.height=4}
-res.aov <- aov(data_all[,"PCcluster834"] ~ data_all[,"cms_label_SSP"])
+res.aov <- aov(data_all[,"RAV834"] ~ data_all[,"cms_label_SSP"])
 plot(res.aov, 2)
 ```
 
@@ -169,7 +169,7 @@ normality <- sapply(seq_len(ncol(PCAmodel)), function(x) {
   return(res)
 })
 
-names(normality) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+names(normality) <- paste0("RAV", seq_len(ncol(PCAmodel)))
 summary(normality)
 ```
 
@@ -183,14 +183,14 @@ kw.chi.sqr <- sapply(seq_len(ncol(PCAmodel)), function(x) {
   return(kw.stat)
 })
 
-names(kw.chi.sqr) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+names(kw.chi.sqr) <- paste0("RAV", seq_len(ncol(PCAmodel)))
 head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
 ```
 
 ## CMS-associated RAVs
-Top 2 PCclusters (834 and 833) are same from both ANOVA and Kruskal-Wallis Rank Sum Test.
+Top 2 RAVs (834 and 833) are same from both ANOVA and Kruskal-Wallis Rank Sum Test.
 
-```{r message=FALSE, warning=FALSE, fig.width=5.5, fig.height=5}
+```{r message=FALSE, warning=FALSE, fig.width=5.6, fig.height=5}
 sampleScore1 <- 834
 sampleScore2 <- 833
 source("R/Fig4A_plotting.R", print.eval = TRUE)
@@ -200,15 +200,15 @@ Plots with different mean comparing methods.
 ```{r collapse=FALSE, fig.width=5, fig.height=4}
 ## t.test for a few pairs
 my_comparisons <- list(c("CMS1", "CMS2"),c("CMS1", "CMS3"),c("CMS1", "CMS4"))
-ggboxplot(data_all, x = "cms_label_SSP", y = "PCcluster834", fill = "cms_label_SSP") +
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
   stat_compare_means(comparisons = my_comparisons, method = "t.test", aes(label = ..p.adj..))
 
 ## ANOVA
-ggboxplot(data_all, x = "cms_label_SSP", y = "PCcluster834", fill = "cms_label_SSP") +
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
   stat_compare_means(method = "anova", label.y = 7) # Add global p-value
 
 ## Kruskal-Wallis Rank Sum Test 
-ggboxplot(data_all, x = "cms_label_SSP", y = "PCcluster834", fill = "cms_label_SSP") +
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
   stat_compare_means(method = 'kruskal.test', label.y = 7) # Add global p-value
 ```
 
@@ -237,7 +237,7 @@ msi.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
   return(p)
 })
 
-names(msi.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+names(msi.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
 msi.t.test <- msi.t.test[order(msi.t.test)]
 # head(names(msi.t.test))
 head(msi.t.test)
@@ -256,7 +256,7 @@ location.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
   return(p)
 })
 
-names(location.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+names(location.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
 location.t.test <- location.t.test[order(location.t.test)]
 # head(names(location.t.test))
 head(location.t.test)
@@ -275,7 +275,7 @@ grade.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
   return(p)
 })
 
-names(grade.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+names(grade.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
 grade.t.test <- grade.t.test[order(grade.t.test)]
 # head(names(grade.t.test))
 head(grade.t.test)
@@ -294,7 +294,7 @@ stage.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
   return(p)
 })
 
-names(stage.t.test) <- paste0("PCcluster", seq_len(ncol(PCAmodel)))
+names(stage.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
 stage.t.test <- stage.t.test[order(stage.t.test)]
 # head(names(stage.t.test))
 head(stage.t.test)

@@ -46,10 +46,10 @@ avg_loadings <- model(PCAmodel)[,cl_ind]
 for (set in setNames) {
   eSet <- get(set)
   score <- calculateScore(eSet, avg_loadings, rescale.after = TRUE)  # calculate score from selected RAVs
-  colnames(score) <- paste0("PCcluster", cl_ind)
+  colnames(score) <- paste0("RAV", cl_ind)
 
   pdata <- pData(eSet)
-  pdata[, paste0("PCcluster", cl_ind)] <- score  # add score to the pData of each ExpressionSet
+  pdata[, paste0("RAV", cl_ind)] <- score  # add score to the pData of each ExpressionSet
   pData(eSet) <- pdata
 
   assign(x = set, value = eSet)

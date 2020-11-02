@@ -5,7 +5,7 @@ calculateRsq <- function (x, y) stats::cor(x, y) ^ 2
 #' @import ggplot2
 #'
 #' @param dat A data frame containing the summary of scores and metadata.
-#' @param lv A PCcluster name for x-axis.
+#' @param lv A RAV name for x-axis.
 #' @param y.var A name of y-axis.
 #' @param ylab A label for y-axis.
 #' @param title The text for the title.

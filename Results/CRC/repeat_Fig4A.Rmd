@@ -155,8 +155,8 @@ drawWordcloud(PCAmodel, sampleScore2)
 
 ### GSEA
 ```{r}
-annotatePCcluster(PCAmodel, sampleScore1)
-annotatePCcluster(PCAmodel, sampleScore2)
+annotateRAV(PCAmodel, sampleScore1)
+annotateRAV(PCAmodel, sampleScore2)
 ```
 
 
@@ -222,8 +222,8 @@ drawWordcloud(PCAmodel, sampleScore2)
 
 ### GSEA
 ```{r}
-annotatePCcluster(PCAmodel, sampleScore1)
-annotatePCcluster(PCAmodel, sampleScore2)
+annotateRAV(PCAmodel, sampleScore1)
+annotateRAV(PCAmodel, sampleScore2)
 ```
 
 
@@ -254,8 +254,8 @@ drawWordcloud(PCAmodel, sampleScore2)
 
 ### GSEA
 ```{r}
-annotatePCcluster(PCAmodel, sampleScore1)
-annotatePCcluster(PCAmodel, sampleScore2)
+annotateRAV(PCAmodel, sampleScore1)
+annotateRAV(PCAmodel, sampleScore2)
 ```
 
 ```{r}
@@ -266,9 +266,9 @@ sessionInfo()
 
 
 ```{r fig.width=4, fig.height=4, echo=FALSE, eval=FALSE}
-## CMS by Candidate PCclusters
+## CMS by Candidate RAVs
 dat <- readRDS("data/SummaryForFig4.rds")
-score_ind <- grep("PCcluster", colnames(dat))
+score_ind <- grep("RAV", colnames(dat))
 
 ## Subset with 'cms_label_SSP'
 dat <- dat %>%
@@ -277,12 +277,12 @@ dat <- dat %>%
 
 dat <- dat %>%
   group_by(study, cms_label_SSP) %>%
-  dplyr::summarise(mean_cl1575 = mean(PCcluster1575),
-                   mean_cl834 = mean(PCcluster834),
-                   mean_cl833 = mean(PCcluster833),
-                   sd_cl1575 = sd(PCcluster1575),
-                   sd_cl834 = sd(PCcluster834),
-                   sd_cl833 = sd(PCcluster833))
+  dplyr::summarise(mean_cl1575 = mean(RAV1575),
+                   mean_cl834 = mean(RAV834),
+                   mean_cl833 = mean(RAV833),
+                   sd_cl1575 = sd(RAV1575),
+                   sd_cl834 = sd(RAV834),
+                   sd_cl833 = sd(RAV833))
 
 ## Plot
 cl_ind <- c(1575, 834, 833)
@@ -292,7 +292,7 @@ for (i in seq_along(mean_names)) {
   ordered.dat <- dat[order(dat[,mean_names[i]]),]
   plot(dplyr::pull(ordered.dat, mean_names[i]),
        col = ordered.dat$cms_label_SSP,
-       xlab = "", ylab = paste0("Score from PCcluster", cl_ind[i]))
+       xlab = "", ylab = paste0("Score from RAV", cl_ind[i]))
 }
 ```
 

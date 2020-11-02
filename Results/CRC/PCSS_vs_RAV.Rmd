@@ -41,7 +41,7 @@ PCAmodel
 updateNote(PCAmodel)
 ```
 
-# PCclusters most similar to PCSS1/PCSS2
+# RAVs most similar to PCSS1/PCSS2
 ```{r}
 cg <- intersect(rownames(avgLoading), rownames(PCAmodel))
 loading_cor <- abs(stats::cor(avgLoading[cg,], model(PCAmodel)[cg,], 
@@ -55,8 +55,8 @@ loading_cor[2, max2, drop = FALSE]
 ```
 
 ```{r}
-annotatePCcluster(PCAmodel, 1575)
-annotatePCcluster(PCAmodel, 834)
+annotateRAV(PCAmodel, 1575)
+annotateRAV(PCAmodel, 834)
 ```
 
 ```{r}

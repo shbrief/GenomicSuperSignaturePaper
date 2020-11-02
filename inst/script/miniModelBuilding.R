@@ -1,5 +1,5 @@
 ## Create mini datasets for testthat
-out.dir <- "~/data2/PCAGenomicSignatures/inst/extdata/test_model_building"
+out.dir <- "~/data2/PCAGenomicSignatures/inst/extdata/mini_model_building"
 
 
 ##### Select colon-associated datasets #########################################
@@ -108,16 +108,16 @@ library(factoextra)
 allZ_list <- lapply(trainingData_PCA, function(x) x$rotation)
 allZ <- Reduce(cbind, allZ_list)   # 13,934 genes x 120 PCs
 all <- t(allZ)   # a matrix of PCs (row) x genes (column)
-save(allZ, file = file.path(out.dir, "test_allZ.rda"))
+save(allZ, file = file.path(out.dir, "mini_allZ.rda"))
 
 ## Calculate distance
 res.dist <- factoextra::get_dist(all, method = "spearman")
-save(res.dist, file = file.path(out.dir, "test_res_dist.rda"))
+save(res.dist, file = file.path(out.dir, "mini_res_dist.rda"))
 
 ## Cut the tree
 res.hcut <- factoextra::hcut(res.dist, k = round(nrow(all)/2.25,0), hc_func = "hclust",
                              hc_method = "ward.D", hc_metric = "spearman")
-save(res.hcut, file = file.path(out.dir, "test_res_hcut.rda"))
+save(res.hcut, file = file.path(out.dir, "mini_res_hcut.rda"))
 
 ## Build avgLoading
 trainingData_PCclusters <- buildAvgLoading(t(all), cluster = res.hcut$cluster)
@@ -181,7 +181,7 @@ library(PCAGenomicSignatures)
 library(msigdbr) # packageVersion("msigdbr") was '7.1.1'
 library(clusterProfiler)
 
-out_dir <- file.path(out.dir, "test_gsea_c2")
+out_dir <- file.path(out.dir, "mini_gsea_c2")
 if (!dir.exists(out_dir)) {dir.create(out_dir)}
 
 msigdbr_df <- msigdbr(species = "Homo sapiens", category = "C2")
