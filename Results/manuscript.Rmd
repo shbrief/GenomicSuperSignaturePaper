@@ -82,12 +82,12 @@ for (plot in barplots) {
 
 
 # Benchmark multiPLIER 
-## sle_neutrophil.rds
+## neutrophil_estimate.rds
 Two scatter plots of RAV1551 x Neutrophil count/estimate of SLE-WB dataset. 
 This plot was created in `SLE-WB/repeat_Fig3_SLE-WB.Rmd`
 
 ```{r fig.width=4, fig.height=4}
-x <- readRDS("SLE-WB/sle_neutrophil.rds")
+x <- readRDS("SLE-WB/outputs/neutrophil_estimate.rds")
 x
 ```
 
@@ -96,7 +96,7 @@ A scatter plot of RAV1551 x Neutrophil estimate of NARES dataset. This plot
 was created in `NARES/repeat_Fig3_NARES.Rmd`
 
 ```{r fig.width=4, fig.height=4}
-x <- readRDS("NARES/nares_neutrophil.rds")
+x <- readRDS("NARES/outputs/nares_neutrophil.rds")
 x
 ```
 
