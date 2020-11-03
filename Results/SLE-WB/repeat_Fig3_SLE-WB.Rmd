@@ -291,7 +291,7 @@ dev.off()
 ```
 
 ### Validation
-```{r out.width="40%", out.height="40%"}
+```{r fig.width=2, fig.height=2}
 heatmapTable(val_all, 1551)
 ```
 
@@ -322,6 +322,8 @@ annotatePC(1:3, val_all = val_all, PCAmodel = PCAmodel)
 annotatePC(c(1,8), val_all = val_all, PCAmodel = PCAmodel, simplify = FALSE)
 ```
 
+
+# Session Info
 ```{r}
 sessionInfo()
 ```

@@ -190,7 +190,7 @@ head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
 ## CMS-associated RAVs
 Top 2 RAVs (834 and 833) are same from both ANOVA and Kruskal-Wallis Rank Sum Test.
 
-```{r message=FALSE, warning=FALSE, fig.width=5.6, fig.height=5}
+```{r message=FALSE, warning=FALSE, fig.width=6, fig.height=5.5}
 sampleScore1 <- 834
 sampleScore2 <- 833
 source("R/Fig4A_plotting.R", print.eval = TRUE)
@@ -224,7 +224,7 @@ results were ordered based on p-value and top 6 of them are printed.
 vars <- c("msi", "summarylocation", "summarygrade", "summarystage")
 ```
 
-## MSI
+### MSI
 ```{r echo=FALSE}
 # MSI
 var <- vars[1]
@@ -243,7 +243,7 @@ msi.t.test <- msi.t.test[order(msi.t.test)]
 head(msi.t.test)
 ```
 
-## Location
+### Location
 ```{r echo=FALSE}
 # Location
 var <- vars[2]
@@ -262,7 +262,7 @@ location.t.test <- location.t.test[order(location.t.test)]
 head(location.t.test)
 ```
 
-## Grade
+### Grade
 ```{r echo=FALSE}
 # Grade
 var <- vars[3]
@@ -281,7 +281,7 @@ grade.t.test <- grade.t.test[order(grade.t.test)]
 head(grade.t.test)
 ```
 
-## Stage
+### Stage
 ```{r echo=FALSE}
 # Stage
 var <- vars[4]
@@ -300,6 +300,7 @@ stage.t.test <- stage.t.test[order(stage.t.test)]
 head(stage.t.test)
 ```
 
+# Session Info
 ```{r}
 sessionInfo()
 ```

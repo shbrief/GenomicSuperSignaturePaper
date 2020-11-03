@@ -169,6 +169,6 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_834_596.rds")
 ```
 
 # Session Info
-```{r}
+```{r eval=TRUE}
 sessionInfo()
 ```

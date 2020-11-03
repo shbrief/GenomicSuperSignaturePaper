@@ -74,7 +74,7 @@ for (set in setNames) {
 # By PCSS1/PCSS2 
 First, we simply reproduced the Figure 4A using PCSS1 and PCSS2.
 
-```{r out.width="80%", out.height="80%", echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 ## dist’n of PCSS scores -------------------------------------------------------
 df.results <- setNames %>% lapply(function(set) {
   eSet <- get(set)
@@ -130,25 +130,25 @@ pA <- ggplot(df.results,
 print(pA)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 saveRDS(pA, "outputs/scatter_PCSS.rds")
 ```
 
 # By PCAGenomicSignatures
 ## Most similar to PCSS1/PCSS2
-```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%"}
+```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 sampleScore1 <- 1575
 sampleScore2 <- 834
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4A_plotting.R")
 saveRDS(x, "outputs/scatter_1575_834.rds")
 ```
 
 ### wordcloud
-```{r out.width="60%", out.height="60%"}
+```{r fig.width=7, fig.height=7}
 drawWordcloud(PCAmodel, sampleScore1)
 drawWordcloud(PCAmodel, sampleScore2)
 ```
@@ -197,13 +197,13 @@ lapply(validated_ind_all, function(x) x[1:5]) %>%
 
 
 ### Top validated RAVs
-```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%"}
+```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 sampleScore1 <- 832
 sampleScore2 <- 188
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4A_plotting.R")
 saveRDS(x, "outputs/scatter_832_188.rds")
 ```
@@ -215,7 +215,7 @@ source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
 ### wordcloud
-```{r out.width="60%", out.height="60%"}
+```{r fig.width=7, fig.height=7}
 drawWordcloud(PCAmodel, sampleScore1)
 drawWordcloud(PCAmodel, sampleScore2)
 ```
@@ -231,13 +231,13 @@ annotateRAV(PCAmodel, sampleScore2)
 ## Identified using metadata, CMS
 We find the metadata-associated RAVs using Kruskal-Wallis Rank Sum Test.
 
-```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%"}
+```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 sampleScore1 <- 834
 sampleScore2 <- 833
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
-```{r save_scatter_834_833, echo=FALSE}
+```{r save_scatter_834_833, echo=FALSE, eval=FALSE}
 x <- source("R/Fig4A_plotting.R")
 saveRDS(x, "outputs/scatter_834_833.rds")
 
@@ -247,7 +247,7 @@ dev.off()
 ```
 
 ### wordcloud
-```{r out.width="60%", out.height="60%"}
+```{r fig.width=6.5, fig.height=6.5}
 drawWordcloud(PCAmodel, sampleScore1)
 drawWordcloud(PCAmodel, sampleScore2)
 ```
@@ -258,6 +258,7 @@ annotateRAV(PCAmodel, sampleScore1)
 annotateRAV(PCAmodel, sampleScore2)
 ```
 
+# Session Info
 ```{r}
 sessionInfo()
 ```

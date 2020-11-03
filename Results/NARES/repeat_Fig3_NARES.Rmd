@@ -51,7 +51,7 @@ updateNote(PCAmodel)
 
 
 ## NARES Nasal Brushings
-- Expression cata is downloaded from [here](https://github.com/greenelab/multi-plier/blob/master/data/expression_data/NARES_SCANfast_ComBat_with_GeneSymbol.pcl)      
+- Expression data is downloaded from [here](https://github.com/greenelab/multi-plier/blob/master/data/expression_data/NARES_SCANfast_ComBat_with_GeneSymbol.pcl)      
 - Analysis script is modified from [this](https://github.com/greenelab/multi-plier/blob/master/14-NARES_MCPcounter.Rmd)
 
 ### Expression data
@@ -114,7 +114,7 @@ mcp.melt <- read.table("data/NARES_ComBat_MCPCounter_results_tidy.tsv",
 # EDA
 ## Validation
 
-```{r fig.width=4, fig.height=3}
+```{r fig.width=4, fig.height=2}
 val_all <- validate(dataset, PCAmodel) 
 validated_ind <- validatedSignatures(val_all, num.out = 5, swCutoff = 0, indexOnly = TRUE)
 heatmapTable(val_all, num.out = 5, swCutoff = 0)
@@ -220,12 +220,7 @@ for (i in seq_along(sig_ind)) {
 gridExtra::grid.arrange(grobs = plots, cols = 2)
 ```
 
-```{r}
-sessionInfo()
-```
-
-
-```{r save_for_paper, fig.width=4, fig.height=4.5, echo=FALSE}
+```{r save_for_paper, fig.width=4, fig.height=4.5, echo=FALSE, eval=FALSE}
 ## This chunk was executed only to save the summary table, not for vignettes.
 plot <- LVScatter(dat2, paste0("RAV", 1551), 
                   y.var = "MCP_estimate",
@@ -238,4 +233,12 @@ saveRDS(plot, "outputs/nares_neutrophil.rds")
 png("outputs/png/nares_neutrophil.png", width = 400, height = 400)
 plot
 dev.off()
+```
+
+
+
+
+# Session Info
+```{r}
+sessionInfo()
 ```
