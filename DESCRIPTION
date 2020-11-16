@@ -1,12 +1,12 @@
-Package: PCAGenomicSignaturesPaper
-Title: Information to reproduce PCAGenomicSignatures paper
+Package: GenomicSuperSignaturePaper
+Title: Information to reproduce GenomicSuperSignature paper
 Version: 0.0.1
 Date: 2020-9-22
 Authors@R: person("Sehyun", "Oh", email = "Sehyun.Oh@sph.cuny.edu", role = c("aut", "cre"))
-Description: This package provides data, methods, results covered in PCAGenomicSignatures. 
+Description: This package provides data, methods, results covered in GenomicSuperSignature. 
 Depends: R (>= 3.5)
 Imports:
-  PCAGenomicSignatures,
+  GenomicSuperSignature,
   dplyr,
   Biobase,
   ggplot2
@@ -25,5 +25,5 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1.9000
 VignetteBuilder: knitr
-URL: https://github.com/shbrief/PCAGenomicSignaturesPaper
-BugReports: https://github.com/shbrief/PCAGenomicSignaturesPaper/issues
+URL: https://github.com/shbrief/GenomicSuperSignaturePaper
+BugReports: https://github.com/shbrief/GenomicSuperSignaturePaper/issues

@@ -1,4 +1,4 @@
-title: "PCAGenomicSignaturesPaper"
+title: "GenomicSuperSignature"
 type: inverse
 
 navbar:
@@ -27,4 +27,4 @@ navbar:
         href: articles/others/repeat_Fig5_Pathway_Separation.html
   right:
    - icon: fa-github
-     href: https://github.com/shbrief/PCAGenomicSignaturesPaper
+     href: https://github.com/shbrief/GenomicSuperSignature

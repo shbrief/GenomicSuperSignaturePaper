@@ -29,8 +29,8 @@ biologically similar pathways.
 
 ```{r}
 suppressPackageStartupMessages({
-  library(PCAGenomicSignaturesPaper)
-  library(PCAGenomicSignatures)
+  library(GenomicSuperSignaturePaper)
+  library(GenomicSuperSignature)
   library(dplyr)
 })
 ```
@@ -41,7 +41,7 @@ To directly compare with the results from multiPLIER paper, we used the PCAmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
 ```{r message=FALSE, warning=FALSE}
-data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_PLIERpriors.rds"))
 PCAmodel
 updateNote(PCAmodel)

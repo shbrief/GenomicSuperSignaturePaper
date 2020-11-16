@@ -1,7 +1,7 @@
 library(Biobase)
 library(tidyverse)
-library(PCAGenomicSignatures)
-library(PCAGenomicSignaturesPaper)
+library(GenomicSuperSignature)
+library(GenomicSuperSignaturePaper)
 
 ### Load validation samples ----------------------------------------------------
 wd <- "Results/CRC/data/eSets"
@@ -21,7 +21,7 @@ out.dir <- paste0(wd, "_new")
 if (!dir.exists(out.dir)) {dir.create(out.dir)}
 
 ### PCAmodel -------------------------------------------------------------------
-data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
 
 ### Load average loadings ------------------------------------------------------

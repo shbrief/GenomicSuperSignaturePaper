@@ -15,13 +15,13 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## Packages in GitHub
-pkgs <- c("PCAGenomicSignatures")
+pkgs <- c("GenomicSuperSignature")
 new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
 if(length(new_pkgs) != 0) devtools::install_github(paste0("shbrief/", new_pkgs))
 
 ## Load packages
 suppressPackageStartupMessages({
-  library(PCAGenomicSignatures)
+  library(GenomicSuperSignature)
 })
 ```
 
@@ -35,7 +35,7 @@ colnames(avgLoading) <- paste0("PCSS", 1:4)
 
 # PCAmodel
 ```{r message=FALSE, warning=FALSE, collapse=FALSE}
-data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
 PCAmodel
 updateNote(PCAmodel)

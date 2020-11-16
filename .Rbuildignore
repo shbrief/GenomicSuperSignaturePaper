@@ -6,6 +6,7 @@
 ^Results/CRC/data/eSets/new$
 ^Results/CRC/data/eSets_new$
 ^Results/SLE-WB/data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol\.pcl$
+^Results/TCGA/data/PCAmodel_C2_*\.rds$
 
 ^update\.sh$
 ^index\.md$
@@ -14,3 +15,5 @@
 ^_pkgdown\.yml$
 ^Neg_Controls$
 ^neutrophil_estimate\.rds$
+
+

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## Packages in GitHub
-pkgs <- c("PCAGenomicSignatures", "PCAGenomicSignaturesPaper")
+pkgs <- c("GenomicSuperSignature", "GenomicSuperSignaturePaper")
 new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
 if(length(new_pkgs) != 0) devtools::install_github(paste0("shbrief/", new_pkgs))
 
@@ -32,18 +32,18 @@ if(length(new_pkgs) != 0) BiocManager::install(new_pkgs)
 suppressPackageStartupMessages({
   library(Biobase)
   library(tidyverse)
-  library(PCAGenomicSignatures)
-  library(PCAGenomicSignaturesPaper)
+  library(GenomicSuperSignature)
+  library(GenomicSuperSignaturePaper)
 })
 ```
 
 # Setup
 In this vignette, we are reproducing Figure 4A of the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4)
-using PCAGenomicSignatures.
+using GenomicSuperSignature.
 
 ## PCAmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
-data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
 PCAmodel
 updateNote(PCAmodel)
@@ -71,7 +71,7 @@ for (set in setNames) {
 
 
 
-# By PCSS1/PCSS2 
+# Reproduce PCSS result
 First, we simply reproduced the Figure 4A using PCSS1 and PCSS2.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
@@ -134,7 +134,7 @@ print(pA)
 saveRDS(pA, "outputs/scatter_PCSS.rds")
 ```
 
-# By PCAGenomicSignatures
+# CRC subtyping using GenomicSuperSignature
 ## Most similar to PCSS1/PCSS2
 ```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 sampleScore1 <- 1575
@@ -228,8 +228,9 @@ annotateRAV(PCAmodel, sampleScore2)
 
 
 
-## Identified using metadata, CMS
-We find the metadata-associated RAVs using Kruskal-Wallis Rank Sum Test.
+## Identified using metadata
+We find the metadata-associated RAVs using Kruskal-Wallis Rank Sum Test. Further
+detail can be found [here](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/metadata_based_search.html).
 
 ```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 sampleScore1 <- 834

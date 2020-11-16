@@ -25,22 +25,22 @@ knitr::opts_chunk$set(
 
 ```{r echo=FALSE}
 suppressPackageStartupMessages({
-  library(PCAGenomicSignatures)
-  library(PCAGenomicSignaturesPaper)
+  library(GenomicSuperSignature)
+  library(GenomicSuperSignaturePaper)
   library(dplyr)
 })
 ```
 
 # Setup
 In this vignette, we are reproducing Figure 3 of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
-using PCAGenomicSignatures and referencing some script from [this vignette](https://github.com/greenelab/multi-plier/blob/master/figure_notebooks/neutrophil_figures.Rmd).
+using GenomicSuperSignature and referencing some script from [this vignette](https://github.com/greenelab/multi-plier/blob/master/figure_notebooks/neutrophil_figures.Rmd).
 
 ## PCAmodel
 To directly compare with the results from multiPLIER paper, we used the PCAmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
 ```{r message=FALSE, warning=FALSE}
-data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_PLIERpriors.rds"))
 PCAmodel
 updateNote(PCAmodel)

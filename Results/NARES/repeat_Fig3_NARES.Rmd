@@ -25,8 +25,8 @@ knitr::opts_chunk$set(
 
 ```{r echo=FALSE}
 suppressPackageStartupMessages({
-  library(PCAGenomicSignatures)
-  library(PCAGenomicSignaturesPaper)
+  library(GenomicSuperSignature)
+  library(GenomicSuperSignaturePaper)
   library(dplyr)
   library(RColorBrewer)
   library(ComplexHeatmap)
@@ -36,14 +36,14 @@ suppressPackageStartupMessages({
 
 # Setup
 In this vignette, we are reproducing Figure 3 of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
-using PCAGenomicSignatures.
+using GenomicSuperSignature.
 
 ## PCAmodel
 To directly compare with the results from multiPLIER paper, we used the PCAmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
 ```{r message=FALSE, warning=FALSE, collapse=FALSE}
-data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_PLIERpriors.rds"))
 PCAmodel
 updateNote(PCAmodel)
@@ -118,6 +118,15 @@ mcp.melt <- read.table("data/NARES_ComBat_MCPCounter_results_tidy.tsv",
 val_all <- validate(dataset, PCAmodel) 
 validated_ind <- validatedSignatures(val_all, num.out = 5, swCutoff = 0, indexOnly = TRUE)
 heatmapTable(val_all, num.out = 5, swCutoff = 0)
+```
+
+RAV1551, neutrophil-associated RAV based on SLE-WB dataset, is not found in the 
+top 5 validated RAVs of NARES dataset.
+
+```{r collapse = TRUE}
+ordered <- val_all[order(val_all$score, decreasing = TRUE),]
+which(rownames(ordered) == "RAV1551")
+head(val_all, 15)
 ```
 
 ## Sample score

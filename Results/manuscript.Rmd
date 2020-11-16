@@ -1,5 +1,5 @@
 ---
-title: "Figures and Tables for PCAGenomicSignatures Paper"
+title: "Figures and Tables for GenomicSuperSignature Paper"
 author: "Sehyun Oh"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
