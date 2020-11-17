@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Information to reproduce PCAGenomicSignatures paper • PCAGenomicSignaturesPaper</title>
+<title>Information to reproduce GenomicSuperSignature paper • GenomicSuperSignature</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Information to reproduce PCAGenomicSignatures paper">
-<meta property="og:description" content="This package provides data, methods, results covered in PCAGenomicSignatures. ">
+<script src="pkgdown.js"></script><meta property="og:title" content="Information to reproduce GenomicSuperSignature paper">
+<meta property="og:description" content="This package provides data, methods, results covered in GenomicSuperSignature. ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -30,8 +30,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">PCAGenomicSignaturesPaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <a class="navbar-link" href="index.html">GenomicSuperSignature</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/PCAGenomicSignaturesPaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignature">
     <span class="fa fa-github"></span>
      
   </a>
@@ -99,10 +99,10 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="pcagenomicsignaturespaper" class="section level2">
+<div id="genomicsupersignaturepaper" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pcagenomicsignaturespaper" class="anchor"></a>PCAGenomicSignaturesPaper</h2>
-<p>Here, we are presenting the usecases and benchmarking examples of <a href="https://shbrief.github.io/PCAGenomicSignatures/">PCAGenomicSignatures</a> R package.</p>
+<a href="#genomicsupersignaturepaper" class="anchor"></a>GenomicSuperSignaturePaper</h2>
+<p>Here, we are presenting the usecases and benchmarking examples of <a href="https://shbrief.github.io/GenomicSuperSignature/">GenomicSuperSignature</a> R package.</p>
 <div id="crc-paper" class="section level3">
 <h3 class="hasAnchor">
 <a href="#crc-paper" class="anchor"></a>CRC paper</h3>
@@ -110,17 +110,18 @@
 <div id="continuous-subtype-score" class="section level4">
 <h4 class="hasAnchor">
 <a href="#continuous-subtype-score" class="anchor"></a>Continuous Subtype Score</h4>
-<p>Left panel is Figure 4A from CRC paper and right panel is the CRC subtype separation by PCAGenomicSignatures. CRC paper built the continuous score model based on the 8 colorectal cancer specific microarray datasets with graph-based clustering method. However, PCAGenomicSignatures was generated from 536 heterogeneous, RNA sequencing datasets and used hierarchical clustering. Despite of this major differences in model building process, PCAGenomicSignatures could reproduce the CRC paper’s result.</p>
-<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4A.html">CRC/CRC subtype score</a> tab.</p>
-<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/CRC_Fig4A.png" width="300" height="300"><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/scatter_834_833.png" width="300" height="300"></p>
+<p>Left panel is Figure 4A from CRC paper and right panel is the CRC subtype separation by GenomicSuperSignature. CRC paper built the continuous score model based on the 8 colorectal cancer specific microarray datasets with graph-based clustering method. However, GenomicSuperSignature was generated from 536 heterogeneous, RNA sequencing datasets and used hierarchical clustering. Despite of this major differences in model building process, GenomicSuperSignature could reproduce the CRC paper’s result.</p>
+<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/Results/CRC/repeat_Fig4A.html">CRC/CRC subtype score</a> tab.</p>
+<p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/CRC_Fig4A.png" width="300" height="300"><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/scatter_834_833.png" width="300" height="300"></p>
 </div>
 <div id="clinical-variables" class="section level4">
 <h4 class="hasAnchor">
 <a href="#clinical-variables" class="anchor"></a>Clinical Variables</h4>
-<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/CRC/repeat_Fig4C.html">CRC/CRC clinical variables</a>.</p>
-<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/CRC_Fig4C.png" width="500" height="300"><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/boxplot_CMS_vs_834_833.png" width="500" height="300"></p>
-<p>We directly compared the performanace between PCSS and RAV. Except the tumor location (the last column), RAV834/833-based model out-performed PCSS1/2-based model relative to the combined model.</p>
-<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300"></p>
+<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/Results/CRC/repeat_Fig4C.html">CRC/CRC clinical variables</a>.</p>
+<p>Below is Figure 4 from CRC paper. LRT (likelihood-ratio test) between the reference full model versus either the continuous scores only model or the discrete subtypes only model are plotted here. A p-value near 1 (−log10p-value near 0) suggests that no additional information is provided by the full model.</p>
+<p>This results shows that PCSS1/2 (the second <em>score</em> column) provide additional information in characterizing molecular/histological/clinical correlates than CMS (the first <em>subtype</em> column). <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/CRC_Fig4C.png" width="500" height="300"></p>
+<p>RAV834/833 also performs better than CMS subtypes. <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/boxplot_CMS_vs_834_833.png" width="500" height="300"></p>
+<p>We directly compared the performanace between PCSS and RAV. Except the tumor location (the last column), RAV834/833-based model out-performed PCSS1/2-based model relative to the combined model. <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300"></p>
 </div>
 </div>
 <div id="multiplier-paper" class="section level3">
@@ -130,12 +131,12 @@
 <div id="neutrophil-countsestimates" class="section level4">
 <h4 class="hasAnchor">
 <a href="#neutrophil-countsestimates" class="anchor"></a>Neutrophil Counts/Estimates</h4>
-<p>The top panel is Figure 3 from multiPLIER paper and the bottom panel is the benchmark example by PCAGenomicSignatures. In multiPLIER paper, latent variables (LVs) were built from recount2 datasets using <a href="https://www.nature.com/articles/s41592-019-0456-1">Pathway-level information extractor (PLIER)</a> method. Despite of the major differences in model building process, PCAGenomicSignatures could reproduce the multiPLIER paper’s result.</p>
-<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/SLE-WB/repeat_Fig3_SLE-WB.html">multiPLIER/Neutrophil (SLE-WB)</a> and <a href="https://shbrief.github.io/PCAGenomicSignaturesPaper/Results/NARES/repeat_Fig3_NARES.html">multiPLIER/Neutrophil (NARES)</a> tabs.</p>
+<p>The top panel is Figure 3 from multiPLIER paper and the bottom panel is the benchmark example by GenomicSuperSignature. In multiPLIER paper, latent variables (LVs) were built from recount2 datasets using <a href="https://www.nature.com/articles/s41592-019-0456-1">Pathway-level information extractor (PLIER)</a> method. Despite of the major differences in model building process, GenomicSuperSignature could reproduce the multiPLIER paper’s result.</p>
+<p>Detail on this reproducing process is described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/Results/SLE-WB/repeat_Fig3_SLE-WB.html">multiPLIER/Neutrophil (SLE-WB)</a> and <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/Results/NARES/repeat_Fig3_NARES.html">multiPLIER/Neutrophil (NARES)</a> tabs.</p>
 <p>Fig 3 from multiPLIER paper: neutrophil-associated LV, LV603 shows the positive correlation with neutrophil counts/estimates of two different datasets, SLE WB and NARES.</p>
-<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200"></p>
+<p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200"></p>
 <p>We used the same datasets, SLE-WB and NARES, to find the neutrophil-associated RAV.</p>
-<p><img src="https://raw.githubusercontent.com/shbrief/PCAGenomicSignaturesPaper/master/Results/multiPLIER_Fig3.png" width="600" height="200"></p>
+<p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/multiPLIER_Fig3.png" width="600" height="200"></p>
 </div>
 <div id="cell-type-discovery" class="section level4">
 <h4 class="hasAnchor">
@@ -149,9 +150,9 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/shbrief/PCAGenomicSignaturesPaper/">https://​github.com/​shbrief/​PCAGenomicSignaturesPaper/​</a>
+<li>Browse source code at <br><a href="https://github.com/shbrief/GenomicSuperSignaturePaper/">https://​github.com/​shbrief/​GenomicSuperSignaturePaper/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/shbrief/PCAGenomicSignaturesPaper/issues">https://​github.com/​shbrief/​PCAGenomicSignaturesPaper/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/shbrief/GenomicSuperSignaturePaper/issues">https://​github.com/​shbrief/​GenomicSuperSignaturePaper/​issues</a>
 </li>
 </ul>
 </div>
