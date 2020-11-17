@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compare PCSS and RAVs • PCAGenomicSignaturesPaper</title>
+<title>Compare PCSS and RAVs • GenomicSuperSignaturePaper</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
 <script src="../../pkgdown.js"></script><meta property="og:title" content="Compare PCSS and RAVs">
-<meta property="og:description" content="PCAGenomicSignaturesPaper">
+<meta property="og:description" content="GenomicSuperSignaturePaper">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -30,8 +30,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../../index.html">PCAGenomicSignaturesPaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/PCAGenomicSignaturesPaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
     <span class="fa fa-github"></span>
      
   </a>
@@ -104,9 +104,9 @@
       <h1 data-toc-skip>Compare PCSS and RAVs</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2020-11-02</h4>
+            <h4 class="date">2020-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/shbrief/PCAGenomicSignaturesPaper/blob/master/vignettes/CRC/PCSS_vs_RAV.Rmd"><code>vignettes/CRC/PCSS_vs_RAV.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/PCSS_vs_RAV.Rmd"><code>vignettes/CRC/PCSS_vs_RAV.Rmd</code></a></small>
       <div class="hidden name"><code>PCSS_vs_RAV.Rmd</code></div>
 
     </div>
@@ -122,16 +122,16 @@
 <span class="va">avgLoading</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">column_to_rownames</a></span><span class="op">(</span><span class="va">avgLoading</span>, var<span class="op">=</span><span class="st">"X"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"PCSS"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></pre></div>
 </div>
-<div id="pcamodel" class="section level1">
+<div id="ravmodel" class="section level1">
 <h1 class="hasAnchor">
-<a href="#pcamodel" class="anchor"></a>PCAmodel</h1>
+<a href="#ravmodel" class="anchor"></a>RAVmodel</h1>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"PCAGenomicSignaturesPaper"</span><span class="op">)</span>
-<span class="va">PCAmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"PCAmodel_C2.rds"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">PCAmodel</span></pre></div>
+<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
+<span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"RAVmodel_C2.rds"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">RAVmodel</span></pre></div>
 <pre><code>## class: PCAGenomicSignatures 
 ## dim: 13934 4764 
-## metadata(6): cluster size ... MeSH_freq updateNote
+## metadata(7): cluster size ... updateNote version
 ## assays(1): model
 ## rownames(13934): CASKIN1 DDX3Y ... CTC-457E21.9 AC007966.1
 ## rowData names(0):
@@ -140,15 +140,15 @@
 ## trainingData(2): PCAsummary MeSH
 ## trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu">updateNote</span><span class="op">(</span><span class="va">PCAmodel</span><span class="op">)</span></pre></div>
+<span class="fu">updateNote</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with MSigDB C2"</code></pre>
 </div>
 <div id="ravs-most-similar-to-pcss1pcss2" class="section level1">
 <h1 class="hasAnchor">
 <a href="#ravs-most-similar-to-pcss1pcss2" class="anchor"></a>RAVs most similar to PCSS1/PCSS2</h1>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">cg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">PCAmodel</span><span class="op">)</span><span class="op">)</span>
-<span class="va">loading_cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, <span class="fu">model</span><span class="op">(</span><span class="va">PCAmodel</span><span class="op">)</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, 
+<span class="va">cg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span>
+<span class="va">loading_cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, <span class="fu">model</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, 
                               use <span class="op">=</span> <span class="st">"pairwise.complete.obs"</span>, method <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">max1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">loading_cor</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span>  <span class="co"># max. correlation with PCSS1</span>
@@ -161,14 +161,14 @@
 <span class="co">##          RAV834</span>
 <span class="co">## PCSS2 0.5624299</span></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu">annotateRAV</span><span class="op">(</span><span class="va">PCAmodel</span>, <span class="fl">1575</span><span class="op">)</span>
+<span class="fu">annotateRAV</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1575</span><span class="op">)</span>
 <span class="co">##                                  Description      NES pvalue      qvalues</span>
 <span class="co">## 1   SCHUETZ_BREAST_CANCER_DUCTAL_INVASIVE_UP 2.794522  1e-10 1.733483e-09</span>
 <span class="co">## 2          SMID_BREAST_CANCER_NORMAL_LIKE_UP 2.681439  1e-10 1.733483e-09</span>
 <span class="co">## 3                       BOQUEST_STEM_CELL_UP 2.630321  1e-10 1.733483e-09</span>
 <span class="co">## 4 VECCHI_GASTRIC_CANCER_ADVANCED_VS_EARLY_UP 2.596083  1e-10 1.733483e-09</span>
 <span class="co">## 5                 MCLACHLAN_DENTAL_CARIES_UP 2.566848  1e-10 1.733483e-09</span>
-<span class="fu">annotateRAV</span><span class="op">(</span><span class="va">PCAmodel</span>, <span class="fl">834</span><span class="op">)</span>
+<span class="fu">annotateRAV</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">834</span><span class="op">)</span>
 <span class="co">##                                             Description      NES pvalue</span>
 <span class="co">## 1 ALTEMEIER_RESPONSE_TO_LPS_WITH_MECHANICAL_VENTILATION 2.868397  1e-10</span>
 <span class="co">## 2                            MCLACHLAN_DENTAL_CARIES_UP 2.627526  1e-10</span>
@@ -208,7 +208,7 @@
 <span class="co">## [8] methods   base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">##  [1] PCAGenomicSignatures_0.0.5  SummarizedExperiment_1.19.9</span>
+<span class="co">##  [1] GenomicSuperSignature_0.0.6 SummarizedExperiment_1.19.9</span>
 <span class="co">##  [3] Biobase_2.49.1              GenomicRanges_1.41.6       </span>
 <span class="co">##  [5] GenomeInfoDb_1.25.11        IRanges_2.23.10            </span>
 <span class="co">##  [7] S4Vectors_0.27.14           BiocGenerics_0.35.4        </span>

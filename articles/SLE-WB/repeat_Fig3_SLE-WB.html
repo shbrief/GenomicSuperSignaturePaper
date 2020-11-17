@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reproduce multiPLIER Figure 3 - SLE WB Compendium • PCAGenomicSignaturesPaper</title>
+<title>Reproduce multiPLIER Figure 3 - SLE WB Compendium • GenomicSuperSignaturePaper</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
 <script src="../../pkgdown.js"></script><meta property="og:title" content="Reproduce multiPLIER Figure 3 - SLE WB Compendium">
-<meta property="og:description" content="PCAGenomicSignaturesPaper">
+<meta property="og:description" content="GenomicSuperSignaturePaper">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -30,8 +30,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../../index.html">PCAGenomicSignaturesPaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/PCAGenomicSignaturesPaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
     <span class="fa fa-github"></span>
      
   </a>
@@ -104,9 +104,9 @@
       <h1 data-toc-skip>Reproduce multiPLIER Figure 3 - SLE WB Compendium</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">November 02, 2020</h4>
+            <h4 class="date">November 17, 2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/shbrief/PCAGenomicSignaturesPaper/blob/master/vignettes/SLE-WB/repeat_Fig3_SLE-WB.Rmd"><code>vignettes/SLE-WB/repeat_Fig3_SLE-WB.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/SLE-WB/repeat_Fig3_SLE-WB.Rmd"><code>vignettes/SLE-WB/repeat_Fig3_SLE-WB.Rmd</code></a></small>
       <div class="hidden name"><code>repeat_Fig3_SLE-WB.Rmd</code></div>
 
     </div>
@@ -116,18 +116,18 @@
 <div id="setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h1>
-<p>In this vignette, we are reproducing Figure 3 of the <a href="https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub">multiPLIER paper</a> using PCAGenomicSignatures and referencing some script from <a href="https://github.com/greenelab/multi-plier/blob/master/figure_notebooks/neutrophil_figures.Rmd">this vignette</a>.</p>
-<div id="pcamodel" class="section level2">
+<p>In this vignette, we are reproducing Figure 3 of the <a href="https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub">multiPLIER paper</a> using GenomicSuperSignature and referencing some script from <a href="https://github.com/greenelab/multi-plier/blob/master/figure_notebooks/neutrophil_figures.Rmd">this vignette</a>.</p>
+<div id="ravmodel" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pcamodel" class="anchor"></a>PCAmodel</h2>
-<p>To directly compare with the results from multiPLIER paper, we used the PCAmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.</p>
+<a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
+<p>To directly compare with the results from multiPLIER paper, we used the RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"PCAGenomicSignaturesPaper"</span><span class="op">)</span>
-<span class="va">PCAmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"PCAmodel_PLIERpriors.rds"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">PCAmodel</span></pre></div>
+<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
+<span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"RAVmodel_PLIERpriors.rds"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">RAVmodel</span></pre></div>
 <pre><code>#&gt; class: PCAGenomicSignatures 
 #&gt; dim: 13934 4764 
-#&gt; metadata(6): cluster size ... MeSH_freq updateNote
+#&gt; metadata(7): cluster size ... updateNote version
 #&gt; assays(1): model
 #&gt; rownames(13934): CASKIN1 DDX3Y ... CTC-457E21.9 AC007966.1
 #&gt; rowData names(0):
@@ -136,7 +136,7 @@
 #&gt; trainingData(2): PCAsummary MeSH
 #&gt; trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu">updateNote</span><span class="op">(</span><span class="va">PCAmodel</span><span class="op">)</span></pre></div>
+<span class="fu">updateNote</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></pre></div>
 <pre><code>#&gt; [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with 3 priors from PLIER (bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways)"</code></pre>
 </div>
 <div id="sle-wb-data-e-geod-65391" class="section level2">
@@ -230,7 +230,7 @@
 <h2 class="hasAnchor">
 <a href="#validation" class="anchor"></a>Validation</h2>
 <div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">val_all</span> <span class="op">&lt;-</span> <span class="fu">validate</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">PCAmodel</span><span class="op">)</span> 
+<span class="va">val_all</span> <span class="op">&lt;-</span> <span class="fu">validate</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span> 
 <span class="va">validated_ind</span> <span class="op">&lt;-</span> <span class="fu">validatedSignatures</span><span class="op">(</span><span class="va">val_all</span>, num.out <span class="op">=</span> <span class="fl">5</span>, 
                                      swCutoff <span class="op">=</span> <span class="fl">0</span>, indexOnly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu">heatmapTable</span><span class="op">(</span><span class="va">val_all</span>, num.out <span class="op">=</span> <span class="fl">5</span>, swCutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></pre></div>
@@ -240,21 +240,21 @@
 <h2 class="hasAnchor">
 <a href="#sample-score" class="anchor"></a>Sample score</h2>
 <div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="va">sampleScore</span> <span class="op">&lt;-</span> <span class="fu">calculateScore</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">PCAmodel</span><span class="op">)</span></pre></div>
+<span class="va">sampleScore</span> <span class="op">&lt;-</span> <span class="fu">calculateScore</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span></pre></div>
 </div>
 <div id="keyword-in-gsea" class="section level2">
 <h2 class="hasAnchor">
 <a href="#keyword-in-gsea" class="anchor"></a>Keyword in GSEA</h2>
 <div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="co">## RAVs containing the keyword, "neutrophil", within top 3 enriched pathways </span>
-<span class="fu">findSignature</span><span class="op">(</span><span class="va">PCAmodel</span>, <span class="st">"neutrophil"</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></pre></div>
+<span class="fu">findSignature</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="st">"neutrophil"</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></pre></div>
 <pre><code>#&gt;   # of keyword-containing pathways Freq
 #&gt; 1                                0 4651
 #&gt; 2                                1  100
 #&gt; 3                                2   13</code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="co">## RAVs with two keyword-containing pathways</span>
-<span class="va">sig_ind</span> <span class="op">&lt;-</span> <span class="fu">findSignature</span><span class="op">(</span><span class="va">PCAmodel</span>, <span class="st">"neutrophil"</span>, n <span class="op">=</span> <span class="fl">3</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
+<span class="va">sig_ind</span> <span class="op">&lt;-</span> <span class="fu">findSignature</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="st">"neutrophil"</span>, n <span class="op">=</span> <span class="fl">3</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
 </div>
 <div id="metadata-associated" class="section level2">
 <h2 class="hasAnchor">
@@ -393,46 +393,32 @@
 <span class="va">count_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/LVScatter.html">LVScatter</a></span><span class="op">(</span><span class="va">dat_n.count</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="fl">1551</span><span class="op">)</span>, 
                         y.var <span class="op">=</span> <span class="st">"Neutrophil.Count"</span>,
                         ylab <span class="op">=</span> <span class="st">"Neutrophil Count"</span>,
-                        title <span class="op">=</span> <span class="st">"PCAmodel"</span>,
+                        title <span class="op">=</span> <span class="st">"RAVmodel"</span>,
                         subtitle <span class="op">=</span> <span class="st">"SLE WB Compendium"</span><span class="op">)</span>
 <span class="va">count_plot</span></pre></div>
 <p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-18-1.png" width="384"></p>
-<div class="sourceCode" id="cb32"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">count_plot</span>, <span class="st">"outputs/neutrophil_count.rds"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">"outputs/png/neutrophil_count.png"</span>, width <span class="op">=</span> <span class="fl">400</span>, height <span class="op">=</span> <span class="fl">400</span><span class="op">)</span>
-<span class="va">count_plot</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></pre></div>
-<pre><code>#&gt; agg_png 
-#&gt;       2</code></pre>
 </div>
 <div id="neutrophil-estimate-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#neutrophil-estimate-1" class="anchor"></a>Neutrophil Estimate</h3>
-<div class="sourceCode" id="cb34"><pre class="downlit">
+<div class="sourceCode" id="cb32"><pre class="downlit">
 <span class="va">estimate_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/LVScatter.html">LVScatter</a></span><span class="op">(</span><span class="va">dat_n.estimate</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="fl">1551</span><span class="op">)</span>, 
                            y.var <span class="op">=</span> <span class="st">"Neutrophil_estimate"</span>,
                            ylab <span class="op">=</span> <span class="st">"MCPcounter neutrophil estimate"</span>,
-                           title <span class="op">=</span> <span class="st">"PCAmodel"</span>,
-                           subtitle <span class="op">=</span> <span class="st">"SLE WB MCPcounter"</span><span class="op">)</span>
-<span class="va">estimate_plot</span></pre></div>
-<p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-19-1.png" width="384"></p>
-<div class="sourceCode" id="cb35"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">estimate_plot</span>, <span class="st">"outputs/neutrophil_estimate.rds"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">"outputs/png/neutrophil_estimate.png"</span>, width <span class="op">=</span> <span class="fl">400</span>, height <span class="op">=</span> <span class="fl">400</span><span class="op">)</span>
-<span class="va">estimate_plot</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+                           title <span class="op">=</span> <span class="st">"RAVmodel"</span>,
+                           subtitle <span class="op">=</span> <span class="st">"SLE WB MCPcounter"</span><span class="op">)</span></pre></div>
 <pre><code>#&gt; agg_png 
 #&gt;       2</code></pre>
 </div>
 <div id="validation-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#validation-1" class="anchor"></a>Validation</h3>
-<div class="sourceCode" id="cb37"><pre class="downlit">
+<div class="sourceCode" id="cb34"><pre class="downlit">
 <span class="fu">heatmapTable</span><span class="op">(</span><span class="va">val_all</span>, <span class="fl">1551</span><span class="op">)</span></pre></div>
-<p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-20-1.png" width="40%" height="40%"></p>
-<div class="sourceCode" id="cb38"><pre class="downlit">
-<span class="fu">drawWordcloud</span><span class="op">(</span><span class="va">PCAmodel</span>, <span class="fl">1551</span><span class="op">)</span></pre></div>
-<p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-21-1.png" width="60%" height="60%"></p>
+<p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-22-1.png" width="192"></p>
+<div class="sourceCode" id="cb35"><pre class="downlit">
+<span class="fu">drawWordcloud</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1551</span><span class="op">)</span></pre></div>
+<p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-23-1.png" width="60%" height="60%"></p>
 </div>
 <div id="gsea" class="section level3">
 <h3 class="hasAnchor">
@@ -468,16 +454,16 @@
 <div id="annotate-pc1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#annotate-pc1" class="anchor"></a>Annotate PC1</h3>
-<div class="sourceCode" id="cb41"><pre class="downlit">
-<span class="fu">annotatePC</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, PCAmodel <span class="op">=</span> <span class="va">PCAmodel</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit">
+<span class="fu">annotatePC</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, PCAmodel <span class="op">=</span> <span class="va">RAVmodel</span><span class="op">)</span></pre></div>
 <pre><code>#&gt;               PC1-RAV1551             PC2-noAnnot             PC3-noAnnot
 #&gt; 1 IRIS_Neutrophil-Resting No significant pathways No significant pathways
 #&gt; 2      IRIS_Monocyte-Day0 No significant pathways No significant pathways
 #&gt; 3         SVM Neutrophils No significant pathways No significant pathways
 #&gt; 4              DMAP_MONO2 No significant pathways No significant pathways
 #&gt; 5           SVM Monocytes No significant pathways No significant pathways</code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit">
-<span class="fu">annotatePC</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">8</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, PCAmodel <span class="op">=</span> <span class="va">PCAmodel</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb40"><pre class="downlit">
+<span class="fu">annotatePC</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">8</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, PCAmodel <span class="op">=</span> <span class="va">RAVmodel</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 <pre><code>#&gt; $`PC1-RAV1551`
 #&gt;               Description      NES pvalue      qvalues
 #&gt; 1 IRIS_Neutrophil-Resting 4.253400  1e-10 1.827751e-09
@@ -493,7 +479,12 @@
 #&gt; 3 No significant pathways  NA     NA      NA
 #&gt; 4 No significant pathways  NA     NA      NA
 #&gt; 5 No significant pathways  NA     NA      NA</code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit">
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1 class="hasAnchor">
+<a href="#session-info" class="anchor"></a>Session Info</h1>
+<div class="sourceCode" id="cb42"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <pre><code>#&gt; R version 4.0.3 (2020-10-10)
 #&gt; Platform: x86_64-pc-linux-gnu (64-bit)
@@ -516,13 +507,13 @@
 #&gt; [8] methods   base     
 #&gt; 
 #&gt; other attached packages:
-#&gt;  [1] dplyr_1.0.2                     PCAGenomicSignaturesPaper_0.0.1
-#&gt;  [3] PCAGenomicSignatures_0.0.5      SummarizedExperiment_1.19.9    
-#&gt;  [5] Biobase_2.49.1                  GenomicRanges_1.41.6           
-#&gt;  [7] GenomeInfoDb_1.25.11            IRanges_2.23.10                
-#&gt;  [9] S4Vectors_0.27.14               BiocGenerics_0.35.4            
-#&gt; [11] MatrixGenerics_1.1.8            matrixStats_0.57.0             
-#&gt; [13] BiocStyle_2.17.2               
+#&gt;  [1] dplyr_1.0.2                      GenomicSuperSignaturePaper_0.0.2
+#&gt;  [3] GenomicSuperSignature_0.0.6      SummarizedExperiment_1.19.9     
+#&gt;  [5] Biobase_2.49.1                   GenomicRanges_1.41.6            
+#&gt;  [7] GenomeInfoDb_1.25.11             IRanges_2.23.10                 
+#&gt;  [9] S4Vectors_0.27.14                BiocGenerics_0.35.4             
+#&gt; [11] MatrixGenerics_1.1.8             matrixStats_0.57.0              
+#&gt; [13] BiocStyle_2.17.2                
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
 #&gt;   [1] colorspace_1.4-1       ggsignif_0.6.0         rjson_0.2.20          
@@ -539,7 +530,7 @@
 #&gt;  [34] glue_1.4.2             GenomeInfoDbData_1.2.4 reshape2_1.4.4        
 #&gt;  [37] rappdirs_0.3.1         Rcpp_1.0.5             carData_3.0-4         
 #&gt;  [40] cellranger_1.1.0       pkgdown_1.6.1          vctrs_0.3.4           
-#&gt;  [43] nlme_3.1-149           xfun_0.18              stringr_1.4.0         
+#&gt;  [43] nlme_3.1-150           xfun_0.18              stringr_1.4.0         
 #&gt;  [46] openxlsx_4.2.2         lifecycle_0.2.0        rstatix_0.6.0         
 #&gt;  [49] zlibbioc_1.35.0        scales_1.1.1           ragg_0.4.0            
 #&gt;  [52] hms_0.5.3              RColorBrewer_1.1-2     ComplexHeatmap_2.5.6  
@@ -560,7 +551,6 @@
 #&gt;  [97] readxl_1.3.1           data.table_1.13.2      blob_1.2.1            
 #&gt; [100] forcats_0.5.0          digest_0.6.27          tidyr_1.1.2           
 #&gt; [103] MCPcounter_1.1.0       textshaping_0.1.2      munsell_0.5.0</code></pre>
-</div>
 </div>
   </div>
 
