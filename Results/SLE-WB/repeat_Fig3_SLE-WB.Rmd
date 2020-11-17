@@ -35,15 +35,15 @@ suppressPackageStartupMessages({
 In this vignette, we are reproducing Figure 3 of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
 using GenomicSuperSignature and referencing some script from [this vignette](https://github.com/greenelab/multi-plier/blob/master/figure_notebooks/neutrophil_figures.Rmd).
 
-## PCAmodel
-To directly compare with the results from multiPLIER paper, we used the PCAmodel
+## RAVmodel
+To directly compare with the results from multiPLIER paper, we used the RAVmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
 ```{r message=FALSE, warning=FALSE}
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
-PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_PLIERpriors.rds"))
-PCAmodel
-updateNote(PCAmodel)
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+RAVmodel
+updateNote(RAVmodel)
 ```
 
 ## SLE-WB data (E-GEOD-65391)
@@ -121,7 +121,7 @@ colnames(neutrophil.df) <- c("Sample", "Neutrophil_estimate")
 # EDA
 ## Validation
 ```{r fig.width=4, fig.height=2.5}
-val_all <- validate(dataset, PCAmodel) 
+val_all <- validate(dataset, RAVmodel) 
 validated_ind <- validatedSignatures(val_all, num.out = 5, 
                                      swCutoff = 0, indexOnly = TRUE)
 heatmapTable(val_all, num.out = 5, swCutoff = 0)
@@ -129,15 +129,15 @@ heatmapTable(val_all, num.out = 5, swCutoff = 0)
 
 ## Sample score
 ```{r}
-sampleScore <- calculateScore(dataset, PCAmodel)
+sampleScore <- calculateScore(dataset, RAVmodel)
 ```
 
 ```{r sample_score_heatmap, echo=FALSE, eval=FALSE}
 ## Plot sample score heatmap using only the RAVs with > 2 elements.
-# ind <- which(metadata(PCAmodel)$size > 2)
+# ind <- which(metadata(RAVmodel)$size > 2)
 # sampleScoreHeatmap(score = sampleScore[,ind], 
 #                    dataName = "E-GEOD-65391", 
-#                    modelName = "PCAmodel",
+#                    modelName = "RAVmodel",
 #                    show_column_names = FALSE, 
 #                    row_names_gp = 4)
 ```
@@ -145,10 +145,10 @@ sampleScore <- calculateScore(dataset, PCAmodel)
 ## Keyword in GSEA
 ```{r}
 ## RAVs containing the keyword, "neutrophil", within top 3 enriched pathways 
-findSignature(PCAmodel, "neutrophil", n = 3)
+findSignature(RAVmodel, "neutrophil", n = 3)
 
 ## RAVs with two keyword-containing pathways
-sig_ind <- findSignature(PCAmodel, "neutrophil", n = 3, k = 2)
+sig_ind <- findSignature(RAVmodel, "neutrophil", n = 3, k = 2)
 ```
 
 ## Metadata-associated
@@ -265,7 +265,7 @@ GSEA, metadata-association.
 count_plot <- LVScatter(dat_n.count, paste0("RAV", 1551), 
                         y.var = "Neutrophil.Count",
                         ylab = "Neutrophil Count",
-                        title = "PCAmodel",
+                        title = "RAVmodel",
                         subtitle = "SLE WB Compendium")
 count_plot
 
@@ -280,7 +280,7 @@ dev.off()
 estimate_plot <- LVScatter(dat_n.estimate, paste0("RAV", 1551), 
                            y.var = "Neutrophil_estimate",
                            ylab = "MCPcounter neutrophil estimate",
-                           title = "PCAmodel",
+                           title = "RAVmodel",
                            subtitle = "SLE WB MCPcounter")
 estimate_plot
 
@@ -296,12 +296,12 @@ heatmapTable(val_all, 1551)
 ```
 
 ```{r out.width="60%", out.height="60%"}
-drawWordcloud(PCAmodel, 1551)
+drawWordcloud(RAVmodel, 1551)
 ```
 
 ### GSEA
 ```{r RAV1551, echo=FALSE}
-gseaRes <- gsea(PCAmodel)[[1551]]
+gseaRes <- gsea(RAVmodel)[[1551]]
 gseaRes <- gseaRes[order(gseaRes$NES, decreasing = TRUE),]
 keyword_ind <- grep("neutrophil", gseaRes$Description, ignore.case = TRUE)
 ```
@@ -318,8 +318,8 @@ gseaRes[keyword_ind, c("Description", "NES", "qvalues")]
 
 ### Annotate PC1
 ```{r collapse=FALSE}
-annotatePC(1:3, val_all = val_all, PCAmodel = PCAmodel)
-annotatePC(c(1,8), val_all = val_all, PCAmodel = PCAmodel, simplify = FALSE)
+annotatePC(1:3, val_all = val_all, RAVmodel = RAVmodel)
+annotatePC(c(1,8), val_all = val_all, RAVmodel = RAVmodel, simplify = FALSE)
 ```
 
 

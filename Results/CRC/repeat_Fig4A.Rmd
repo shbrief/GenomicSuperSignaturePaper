@@ -41,12 +41,12 @@ suppressPackageStartupMessages({
 In this vignette, we are reproducing Figure 4A of the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4)
 using GenomicSuperSignature.
 
-## PCAmodel
+## RAVmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
-PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
-PCAmodel
-updateNote(PCAmodel)
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel
+updateNote(RAVmodel)
 ```
 
 ## CRC validation datasets
@@ -149,14 +149,14 @@ saveRDS(x, "outputs/scatter_1575_834.rds")
 
 ### wordcloud
 ```{r fig.width=7, fig.height=7}
-drawWordcloud(PCAmodel, sampleScore1)
-drawWordcloud(PCAmodel, sampleScore2)
+drawWordcloud(RAVmodel, sampleScore1)
+drawWordcloud(RAVmodel, sampleScore2)
 ```
 
 ### GSEA
 ```{r}
-annotateRAV(PCAmodel, sampleScore1)
-annotateRAV(PCAmodel, sampleScore2)
+annotateRAV(RAVmodel, sampleScore1)
+annotateRAV(RAVmodel, sampleScore2)
 ```
 
 
@@ -174,7 +174,7 @@ for (set in setNames) {
   eSet <- get(set)
   exprs <- exprs(eSet) %>% rmNaInf
   exprs <- apply(exprs, 1, function(x) x - mean(x)) %>% t
-  val_all <- validate(exprs, PCAmodel)
+  val_all <- validate(exprs, RAVmodel)
   validated_ind_all[[set]] <- validatedSignatures(val_all, num.out = 10, indexOnly = TRUE)
 }
 ```
@@ -216,14 +216,14 @@ source("R/Fig4A_plotting.R", print.eval = TRUE)
 
 ### wordcloud
 ```{r fig.width=7, fig.height=7}
-drawWordcloud(PCAmodel, sampleScore1)
-drawWordcloud(PCAmodel, sampleScore2)
+drawWordcloud(RAVmodel, sampleScore1)
+drawWordcloud(RAVmodel, sampleScore2)
 ```
 
 ### GSEA
 ```{r}
-annotateRAV(PCAmodel, sampleScore1)
-annotateRAV(PCAmodel, sampleScore2)
+annotateRAV(RAVmodel, sampleScore1)
+annotateRAV(RAVmodel, sampleScore2)
 ```
 
 
@@ -249,14 +249,14 @@ dev.off()
 
 ### wordcloud
 ```{r fig.width=6.5, fig.height=6.5}
-drawWordcloud(PCAmodel, sampleScore1)
-drawWordcloud(PCAmodel, sampleScore2)
+drawWordcloud(RAVmodel, sampleScore1)
+drawWordcloud(RAVmodel, sampleScore2)
 ```
 
 ### GSEA
 ```{r}
-annotateRAV(PCAmodel, sampleScore1)
-annotateRAV(PCAmodel, sampleScore2)
+annotateRAV(RAVmodel, sampleScore1)
+annotateRAV(RAVmodel, sampleScore2)
 ```
 
 # Session Info

@@ -40,12 +40,12 @@ suppressPackageStartupMessages({
 ```
 
 # Setup
-## PCAmodel
+## RAVmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
-PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
-PCAmodel
-updateNote(PCAmodel)
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel
+updateNote(RAVmodel)
 ```
 
 ## CRC validation datasets
@@ -115,7 +115,7 @@ exprs_df <- setNames %>% lapply(function(set) {
 ## Calculate Score
 Calculate score and combine it with phenotype data.
 ```{r}
-sampleScore <- calculateScore(exprs_df, PCAmodel)
+sampleScore <- calculateScore(exprs_df, RAVmodel)
 data_all <- cbind(sampleScore, pdata_df)
 ```
 
@@ -134,13 +134,13 @@ signifcant RAVs using discrete, multivariable metdata.
 
 ## ANOVA
 ```{r ANOVA}
-f.stat.all <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+f.stat.all <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   res.aov <- aov(data_all[,x] ~ data_all$cms_label_SSP)
   f.stat <- summary(res.aov)[[1]][1,4]   # extract F-statistics from ANOVA 
   return(f.stat)
 })
 
-names(f.stat.all) <- paste0("RAV", seq_len(ncol(PCAmodel)))
+names(f.stat.all) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 head(f.stat.all[order(f.stat.all, decreasing = TRUE)])
 ```
 
@@ -162,14 +162,14 @@ plot(res.aov, 2)
 ## is large enough to ignore normality, Shapiro.test can alarm the normality issue 
 ## with really high power (with large dataset). Just use Q-Q plot.
 
-normality <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+normality <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   res.aov <- aov(data_all[,x] ~ data_all$cms_label_SSP)
   aov_residuals <- residuals(object = res.aov)  # Extract the residuals
   res <- shapiro.test(x = aov_residuals)$p.value  # Run Shapiro-Wilk test
   return(res)
 })
 
-names(normality) <- paste0("RAV", seq_len(ncol(PCAmodel)))
+names(normality) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 summary(normality)
 ```
 
@@ -177,13 +177,13 @@ Try Kruskal-Wallis Rank Sum Test
 ```{r Kruskal-Wallis}
 # Kruskal-Wallis Rank Sum Test
 # a non-parametric alternative to one-way ANOVA = when normality assumption is not met
-kw.chi.sqr <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+kw.chi.sqr <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   kw.test <- kruskal.test(data_all[,x] ~ data_all$cms_label_SSP)
   kw.stat <- kw.test$statistic
   return(kw.stat)
 })
 
-names(kw.chi.sqr) <- paste0("RAV", seq_len(ncol(PCAmodel)))
+names(kw.chi.sqr) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
 ```
 
@@ -231,13 +231,13 @@ var <- vars[1]
 rm_ind <- which(is.na(data_all[,var]))
 dat <- data_all[-rm_ind,]
 
-msi.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+msi.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   res <- t.test(dat[,x] ~ dat[,var])
   p <- res$p.value
   return(p)
 })
 
-names(msi.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
+names(msi.t.test) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 msi.t.test <- msi.t.test[order(msi.t.test)]
 # head(names(msi.t.test))
 head(msi.t.test)
@@ -250,13 +250,13 @@ var <- vars[2]
 rm_ind <- which(is.na(data_all[,var]))
 dat <- data_all[-rm_ind,]
 
-location.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+location.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   res <- t.test(dat[,x] ~ dat[,var])
   p <- res$p.value
   return(p)
 })
 
-names(location.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
+names(location.t.test) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 location.t.test <- location.t.test[order(location.t.test)]
 # head(names(location.t.test))
 head(location.t.test)
@@ -269,13 +269,13 @@ var <- vars[3]
 rm_ind <- which(is.na(data_all[,var]))
 dat <- data_all[-rm_ind,]
 
-grade.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+grade.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   res <- t.test(dat[,x] ~ dat[,var])
   p <- res$p.value
   return(p)
 })
 
-names(grade.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
+names(grade.t.test) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 grade.t.test <- grade.t.test[order(grade.t.test)]
 # head(names(grade.t.test))
 head(grade.t.test)
@@ -288,13 +288,13 @@ var <- vars[4]
 rm_ind <- which(is.na(data_all[,var]))
 dat <- data_all[-rm_ind,]
 
-stage.t.test <- sapply(seq_len(ncol(PCAmodel)), function(x) {
+stage.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   res <- t.test(dat[,x] ~ dat[,var])
   p <- res$p.value
   return(p)
 })
 
-names(stage.t.test) <- paste0("RAV", seq_len(ncol(PCAmodel)))
+names(stage.t.test) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 stage.t.test <- stage.t.test[order(stage.t.test)]
 # head(names(stage.t.test))
 head(stage.t.test)

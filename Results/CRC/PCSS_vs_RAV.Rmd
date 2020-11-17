@@ -33,18 +33,18 @@ avgLoading <- tibble::column_to_rownames(avgLoading, var="X")
 colnames(avgLoading) <- paste0("PCSS", 1:4)
 ```
 
-# PCAmodel
+# RAVmodel
 ```{r message=FALSE, warning=FALSE, collapse=FALSE}
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
-PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
-PCAmodel
-updateNote(PCAmodel)
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel
+updateNote(RAVmodel)
 ```
 
 # RAVs most similar to PCSS1/PCSS2
 ```{r}
-cg <- intersect(rownames(avgLoading), rownames(PCAmodel))
-loading_cor <- abs(stats::cor(avgLoading[cg,], model(PCAmodel)[cg,], 
+cg <- intersect(rownames(avgLoading), rownames(RAVmodel))
+loading_cor <- abs(stats::cor(avgLoading[cg,], model(RAVmodel)[cg,], 
                               use = "pairwise.complete.obs", method = "pearson"))
 
 max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
@@ -55,8 +55,8 @@ loading_cor[2, max2, drop = FALSE]
 ```
 
 ```{r}
-annotateRAV(PCAmodel, 1575)
-annotateRAV(PCAmodel, 834)
+annotateRAV(RAVmodel, 1575)
+annotateRAV(RAVmodel, 834)
 ```
 
 # Session Info

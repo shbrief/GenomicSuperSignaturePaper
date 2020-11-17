@@ -12,7 +12,7 @@ getAssociatedRAVs <- function(PCAmodel, pathwaySet, cutoff_nes, cutoff_n) {
 
   for (i in seq_len(ncol(PCAmodel))) {
     search_pattern <- paste(pathwaySet, collapse = "|")
-    annotatedCluster <- PCAGenomicSignatures::gsea(PCAmodel)[[i]]
+    annotatedCluster <- GenomicSuperSignature::gsea(PCAmodel)[[i]]
     topAnnotation <- annotatedCluster[order(abs(annotatedCluster$NES), decreasing = TRUE),]
 
     # Filtering

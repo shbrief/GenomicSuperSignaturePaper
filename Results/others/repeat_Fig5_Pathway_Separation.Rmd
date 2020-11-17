@@ -36,15 +36,15 @@ suppressPackageStartupMessages({
 ```
 
 
-## PCAmodel
-To directly compare with the results from multiPLIER paper, we used the PCAmodel
+## RAVmodel
+To directly compare with the results from multiPLIER paper, we used the RAVmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
 ```{r message=FALSE, warning=FALSE}
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
-PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_PLIERpriors.rds"))
-PCAmodel
-updateNote(PCAmodel)
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+RAVmodel
+updateNote(RAVmodel)
 ```
 
 
@@ -59,9 +59,9 @@ top 1.
 ifn.alpha.set <- c("REACTOME_INTERFERON_ALPHA_BETA_SIGNALING")
 ifn.gamma.set <- c("REACTOME_INTERFERON_GAMMA_SIGNALING")
 
-checkPathwaySeparation(PCAmodel, ifn.alpha.set, ifn.gamma.set, 
+checkPathwaySeparation(RAVmodel, ifn.alpha.set, ifn.gamma.set, 
                        cutoff_nes = NULL, cutoff_n = 5)
-checkPathwaySeparation(PCAmodel, ifn.alpha.set, ifn.gamma.set, cutoff_n = 1)
+checkPathwaySeparation(RAVmodel, ifn.alpha.set, ifn.gamma.set, cutoff_n = 1)
 ```
 
 
@@ -74,9 +74,9 @@ monocyte.set <- c("IRIS_Monocyte-Day0", "IRIS_Monocyte-Day1",
                   "SVM Macrophages M0", "SVM Macrophages M1", 
                   "SVM Macrophages M2")
 
-checkPathwaySeparation(PCAmodel, neutrophil.set, monocyte.set, 
+checkPathwaySeparation(RAVmodel, neutrophil.set, monocyte.set, 
                        cutoff_nes = NULL, cutoff_n = 5) 
-checkPathwaySeparation(PCAmodel, neutrophil.set, monocyte.set, cutoff_n = 1)
+checkPathwaySeparation(RAVmodel, neutrophil.set, monocyte.set, cutoff_n = 1)
 ```
 
 
@@ -94,9 +94,9 @@ g1.set <- c("REACTOME_G1_S_TRANSITION", "REACTOME_M_G1_TRANSITION",
             "REACTOME_P53_INDEPENDENT_G1_S_DNA_DAMAGE_CHECKPOINT")
 g2.set <- c("REACTOME_MITOTIC_G2_G2_M_PHASES", "REACTOME_G2_M_CHECKPOINTS")
 
-checkPathwaySeparation(PCAmodel, g1.set, g2.set, 
+checkPathwaySeparation(RAVmodel, g1.set, g2.set, 
                        cutoff_nes = NULL, cutoff_n = 5) 
-checkPathwaySeparation(PCAmodel, g1.set, g2.set, cutoff_n = 1)
+checkPathwaySeparation(RAVmodel, g1.set, g2.set, cutoff_n = 1)
 ```
 
 ```{r}

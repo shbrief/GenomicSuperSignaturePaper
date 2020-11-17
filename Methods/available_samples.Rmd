@@ -24,12 +24,12 @@ suppressPackageStartupMessages({
 ```
 
 # Information on training datasets
-`studyMeta.tsv` table is available through `PCAGenomicSignatures` package. In this
-table, we summarized the details on PCAGenomicSignatures models and their training
+`studyMeta.tsv` table is available through `GenomicSuperSignature` package. In this
+table, we summarized the details on GenomicSuperSignature models and their training
 datasets. More detail is described below.
 
 ```{r eval=TRUE}
-extdata <- system.file("extdata", package = "PCAGenomicSignatures")
+extdata <- system.file("extdata", package = "GenomicSuperSignature")
 studyMeta <- read.table(file.path(extdata, "studyMeta.tsv"))
 head(studyMeta)
 ```
@@ -43,7 +43,7 @@ from [refine.bio](https://www.refine.bio/). We collect the number of samples per
 study based on this metadata.
 
 ```{r}
-data.dir <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 meta_json <- jsonlite::fromJSON(file.path(data.dir, 
                                           "aggregated_metadata.json"))
 experiments <- meta_json[[2]]   # experiments
@@ -210,7 +210,7 @@ studies.errors <- gsub("ERROR with study ", "", errors$V1) %>%
   sapply(., function(x) unlist(x)[1])
 
 ## Studies with more than 20 downloaded samples 
-# lib.dir <- "path/to/PCAGenomicSignaturesLibrary"
+# lib.dir <- "path/to/GenomicSuperSignatureLibrary"
 dat <- readRDS(file.path(lib.dir, "allZ.rds"))
 final <- gsub(".PC.*$", "", colnames(dat)) %>% unique   # 677 studies
 ind_677 <- which(studyMeta$studyName %in% final)
@@ -253,7 +253,7 @@ sessionInfo()
 
 ```{r fig.width=6, fig.height=4.5, echo=FALSE, eval=FALSE}
 ## Save summary table
-write.table(studyMeta, "~/data2/PCAGenomicSignatures/inst/extdata/studyMeta.tsv")
+write.table(studyMeta, "~/data2/GenomicSuperSignature/inst/extdata/studyMeta.tsv")
 
 ## Save histogram comparing metadata vs. downloaded data
 ## `available_samples.png` is moved to `Results/others` 

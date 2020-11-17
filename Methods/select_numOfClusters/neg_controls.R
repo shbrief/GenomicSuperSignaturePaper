@@ -19,7 +19,7 @@ suppressPackageStartupMessages({
 })
 
 ##### Load 536 refine.bio datasets #############################################
-wd <- "~/data2/PCAGenomicSignatureLibrary/refinebioRseq/PCAmodel_536"
+wd <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/PCAmodel_536"
 allZ <- readRDS(file.path(wd, "allZ.rds"))   # genes x 44,890 samples
 genes <- readRDS("~/data2/model_building/data/topGenes_13934.rds")   # top 13,934 genes
 stat <- readRDS(file.path(wd, "refinebioRseq_536study_SdMean.rds"))
@@ -79,7 +79,7 @@ for (study in names(synData)) {
     rm(x)
 }
 
-dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
+dat_dir <- "~/data2/GenomicSuperSignaturePaper/inst/extdata/Neg_Controls"
 saveRDS(synData_PCA, file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 
 
@@ -88,7 +88,7 @@ saveRDS(synData_PCA, file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 
 
 ##### Distance matrix ##########################################################
-dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
+dat_dir <- "~/data2/GenomicSuperSignaturePaper/inst/extdata/Neg_Controls"
 neg <- readRDS(file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 data <- lapply(neg, function(x) x$rotation) %>% Reduce(cbind,.) %>% t
 
@@ -118,7 +118,7 @@ for (numOfDataset in numOfDatasets) {
 
 ##### Find the minimum number of clusters ######################################
 source("evaluateCluster.R")
-dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
+dat_dir <- "~/data2/GenomicSuperSignaturePaper/inst/extdata/Neg_Controls"
 evals <- vector(mode = "list", length = 9)
 
 for (numOfDataset in numOfDatasets) {

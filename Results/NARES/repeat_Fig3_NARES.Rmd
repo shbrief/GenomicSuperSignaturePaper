@@ -38,15 +38,15 @@ suppressPackageStartupMessages({
 In this vignette, we are reproducing Figure 3 of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
 using GenomicSuperSignature.
 
-## PCAmodel
-To directly compare with the results from multiPLIER paper, we used the PCAmodel
+## RAVmodel
+To directly compare with the results from multiPLIER paper, we used the RAVmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
 ```{r message=FALSE, warning=FALSE, collapse=FALSE}
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
-PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_PLIERpriors.rds"))
-PCAmodel
-updateNote(PCAmodel)
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+RAVmodel
+updateNote(RAVmodel)
 ```
 
 
@@ -80,7 +80,7 @@ samples, so in the multiPLIER paper, the authors applied [MCPcounter](https://gi
 ([Becht, et al. _Genome Biology_. 2016.](https://doi.org/10.1186/s13059-016-1070-5))
 , which is a method for estimating cell type abundance in solid tissues.
 
-As in multiPLIER paper, we tested if *neutrophil-associated* RAVs from PCAmodel 
+As in multiPLIER paper, we tested if *neutrophil-associated* RAVs from RAVmodel 
 are well-correlated with the neutrophil estimates from MCPcounter.
 
 #### Install MCPcounter
@@ -115,7 +115,7 @@ mcp.melt <- read.table("data/NARES_ComBat_MCPCounter_results_tidy.tsv",
 ## Validation
 
 ```{r fig.width=4, fig.height=2}
-val_all <- validate(dataset, PCAmodel) 
+val_all <- validate(dataset, RAVmodel) 
 validated_ind <- validatedSignatures(val_all, num.out = 5, swCutoff = 0, indexOnly = TRUE)
 heatmapTable(val_all, num.out = 5, swCutoff = 0)
 ```
@@ -131,14 +131,14 @@ head(val_all, 15)
 
 ## Sample score
 ```{r}
-sampleScore <- calculateScore(dataset, PCAmodel)
+sampleScore <- calculateScore(dataset, RAVmodel)
 ```
 
 ```{r sample_score_heatmap_top5, echo=FALSE, eval=FALSE}
 ## Only with the top 5 RAVs
 sampleScoreHeatmap(score = sampleScore[,validated_ind],
                    dataName = "NARES",
-                   modelName = "PCAmodel",
+                   modelName = "RAVmodel",
                    show_column_names = FALSE,
                    row_names_gp = 4)
 ```
@@ -146,7 +146,7 @@ sampleScoreHeatmap(score = sampleScore[,validated_ind],
 ## GSEA
 ```{r}
 ## RAVs containing the keyword, "neutrophil", in each GSEA result
-a <- gsea(PCAmodel)
+a <- gsea(RAVmodel)
 b <- sapply(a, function(x) {
   y <- x[order(x$NES, decreasing = TRUE),][1:3,]   # top 3 NES
   grep("neutrophil", y[["Description"]], ignore.case = TRUE)
@@ -234,7 +234,7 @@ gridExtra::grid.arrange(grobs = plots, cols = 2)
 plot <- LVScatter(dat2, paste0("RAV", 1551), 
                   y.var = "MCP_estimate",
                   ylab = "MCPcounter Neutrophil Estimate",
-                  title = "PCAmodel",
+                  title = "RAVmodel",
                   subtitle = "NARES Nasal Brushings")
 plot
 

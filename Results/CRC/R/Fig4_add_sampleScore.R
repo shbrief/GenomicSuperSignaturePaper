@@ -20,9 +20,9 @@ for (set in setNames) {
 out.dir <- paste0(wd, "_new")
 if (!dir.exists(out.dir)) {dir.create(out.dir)}
 
-### PCAmodel -------------------------------------------------------------------
+### RAVmodel -------------------------------------------------------------------
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
-PCAmodel <- readRDS(file.path(data.dir, "PCAmodel_C2.rds"))
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
 
 ### Load average loadings ------------------------------------------------------
 # Most similar to PCSS1/PCSS2 : 1575 & 834
@@ -40,9 +40,9 @@ sampleScore7 <- 596
 ## For faster computing, we used the 7 candidates RAVs instead of the whole model.
 cl_ind <- c(sampleScore1, sampleScore2, sampleScore3,
             sampleScore4, sampleScore5, sampleScore6, sampleScore7)
-avg_loadings <- model(PCAmodel)[,cl_ind]
+avg_loadings <- model(RAVmodel)[,cl_ind]
 
-### Calculate score by PCAmodel ------------------------------------------------
+### Calculate score by RAVmodel ------------------------------------------------
 for (set in setNames) {
   eSet <- get(set)
   score <- calculateScore(eSet, avg_loadings, rescale.after = TRUE)  # calculate score from selected RAVs

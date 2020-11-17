@@ -13,8 +13,8 @@ with MSigDB C2: curated gene sets. Run the below snippet from your terminal.
 git clone https://github.com/shbrief/GenomicSuperSignaturePaper.git
 cd GenomicSuperSignaturePaper/inst/extdata
 
-wget https://storage.googleapis.com/pca_genomic_signatures/PCAmodel_C2.rds
-wget https://storage.googleapis.com/pca_genomic_signatures/PCAmodel_PLIERpriors.rds
+wget https://storage.googleapis.com/genomic_super_signature/RAVmodel_C2.rds
+wget https://storage.googleapis.com/genomic_super_signature/RAVmodel_PLIERpriors.rds
 
 cd GenomicSuperSignaturePaper
 R -e 'devtools::build();devtools::install()'

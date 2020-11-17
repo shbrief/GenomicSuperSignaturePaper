@@ -3,7 +3,7 @@ out.dir <- "~/data2/PCAGenomicSignatures/inst/extdata/mini_model_building"
 
 
 ##### Select colon-associated datasets #########################################
-dir <- system.file("extdata", package = "PCAGenomicSignatures")
+dir <- system.file("extdata", package = "GenomicSuperSignature")
 load(file.path(dir, "MeSH_terms_1399refinebio.rda"))
 ind <- grep("colon|colorectal", mesh_table$name, ignore.case= TRUE)   # 70 studies
 colon_studies <- mesh_table$identifier[ind]
@@ -25,7 +25,7 @@ colonStudies <- colon_studyMeta_curated$studyName
 
 ##### 05_PCA.R #################################################################
 n <- 20   # The number PCs to keep
-dir2 <- system.file("extdata", package = "PCAGenomicSignaturesPaper")
+dir2 <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 cg <- readRDS(dir2, "topGenes_13934.rds")
 trainingDatasets <- "test"
 
@@ -101,7 +101,7 @@ save(trainingData_PCA, file = file.path(out.dir, fname))
 
 
 ##### 06_Clustering.R ##########################################################
-library(PCAGenomicSignatures)
+library(GenomicSuperSignature)
 library(factoextra)
 
 ## Combine all PCs
@@ -134,7 +134,7 @@ save(trainingData_PCclusters, file = file.path(out.dir, fname))
 
 
 ##### 07_Final_Model.R #########################################################
-library(PCAGenomicSignatures)
+library(GenomicSuperSignature)
 library(dplyr)
 
 note <- "6 colon cancer related studies/ top 20 PCs/ same genes as PCAmodel_536/ GSEA with MSigDB C2.all"
@@ -177,7 +177,7 @@ mesh(PCAmodel) <- trainingData_MeSH
 updateNote(PCAmodel) <- note
 
 ## GSEA
-library(PCAGenomicSignatures)
+library(GenomicSuperSignature)
 library(msigdbr) # packageVersion("msigdbr") was '7.1.1'
 library(clusterProfiler)
 
@@ -199,7 +199,7 @@ for (i in seq_len(ncol(PCAmodel))) {
   saveRDS(res, fpath)
 }
 
-dir <- system.file("scripts", package = "PCAGenomicSignatures")
+dir <- system.file("scripts", package = "GenomicSuperSignature")
 source(file.path(dir, "searchPathways.R"))  # load the function
 
 gsea_all <- searchPathways(PCAmodel, out_dir)
