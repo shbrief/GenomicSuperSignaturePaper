@@ -4,7 +4,7 @@ This repository contains the model building processes and the validation steps
 for [GenomicSuperSignature](https://github.com/shbrief/GenomicSuperSignature) package 
 and the accompaning manuscript.
 
-To run analyses under `Results`, you need to download the GenomicSuperSignature model 
+To run analyses under `vignettes`, you need to download the GenomicSuperSignature model 
 from Google bucket (it's free, FYI). Currently, two versions of models are available, 
 annotated with different prior gene sets. Here is how to download the model annotated 
 with MSigDB C2: curated gene sets. Run the below snippet from your terminal.
