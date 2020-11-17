@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^inst/images$
 ^inst/extdata/agreegated_metadata\.json$
+^inst/extdata/PCAmodel_*\.rds$
 ^Methods/model_building$
 ^Results/CRC/data/eSets/new$
 ^Results/CRC/data/eSets_new$
@@ -15,5 +16,4 @@
 ^_pkgdown\.yml$
 ^Neg_Controls$
 ^neutrophil_estimate\.rds$
-
 
