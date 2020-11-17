@@ -12,14 +12,14 @@ However, GenomicSuperSignature was generated from 536 heterogeneous, RNA sequenc
 datasets and used hierarchical clustering. Despite of this major differences in 
 model building process, GenomicSuperSignature could reproduce the CRC paper's result.
 
-Detail on this reproducing process is described in [CRC/CRC subtype score](https://shbrief.github.io/GenomicSuperSignaturePaper/Results/CRC/repeat_Fig4A.html) 
+Detail on this reproducing process is described in [CRC/CRC subtype score](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/repeat_Fig4A.html) 
 tab. 
 
 <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/CRC_Fig4A.png" width="300" height="300">
 <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/scatter_834_833.png" width="300" height="300">
 
 #### Clinical Variables
-Detail on this reproducing process is described in [CRC/CRC clinical variables](https://shbrief.github.io/GenomicSuperSignaturePaper/Results/CRC/repeat_Fig4C.html).
+Detail on this reproducing process is described in [CRC/CRC clinical variables](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/repeat_Fig4C.html).
 
 Below is Figure 4 from CRC paper. LRT (likelihood-ratio test) between the reference 
 full model versus either the continuous scores only model or the discrete subtypes 
@@ -48,8 +48,8 @@ built from recount2 datasets using [Pathway-level information extractor (PLIER)]
 major differences in model building process, GenomicSuperSignature could reproduce 
 the multiPLIER paper's result.
 
-Detail on this reproducing process is described in [multiPLIER/Neutrophil (SLE-WB)](https://shbrief.github.io/GenomicSuperSignaturePaper/Results/SLE-WB/repeat_Fig3_SLE-WB.html) 
-and [multiPLIER/Neutrophil (NARES)](https://shbrief.github.io/GenomicSuperSignaturePaper/Results/NARES/repeat_Fig3_NARES.html) tabs.
+Detail on this reproducing process is described in [multiPLIER/Neutrophil (SLE-WB)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/SLE-WB/repeat_Fig3_SLE-WB.html) 
+and [multiPLIER/Neutrophil (NARES)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/NARES/repeat_Fig3_NARES.html) tabs.
 
 Fig 3 from multiPLIER paper: neutrophil-associated LV, LV603 shows the positive 
 correlation with neutrophil counts/estimates of two different datasets, SLE WB 
