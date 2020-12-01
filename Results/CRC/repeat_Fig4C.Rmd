@@ -19,12 +19,11 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, eval=FALSE)
 
 # Setup
 * CRC paper actually used both training and validation datasets (total of 18)
-for Figure 4. `Fig4C_CMSvs.R` and `Fig4C_contScores.R` scripts are using only 10
-validation datasets. If you want to use all 18 datasets, block the line 11-13 of
-those scripts.   
+for Figure 4. ~~`Fig4C_CMSvs.R` and `Fig4C_contScores.R` scripts are using only 10
+validation datasets. If you want to use all 18 datasets, block the below lines in
+those scripts.~~ The current version of vignette uses all 18 studies.   
 
 ```{r eval=FALSE}
-## line 11-13
 # load("data/eSets/trainingSetNames.RData")
 # validationSetNames <- setdiff(setNames, trainingSetNames)
 # setNames <- validationSetNames

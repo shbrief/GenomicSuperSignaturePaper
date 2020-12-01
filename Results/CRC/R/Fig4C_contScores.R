@@ -13,9 +13,9 @@ library(logistf)
 
 ## Decide whether to use all 18 datasets (what CRC paper did) or only 10 validation datasets
 load(file.path("data/eSets/setNames.RData"))
-load(file.path("data/eSets/trainingSetNames.RData"))
-validationSetNames <- setdiff(setNames, trainingSetNames)
-setNames <- validationSetNames
+# load(file.path("data/eSets/trainingSetNames.RData"))
+# validationSetNames <- setdiff(setNames, trainingSetNames)
+# setNames <- validationSetNames
 
 ## Load validation samples
 for (set in setNames) {

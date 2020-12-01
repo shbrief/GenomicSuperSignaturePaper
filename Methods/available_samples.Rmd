@@ -77,7 +77,7 @@ dirNames <- list.files(download.dir)
 ind_rm <- which(dirNames %in% 
                   c("aggregated_metadata.json", "README.md", "LICENSE.TXT"))
 if (length(ind_rm) != 0) {dirNames <- dirNames[-ind_rm]}
-length(dirNames) # 6457 samples were downloaded
+length(dirNames) # 6457 studies were downloaded
 
 studyMeta <- as.data.frame(matrix(NA, nrow = length(dirNames), ncol = 3))
 colnames(studyMeta) <- c("studyName", "downloaded", "metadata") 

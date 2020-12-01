@@ -28,14 +28,17 @@ no additional information is provided by the full model.
 
 This results shows that PCSS1/2 (the second *score* column) provide additional information 
 in characterizing molecular/histological/clinical correlates than CMS (the first *subtype* column).
+
 <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/CRC_Fig4C.png" width="500" height="300">
 
 RAV834/833 also performs better than CMS subtypes.
+
 <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/boxplot_CMS_vs_834_833.png" width="500" height="300">
 
 We directly compared the performanace between PCSS and RAV. Except the tumor location 
 (the last column), RAV834/833-based model out-performed PCSS1/2-based model relative
 to the combined model.
+
 <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300">
 
 ### multiPLIER paper

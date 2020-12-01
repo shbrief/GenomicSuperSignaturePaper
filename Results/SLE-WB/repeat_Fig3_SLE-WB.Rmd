@@ -284,6 +284,7 @@ estimate_plot <- LVScatter(dat_n.estimate, paste0("RAV", 1551),
                            ylab = "MCPcounter neutrophil estimate",
                            title = "RAVmodel",
                            subtitle = "SLE WB MCPcounter")
+estimate_plot
 ```
 
 ```{r echo=FALSE}

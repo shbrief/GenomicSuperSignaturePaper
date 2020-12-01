@@ -20,15 +20,18 @@
 # git push origin gh-pages
 
 
-## For PCAGenomicSignatures package
+## For GenomicSuperSignaturePaper package
+ln -s Results vignettes   # set the soft symbolic link to make build docs
 Rscript --vanilla -e "pkgdown::build_site(lazy=TRUE)"
+rm vignettes   # remove symbolic link
 git checkout gh-pages
 git pull origin gh-pages
-mv docs/* .
+mv -f docs/* .   # need to overwrite previous 'articles' and 'reference' directories
 rm -rf docs/
 git stage *
 git reset HEAD inst/extdata/*   # large data file
 git reset HEAD Results/CRC/data/*   # large data file
 git reset HEAD Results/SLE-WB/data/*   # large data file
+git reset HEAD Results_temp/*   # temporary works
 git commit -m "update GitHub pages"
 git push origin gh-pages
