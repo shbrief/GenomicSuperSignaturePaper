@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>Reproduce multiPLIER Figure 5 - Pathway Separation</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">November 17, 2020</h4>
+            <h4 class="date">December 02, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/others/repeat_Fig5_Pathway_Separation.Rmd"><code>vignettes/others/repeat_Fig5_Pathway_Separation.Rmd</code></a></small>
       <div class="hidden name"><code>repeat_Fig5_Pathway_Separation.Rmd</code></div>
@@ -117,20 +117,20 @@
 <h1 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h1>
 <p>We benchmarked the model validation measure, named as pathway separation, Figure 5 from the previous <a href="https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub">study</a>, where authors expanded the <a href="https://www.nature.com/articles/s41592-019-0456-1">PLIER</a> method to the recount2 dataset. Briefly, pathway separation is defined as the ability of the signature model to keep non-overlapping signatures that can differentiate biologically similar pathways.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shbrief/GenomicSuperSignaturePaper">GenomicSuperSignaturePaper</a></span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shbrief/GenomicSuperSignature">GenomicSuperSignature</a></span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></pre></div>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
 <div id="ravmodel" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
 <p>To directly compare with the results from multiPLIER paper, we used the RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
 <span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"RAVmodel_PLIERpriors.rds"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">RAVmodel</span></pre></div>
+<span class="va">RAVmodel</span></code></pre></div>
 <pre><code>#&gt; class: PCAGenomicSignatures 
 #&gt; dim: 13934 4764 
 #&gt; metadata(7): cluster size ... updateNote version
@@ -141,8 +141,8 @@
 #&gt; colData names(4): RAV studies silhouetteWidth gsea
 #&gt; trainingData(2): PCAsummary MeSH
 #&gt; trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">updateNote</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">updateNote</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with 3 priors from PLIER (bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways)"</code></pre>
 </div>
 </div>
@@ -153,40 +153,40 @@
 <h2 class="hasAnchor">
 <a href="#type-i-and-type-ii-interferon" class="anchor"></a>Type I and type II interferon</h2>
 <p><code>cutoff_n</code> argument of <code>checkPathwaySeparation</code> function decides how many of the top enriched pathways are used for comparison. We tried both top 5 and only the top 1.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">ifn.alpha.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_INTERFERON_ALPHA_BETA_SIGNALING"</span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ifn.alpha.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_INTERFERON_ALPHA_BETA_SIGNALING"</span><span class="op">)</span>
 <span class="va">ifn.gamma.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_INTERFERON_GAMMA_SIGNALING"</span><span class="op">)</span>
 
 <span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">ifn.alpha.set</span>, <span class="va">ifn.gamma.set</span>, 
-                       cutoff_nes <span class="op">=</span> <span class="cn">NULL</span>, cutoff_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></pre></div>
+                       cutoff_nes <span class="op">=</span> <span class="cn">NULL</span>, cutoff_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">ifn.alpha.set</span>, <span class="va">ifn.gamma.set</span>, cutoff_n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">ifn.alpha.set</span>, <span class="va">ifn.gamma.set</span>, cutoff_n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
 </div>
 <div id="myeloid-lineage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#myeloid-lineage" class="anchor"></a>Myeloid lineage</h2>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">neutrophil.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"DMAP_GRAN3"</span>, <span class="st">"IRIS_Neutrophil-Resting"</span>, <span class="st">"SVM Neutrophils"</span><span class="op">)</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">neutrophil.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"DMAP_GRAN3"</span>, <span class="st">"IRIS_Neutrophil-Resting"</span>, <span class="st">"SVM Neutrophils"</span><span class="op">)</span>
 <span class="va">monocyte.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IRIS_Monocyte-Day0"</span>, <span class="st">"IRIS_Monocyte-Day1"</span>, 
                   <span class="st">"IRIS_Monocyte-Day7"</span>, <span class="st">"DMAP_MONO2"</span>, <span class="st">"SVM Monocytes"</span>,
                   <span class="st">"SVM Macrophages M0"</span>, <span class="st">"SVM Macrophages M1"</span>, 
                   <span class="st">"SVM Macrophages M2"</span><span class="op">)</span>
 
 <span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">neutrophil.set</span>, <span class="va">monocyte.set</span>, 
-                       cutoff_nes <span class="op">=</span> <span class="cn">NULL</span>, cutoff_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> </pre></div>
+                       cutoff_nes <span class="op">=</span> <span class="cn">NULL</span>, cutoff_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> </code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">neutrophil.set</span>, <span class="va">monocyte.set</span>, cutoff_n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">neutrophil.set</span>, <span class="va">monocyte.set</span>, cutoff_n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
 </div>
 <div id="proliferation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#proliferation" class="anchor"></a>Proliferation</h2>
 <p>Molecular processes we would associate with proliferating cells, namely the G1 and G2 phases of the cell cycle.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">g1.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_G1_S_TRANSITION"</span>, <span class="st">"REACTOME_M_G1_TRANSITION"</span>,
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">g1.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_G1_S_TRANSITION"</span>, <span class="st">"REACTOME_M_G1_TRANSITION"</span>,
             <span class="st">"REACTOME_APC_C_CDH1_MEDIATED_DEGRADATION_OF_CDC20_AND_OTHER_APC_C_CDH1_TARGETED_PROTEINS_IN_LATE_MITOSIS_EARLY_G1"</span>, 
             <span class="st">"REACTOME_CYCLIN_E_ASSOCIATED_EVENTS_DURING_G1_S_TRANSITION_"</span>, 
             <span class="st">"REACTOME_G1_PHASE"</span>, <span class="st">"REACTOME_MITOTIC_M_M_G1_PHASES"</span>,
@@ -196,13 +196,13 @@
 <span class="va">g2.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_MITOTIC_G2_G2_M_PHASES"</span>, <span class="st">"REACTOME_G2_M_CHECKPOINTS"</span><span class="op">)</span>
 
 <span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">g1.set</span>, <span class="va">g2.set</span>, 
-                       cutoff_nes <span class="op">=</span> <span class="cn">NULL</span>, cutoff_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> </pre></div>
+                       cutoff_nes <span class="op">=</span> <span class="cn">NULL</span>, cutoff_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> </code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">g1.set</span>, <span class="va">g2.set</span>, cutoff_n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/checkPathwaySeparation.html">checkPathwaySeparation</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">g1.set</span>, <span class="va">g2.set</span>, cutoff_n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; R version 4.0.3 (2020-10-10)
 #&gt; Platform: x86_64-pc-linux-gnu (64-bit)
 #&gt; Running under: Ubuntu 18.04.5 LTS
@@ -225,45 +225,45 @@
 #&gt; 
 #&gt; other attached packages:
 #&gt;  [1] dplyr_1.0.2                      GenomicSuperSignature_0.0.6     
-#&gt;  [3] SummarizedExperiment_1.19.9      Biobase_2.49.1                  
-#&gt;  [5] GenomicRanges_1.41.6             GenomeInfoDb_1.25.11            
-#&gt;  [7] IRanges_2.23.10                  S4Vectors_0.27.14               
-#&gt;  [9] BiocGenerics_0.35.4              MatrixGenerics_1.1.8            
-#&gt; [11] matrixStats_0.57.0               GenomicSuperSignaturePaper_0.0.2
-#&gt; [13] BiocStyle_2.17.2                
+#&gt;  [3] SummarizedExperiment_1.20.0      Biobase_2.50.0                  
+#&gt;  [5] GenomicRanges_1.42.0             GenomeInfoDb_1.26.1             
+#&gt;  [7] IRanges_2.24.0                   S4Vectors_0.28.0                
+#&gt;  [9] BiocGenerics_0.36.0              MatrixGenerics_1.2.0            
+#&gt; [11] matrixStats_0.57.0               GenomicSuperSignaturePaper_0.0.3
+#&gt; [13] BiocStyle_2.18.1                
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
 #&gt;  [1] bitops_1.0-6           fs_1.5.0               bit64_4.0.5           
-#&gt;  [4] httr_1.4.2             RColorBrewer_1.1-2     rprojroot_1.3-2       
-#&gt;  [7] tools_4.0.3            backports_1.1.10       R6_2.4.1              
-#&gt; [10] DBI_1.1.0              colorspace_1.4-1       GetoptLong_1.0.4      
+#&gt;  [4] httr_1.4.2             RColorBrewer_1.1-2     rprojroot_2.0.2       
+#&gt;  [7] tools_4.0.3            backports_1.2.0        R6_2.5.0              
+#&gt; [10] DBI_1.1.0              colorspace_2.0-0       GetoptLong_1.0.4      
 #&gt; [13] tidyselect_1.1.0       bit_4.0.4              curl_4.3              
-#&gt; [16] compiler_4.0.3         textshaping_0.1.2      desc_1.2.0            
-#&gt; [19] DelayedArray_0.15.16   bookdown_0.21          scales_1.1.1          
-#&gt; [22] rappdirs_0.3.1         pkgdown_1.6.1          systemfonts_0.3.2     
-#&gt; [25] stringr_1.4.0          digest_0.6.27          foreign_0.8-79        
-#&gt; [28] rmarkdown_2.5          rio_0.5.16             XVector_0.29.3        
-#&gt; [31] pkgconfig_2.0.3        htmltools_0.5.0        dbplyr_1.4.4          
-#&gt; [34] rlang_0.4.8            GlobalOptions_0.1.2    readxl_1.3.1          
-#&gt; [37] RSQLite_2.2.1          rstudioapi_0.11        shape_1.4.5           
-#&gt; [40] generics_0.0.2         zip_2.1.1              car_3.0-10            
-#&gt; [43] RCurl_1.98-1.2         magrittr_1.5           GenomeInfoDbData_1.2.4
-#&gt; [46] Matrix_1.2-18          Rcpp_1.0.5             munsell_0.5.0         
-#&gt; [49] abind_1.4-5            lifecycle_0.2.0        stringi_1.5.3         
-#&gt; [52] yaml_2.2.1             carData_3.0-4          zlibbioc_1.35.0       
-#&gt; [55] BiocFileCache_1.13.1   blob_1.2.1             grid_4.0.3            
-#&gt; [58] forcats_0.5.0          crayon_1.3.4           lattice_0.20-41       
-#&gt; [61] haven_2.3.1            circlize_0.4.10        hms_0.5.3             
-#&gt; [64] knitr_1.30             ComplexHeatmap_2.5.6   pillar_1.4.6          
-#&gt; [67] ggpubr_0.4.0           rjson_0.2.20           ggsignif_0.6.0        
-#&gt; [70] glue_1.4.2             evaluate_0.14          data.table_1.13.2     
-#&gt; [73] BiocManager_1.30.10    png_0.1-7              vctrs_0.3.4           
-#&gt; [76] cellranger_1.1.0       gtable_0.3.0           purrr_0.3.4           
-#&gt; [79] tidyr_1.1.2            clue_0.3-57            assertthat_0.2.1      
-#&gt; [82] ggplot2_3.3.2          xfun_0.18              openxlsx_4.2.2        
-#&gt; [85] broom_0.7.2            rstatix_0.6.0          ragg_0.4.0            
-#&gt; [88] tibble_3.0.4           memoise_1.1.0          cluster_2.1.0         
-#&gt; [91] ellipsis_0.3.1</code></pre>
+#&gt; [16] compiler_4.0.3         textshaping_0.2.1      Cairo_1.5-12.2        
+#&gt; [19] desc_1.2.0             DelayedArray_0.16.0    bookdown_0.21         
+#&gt; [22] scales_1.1.1           rappdirs_0.3.1         pkgdown_1.6.1         
+#&gt; [25] systemfonts_0.3.2      stringr_1.4.0          digest_0.6.27         
+#&gt; [28] foreign_0.8-79         rmarkdown_2.5          rio_0.5.16            
+#&gt; [31] XVector_0.30.0         pkgconfig_2.0.3        htmltools_0.5.0       
+#&gt; [34] dbplyr_2.0.0           rlang_0.4.9            GlobalOptions_0.1.2   
+#&gt; [37] readxl_1.3.1           RSQLite_2.2.1          rstudioapi_0.13       
+#&gt; [40] shape_1.4.5            generics_0.1.0         zip_2.1.1             
+#&gt; [43] car_3.0-10             RCurl_1.98-1.2         magrittr_2.0.1        
+#&gt; [46] GenomeInfoDbData_1.2.4 Matrix_1.2-18          Rcpp_1.0.5            
+#&gt; [49] munsell_0.5.0          abind_1.4-5            lifecycle_0.2.0       
+#&gt; [52] stringi_1.5.3          yaml_2.2.1             carData_3.0-4         
+#&gt; [55] zlibbioc_1.36.0        BiocFileCache_1.14.0   blob_1.2.1            
+#&gt; [58] grid_4.0.3             forcats_0.5.0          crayon_1.3.4          
+#&gt; [61] lattice_0.20-41        haven_2.3.1            circlize_0.4.11       
+#&gt; [64] hms_0.5.3              knitr_1.30             ComplexHeatmap_2.6.2  
+#&gt; [67] pillar_1.4.7           ggpubr_0.4.0           rjson_0.2.20          
+#&gt; [70] ggsignif_0.6.0         glue_1.4.2             evaluate_0.14         
+#&gt; [73] data.table_1.13.2      BiocManager_1.30.10    png_0.1-7             
+#&gt; [76] vctrs_0.3.5            cellranger_1.1.0       gtable_0.3.0          
+#&gt; [79] purrr_0.3.4            tidyr_1.1.2            clue_0.3-57           
+#&gt; [82] assertthat_0.2.1       ggplot2_3.3.2          xfun_0.19             
+#&gt; [85] openxlsx_4.2.3         broom_0.7.2            rstatix_0.6.0         
+#&gt; [88] ragg_0.4.0             tibble_3.0.4           memoise_1.1.0         
+#&gt; [91] cluster_2.1.0          ellipsis_0.3.1</code></pre>
 </div>
 </div>
   </div>
