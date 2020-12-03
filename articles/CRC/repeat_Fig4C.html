@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>Repeat CRC paper’s Figure 4C</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2020-11-17</h4>
+            <h4 class="date">2020-12-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/repeat_Fig4C.Rmd"><code>vignettes/CRC/repeat_Fig4C.Rmd</code></a></small>
       <div class="hidden name"><code>repeat_Fig4C.Rmd</code></div>
@@ -117,13 +117,12 @@
 <h1 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h1>
 <ul>
-<li>CRC paper actually used both training and validation datasets (total of 18) for Figure 4. <code>Fig4C_CMSvs.R</code> and <code>Fig4C_contScores.R</code> scripts are using only 10 validation datasets. If you want to use all 18 datasets, block the line 11-13 of those scripts.</li>
+<li>CRC paper actually used both training and validation datasets (total of 18) for Figure 4. <del><code>Fig4C_CMSvs.R</code> and <code>Fig4C_contScores.R</code> scripts are using only 10 validation datasets. If you want to use all 18 datasets, block the below lines in those scripts.</del> The current version of vignette uses all 18 studies.</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co">## line 11-13</span>
-<span class="co"># load("data/eSets/trainingSetNames.RData")</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load("data/eSets/trainingSetNames.RData")</span>
 <span class="co"># validationSetNames &lt;- setdiff(setNames, trainingSetNames)</span>
-<span class="co"># setNames &lt;- validationSetNames</span></pre></div>
+<span class="co"># setNames &lt;- validationSetNames</span></code></pre></div>
 <ul>
 <li><p>Fig4C_CMSvs.R script requires three environmental variables set before running: <code>m2_name</code> (column name for the model to be compared to CMS), <code>m2_1</code> and <code>m2_2</code> (names of the two model variables that form the group to be compared to CMS)</p></li>
 <li><p>Fig4C_contScores.R script requires six environmental variables set before running: <code>m1_name</code>, <code>m1_1</code>, <code>m1_2</code> for one model, <code>m2_name</code>, <code>m2_1</code>, <code>m2_2</code> for the other.</p></li>
@@ -135,39 +134,39 @@
 <div id="cms-vs--pcss12" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cms-vs--pcss12" class="anchor"></a>CMS vs. PCSS1/2</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></pre></div>
+<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="repeat_Fig4C_files/figure-html/unnamed-chunk-2-1.png" width="480"></p>
 </div>
 <div id="cms-vs--rav1575834" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cms-vs--rav1575834" class="anchor"></a>CMS vs. RAV1575/834</h2>
 <p>RAV1575/834 are the most similar PCclsuters to PCSS1/2, respectively, based on Pearson correlation.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV1575"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></pre></div>
+<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="repeat_Fig4C_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
 </div>
 <div id="cms-vs--rav834833" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cms-vs--rav834833" class="anchor"></a>CMS vs. RAV834/833</h2>
 <p>RAV834/833 have the largest r-squared score when we compared the samples scores against the metadata, CMS.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV833"</span>
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></pre></div>
+<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="repeat_Fig4C_files/figure-html/unnamed-chunk-6-1.png" width="480"></p>
 </div>
 </div>
@@ -177,8 +176,8 @@
 <div id="pcss-vs--rav1575834" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcss-vs--rav1575834" class="anchor"></a>PCSS vs. RAV1575/834</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
@@ -186,15 +185,15 @@
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></pre></div>
+<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="repeat_Fig4C_files/figure-html/unnamed-chunk-8-1.png" width="480"></p>
 </div>
 <div id="pcss-vs--rav834833" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcss-vs--rav834833" class="anchor"></a>PCSS vs. RAV834/833</h2>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
@@ -202,16 +201,16 @@
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV833"</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 44 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 44 rows containing missing values (geom_point).</span></pre></div>
+<span class="co">## Warning: Removed 82 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 82 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="repeat_Fig4C_files/figure-html/unnamed-chunk-10-1.png" width="480"></p>
 </div>
 <div id="pcss-vs--rav8343290" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcss-vs--rav8343290" class="anchor"></a>PCSS vs. RAV834/3290</h2>
 <p>RAV3290 is associated with “stage” metadata of CRC datasets.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
@@ -219,16 +218,16 @@
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV3290"</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></pre></div>
+<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="repeat_Fig4C_files/figure-html/unnamed-chunk-12-1.png" width="480"></p>
 </div>
 <div id="pcss-vs--rav834596" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcss-vs--rav834596" class="anchor"></a>PCSS vs. RAV834/596</h2>
 <p>RAV596 is associated with “grade” metadata of CRC datasets.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
@@ -236,16 +235,16 @@
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV596"</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 44 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 44 rows containing missing values (geom_point).</span></pre></div>
+<span class="co">## Warning: Removed 84 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 84 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="repeat_Fig4C_files/figure-html/unnamed-chunk-14-1.png" width="480"></p>
 </div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## R version 4.0.3 (2020-10-10)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 18.04.5 LTS</span>
@@ -271,33 +270,33 @@
 <span class="co">##  [4] survival_3.2-7      forcats_0.5.0       stringr_1.4.0      </span>
 <span class="co">##  [7] dplyr_1.0.2         purrr_0.3.4         readr_1.4.0        </span>
 <span class="co">## [10] tidyr_1.1.2         tibble_3.0.4        ggplot2_3.3.2      </span>
-<span class="co">## [13] tidyverse_1.3.0     Biobase_2.49.1      BiocGenerics_0.35.4</span>
-<span class="co">## [16] BiocStyle_2.17.2   </span>
+<span class="co">## [13] tidyverse_1.3.0     Biobase_2.50.0      BiocGenerics_0.36.0</span>
+<span class="co">## [16] BiocStyle_2.18.1   </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##  [1] httr_1.4.2           jsonlite_1.7.1       splines_4.0.3       </span>
 <span class="co">##  [4] modelr_0.1.8         assertthat_0.2.1     BiocManager_1.30.10 </span>
-<span class="co">##  [7] blob_1.2.1           cellranger_1.1.0     yaml_2.2.1          </span>
-<span class="co">## [10] pillar_1.4.6         backports_1.1.10     lattice_0.20-41     </span>
-<span class="co">## [13] glue_1.4.2           digest_0.6.27        rvest_0.3.6         </span>
-<span class="co">## [16] colorspace_1.4-1     htmltools_0.5.0      pkgconfig_2.0.3     </span>
-<span class="co">## [19] broom_0.7.2          haven_2.3.1          bookdown_0.21       </span>
-<span class="co">## [22] scales_1.1.1         mgcv_1.8-33          farver_2.0.3        </span>
-<span class="co">## [25] generics_0.0.2       ellipsis_0.3.1       withr_2.3.0         </span>
-<span class="co">## [28] formula.tools_1.7.1  cli_2.1.0            magrittr_1.5        </span>
-<span class="co">## [31] crayon_1.3.4         readxl_1.3.1         memoise_1.1.0       </span>
-<span class="co">## [34] evaluate_0.14        mice_3.11.0          fs_1.5.0            </span>
-<span class="co">## [37] fansi_0.4.1          operator.tools_1.6.3 nlme_3.1-150        </span>
-<span class="co">## [40] xml2_1.3.2           textshaping_0.1.2    tools_4.0.3         </span>
-<span class="co">## [43] hms_0.5.3            lifecycle_0.2.0      munsell_0.5.0       </span>
-<span class="co">## [46] reprex_0.3.0         compiler_4.0.3       pkgdown_1.6.1       </span>
-<span class="co">## [49] systemfonts_0.3.2    rlang_0.4.8          grid_4.0.3          </span>
-<span class="co">## [52] rstudioapi_0.11      labeling_0.4.2       rmarkdown_2.5       </span>
-<span class="co">## [55] gtable_0.3.0         DBI_1.1.0            R6_2.4.1            </span>
-<span class="co">## [58] lubridate_1.7.9      knitr_1.30           rprojroot_1.3-2     </span>
-<span class="co">## [61] ragg_0.4.0           desc_1.2.0           stringi_1.5.3       </span>
-<span class="co">## [64] Rcpp_1.0.5           vctrs_0.3.4          dbplyr_1.4.4        </span>
-<span class="co">## [67] tidyselect_1.1.0     xfun_0.18</span></pre></div>
+<span class="co">##  [7] cellranger_1.1.0     yaml_2.2.1           pillar_1.4.7        </span>
+<span class="co">## [10] backports_1.2.0      lattice_0.20-41      glue_1.4.2          </span>
+<span class="co">## [13] digest_0.6.27        rvest_0.3.6          colorspace_2.0-0    </span>
+<span class="co">## [16] htmltools_0.5.0      pkgconfig_2.0.3      broom_0.7.2         </span>
+<span class="co">## [19] haven_2.3.1          bookdown_0.21        scales_1.1.1        </span>
+<span class="co">## [22] mgcv_1.8-33          farver_2.0.3         generics_0.1.0      </span>
+<span class="co">## [25] ellipsis_0.3.1       withr_2.3.0          formula.tools_1.7.1 </span>
+<span class="co">## [28] cli_2.2.0            magrittr_2.0.1       crayon_1.3.4        </span>
+<span class="co">## [31] readxl_1.3.1         memoise_1.1.0        evaluate_0.14       </span>
+<span class="co">## [34] mice_3.12.0          fs_1.5.0             fansi_0.4.1         </span>
+<span class="co">## [37] operator.tools_1.6.3 nlme_3.1-150         xml2_1.3.2          </span>
+<span class="co">## [40] textshaping_0.2.1    tools_4.0.3          hms_0.5.3           </span>
+<span class="co">## [43] lifecycle_0.2.0      munsell_0.5.0        reprex_0.3.0        </span>
+<span class="co">## [46] compiler_4.0.3       pkgdown_1.6.1        systemfonts_0.3.2   </span>
+<span class="co">## [49] rlang_0.4.9          grid_4.0.3           rstudioapi_0.13     </span>
+<span class="co">## [52] labeling_0.4.2       rmarkdown_2.5        gtable_0.3.0        </span>
+<span class="co">## [55] DBI_1.1.0            R6_2.5.0             lubridate_1.7.9.2   </span>
+<span class="co">## [58] knitr_1.30           rprojroot_2.0.2      ragg_0.4.0          </span>
+<span class="co">## [61] desc_1.2.0           stringi_1.5.3        Rcpp_1.0.5          </span>
+<span class="co">## [64] vctrs_0.3.5          dbplyr_2.0.0         tidyselect_1.1.0    </span>
+<span class="co">## [67] xfun_0.19</span></code></pre></div>
 </div>
   </div>
 

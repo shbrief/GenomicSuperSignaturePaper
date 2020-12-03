@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1 data-toc-skip>Reproduce multiPLIER Figure 3 - NARES</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">November 17, 2020</h4>
+            <h4 class="date">December 02, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/NARES/repeat_Fig3_NARES.Rmd"><code>vignettes/NARES/repeat_Fig3_NARES.Rmd</code></a></small>
       <div class="hidden name"><code>repeat_Fig3_NARES.Rmd</code></div>
@@ -121,10 +121,10 @@
 <h2 class="hasAnchor">
 <a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
 <p>To directly compare with the results from multiPLIER paper, we used the RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
 <span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"RAVmodel_PLIERpriors.rds"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">RAVmodel</span></pre></div>
+<span class="va">RAVmodel</span></code></pre></div>
 <pre><code>#&gt; class: PCAGenomicSignatures 
 #&gt; dim: 13934 4764 
 #&gt; metadata(7): cluster size ... updateNote version
@@ -135,8 +135,8 @@
 #&gt; colData names(4): RAV studies silhouetteWidth gsea
 #&gt; trainingData(2): PCAsummary MeSH
 #&gt; trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu">updateNote</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">updateNote</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with 3 priors from PLIER (bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways)"</code></pre>
 </div>
 <div id="nares-nasal-brushings" class="section level2">
@@ -152,8 +152,8 @@
 <h3 class="hasAnchor">
 <a href="#expression-data" class="anchor"></a>Expression data</h3>
 <p>NARES (Grayson et al., 2015) is a nasal brushing microarray dataset that includes patients with ANCA-associated vasculitis, patients with sarcoidosis and healthy controls among other groups and was projected into the MultiPLIER latent space.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">exprs</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="st">"data/NARES_SCANfast_ComBat_with_GeneSymbol.pcl"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">exprs</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="st">"data/NARES_SCANfast_ComBat_with_GeneSymbol.pcl"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="va">as.data.frame</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">exprs</span><span class="op">$</span><span class="va">GeneSymbol</span>
@@ -161,7 +161,7 @@
 <span class="va">dataset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>
 <span class="co">#&gt;            N1004       N1007        N1017       N1025</span>
 <span class="co">#&gt; A1BG  0.05641348  0.06333364  0.001833597 -0.05897817</span>
-<span class="co">#&gt; NAT2 -0.14980276 -0.09186388 -0.093684629 -0.06080664</span></pre></div>
+<span class="co">#&gt; NAT2 -0.14980276 -0.09186388 -0.093684629 -0.06080664</span></code></pre></div>
 </div>
 <div id="mcpcounter" class="section level3">
 <h3 class="hasAnchor">
@@ -171,20 +171,20 @@
 <div id="install-mcpcounter" class="section level4">
 <h4 class="hasAnchor">
 <a href="#install-mcpcounter" class="anchor"></a>Install MCPcounter</h4>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"ebecht/MCPcounter"</span>, 
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"ebecht/MCPcounter"</span>, 
                          ref <span class="op">=</span> <span class="st">"a79614eee002c88c64725d69140c7653e7c379b4"</span>,
                          subdir <span class="op">=</span> <span class="st">"Source"</span>,
-                         dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+                         dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="run-mcpcounter" class="section level4">
 <h4 class="hasAnchor">
 <a href="#run-mcpcounter" class="anchor"></a>Run MCPcounter</h4>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">mcp.results</span> <span class="op">&lt;-</span> <span class="fu">MCPcounter</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MCPcounter/man/MCPcounter.estimate.html">MCPcounter.estimate</a></span><span class="op">(</span><span class="va">exprs.mat</span>, featuresType <span class="op">=</span> <span class="st">"HUGO_symbols"</span><span class="op">)</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mcp.results</span> <span class="op">&lt;-</span> <span class="fu">MCPcounter</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MCPcounter/man/MCPcounter.estimate.html">MCPcounter.estimate</a></span><span class="op">(</span><span class="va">exprs.mat</span>, featuresType <span class="op">=</span> <span class="st">"HUGO_symbols"</span><span class="op">)</span>
 <span class="va">mcp.melt</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html">melt</a></span><span class="op">(</span><span class="va">mcp.results</span>, varnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Cell_type"</span>, <span class="st">"Sample"</span><span class="op">)</span>,
                            value.name <span class="op">=</span> <span class="st">"MCP_estimate"</span><span class="op">)</span>
-<span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_tsv</a></span><span class="op">(</span><span class="va">mcp.melt</span>, <span class="st">"data/NARES_ComBat_MCPCounter_results_tidy.tsv"</span><span class="op">)</span></pre></div>
+<span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_tsv</a></span><span class="op">(</span><span class="va">mcp.melt</span>, <span class="st">"data/NARES_ComBat_MCPCounter_results_tidy.tsv"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -195,14 +195,14 @@
 <div id="validation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#validation" class="anchor"></a>Validation</h2>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">val_all</span> <span class="op">&lt;-</span> <span class="fu">validate</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span> 
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">val_all</span> <span class="op">&lt;-</span> <span class="fu">validate</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span> 
 <span class="va">validated_ind</span> <span class="op">&lt;-</span> <span class="fu">validatedSignatures</span><span class="op">(</span><span class="va">val_all</span>, num.out <span class="op">=</span> <span class="fl">5</span>, swCutoff <span class="op">=</span> <span class="fl">0</span>, indexOnly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">heatmapTable</span><span class="op">(</span><span class="va">val_all</span>, num.out <span class="op">=</span> <span class="fl">5</span>, swCutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></pre></div>
+<span class="fu">heatmapTable</span><span class="op">(</span><span class="va">val_all</span>, num.out <span class="op">=</span> <span class="fl">5</span>, swCutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="repeat_Fig3_NARES_files/figure-html/unnamed-chunk-7-1.png" width="384"></p>
 <p>RAV1551, neutrophil-associated RAV based on SLE-WB dataset, is not found in the top 5 validated RAVs of NARES dataset.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">ordered</span> <span class="op">&lt;-</span> <span class="va">val_all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">val_all</span><span class="op">$</span><span class="va">score</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,<span class="op">]</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ordered</span> <span class="op">&lt;-</span> <span class="va">val_all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">val_all</span><span class="op">$</span><span class="va">score</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,<span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">ordered</span><span class="op">)</span> <span class="op">==</span> <span class="st">"RAV1551"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 14</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">val_all</span>, <span class="fl">15</span><span class="op">)</span>
@@ -221,19 +221,19 @@
 <span class="co">#&gt; RAV12 0.06660118  4 -0.0124374734       2     12</span>
 <span class="co">#&gt; RAV13 0.05467661  5 -0.0413567953       2     13</span>
 <span class="co">#&gt; RAV14 0.08154098  1 -0.0052718393       2     14</span>
-<span class="co">#&gt; RAV15 0.14641620  3 -0.0047557574       3     15</span></pre></div>
+<span class="co">#&gt; RAV15 0.14641620  3 -0.0047557574       3     15</span></code></pre></div>
 </div>
 <div id="sample-score" class="section level2">
 <h2 class="hasAnchor">
 <a href="#sample-score" class="anchor"></a>Sample score</h2>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">sampleScore</span> <span class="op">&lt;-</span> <span class="fu">calculateScore</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sampleScore</span> <span class="op">&lt;-</span> <span class="fu">calculateScore</span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="gsea" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gsea" class="anchor"></a>GSEA</h2>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co">## RAVs containing the keyword, "neutrophil", in each GSEA result</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## RAVs containing the keyword, "neutrophil", in each GSEA result</span>
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">gsea</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">a</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">NES</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,<span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span>   <span class="co"># top 3 NES</span>
@@ -251,7 +251,7 @@
 <span class="co">#&gt;       7     147     172     216     560    1551    1730    1917    2530    2667 </span>
 <span class="co">#&gt; RAV2745 </span>
 <span class="co">#&gt;    2745</span>
-<span class="va">sig_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">c</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.numeric</span></pre></div>
+<span class="va">sig_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">c</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.numeric</span></code></pre></div>
 </div>
 </div>
 <div id="interpret-score" class="section level1">
@@ -261,8 +261,8 @@
 <h2 class="hasAnchor">
 <a href="#validated-ravs" class="anchor"></a>Validated RAVs</h2>
 <p>Here, we tested the association between neutrophil count estimate of NARES data against scores from validated RAVs.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="co">## Remove Sample category "gene"</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Remove Sample category "gene"</span>
 <span class="va">gene_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">mcp.melt</span><span class="op">$</span><span class="va">Sample</span> <span class="op">==</span> <span class="st">"Gene"</span><span class="op">)</span>
 <span class="va">mcp.melt</span> <span class="op">&lt;-</span> <span class="va">mcp.melt</span><span class="op">[</span><span class="op">-</span><span class="va">gene_ind</span>,<span class="op">]</span>
 
@@ -283,10 +283,10 @@
 <span class="co">#&gt;         RAV21</span>
 <span class="co">#&gt; 1  0.08009604</span>
 <span class="co">#&gt; 2  1.16034294</span>
-<span class="co">#&gt; 3 -0.71583837</span></pre></div>
+<span class="co">#&gt; 3 -0.71583837</span></code></pre></div>
 <p>RAV1551 wasn’t recovered and the most of the validated RAVs show a weak correlation with neutrophil-count estimate, implying that neutrophil count is not a major feature of the NARES dataset.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">validated_ind</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/LVScatter.html">LVScatter</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="va">validated_ind</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>, 
                     y.var <span class="op">=</span> <span class="st">"MCP_estimate"</span>,
@@ -294,15 +294,15 @@
   <span class="va">plots</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">plot</span>
 <span class="op">}</span>
 
-<span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span>grobs <span class="op">=</span> <span class="va">plots</span>, cols <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
+<span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span>grobs <span class="op">=</span> <span class="va">plots</span>, cols <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="repeat_Fig3_NARES_files/figure-html/unnamed-chunk-12-1.png" width="576"></p>
 </div>
 <div id="significant-ravs-from-gsea" class="section level2">
 <h2 class="hasAnchor">
 <a href="#significant-ravs-from-gsea" class="anchor"></a>Significant RAVs from GSEA</h2>
 <p>Object <code>dat2</code> is a data frame with neutrophil-estimate from MCPcounter and scores assigned by significant RAVs selected by GSEA.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="co">## Subset sampleScore to join with MCPcounter</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Subset sampleScore to join with MCPcounter</span>
 <span class="va">sampleScore_sub2</span> <span class="op">&lt;-</span> <span class="va">sampleScore</span><span class="op">[</span>,<span class="va">sig_ind</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="va">as.data.frame</span>
 <span class="va">sampleScore_sub2</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames_to_column</a></span><span class="op">(</span><span class="va">sampleScore_sub2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">sampleScore_sub2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Sample"</span>
@@ -319,9 +319,9 @@
 <span class="co">#&gt;       RAV560     RAV1551    RAV1730    RAV1917    RAV2530    RAV2667   RAV2745</span>
 <span class="co">#&gt; 1  0.5442089 -0.09409653  1.1431430 -0.3368281 -0.3727521  0.2832317 0.7815207</span>
 <span class="co">#&gt; 2 -1.9521744  1.91008170 -0.8570011  2.0495807  2.1782371 -2.7525391 0.1127065</span>
-<span class="co">#&gt; 3  1.1191780 -0.92446139  0.2169728 -0.9805265 -0.9231144  0.2927935 0.7343962</span></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; 3  1.1191780 -0.92446139  0.2169728 -0.9805265 -0.9231144  0.2927935 0.7343962</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">sig_ind</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/LVScatter.html">LVScatter</a></span><span class="op">(</span><span class="va">dat2</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="va">sig_ind</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>, 
                     y.var <span class="op">=</span> <span class="st">"MCP_estimate"</span>,
@@ -329,15 +329,15 @@
   <span class="va">plots</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">plot</span>
 <span class="op">}</span>
 
-<span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span>grobs <span class="op">=</span> <span class="va">plots</span>, cols <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
+<span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span>grobs <span class="op">=</span> <span class="va">plots</span>, cols <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="repeat_Fig3_NARES_files/figure-html/unnamed-chunk-14-1.png" width="864"></p>
 </div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; R version 4.0.3 (2020-10-10)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">#&gt; Running under: Ubuntu 18.04.5 LTS</span>
@@ -359,49 +359,49 @@
 <span class="co">#&gt;  [8] datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt;  [1] ComplexHeatmap_2.5.6             RColorBrewer_1.1-2              </span>
-<span class="co">#&gt;  [3] dplyr_1.0.2                      GenomicSuperSignaturePaper_0.0.2</span>
-<span class="co">#&gt;  [5] GenomicSuperSignature_0.0.6      SummarizedExperiment_1.19.9     </span>
-<span class="co">#&gt;  [7] Biobase_2.49.1                   GenomicRanges_1.41.6            </span>
-<span class="co">#&gt;  [9] GenomeInfoDb_1.25.11             IRanges_2.23.10                 </span>
-<span class="co">#&gt; [11] S4Vectors_0.27.14                BiocGenerics_0.35.4             </span>
-<span class="co">#&gt; [13] MatrixGenerics_1.1.8             matrixStats_0.57.0              </span>
-<span class="co">#&gt; [15] BiocStyle_2.17.2                </span>
+<span class="co">#&gt;  [1] ComplexHeatmap_2.6.2             RColorBrewer_1.1-2              </span>
+<span class="co">#&gt;  [3] dplyr_1.0.2                      GenomicSuperSignaturePaper_0.0.3</span>
+<span class="co">#&gt;  [5] GenomicSuperSignature_0.0.6      SummarizedExperiment_1.20.0     </span>
+<span class="co">#&gt;  [7] Biobase_2.50.0                   GenomicRanges_1.42.0            </span>
+<span class="co">#&gt;  [9] GenomeInfoDb_1.26.1              IRanges_2.24.0                  </span>
+<span class="co">#&gt; [11] S4Vectors_0.28.0                 BiocGenerics_0.36.0             </span>
+<span class="co">#&gt; [13] MatrixGenerics_1.2.0             matrixStats_0.57.0              </span>
+<span class="co">#&gt; [15] BiocStyle_2.18.1                </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] colorspace_1.4-1       ggsignif_0.6.0         rjson_0.2.20          </span>
-<span class="co">#&gt;  [4] ellipsis_0.3.1         rio_0.5.16             rprojroot_1.3-2       </span>
-<span class="co">#&gt;  [7] circlize_0.4.10        XVector_0.29.3         GlobalOptions_0.1.2   </span>
-<span class="co">#&gt; [10] fs_1.5.0               clue_0.3-57            rstudioapi_0.11       </span>
+<span class="co">#&gt;  [1] colorspace_2.0-0       ggsignif_0.6.0         rjson_0.2.20          </span>
+<span class="co">#&gt;  [4] ellipsis_0.3.1         rio_0.5.16             rprojroot_2.0.2       </span>
+<span class="co">#&gt;  [7] circlize_0.4.11        XVector_0.30.0         GlobalOptions_0.1.2   </span>
+<span class="co">#&gt; [10] fs_1.5.0               clue_0.3-57            rstudioapi_0.13       </span>
 <span class="co">#&gt; [13] farver_2.0.3           ggpubr_0.4.0           bit64_4.0.5           </span>
 <span class="co">#&gt; [16] fansi_0.4.1            splines_4.0.3          knitr_1.30            </span>
-<span class="co">#&gt; [19] broom_0.7.2            cluster_2.1.0          dbplyr_1.4.4          </span>
-<span class="co">#&gt; [22] png_0.1-7              BiocManager_1.30.10    readr_1.4.0           </span>
-<span class="co">#&gt; [25] compiler_4.0.3         httr_1.4.2             backports_1.1.10      </span>
-<span class="co">#&gt; [28] assertthat_0.2.1       Matrix_1.2-18          cli_2.1.0             </span>
-<span class="co">#&gt; [31] htmltools_0.5.0        tools_4.0.3            gtable_0.3.0          </span>
-<span class="co">#&gt; [34] glue_1.4.2             GenomeInfoDbData_1.2.4 rappdirs_0.3.1        </span>
-<span class="co">#&gt; [37] Rcpp_1.0.5             carData_3.0-4          cellranger_1.1.0      </span>
-<span class="co">#&gt; [40] pkgdown_1.6.1          vctrs_0.3.4            nlme_3.1-150          </span>
-<span class="co">#&gt; [43] xfun_0.18              stringr_1.4.0          openxlsx_4.2.2        </span>
-<span class="co">#&gt; [46] lifecycle_0.2.0        rstatix_0.6.0          zlibbioc_1.35.0       </span>
-<span class="co">#&gt; [49] scales_1.1.1           ragg_0.4.0             hms_0.5.3             </span>
-<span class="co">#&gt; [52] yaml_2.2.1             curl_4.3               memoise_1.1.0         </span>
-<span class="co">#&gt; [55] gridExtra_2.3          ggplot2_3.3.2          stringi_1.5.3         </span>
-<span class="co">#&gt; [58] RSQLite_2.2.1          desc_1.2.0             zip_2.1.1             </span>
-<span class="co">#&gt; [61] shape_1.4.5            rlang_0.4.8            pkgconfig_2.0.3       </span>
-<span class="co">#&gt; [64] systemfonts_0.3.2      bitops_1.0-6           evaluate_0.14         </span>
-<span class="co">#&gt; [67] lattice_0.20-41        purrr_0.3.4            labeling_0.4.2        </span>
-<span class="co">#&gt; [70] bit_4.0.4              tidyselect_1.1.0       magrittr_1.5          </span>
-<span class="co">#&gt; [73] bookdown_0.21          R6_2.4.1               magick_2.5.0          </span>
-<span class="co">#&gt; [76] generics_0.0.2         DelayedArray_0.15.16   DBI_1.1.0             </span>
-<span class="co">#&gt; [79] pillar_1.4.6           haven_2.3.1            foreign_0.8-79        </span>
-<span class="co">#&gt; [82] mgcv_1.8-33            abind_1.4-5            RCurl_1.98-1.2        </span>
-<span class="co">#&gt; [85] tibble_3.0.4           crayon_1.3.4           car_3.0-10            </span>
-<span class="co">#&gt; [88] BiocFileCache_1.13.1   rmarkdown_2.5          GetoptLong_1.0.4      </span>
-<span class="co">#&gt; [91] readxl_1.3.1           data.table_1.13.2      blob_1.2.1            </span>
-<span class="co">#&gt; [94] forcats_0.5.0          digest_0.6.27          tidyr_1.1.2           </span>
-<span class="co">#&gt; [97] textshaping_0.1.2      munsell_0.5.0</span></pre></div>
+<span class="co">#&gt; [19] Cairo_1.5-12.2         broom_0.7.2            cluster_2.1.0         </span>
+<span class="co">#&gt; [22] dbplyr_2.0.0           png_0.1-7              BiocManager_1.30.10   </span>
+<span class="co">#&gt; [25] readr_1.4.0            compiler_4.0.3         httr_1.4.2            </span>
+<span class="co">#&gt; [28] backports_1.2.0        assertthat_0.2.1       Matrix_1.2-18         </span>
+<span class="co">#&gt; [31] cli_2.2.0              htmltools_0.5.0        tools_4.0.3           </span>
+<span class="co">#&gt; [34] gtable_0.3.0           glue_1.4.2             GenomeInfoDbData_1.2.4</span>
+<span class="co">#&gt; [37] rappdirs_0.3.1         Rcpp_1.0.5             carData_3.0-4         </span>
+<span class="co">#&gt; [40] cellranger_1.1.0       pkgdown_1.6.1          vctrs_0.3.5           </span>
+<span class="co">#&gt; [43] nlme_3.1-150           xfun_0.19              stringr_1.4.0         </span>
+<span class="co">#&gt; [46] openxlsx_4.2.3         lifecycle_0.2.0        rstatix_0.6.0         </span>
+<span class="co">#&gt; [49] zlibbioc_1.36.0        scales_1.1.1           ragg_0.4.0            </span>
+<span class="co">#&gt; [52] hms_0.5.3              yaml_2.2.1             curl_4.3              </span>
+<span class="co">#&gt; [55] memoise_1.1.0          gridExtra_2.3          ggplot2_3.3.2         </span>
+<span class="co">#&gt; [58] stringi_1.5.3          RSQLite_2.2.1          desc_1.2.0            </span>
+<span class="co">#&gt; [61] zip_2.1.1              shape_1.4.5            rlang_0.4.9           </span>
+<span class="co">#&gt; [64] pkgconfig_2.0.3        systemfonts_0.3.2      bitops_1.0-6          </span>
+<span class="co">#&gt; [67] evaluate_0.14          lattice_0.20-41        purrr_0.3.4           </span>
+<span class="co">#&gt; [70] labeling_0.4.2         bit_4.0.4              tidyselect_1.1.0      </span>
+<span class="co">#&gt; [73] magrittr_2.0.1         bookdown_0.21          R6_2.5.0              </span>
+<span class="co">#&gt; [76] magick_2.5.2           generics_0.1.0         DelayedArray_0.16.0   </span>
+<span class="co">#&gt; [79] DBI_1.1.0              pillar_1.4.7           haven_2.3.1           </span>
+<span class="co">#&gt; [82] foreign_0.8-79         mgcv_1.8-33            abind_1.4-5           </span>
+<span class="co">#&gt; [85] RCurl_1.98-1.2         tibble_3.0.4           crayon_1.3.4          </span>
+<span class="co">#&gt; [88] car_3.0-10             BiocFileCache_1.14.0   rmarkdown_2.5         </span>
+<span class="co">#&gt; [91] GetoptLong_1.0.4       readxl_1.3.1           data.table_1.13.2     </span>
+<span class="co">#&gt; [94] blob_1.2.1             forcats_0.5.0          digest_0.6.27         </span>
+<span class="co">#&gt; [97] tidyr_1.1.2            textshaping_0.2.1      munsell_0.5.0</span></code></pre></div>
 </div>
   </div>
 
