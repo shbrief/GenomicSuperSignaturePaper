@@ -53,3 +53,4 @@ vignettes/SLE-WB/data/*
 Results/SLE-WB/data/*
 Results/SLE-WB/outputs/neutrophil_estimate.rds
 Results/TCGA/data/PCAmodel_C2_*
+SRAmetadb*

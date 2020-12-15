@@ -246,9 +246,91 @@ studyMeta$PCAmodel_536 <- FALSE
 studyMeta$PCAmodel_536[ind_536] <- TRUE 
 ```
 
-```{r}
+# Compare to multiPLIER training datasets
+```{r accession, echo=FALSE, eval=FALSE}
+## Table with sample and run information
+dir <- system.file("extdata", package = "GenomicSuperSignature")
+studyMeta <- read.table(file.path(dir, "studyMeta.tsv"), header = TRUE)
+
+ind <- which(studyMeta$PCAmodel_536 == "TRUE")
+studies <- vector(mode = "list", length = 536)
+names(studies) <- studyMeta$studyName[ind]
+
+## Samples actually downloaded and used for the current model buildling
+download.dir2 <- "/nobackup/16tb_b/GenomicSignatures/refinebio/rna_seq_v2"
+for (i in seq_along(studies)) {
+  study_name <- names(studies)[i]
+  dir_path <- file.path(download.dir2, study_name, 
+                        paste0(study_name, "_count.csv"))
+  sample_name <- read.csv(dir_path) %>%
+    colnames(.) %>%
+    stringr::str_split(., "\\.")  %>% 
+    unlist
+  
+  studies[[study_name]] <- sample_name
+}
+
+res <- stack(studies)
+res$source <- NA
+colnames(res) <- c("run_accession", "study_accession", "source")
+
+## RNAseq datasets downloaded from refine.bio
+json_file <- "/nobackup/16tb_b/refinebio/rna_seq/aggregated_metadata.json"
+refinebio_meta <- rjson::fromJSON(paste(readLines(json_file), collapse=""))
+sample_meta <- refinebio_meta$samples
+
+for (i in 1:nrow(res)) {
+  run_accession <- res$run[i]
+  ind <- which(names(sample_meta) == run_accession)
+  # res$sample[i] <- sample_meta[[ind]]$refinebio_title
+  res$source[i] <- sample_meta[[ind]]$refinebio_source_database
+}
+
+## All accessions from `GenomicSuperSignaturePaper/Results_temp/Training_Datasets.Rmd`
+x <- readRDS("~/data2/GenomicSuperSignaturePaper/Results_temp/trainingData_accessions.rds")
+res_all <- dplyr::inner_join(res[,c("run_accession", "source")],
+                              x, by = "run_accession")
+
+## Table with study and run accessions
+saveRDS(res_all, "accessions.rds")  
+```
+
+```{r eval=TRUE}
+## Training data used for GenomicSuperSignature
+res_all <- readRDS("accessions.rds")
+
+## Training data used for multiPLIER
+recount2 <- read.table("https://raw.githubusercontent.com/greenelab/multi-plier/master/data/sample_info/recount2_srr_srs_srp.tsv", header = TRUE)
+
+head(res_all, 3)
+head(recount2, 3)
+```
+
+```{r echo=FALSE, eval=TRUE}
+## multiPLIER training data
+a <- length(unique(recount2$sample))
+b <- length(unique(recount2$study))
+
+## GenomicSupersignature training data
+c <- length(unique(res_all$sample_accession))
+d <- length(unique(res_all$study))
+
+## Overlapping training data
+e <- length(intersect(unique(recount2$sample), unique(res_all$sample_accession)))
+f <- length(intersect(unique(recount2$study), unique(res_all$study)))
+```
+
+1. multiPLIER used `r a` unique runs from `r b` studies.   
+2. GenomicSuperSignature used `r c` unique runs from `r d` studies.   
+3. There are `r e` overlapping runs from `r f` studies used for both models.
+
+
+# Session Info
+```{r eval=TRUE}
 sessionInfo()
 ```
+
+
 
 
 ```{r fig.width=6, fig.height=4.5, echo=FALSE, eval=FALSE}
@@ -264,3 +346,4 @@ plot(hg_download, col = c2, ylim = c(1, 2000), add = TRUE)
 legend("topright", c("metadata", "downloaded"), col = c(c1, c2), lwd = 10)
 dev.off()
 ```
+

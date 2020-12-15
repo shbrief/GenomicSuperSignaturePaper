@@ -32,6 +32,8 @@ git stage *
 git reset HEAD inst/extdata/*   # large data file
 git reset HEAD Results/CRC/data/*   # large data file
 git reset HEAD Results/SLE-WB/data/*   # large data file
+git reset HEAD SRAmetadb.sqlite.gz   # large data file
+git reset HEAD Methods/prepare_Inputs   # temporary work
 git reset HEAD Results_temp/*   # temporary works
 git commit -m "update GitHub pages"
 git push origin gh-pages

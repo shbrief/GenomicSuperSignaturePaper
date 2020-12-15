@@ -16,4 +16,4 @@
 ^_pkgdown\.yml$
 ^Neg_Controls$
 ^neutrophil_estimate\.rds$
-
+^SRAmetadb$

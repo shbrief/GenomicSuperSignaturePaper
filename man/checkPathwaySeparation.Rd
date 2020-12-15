@@ -5,7 +5,7 @@
 \title{Check a pair of pathways are captured in the signature model}
 \usage{
 checkPathwaySeparation(
-  PCAmodel,
+  RAVmodel,
   pathway1,
   pathway2,
   cutoff_nes = NULL,
@@ -13,7 +13,7 @@ checkPathwaySeparation(
 )
 }
 \arguments{
-\item{PCAmodel}{PCAGenomicSignatures object.}
+\item{RAVmodel}{PCAGenomicSignatures object.}
 
 \item{pathway1}{A character vector. Keywords you are looking for.}
 

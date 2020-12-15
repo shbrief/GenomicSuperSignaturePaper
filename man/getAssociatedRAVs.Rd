@@ -4,10 +4,10 @@
 \alias{getAssociatedRAVs}
 \title{check whether your pathway of interest is in the model}
 \usage{
-getAssociatedRAVs(PCAmodel, pathwaySet, cutoff_nes, cutoff_n)
+getAssociatedRAVs(RAVmodel, pathwaySet, cutoff_nes, cutoff_n)
 }
 \arguments{
-\item{PCAmodel}{A PCAGenomicSignatures object.}
+\item{RAVmodel}{A PCAGenomicSignatures object.}
 
 \item{pathwaySet}{A character vector. Keywords you are looking for.}
 
