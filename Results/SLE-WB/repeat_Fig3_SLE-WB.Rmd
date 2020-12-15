@@ -287,7 +287,7 @@ estimate_plot <- LVScatter(dat_n.estimate, paste0("RAV", 1551),
 estimate_plot
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 saveRDS(estimate_plot, "outputs/neutrophil_estimate.rds")
 png("outputs/png/neutrophil_estimate.png", width = 400, height = 400)
 estimate_plot

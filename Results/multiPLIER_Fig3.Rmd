@@ -46,7 +46,7 @@ plot_all <- plot1 | plot2 | plot3
 plot_all
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 png("multiPLIER_Fig3.png", width = 1100, height = 430)
 plot_all
 dev.off()
