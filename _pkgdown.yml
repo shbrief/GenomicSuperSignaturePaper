@@ -11,8 +11,6 @@ navbar:
       menu:
       - text: Training Data
         href: Methods/training_datasets/available_samples.html
-      - text: Clustering
-        href: Methods/select_numOfClusters/find_optimum_k.html
     - text: CRC
       menu:
       - text: RAVs similar to PCSS1/2
