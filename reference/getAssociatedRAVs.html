@@ -83,6 +83,21 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    RAVmodel
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../Methods/training_datasets/available_samples.html">Training Data</a>
+    </li>
+    <li>
+      <a href="../Methods/select_numOfClusters/find_optimum_k.html">Clustering</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     CRC
      
     <span class="caret"></span>
@@ -124,7 +139,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -150,13 +165,13 @@
     <p>check whether your pathway of interest is in the model</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getAssociatedRAVs</span><span class='op'>(</span><span class='va'>PCAmodel</span>, <span class='va'>pathwaySet</span>, <span class='va'>cutoff_nes</span>, <span class='va'>cutoff_n</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>getAssociatedRAVs</span><span class='op'>(</span><span class='va'>RAVmodel</span>, <span class='va'>pathwaySet</span>, <span class='va'>cutoff_nes</span>, <span class='va'>cutoff_n</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>PCAmodel</th>
+      <th>RAVmodel</th>
       <td><p>A PCAGenomicSignatures object.</p></td>
     </tr>
     <tr>
