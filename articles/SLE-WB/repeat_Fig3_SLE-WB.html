@@ -50,9 +50,6 @@
 <li>
       <a href="../../Methods/training_datasets/available_samples.html">Training Data</a>
     </li>
-    <li>
-      <a href="../../Methods/select_numOfClusters/find_optimum_k.html">Clustering</a>
-    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -118,7 +115,7 @@
       <h1 data-toc-skip>Reproduce multiPLIER Figure 3 - SLE WB Compendium</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">December 14, 2020</h4>
+            <h4 class="date">December 17, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/SLE-WB/repeat_Fig3_SLE-WB.Rmd"><code>vignettes/SLE-WB/repeat_Fig3_SLE-WB.Rmd</code></a></small>
       <div class="hidden name"><code>repeat_Fig3_SLE-WB.Rmd</code></div>
@@ -423,16 +420,14 @@
                            subtitle <span class="op">=</span> <span class="st">"SLE WB MCPcounter"</span><span class="op">)</span>
 <span class="va">estimate_plot</span></code></pre></div>
 <p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-20-1.png" width="384"></p>
-<pre><code>#&gt; agg_png 
-#&gt;       2</code></pre>
 </div>
 <div id="validation-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#validation-1" class="anchor"></a>Validation</h3>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">heatmapTable</span><span class="op">(</span><span class="va">val_all</span>, <span class="fl">1551</span><span class="op">)</span></code></pre></div>
 <p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-22-1.png" width="192"></p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">drawWordcloud</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1551</span><span class="op">)</span></code></pre></div>
 <p><img src="repeat_Fig3_SLE-WB_files/figure-html/unnamed-chunk-23-1.png" width="60%" height="60%"></p>
 </div>
@@ -470,7 +465,7 @@
 <div id="annotate-pc1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#annotate-pc1" class="anchor"></a>Annotate PC1</h3>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">annotatePC</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, PCAmodel <span class="op">=</span> <span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt;               PC1-RAV1551             PC2-noAnnot             PC3-noAnnot
 #&gt; 1 IRIS_Neutrophil-Resting No significant pathways No significant pathways
@@ -478,7 +473,7 @@
 #&gt; 3         SVM Neutrophils No significant pathways No significant pathways
 #&gt; 4              DMAP_MONO2 No significant pathways No significant pathways
 #&gt; 5           SVM Monocytes No significant pathways No significant pathways</code></pre>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">annotatePC</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">8</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, PCAmodel <span class="op">=</span> <span class="va">RAVmodel</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; $`PC1-RAV1551`
 #&gt;               Description      NES pvalue      qvalues
@@ -500,7 +495,7 @@
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; R version 4.0.3 (2020-10-10)
 #&gt; Platform: x86_64-pc-linux-gnu (64-bit)
