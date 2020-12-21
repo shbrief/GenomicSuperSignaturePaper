@@ -26,6 +26,9 @@ suppressPackageStartupMessages({
 ```
 
 # avgLoading from CRC paper
+This is the table of top 4 average loadings (= PCSS, PC Cluster Subtype Scores) built 
+in the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4).
+
 ```{r}
 avgLoading <- read.table("data/avg_loadings.csv", 
                          header = TRUE, sep = ",")
@@ -42,6 +45,9 @@ updateNote(RAVmodel)
 ```
 
 # RAVs most similar to PCSS1/PCSS2
+We identified RAV1575 and RAV834 as the most similar RAVs to PCSS1 and PCSS2, respectively,
+based on Pearson correlation coefficient.
+
 ```{r}
 cg <- intersect(rownames(avgLoading), rownames(RAVmodel))
 loading_cor <- abs(stats::cor(avgLoading[cg,], model(RAVmodel)[cg,], 
@@ -54,7 +60,10 @@ loading_cor[1, max1, drop = FALSE]
 loading_cor[2, max2, drop = FALSE]
 ```
 
-```{r}
+Using `annotateRAV` function, we checked the MSigDB C2 genesets that are enriched
+in RAV1575 and RAV834.
+
+```{r collapse=FALSE}
 annotateRAV(RAVmodel, 1575)
 annotateRAV(RAVmodel, 834)
 ```
