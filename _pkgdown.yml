@@ -5,12 +5,12 @@ navbar:
   title: ~
   type: default
   left:
-    - text: Reference
-      href: reference/index.html
     - text: RAVmodel
       menu:
       - text: Training Data
         href: Methods/training_datasets/available_samples.html
+      - text: Number of clusters
+        href: Methods/select_numOfClusters/find_optimum_k.html
     - text: CRC
       menu:
       - text: RAVs similar to PCSS1/2
@@ -30,5 +30,5 @@ navbar:
       - text: Pathway separation
         href: articles/others/repeat_Fig5_Pathway_Separation.html
   right:
-   - icon: fa-github
+   - icon: fa-github fa-lg
      href: https://github.com/shbrief/GenomicSuperSignaturePaper

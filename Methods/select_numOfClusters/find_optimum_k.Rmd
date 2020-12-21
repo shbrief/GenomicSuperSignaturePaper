@@ -10,10 +10,10 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval=FALSE)
 ```
 
-```{r}
+```{r echo=FALSE, eval=TRUE}
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
@@ -22,7 +22,13 @@ suppressPackageStartupMessages({
 
 # Preparae negative controls
 ## Build negative controls
-Source the below script will execute the following processes:    
+
+```{r eval=FALSE}
+## Do not run this script without checking it first!!
+source("neg_controls.R")
+```
+
+This script will execute the following processes:    
 
 1. Generate 50 synthetic datasets:   
    - Each dataset contains 50 random samples from 44,890 samples (with replacement).   
@@ -31,18 +37,18 @@ Source the below script will execute the following processes:
    
 2. Row-normalize synthetic datasets   
 
-3. PCA on synthetic datasets --> `bootstrap_PCs_rowNorm_Neg.rds`   
+3. PCA on synthetic datasets    
+--> saved as `bootstrap_PCs_rowNorm_Neg.rds`   
 
-4. Combine top 20 PCs from traning datasets and PC1s from synthetic datasets --> `all_{#neg}.rds`   
+4. Combine top 20 PCs from traning datasets and PC1s from synthetic datasets    
+--> saved as `all_{#neg}.rds`   
 
-5. Calculate distance matrix and hcut for each combined dataset --> `res_dist_{#neg}.rds` and `res_hclust_{#neg}.rds`   
+5. Calculate distance matrix and hcut for each combined dataset    
+--> saved as `res_dist_{#neg}.rds` and `res_hclust_{#neg}.rds`   
 
-6. Evaluate how the negative controls were separated --> `evals_{#neg}.rds` and `eval_summary_{#neg}.rds`   
+6. Evaluate how the negative controls were separated    
+--> saved as `evals_{#neg}.rds` and `eval_summary_{#neg}.rds`   
 
-```{r eval=FALSE}
-## Do not run this script without checking it first!!
-source("neg_controls.R")
-```
 
 
 ## Validate negative controls
@@ -50,20 +56,25 @@ Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 s
 We want to create a synthetic dataset as a negative control with the distance 
 rangeing median or higher.
 
-```{r collapse=FALSE}
-wd <- "~/data2/PCAGenomicSignatureLibrary/refinebioRseq/PCAmodel_536"
+```{r collapse=FALSE, echo=FALSE, eval=TRUE}
+wd <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/PCAmodel_536"
 res_dist <- readRDS(file.path(wd, "res_dist.rds"))
-summary(res_dist)
+# summary(res_dist)
 #    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
 # 0.01688 0.98783 1.00000 0.99999 1.01217 1.97482
 ```
+
+```{r eval=TRUE}
+summary(res_dist)
+```
+
 
 We tested the distance matrix with 50 'negative controls', generated from the 
 `neg_controls.R` script above. Distance ranges roughly between 1st quarter and 3rd 
 quarter of training datasets' distance distribution. 
 
-```{r collapse=FALSE}
-dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
+```{r collapse=FALSE, echo=FALSE, eval=TRUE}
+dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
 neg <- readRDS(file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 data <- lapply(neg, function(x) x$rotation) %>% Reduce(cbind,.) %>% t
 
@@ -72,6 +83,12 @@ for (i in 1:50) {new_ind = c(1) + 20*(i-1); ind = c(ind, new_ind)} # only PC1s
 control_dat <- data[ind,]
 
 res.dist.neg <- factoextra::get_dist(control_dat, method = "spearman")
+# summary(res.dist.neg)
+#    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#  0.9680  0.9937  1.0000  0.9999  1.0054  1.0317 
+```
+
+```{r eval=TRUE}
 summary(res.dist.neg)
 ```
 
@@ -79,7 +96,7 @@ We plot the heatmap of distance matrix with different number of negative control
 (PC1s from synthetic datasets) and confirmed that they can serve as a negative control.
 
 ```{r fig.width=6, fig.height=5.5, echo=FALSE}
-dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
+dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
 neg <- readRDS(file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 data <- lapply(neg, function(x) x$rotation) %>% Reduce(cbind,.) %>% t
 
@@ -120,6 +137,9 @@ plot
 dev.off()
 ```
 
+```{r echo=FALSE, eval=TRUE, fig.width=6, fig.height=5.5}
+knitr::include_graphics("outputs/png/A.heatmap_neg50.png")
+```
 
 
 # Optimum k for different numbers of controls
@@ -129,10 +149,10 @@ with different numbers of clusters. Here, we plotted the proportion of separated
 negative controls against the number of clusters.
 
 Number of clusters for each combined datastes were rounds of the number of PCs 
-divided by 9 different numbers (7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).
+divided by 9 different numbers (**d** = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).
 
-```{r}
-dat_dir <- "~/data2/PCAGenomicSignaturesPaper/inst/extdata/Neg_Controls"
+```{r echo=FALSE}
+dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
 numOfDatasets <- c(10, 20, 30, 40, 50)
 
 ## Load all eval_summary
@@ -150,7 +170,12 @@ df$separtedPortion <- as.numeric(df$numSeparated)/as.numeric(df$numOfControls)
 df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
 ```
 
-## Proportion of separated negative controls
+## Proportion of the separated negative controls
+This plot shows the proportion of the negative controls that are separated under
+different numbers of clusters. For all five different numbers of negative controls, 
+more than 90% of them were separated when **d = 4** and 100% of them were separated 
+when **d = 2.25**.
+
 ```{r plot1, echo=FALSE, fig.width=6.5, fig.height=4}
 plot1 <- ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
   geom_line(aes(colour = numOfControls)) + 
@@ -165,7 +190,14 @@ plot1
 dev.off()
 ```
 
-## Number of non-separated negative controls
+```{r echo=FALSE, eval=TRUE, fig.width=6.5, fig.height=4}
+knitr::include_graphics("outputs/png/B.separatedPortion.png")
+```
+
+## Number of the non-separated negative controls
+This plot shows the actual number of negative controls that weren't separated under
+different numbers of clusters.
+
 ```{r plot2, echo=FALSE, fig.width=6.5, fig.height=4}
 df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
 plot2 <- ggplot(df, aes(x = numOfCluster, y = numUnseparated)) + 
@@ -181,7 +213,12 @@ plot2
 dev.off()
 ```
 
-```{r}
+```{r echo=FALSE, eval=TRUE, fig.width=6.5, fig.height=4}
+knitr::include_graphics("outputs/png/C.numUnseparated.png")
+```
+
+# Session Info
+```{r eval=TRUE}
 sessionInfo()
 ```
 

@@ -10,6 +10,9 @@
 #' 4. Combine top 20 PCs from traning datasets and PC1s from synthetic datasets --> `all_{#neg}.rds`
 #' 5. Calculate distance matrix and hcut for each combined dataset --> `res_dist_{#neg}.rds` and `res_hclust_{#neg}.rds`
 #' 6. Evaluate how the negative controls were separated --> `evals_{#neg}.rds` and `eval_summary_{#neg}.rds`
+#'
+#' Outputs:
+#' Resulting files from this script are saved under `GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls` directory
 
 
 
