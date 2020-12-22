@@ -37,9 +37,6 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../../reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     RAVmodel
@@ -49,6 +46,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../../Methods/training_datasets/available_samples.html">Training Data</a>
+    </li>
+    <li>
+      <a href="../../Methods/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
   </ul>
 </li>
@@ -95,7 +95,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
-    <span class="fas fa-github"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -115,7 +115,7 @@
       <h1 data-toc-skip>Reproduce multiPLIER Figure 3 - NARES</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">December 17, 2020</h4>
+            <h4 class="date">December 21, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/NARES/repeat_Fig3_NARES.Rmd"><code>vignettes/NARES/repeat_Fig3_NARES.Rmd</code></a></small>
       <div class="hidden name"><code>repeat_Fig3_NARES.Rmd</code></div>
@@ -372,7 +372,7 @@
 <span class="co">#&gt; other attached packages:</span>
 <span class="co">#&gt;  [1] ComplexHeatmap_2.6.2             RColorBrewer_1.1-2              </span>
 <span class="co">#&gt;  [3] dplyr_1.0.2                      GenomicSuperSignaturePaper_0.0.3</span>
-<span class="co">#&gt;  [5] GenomicSuperSignature_0.0.6      SummarizedExperiment_1.20.0     </span>
+<span class="co">#&gt;  [5] GenomicSuperSignature_0.0.7      SummarizedExperiment_1.20.0     </span>
 <span class="co">#&gt;  [7] Biobase_2.50.0                   GenomicRanges_1.42.0            </span>
 <span class="co">#&gt;  [9] GenomeInfoDb_1.26.2              IRanges_2.24.1                  </span>
 <span class="co">#&gt; [11] S4Vectors_0.28.1                 BiocGenerics_0.36.0             </span>
@@ -386,14 +386,14 @@
 <span class="co">#&gt; [10] fs_1.5.0               clue_0.3-58            rstudioapi_0.13       </span>
 <span class="co">#&gt; [13] farver_2.0.3           ggpubr_0.4.0           bit64_4.0.5           </span>
 <span class="co">#&gt; [16] fansi_0.4.1            splines_4.0.3          knitr_1.30            </span>
-<span class="co">#&gt; [19] Cairo_1.5-12.2         broom_0.7.2            cluster_2.1.0         </span>
+<span class="co">#&gt; [19] Cairo_1.5-12.2         broom_0.7.3            cluster_2.1.0         </span>
 <span class="co">#&gt; [22] dbplyr_2.0.0           png_0.1-7              BiocManager_1.30.10   </span>
 <span class="co">#&gt; [25] readr_1.4.0            compiler_4.0.3         httr_1.4.2            </span>
 <span class="co">#&gt; [28] backports_1.2.1        assertthat_0.2.1       Matrix_1.2-18         </span>
 <span class="co">#&gt; [31] cli_2.2.0              htmltools_0.5.0        tools_4.0.3           </span>
 <span class="co">#&gt; [34] gtable_0.3.0           glue_1.4.2             GenomeInfoDbData_1.2.4</span>
 <span class="co">#&gt; [37] rappdirs_0.3.1         Rcpp_1.0.5             carData_3.0-4         </span>
-<span class="co">#&gt; [40] cellranger_1.1.0       pkgdown_1.6.1          vctrs_0.3.5           </span>
+<span class="co">#&gt; [40] cellranger_1.1.0       pkgdown_1.6.1          vctrs_0.3.6           </span>
 <span class="co">#&gt; [43] nlme_3.1-151           xfun_0.19              stringr_1.4.0         </span>
 <span class="co">#&gt; [46] openxlsx_4.2.3         lifecycle_0.2.0        rstatix_0.6.0         </span>
 <span class="co">#&gt; [49] zlibbioc_1.36.0        scales_1.1.1           ragg_0.4.0            </span>
@@ -410,7 +410,7 @@
 <span class="co">#&gt; [82] foreign_0.8-79         mgcv_1.8-33            abind_1.4-5           </span>
 <span class="co">#&gt; [85] RCurl_1.98-1.2         tibble_3.0.4           crayon_1.3.4          </span>
 <span class="co">#&gt; [88] car_3.0-10             BiocFileCache_1.14.0   rmarkdown_2.6         </span>
-<span class="co">#&gt; [91] GetoptLong_1.0.4       readxl_1.3.1           data.table_1.13.4     </span>
+<span class="co">#&gt; [91] GetoptLong_1.0.5       readxl_1.3.1           data.table_1.13.4     </span>
 <span class="co">#&gt; [94] blob_1.2.1             forcats_0.5.0          digest_0.6.27         </span>
 <span class="co">#&gt; [97] tidyr_1.1.2            textshaping_0.2.1      munsell_0.5.0</span></code></pre></div>
 </div>
