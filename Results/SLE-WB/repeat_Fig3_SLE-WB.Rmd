@@ -322,8 +322,8 @@ gseaRes[keyword_ind, c("Description", "NES", "qvalues")]
 
 ### Annotate PC1
 ```{r collapse=FALSE}
-annotatePC(1:3, val_all = val_all, PCAmodel = RAVmodel)
-annotatePC(c(1,8), val_all = val_all, PCAmodel = RAVmodel, simplify = FALSE)
+annotatePC(1:3, val_all = val_all, RAVmodel = RAVmodel)
+annotatePC(c(1,8), val_all = val_all, RAVmodel = RAVmodel, simplify = FALSE)
 ```
 
 
