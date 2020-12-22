@@ -349,4 +349,3 @@ plot(hg_download, col = c2, ylim = c(1, 2000), add = TRUE)
 legend("topright", c("metadata", "downloaded"), col = c(c1, c2), lwd = 10)
 dev.off()
 ```
-
