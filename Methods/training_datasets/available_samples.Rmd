@@ -308,21 +308,24 @@ head(recount2, 3)
 
 ```{r echo=FALSE, eval=TRUE}
 ## multiPLIER training data
-a <- length(unique(recount2$sample))
-b <- length(unique(recount2$study))
+a <- length(unique(recount2$run))
+b <- length(unique(recount2$sample))
+c <- length(unique(recount2$study))
 
 ## GenomicSupersignature training data
-c <- length(unique(res_all$sample_accession))
-d <- length(unique(res_all$study))
+d <- length(unique(res_all$run_accession))
+e <- length(unique(res_all$sample_accession))
+f <- length(unique(res_all$study))
 
 ## Overlapping training data
-e <- length(intersect(unique(recount2$sample), unique(res_all$sample_accession)))
-f <- length(intersect(unique(recount2$study), unique(res_all$study)))
+g <- length(intersect(unique(recount2$run), unique(res_all$run_accession)))
+h <- length(intersect(unique(recount2$sample), unique(res_all$sample_accession)))
+i <- length(intersect(unique(recount2$study), unique(res_all$study)))
 ```
 
-1. multiPLIER used `r a` unique runs from `r b` studies.   
-2. GenomicSuperSignature used `r c` unique runs from `r d` studies.   
-3. There are `r e` overlapping runs from `r f` studies used for both models.
+1. multiPLIER used `r a` unique runs from `r b` samples in `r c` studies.   
+2. GenomicSuperSignature used `r d` unique runs from `r e` samples in `r f` studies.   
+3. There are `r g` overlapping runs from `r h` samples in `r i` studies used for both models.
 
 
 # Session Info
