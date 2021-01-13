@@ -4,6 +4,16 @@
 ################################################################################
 
 df.results <- readRDS("data/SummaryForFig4.rds")
+if (isTRUE(val_only)) {
+  load("data/eSets/setNames.RData")
+  load("data/eSets/trainingSetNames.RData")
+  validationSetNames <- setdiff(setNames, trainingSetNames)
+  setNames <- validationSetNames
+
+  validation_data_row <- which(df.results$study %in% setNames)
+  df.results <- df.results[validation_data_row,]
+}
+
 ind1 <- which(colnames(df.results) == paste0("RAV", sampleScore1))
 ind2 <- which(colnames(df.results) == paste0("RAV", sampleScore2))
 colnames(df.results)[ind1] <- "sampleScore1"

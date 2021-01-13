@@ -54,12 +54,14 @@ updateNote(RAVmodel)
 load("data/eSets/setNames.RData")
 ```
 
-```{r echo=FALSE, eval=FALSE}
-## CRC paper actually used both training and validation datasets (total of 18)
-## for Figure 4. So here, we are using all of them. However, for Figure 4C, we'll
-## try to use only 10 validation datasets. 
-# load(file.path(wd, "trainingSetNames.RData"))
+CRC paper actually used both training and validation datasets (total of 18) for 
+Figure 4. So here, we are using all of them. However, if you want to use only 10
+validation datasets, run the below chunk.
+
+```{r eval=FALSE}
+# load("data/eSets/trainingSetNames.RData")
 # validationSetNames <- setdiff(setNames, trainingSetNames)
+# setNames <- validationSetNames
 ```
 
 ```{r}
@@ -235,6 +237,7 @@ detail can be found [here](https://shbrief.github.io/GenomicSuperSignaturePaper/
 ```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 sampleScore1 <- 834
 sampleScore2 <- 833
+val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
