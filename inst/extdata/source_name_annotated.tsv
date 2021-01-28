@@ -1,0 +1,436 @@
+sample_accession	study_accession	cancer	blood	cell_line	source_name	origin	misc
+SRS008824	SRP001540	0	1	1	lymphoblastoid cell line	blood	
+SRS1023356	SRP062025	NA	NA	NA	MDS 67	NA	
+SRS1028819	SRP062144	0	0	0	bone marrow	bone marrow	
+SRS1048033	SRP062966	0	1	0	PAXgene blood, healthy control	blood	
+SRS1054885	SRP055810	0	0	0	Human Embryo	embryo	
+SRS1072262	SRP063840	1	0	0	patient, metastatic RCC_36	kidney	metastatic renal cell carcinoma (mRCC) patient-derived cells
+SRS1074338	SRP063867	0	0	1	ESC	embryonic stem cell	
+SRS1094697	SRP064259	1	0	1	breast cancer cell line	breast	
+SRS1101199	SRP064515	0	1	0	Macrophages	blood	
+SRS1114761	SRP064832	1	0	1	MCF7 breast cancer cell line	breast	
+SRS1126159	SRP065216	0	1	0	pHSC	blood | stem cell	a pluripotent hematopoietic stem cell (PHSC)
+SRS1130907	SRP065206	0	0	1	IMR90 human fibrobasts	lung	Normal lung fibroblast cell line from a human female
+SRS1135772	SRP065317	0	0	0	Prostate microvasculature	prostate | blood vessel	
+SRS1146029	SRP039361	0	1	0	Macrophage	blood	
+SRS1160000	SRP066118	1	0	0	Renal cell carcinoma	kidney	
+SRS1163650	SRP066197	0	1	0	Blood PBMCs	blood	
+SRS1163818	SRP066204	1	0	1	MCF-7_SR2211	breast	MCF-7 is a breast cancer cell line isolated in 1970 from a 69-year-old Caucasian woman
+SRS1170024	SRP066450	0	1	1	4sU-seq of YRI individual NA19257_60min	blood	cell type: lymphoblastoid cell line (LCL) / cell line id: NA19204
+SRS1184110	SRP066834	0	0	1	iPSC 409B2	stem cell	
+SRS1228919	SRP067922	0	0	0	airway basal cells, smoker	epithelia | airway	
+SRS1239283	SRP068190	0	0	0	Human preimplantation embryo	embryo	
+SRS1252080	SRP068591	NA	0	0	Colon	colon	86 colon RNA sequencing datasets (21 sessile serrated adenomas/polyps, 10 hyperplastic polyps, 10 adenomatous polyps, 21 uninvolved colon, 20 control colon and 4 colon cancer)
+SRS1266764	SRP068976	0	0	0	Liver	liver	
+SRS1268839	SRP069052	0	0	1	Foreskin-derived fibroblasts	foreskin | fibroblast	
+SRS1325430	SRP071203	0	0	0	Brain	brain	
+SRS1331604	SRP071547	0	1	1	Monocyte-derived Macrophage	blood	
+SRS1343065	SRP071854	0	0	0	adrenal gland	kidney	
+SRS1345592	SRP071758	0	0	0	Bronchial brushing	lung	bronchial
+SRS1345760	SRP071760	0	0	0	Bronchial brushing	lung	bronchial
+SRS1346920	SRP071965	0	1	0	Blood, case	blood	
+SRS1349858	SRP072038	1	0	1	Human non-medullary thyroid carcinoma cell line	thyroid	
+SRS1360568	SRP072302	1	0	1	breast cancer cell line	breast	
+SRS1364350	SRP072417	0	0	1	human induced pluripotent stem cells	stem cell	
+SRS1366061	SRP072492	1	0	0	pancreatic adenocarcinoma cancer tissue	pancreas	
+SRS1376292	SRP072875	0	0	1	immortalized myoblast KD3	muscle	
+SRS1378934	SRP072919	0	0	1	IMR90_MCPyV ST_96	lung	
+SRS1379022	SRP072920	0	1	0	Peripheral Blood Mononuclear Cells	blood	
+SRS1380687	SRP072980	NA	NA	NA	Effector Memory (EM)_Activated	NA	
+SRS1382838	SRP073033	0	0	0	RA_hip_fibroblast-like synoviocytes	hip | knee	
+SRS1383410	SRP073061	1	0	0	Breast cancer cells	breast	
+SRS1386807	SRP073186	1	1	1	K562	blood	from human blood  (chronic myelogenous leukemia)
+SRS1395952	SRP073267	NA	NA	1	cell line	NA	
+SRS1397629	SRP073318	1	0	1	SKBR3	breast	a human breast cancer cell line
+SRS1411306	SRP073813	0	0	1	AnCg_Control	brain	human post-mortem brain tissues
+SRS1412789	SRP073940	NA	NA	NA	AA patient_pre-treatment	NA	
+SRS1417756	SRP074198	1	0	1	Melanoma cell line	skin	
+SRS1419189	SRP074274	0	1	0	Macrophages	blood	
+SRS1421351	SRP074349	1	0	0	Human NSCLC tissue	lung	Nonsmall-cell lung carcinoma (NSCLC)
+SRS1430544	SRP074739	NA	NA	NA	P500.5	NA	
+SRS1434514	SRP074894	1	0	0	subcutaneous metastasis	skin	
+SRS1447108	SRP075449	1	0	1	HeLa_T4P mNET-Seq	NA	
+SRS1452652	SRP075467	0	0	1	single cell transcriptome EZH2 -/- null human ESC	embryonic stem cell	
+SRS1453021	SRP075475	0	0	1	iPSC line TkDA3-4	stem cell	
+SRS1462008	SRP075535	1	1	1	CML1_CMLSCs	blood	a cell line derived from T-lymphocyte acute phase of chronic myelogenous leukemia
+SRS1469170	SRP075806	0	0	0	vastus lateralis muscle	muscle	
+SRS1497115	SRP076426	NA	NA	NA	100-11_con_1	NA	
+SRS1510234	SRP076716	NA	NA	NA	CTG-0331, Champions Oncology	NA	
+SRS1510334	SRP076719	0	1	0	VRC200_912	blood	
+SRS1512631	SRP076780	NA	NA	NA	dyskeratosis congenita patient	NA	
+SRS1521571	SRP076944	0	1	0	CD103+CD49a- CD8 TRM	blood	
+SRS1522308	SRP076982	0	0	0	abdomen_skin biopsy_psoriasis	skin	
+SRS1523875	SRP077046	0	0	0	smallbowel	intestine	
+SRS1540537	SRP077921	0	0	0	pancreas	pancreas	
+SRS1546847	SRP078134	NA	NA	NA	EGFP(control) total RNA replicate 1	NA	
+SRS1553021	SRP078234	0	0	0	spinal cord	spine	
+SRS1564035	SRP078505	1	0	0	squamous cell carcinoma, primary tumor	epithelia	squamous cell
+SRS1565141	SRP078560	0	1	0	Cryopreserved PBMC	blood	
+SRS1569975	SRP059039	0	1	0	Whole blood	blood	
+SRS1570104	SRP078925	NA	NA	NA	mESC, day0	NA	Chimeric Heterokaryons : RNA-Seq data were generated for mouse ESC and human endothelial cells: separate, co-cultered and fused samples have been analyzed
+SRS1571693	SRP078984	1	0	0	Melanoma	skin	
+SRS1577915	SRP079213	0	1	0	CD4 T cell	blood	
+SRS1579362	SRP079342	0	0	0	Control_NPCs	neuron | progenital cells	Neural progenitor cells (NPCs)
+SRS1583122	SRP079684	0	1	0	1350A01_Normal_A01	blood	single cell RNAseq normal B cells
+SRS1592227	SRP080292	0	0	0	lipid biopsy	lipid	
+SRS1593609	SRP080367	1	0	1	hela_CCAT1	NA	
+SRS1597323	SRP080797	0	0	0	cervix	cervix	
+SRS1603674	SRP090298	0	1	0	Adult Human Peripheral Blood	blood	
+SRS1614472	SRP081599	0	0	0	Airway Epithelial cells	epithelia | airway	
+SRS1614640	SRP081605	0	1	0	Whole blood	blood	
+SRS1625303	SRP082321	0	0	1	KhES-1 cells	embryonic stem cell	Human embryonic stem cell line
+SRS1631327	SRP082503	1	0	0	tumor tissue	NA	
+SRS1632174	SRP082529	0	0	1	undifferentiated human embryonic stem cells	embryonic stem cell	
+SRS1645684	SRP082973	0	0	0	large airway epithelial cells	epithelia | airway	
+SRS1656838	SRP083321	0	0	1	iPSC SandraA	stem cell	
+SRS1670051	SRP086078	0	0	0	Cytologically normal bronchial airway epithelial cells	epithelia | airway	
+SRS1678150	SRP087576	NA	NA	NA	US-1491993	NA	
+SRS1684003	SRP087726	0	0	0	lung	lung	
+SRS1690371	SRP089814	0	1	0	blood	blood	
+SRS1708610	SRP090282	0	1	0	PBMC	blood	
+SRS1709208	SRP090309	0	0	1	Differentiated human embryonic stem cell	embryonic stem cell	
+SRS1713950	SRP090472	0	0	0	dermal juvenile blood-vascular endothelial cells from foreskin	foreskin	
+SRS1728002	SRP090849	1	0	0	osteosarcoma	bone	
+SRS1732266	SRP090944	0	0	0	placental tissue, >39 weeks pregnancy	placenta	
+SRS1749540	SRP091680	0	0	0	Human Brain Reference	brain	
+SRS1749707	SRP091685	0	0	1	HUES2 Embryonic stem cell line	embryonic stem cell	
+SRS1756584	SRP091956	0	1	1	B-Lymphoblastoid Cell Line	blood	Human B-cell infected with EBV to immortalize
+SRS1757818	SRP092004	1	0	0	Melanoma	skin	
+SRS1762137	SRP092158	0	1	0	Regulatory T cells	blood	
+SRS1764775	SRP092180	0	0	0	respiratory epithelium	epithelia | airway	
+SRS1764871	SRP092181	0	0	0	respiratory epithelium	epithelia | airway	
+SRS1771380	SRP092402	0	1	0	Blood	blood	
+SRS1775568	SRP092429	0	1	1	Human CD34 iPS-derived 5F hematopoietic cells	stem cell | blood	
+SRS1780593	SRP092548	0	0	0	Extravillous trophoblast of Week 24	villi	outside of villi
+SRS1782646	SRP092584	0	0	1	Nkx2.1 GFP/W-hESC	embryonic stem cell	
+SRS1795119	SRP093253	0	0	1	HUES8 human embryonic stem cells (hESCs)	embryonic stem cell	
+SRS1797987	SRP093349	0	1	0	Thrombocytes	blood	
+SRS1802806	SRP126289	0	0	1	Induced pluripotent stem cell	stem cell	
+SRS1811269	SRP081477	0	0	0	kidney cells	kidney	
+SRS1821472	SRP093990	0	1	0	Cord blood CD4+ cells without any treatments	blood	
+SRS1830191	SRP094424	0	1	0	Peripheral Blood Mononuclear Cells	blood	
+SRS1844529	SRP094781	1	0	0	tumor	NA	
+SRS1853670	SRP094958	0	0	0	human SSCs	germ	Spermatogonial stem cells (SSCs)
+SRS1868462	SRP095272	0	1	1	Lymphoblastoid cell line	blood	
+SRS1871796	SRP095405	1	1	1	CLL cell line MO1043	blood	A new cell line, designated MO1043, was established from the peripheral blood (PB) of a patient with B-cell chronic lymphocytic leukemia (CLL)
+SRS1895055	SRP096016	0	0	1	UCLA2 hESCs	embryonic stem cell	
+SRS1901632	SRP096196	NA	NA	NA	Donor 1 Control	NA	
+SRS1919958	SRP096727	0	0	1	DCX-_D26	embryonic stem cell	cultured embryonic stem cells cre line
+SRS1921955	SRP096736	1	0	1	MDA_Con-Dox	breast	
+SRS1922398	SRP096757	0	0	0	Crohn's disease_Ileal biopsy	intestine	
+SRS1938051	SRP097735	1	0	0	Disseminated tumor cells (DTCs)	NA	Disseminated tumor cells (DTCs) are cancer cells that have left the primary tumor and survived in the circulation to land in a distant organ
+SRS1955032	SRP098758	0	1	0	Blood	blood	
+SRS1959767	SRP098926	1	0	1	Prostate cancer cell line	prostate	
+SRS1972455	SRP099405	NA	NA	NA	del22	NA	
+SRS1981017	SRP099844	0	0	0	Duodenum	intestine	
+SRS1983193	SRP100057	0	0	1	IMR90 fibroblast	lung	
+SRS1983799	SRP100069	NA	NA	NA	no cell	NA	
+SRS1986954	SRP100157	0	0	1	IMR90 fibroblast	lung	
+SRS2014641	SRP101290	0	0	0	SI_9w_embryo1_22	embryo | intestine	human fetal digestive tract
+SRS2017451	SRP100786	0	0	0	colonic mucosa	colon	
+SRS2017547	SRP100787	0	0	0	descending colon pinch biopsy	colon	
+SRS2018728	SRP100793	0	0	0	colonic mucosa	colon	
+SRS2019051	SRP100795	0	0	0	colonic mucosa	colon	
+SRS2019472	SRP100726	1	0	1	MDAMB468_DMSO	breast	triple negative breast cancer cell line
+SRS2021921	SRP100928	0	0	1	hPSCs_primed_control_1	stem cell	
+SRS2042455	SRP101719	0	1	0	Sorted regulatory T-cells without ZA	blood	
+SRS2045069	SRP101809	0	1	0	T-cell clone BRI4.13	blood	
+SRS2049901	SRP101959	0	0	0	Neural progenitor cells	neuron	
+SRS2053976	SRP102077	1	0	1	H-STS NET cell line, AZD8055, 6h	NA	metastasis
+SRS2068526	SRP102427	0	0	0	Human_adult_liver	liver	
+SRS2070032	SRP102433	0	1	0	CD8+ CMV-specific T cell donor 1	blood	
+SRS2074806	SRP102542	0	0	0	vastus lateralis muscle biopsy	muscle	
+SRS2095636	SRP102952	0	0	0	right atrial appendage biopsies	atrial appendage	
+SRS2119758	SRP103772	0	1	0	Full Blood	blood	
+SRS2120997	SRP103811	0	0	0	Pancreatic islet, alpha cell	pancreas	
+SRS2121978	SRP103842	0	1	0	Human plasma	blood	
+SRS2129281	SRP104165	0	0	0	endometrium epithelium	endometrium epithelium	
+SRS2135038	SRP104402	0	1	0	PBMC_PreDC	blood	
+SRS2151553	SRP105369	0	0	0	Lonza healthy bone marrow	bone marrow	
+SRS2161589	SRP106077	NA	NA	NA	LC_control	NA	
+SRS2162699	SRP106195	0	0	1	EndoC-beta H1 human cell line	pancreas	islet beta cell
+SRS2166269	SRP106476	0	0	0	Human Retina	retina	
+SRS2175985	SRP106788	1	1	1	K562 cell line	blood	
+SRS2183744	SRP106948	0	1	0	peanut-responsive T cells_peanut allergic subject_1407	blood	
+SRS2197377	SRP107025	1	0	0	GEP-NET	pancreas	Gastro-Entero-Pancreatic Neuroendocrine Tumors (GEP-NET)
+SRS2206524	SRP107198	1	0	1	A427 NSCLC cell line	lung	Non-Small Cell Lung Cancer (NSCLC)
+SRS2208559	SRP107337	0	0	0	microglia spm09	neuron | microglia	
+SRS2220838	SRP107927	0	1	1	mixture of irradiated human peripheral blood mononuclear cells (PBMCs) and the B-lymphoblastoid cell line (LCL) 721.221	blood	
+SRS2228493	SRP108039	1	0	1	low passage patient-derived PDAC cells	pancreas	PDAC : pancreatic cancer cell line
+SRS2231636	SRP108121	0	0	1	iPSC, from 585B1 hiPSC line	stem cell	
+SRS2261989	SRP108807	1	0	1	LNCaP_0 hour untreated cell	prostate	prostate cancer cell
+SRS2263518	SRP108852	1	0	1	A375	skin	A375, Human Malignant Melanoma Cell Line
+SRS2263704	SRP108854	NA	NA	1	cell culture	NA	
+SRS2278524	SRP109040	0	0	0	human cortical spheroid-derived cell	neuron	
+SRS2281635	SRP109107	0	1	0	Macrophage in Hypoxia 24h	blood	
+SRS2290723	SRP109549	NA	NA	NA	Universal Human Reference RNA_RZ_i_S1	NA	
+SRS2306144	SRP110148	0	1	1	B-Lymphoblastoid Cell Line	blood	Human B-cell infected with EBV to immortalize
+SRS2318117	SRP110609	0	1	0	Peripheral blood mononuclear cells from 18ml venous whole blood	blood	
+SRS2342115	SRP111343	NA	NA	NA	No clinical information available	NA	
+SRS2344203	SRP111402	NA	NA	1	cell line	NA	
+SRS2379508	SRP113470	0	0	0	Ileal biopsy	intestine	
+SRS2432123	SRP115472	0	0	0	primary human lung fibroblasts -vehicle - 24h	lung	
+SRS2438766	SRP115815	0	0	1	Immortalised Human Myoblasts	muscle	
+SRS2449693	SRP115956	0	0	0	prefrontal cortex (PFC)	brain	
+SRS2487386	SRP116952	0	0	0	Non-cancerous lung tissue	lung	
+SRS2513325	SRP117629	0	1	0	CD4 T cell_Mock_0h	blood	
+SRS2517319	SRP117755	NA	NA	NA	CherryPicker Day 27 human Pluripotent Stem Cell-derived airway cells	stem cell	
+SRS2533067	SRP118733	0	0	0	non-tumoral CD138- fraction of patient BM aspirate taken at the time of diagnosis	NA	
+SRS2533712	SRP118741	0	1	1	monocyte-derived macrophages, SSc	blood	
+SRS2551996	SRP119053	0	0	0	Bone Marrow	bone marrow	
+SRS2560533	SRP119248	0	1	0	CD4+ T cell	blood	
+SRS257276	SRP007825	0	0	0	Skin psoriasis biopsy	skin	
+SRS2576309	SRP119636	0	1	0	CD4+ PBL	blood	
+SRS2660067	SRP123604	NA	NA	NA	RNA	NA	
+SRS2685070	SRP124954	1	0	1	Adrenocortical Carcinoma Cell line	adrenal	
+SRS2685778	SRP124967	0	0	0	Cardiac fibroblasts	heart	
+SRS2687737	SRP125001	1	0	0	Lung tumor tissue_LU2756A	lung	
+SRS2687970	SRP125008	0	0	0	preterm lung	lung	
+SRS2693335	SRP125125	0	1	0	Naive CD8 T cells	blood	
+SRS2705962	SRP125396	0	1	0	CD34 positive cells	blood	
+SRS2706425	SRP125403	0	1	1	P493-6	blood	P493-6 Human Lymphoblastoid Cell Line
+SRS2731293	SRP126064	0	0	1	HEK293 cells	kidney	
+SRS2747826	SRP126417	0	1	0	HC_thrombocytes	blood	
+SRS2749226	SRP126485	NA	NA	NA	visit2-Placebo_Muscle	NA	
+SRS2753163	SRP126580	0	1	0	Berry_London_Test_set_Active_TB	blood	Blood Transcriptional Profiles of Active and Latent TB
+SRS2753268	SRP126691	0	1	0	Leicester_Active_TB	blood	
+SRS2753443	SRP126583	0	1	0	Longitudnal_Leicester_Control_Non_progressor	blood	
+SRS2755909	SRP126667	NA	NA	NA	Tenosynovium sourced during CTS decompression surgery	NA	
+SRS2756291	SRP126672	1	0	0	Tumor (Intrahepatic cholangiocarcinoma)	liver	bile duct
+SRS2767835	SRP127021	0	0	0	primary human hepatocyte	lung	
+SRS2780862	SRP127343	1	1	1	HAP1 cell line	blood	HAP1 cells are a near-haploid cell line derived from the KBM-7 cell line. KBM-7 was found in a patient with chronic myeloid leukemia (CML).
+SRS2790102	SRP073208	0	0	0	Single dendritic cell	dendritic cells	
+SRS2794657	SRP127579	0	0	1	Immortalized normal breast epithelial cell line	breast	
+SRS2794701	SRP127581	0	0	0	biopsys from the vastus lateralis	muscle	a muscle in the thigh
+SRS2794799	SRP127586	0	1	0	Cord blood CD34+ cell-derived dendritic cell cultures	blood	
+SRS280664	SRP009408	0	0	0	Lung tissue	lung	
+SRS2820060	SRP128610	0	0	0	Adult testis	testis	
+SRS2830780	SRP129004	0	0	0	Rectal mucosal biopsy from Ctl Female age 17 at diagnosis	rectal	
+SRS2853066	SRP130953	0	1	0	purified B cells (from PBMCs isolated from blood)	blood	
+SRS2854707	SRP131037	0	1	0	Peripheral blood	blood	
+SRS2867794	SRP131375	0	0	1	HepaRGTM cells (HPR 116)	liver	terminally differentiated hepatic cells
+SRS2896355	SRP131761	0	0	0	Human Dermis	skin	
+SRS2896554	SRP131763	0	0	0	human primary myotube cells	muscle	
+SRS2904538	SRP131959	0	0	1	undifferentiated hESC	embryonic stem cell	
+SRS2907595	SRP132018	0	1	0	RNA from lysed whole blood cells	blood	
+SRS2943503	SRP132709	NA	NA	NA	Responder T1 patient1	NA	
+SRS2943714	SRP132719	NA	NA	NA	MM16	NA	
+SRS2960083	SRP132968	0	0	0	bone marrow	bone marrow	
+SRS2978886	SRP133058	0	0	0	Cord 1_hWJSC	stem cell | umbilical cord	human Wharton's jelly stem cell (hWJSC)
+SRS2997804	SRP133442	0	1	1	Hematopoietic stem cells	stem cell | blood	
+SRS3002639	SRP133573	1	0	0	Prostate Tumor Tissue	prostate	
+SRS3027112	SRP134127	0	1	1	Monocyte-derived dendritic cells	blood	
+SRS3033135	SRP134389	1	0	1	breast cancer cell line	breast	
+SRS3042445	SRP135684	0	0	1	HUES66	embryonic stem cell	Human embryonic stem cell line derived from human blastocysts and are strongly positive for a number of molecular markers of undifferentiated pluripotent human stem cells, including OCT4, NANOG, and TRA-1-60.
+SRS3058489	SRP135927	0	0	1	hCA3 neurons from huES6 derived NPCs	stem cell | neuron	
+SRS3072613	SRP136057	0	1	0	Whole Blood	blood	
+SRS3073560	SRP136102	0	1	0	RNA from lysed whole blood cells	blood	
+SRS3073994	SRP136108	0	1	0	Peripheral blood monocytes from adult	blood	
+SRS3104325	SRP136693	0	0	0	Lung	lung	
+SRS3104420	SRP136694	0	0	0	Lung	lung	
+SRS3106627	SRP136739	0	0	1	human ESC	embryonic stem cell	
+SRS310697	SRP012461	0	0	1	MSC	stem cell	Mesenchymal stem cells (MSCs)
+SRS3123131	SRP137147	0	1	0	CD34+ selected PBSC	blood	
+SRS3171652	SRP140488	0	0	0	Mammoplasty Reduction	breast	breast reduction
+SRS3171948	SRP140489	0	0	0	Mammoplasty Reduction	breast	breast reduction
+SRS3173566	SRP140536	0	0	0	Mammoplasty Reduction	breast	breast reduction
+SRS3174733	SRP140557	NA	NA	NA	NMS	NA	
+SRS3174789	SRP140558	0	1	0	PBMC	blood	
+SRS3190210	SRP140795	0	0	0	vastus lateralis muscle	muscle	
+SRS3204587	SRP141364	0	0	1	hiPS derived Neurons	stem cell | nenuron	Human induced pluripotent stem (hiPS) cell
+SRS3204967	SRP141379	1	0	1	Triple negative breast cancer (TNBC) line CAL51	breast	
+SRS3233913	SRP144003	1	0	0	Malignant from Melanoma	skin	
+SRS3238962	SRP144178	0	1	0	Whole blood	blood	
+SRS3239747	SRP144212	1	0	1	U2OS cell	bone	
+SRS3243349	SRP144363	0	1	0	Maternal Blood	blood	
+SRS3244416	SRP144382	1	0	0	breast cancer tumor sample	breast	
+SRS3253917	SRP144485	NA	NA	NA	eGFP 300,000 member 5'' UTR library	NA	
+SRS3254052	SRP144495	1	0	1	DLD1	colon	This cell line is one of four colorectal adenocarcinoma cell lines that have been identified as being derived from a single individual
+SRS3258339	SRP144588	0	1	0	Maternal Blood	blood	
+SRS3261889	SRP144647	0	1	0	CD3+CD4+CD25-CCR7+CD127-	blood	
+SRS3264833	SRP144750	1	0	1	primary pancreatic ductal adenocarcinoma cell line	pancreas	
+SRS3269335	SRP144912	NA	NA	NA	ctrl_d2	NA	
+SRS3289285	SRP145426	0	0	1	human_iPS-derived cerebral organoid	stem cell | brain	
+SRS3300410	SRP145862	0	0	1	in vitro differentiated pluripotent stem cell	stem cell	
+SRS3307418	SRP147915	0	0	0	decidual stromal cells	decidual	The decidua is the modified mucosal lining of the uterus (that is, modified endometrium) that forms in preparation for pregnancy.
+SRS3308470	SRP147923	0	0	0	Normal embryo	embryo	
+SRS3317503	SRP148472	0	0	1	LT-NES SAI2 cell	stem cell	long-term self-renewing neuroepithelial-like stem cells (LT-NES)
+SRS3321394	SRP148556	0	0	0	Placenta	placenta	
+SRS3324286	SRP148597	1	1	0	BC01	blood | breast	breast tumor microenvironment
+SRS3327567	SRP148659	0	0	0	human cardiomyocytes	heart	
+SRS3328415	SRP148695	0	0	1	HEK293T cells	kidney	
+SRS3349550	SRP149174	0	0	0	human oligodendrocyte spheroids	stem cell | neuron	
+SRS3356892	SRP149374	0	0	0	Bone marrow CD34+ hematopoietic stem/progenitor cells	bone marrow	
+SRS3364361	SRP149535	NA	NA	1	ATCC	NA	
+SRS3366167	SRP149545	0	1	0	CD34+ hematopoietic cells	blood	
+SRS3379622	SRP149794	0	1	0	Erythroid precursors(ERP)	blood	
+SRS3383126	SRP149847	0	0	0	Colon biopsies	colon	
+SRS3391347	SRP149978	0	1	0	Control_PBMCs	blood	
+SRS3412727	SRP150419	0	1	0	Myeloid DC CD123+	blood	
+SRS3425295	SRP150723	0	0	0	Keratinocytes	epithelia | keratin	
+SRS3436462	SRP150872	0	1	0	Whole blood	blood	
+SRS3449166	SRP151147	0	1	0	blood	blood	
+SRS3473246	SRP151475	0	0	1	RPE1 cells	eye	RPE = retinal pigment epithelial cell line
+SRS3492335	SRP151753	0	1	0	peripheral blood plasmablast	blood	
+SRS3492844	SRP151763	0	0	0	Retina	retina	
+SRS350171	SRP014320	0	1	1	GM12878	blood	B-Lymphocyte
+SRS350404	SRP014428	0	0	0	Brain	brain	
+SRS3522827	SRP152577	NA	NA	NA	Human 2	NA	
+SRS3536841	SRP153060	0	0	0	Cultured primary human airway epithelia at air-liquid interface	epithelia | airway	
+SRS3546059	SRP153396	0	0	1	HEK293T, NIH/3T3, A549 cells	NA	
+SRS3563209	SRP154478	1	0	1	Human SH-EP/TET21/N (TET21) neuroblastoma cell line	gland	
+SRS3590755	SRP154984	NA	NA	NA	LAIV_nasal cells_D-4	NA	
+SRS3600170	SRP155483	0	1	0	RNA from white blood cells	blood	
+SRS361633	SRP015640	1	1	1	human CML cell line K-562 grown in tissue culture (Ambion)	blood	chronic myeloid leukemia (CML)
+SRS3616462	SRP155941	0	1	0	Blood	blood	
+SRS3617555	SRP155976	0	0	0	Rectal biopsy	rectal	
+SRS3625556	SRP156276	0	0	0	Organotypic human epidermis	NA	
+SRS3633131	SRP156532	NA	NA	1	ATCC	NA	
+SRS3637201	SRP156583	0	1	0	healthy control_Circulating B cells	blood	
+SRS3639547	SRP156757	0	0	1	iNGN cells (hiPSCs with Neurog1/2 cassette)	stem cell	
+SRS3639587	SRP156760	0	0	1	iNGN cells (hiPSCs with Neurog1/2 cassette)	stem cell	
+SRS3689989	SRP158325	NA	NA	NA	CTR	NA	
+SRS3694197	SRP158425	0	0	0	AALE_HCRED_DMSO	skin	scalp biopsy from patients with alopecia areata (hair loss)
+SRS3696549	SRP158491	0	1	0	Tn CD4 cell	blood	
+SRS3701050	SRP158590	0	1	0	plasma cells from perpheral blood	blood	
+SRS3704009	SRP158730	0	0	0	Mammary Gland, Human xenograft, Mus musculus	breast	
+SRS3719666	SRP158994	0	1	0	Peripheral Blood Mononuclear Cells (PBMC)	blood	
+SRS3731433	SRP159277	1	1	1	HuT78 cell line	blood	Hut 78 was derived from peripheral blood of a patient with Sezary syndrome. Sezary syndrome is an aggressive form of cutaneous T-cell lymphoma which is a group of disorders that occur when T-cells (a type of white blood cell ) become cancerous and affect the skin
+SRS3758699	SRP160510	0	0	1	human induced pluripotent stem cells WT	stem cell	
+SRS3770539	SRP161678	0	0	1	human ESC	embryonic stem cell	
+SRS3771542	SRP161704	1	0	0	breast cancer tissue	breast	
+SRS3793004	SRP161997	0	0	1	hiPSC	stem cell	Generation of Human Induced Pluripotent Stem Cells (hiPSCs) from Fibroblasts using Episomal Vectors.
+SRS3794372	SRP162023	0	1	0	Peripheral blood mononuclear cells	blood	
+SRS379908	SRP017575	1	0	0	DTF	breast	breast cancer
+SRS3804216	SRP162188	1	0	1	U2OS	bone	U2OS : Human Bone Osteosarcoma Epithelial Cells
+SRS3807100	SRP162268	0	0	0	Brain	brain	
+SRS3861005	SRP163027	0	1	0	peripheral blood cells	blood	
+SRS3869949	SRP163173	1	0	0	primary prostate cancer	prostate	
+SRS3880146	SRP163514	1	1	1	K562 cell line	blood	
+SRS3898078	SRP164913	0	1	0	PBMC	blood	
+SRS3899906	SRP164953	1	0	1	FP-RMS cell line, PAX3-FOXO1	soft tissue	fusion gene-positive RMS (FP-RMS) - one of the subtypes of Rhabdomyosarcoma (RMS) is a rare type of cancer that forms in soft tissue
+SRS3931161	SRP165679	0	0	0	skin biopsy	skin	
+SRS3943372	SRP165962	0	0	1	iPSC-derived interneurons	stem cell | neuron	
+SRS3950167	SRP166112	1	0	0	Breast Cancer	breast	
+SRS398133	SRP018853	0	1	0	CD4+ T cells	blood	
+SRS3984401	SRP166966	0	0	0	adult kidney	kidney	
+SRS4027442	SRP168038	0	0	0	Kidney	kidney	
+SRS404039	SRP019994	1	0	1	Leiomyosarcoma	muscle	a rare type of cancer that affects smooth muscle tissue
+SRS4046355	SRP168821	NA	NA	NA	human patient	NA	
+SRS4052186	SRP169094	0	0	0	Breast Tissue	breast	
+SRS4057460	SRP169582	1	0	1	non-small cell lung cancer cell line	lung	
+SRS4058526	SRP169609	1	0	1	HeLa cells	NA	cervical cancer
+SRS407072	SRP020491	0	1	0	T12_Day 0 (pre-vaccine)_circulating B cells	blood	Neoplasia is new, uncontrolled growth of cells that is not under physiologic control
+SRS407127	SRP020492	0	1	0	T12_Day 0 (pre-vaccine)_PBMCs	blood	
+SRS4075399	SRP170629	0	0	0	Intracranial cortical artery	blood vessel	
+SRS4076682	SRP170684	0	0	0	human epithelial cells	epithelia	
+SRS4083070	SRP170967	NA	NA	NA	Coriell	NA	
+SRS4088156	SRP171042	0	0	1	hPSC	stem cell	human pluripotent stem cells (hPSCs)
+SRS4106284	SRP172461	0	0	0	skin	skin	
+SRS4107156	SRP172499	0	0	0	Gastric	stomach	
+SRS4113133	SRP172786	0	0	0	Kidney cells	kidney	
+SRS4113241	SRP172788	0	0	1	Immortalised Human Myoblasts	muscle	
+SRS4141558	SRP173388	0	0	0	NHDF primary human fibroblasts	fibroblast	
+SRS414527	SRP021193	0	0	0	human left ventricle apex tissue	heart	
+SRS417845	SRP022043	0	1	0	whole blood	blood	
+SRS4181123	SRP174204	NA	NA	NA	neonatal	NA	
+SRS4188234	SRP174502	0	0	0	Liver tissue	liver	
+SRS4193085	SRP174638	0	1	0	whole blood	blood	
+SRS4198182	SRP174970	0	0	1	iPSC Dchs1_GL	stem cell	
+SRS4240717	SRP178271	0	0	0	keratinocytes	epithelia | keratin	
+SRS4245678	SRP178543	1	0	1	Breast cancer cell line	breast	
+SRS4252929	SRP179613	1	1	1	HL60	blood	human leukemia cell line
+SRS4254040	SRP179648	0	0	1	hMSC	stem cell	Human Mesenchymal Stem Cells (HMSC)
+SRS4257043	SRP179781	1	0	1	BT549	breast	ductal carcinoma, stable cell line
+SRS4264553	SRP180337	0	0	1	iPS-derived cerebral organoid	stem cell | neuron	Induced pluripotent stem cells (iPSC) are a type of pluripotent stem cell that can be generated directly from a somatic cell.
+SRS4293458	SRP182096	0	1	0	PBMC	blood	
+SRS429698	SRP023262	1	0	0	early neoplasia	NA	
+SRS4299426	SRP182694	0	0	1	PDX1C18R/C18R iPS derived pancreatic precursor cells	stem cell | pancreas	
+SRS4312767	SRP183071	1	1	0	DLBCL	blood	Diffuse large B-cell lymphoma, or DLBCL
+SRS4317980	SRP183146	0	0	0	interneurons	neuron	
+SRS4319464	SRP183188	1	1	0	Bone marrow aspirate from AML patient	bone marrow	acute myeloid leukemia (AML)
+SRS4325240	SRP183515	1	1	0	Acute myeloid leukemia intiating cell	blood	
+SRS4330931	SRP183811	0	0	0	Jejunum	intestine	the part of the small intestine between the duodenum and ileum
+SRS437922	SRP024274	0	0	0	airway basal cells, nonsmoker	epithelia | airway	airway basal cells
+SRS4380716	SRP186329	0	0	1	H1-NPC	stem cell	
+SRS4383179	SRP186383	0	0	0	Kidney allograft biopsy	kidney	
+SRS4386012	SRP186406	1	0	1	Hepatocellular carcinoma cell line	liver	
+SRS4395056	SRP186685	NA	NA	1	RNA from Cell Lines	NA	
+SRS4402598	SRP186787	0	0	1	hESC-derived neural stem cells (WA09)	embryonic stem cell | neuron	
+SRS4420426	SRP187053	1	1	0	ALL xenograft cells	blood	acute lymphoblastic leukemia (ALL)
+SRS4442657	SRP187599	1	1	0	Ovarian cancer tumor-infiltrating lymphocytes	blood | ovary	
+SRS445122	SRP026042	0	0	0	Disease_K1, Lesion, Untreated	skin	
+SRS445916	SRP026126	0	0	0	ABRF-ILMN-L-A	NA	Association of Biomolecular Resource Facilities (ABRF)
+SRS4468505	SRP187984	0	1	0	whole blood	blood	
+SRS4477031	SRP188219	0	0	0	left atrial appendage	atrial appendage	
+SRS4492614	SRP188526	0	0	0	Urine	NA	
+SRS454679	SRP026537	1	0	1	breast cancer cell line	breast	
+SRS4559321	SRP189995	NA	NA	NA	Dual Expressor	NA	
+SRS457448	SRP027358	0	1	0	cord blood cells	blood	
+SRS457680	SRP027383	1	0	0	Tumor cells	brain	glioma
+SRS4581687	SRP190850	1	0	1	SH-SY5Y cells -ATCC	gland	human neuroblastoma cell line, SH-SY5Y
+SRS463454	SRP028155	1	0	1	MDA-MB231 cells	breast	an epithelial, human breast cancer cell line
+SRS464644	SRP028291	0	0	0	Adrenocortical adenoma	adrenal	a benign neoplasm
+SRS464841	SRP028301	0	0	1	single cell, HEK293T, SMART-Seq2 (variant 2)	NA	
+SRS465435	SRP028336	0	0	0	muscle	muscle	
+SRS467677	SRP028567	1	1	0	AML patient sample	blood	acute myeloid leukemia (AML)
+SRS4709135	SRP194402	NA	NA	1	cell line	NA	
+SRS4715839	SRP194595	0	0	0	Retina	retina	
+SRS4731245	SRP195777	0	0	0	Abdominal skin dermal tissue	skin	
+SRS473863	SRP029262	0	0	0	pancreatic islets	pancreas	
+SRS478664	SRP029880	1	0	0	primary colorectal cancer	colon	
+SRS4876799	SRP200400	0	0	0	neural stem cells	stem cell | neuron	
+SRS4947343	SRP201124	0	1	0	human peripheral blood dendritic cells and monocytes	blood	
+SRS5045784	SRP212710	0	0	0	Fibroblast cells	fibroblast	
+SRS505881	SRP033248	1	0	0	Oral cancer tissue	oral	
+SRS509515	SRP033393	0	1	1	lymphoblastoid cell line	blood	
+SRS512093	SRP033566	0	0	0	nonfailing left-ventricular myocardium, postnatal	heart	
+SRS519004	SRP034712	0	0	0	Human Adipose Derived Stem Cells	stem cell | adipose	
+SRS563734	SRP039077	0	0	0	Airway epithelial cells cultured as monolayer	epithelia | airway	
+SRS590255	SRP041036	1	1	0	Multiple myeloma	blood	
+SRS598094	SRP041471	1	0	0	Human cervical cancer	cervix	
+SRS634210	SRP043108	0	0	0	skeletal muscle	muscle	
+SRS635201	SRP043162	0	0	0	airway smooth muscle cells	muscle	
+SRS641283	SRP043364	0	0	0	Human brain	brain	
+SRS676636	SRP045352	0	1	0	umbilical cord blood	blood	
+SRS691184	SRP045823	0	0	0	skeletal muscle	muscle	
+SRS702346	SRP047233	0	0	0	human NPCs	neuron | progenital cells	Neural progenitor cells (NPCs)
+SRS708846	SRP047476	0	1	1	lymphoblastoid cell lines derived fromHapMap Yoruba individual	blood	
+SRS719233	SRP048801	0	0	0	Ileal biopsy from a Not IBD naïve treatment Male	intestine	
+SRS732180	SRP049340	0	1	0	reprogramming intermediates of hiF-T cells	blood	
+SRS738527	SRP049593	0	0	1	Skin fibroblast-derived iPSC	stem cell | fibroblast	Induced pluripotent stem cells
+SRS738666	SRP049599	0	0	0	keratinocytes_control	epithelia | keratin	
+SRS738759	SRP049605	0	1	0	PBMCs	blood	peripheral blood mononuclear cell (PBMC)
+SRS746046	SRP049988	1	0	1	Lung adenocarcinoma cells_knockdown_control	lung	
+SRS752579	SRP050272	0	0	0	BM	bone marrow	
+SRS781953	SRP050892	0	0	1	H1 human embryonic stem cell derived neural progenitor cells	embryonic stem cell | neuron	
+SRS784558	SRP050992	0	0	1	single H1 hESC	embryonic stem cell	
+SRS788341	SRP051083	1	0	1	Human lung cancer cell lines NCI-H1975 and HCC827	lung	
+SRS804791	SRP051599	0	0	1	total RNA extracted from MRC-5 fibroblasts	lung	MRC5, lung fibroblast cell line
+SRS807466	SRP051688	0	1	0	B cells	blood	
+SRS812793	SRP051848	0	1	0	Human peripheral blood leukocytes	blood	a white blood cell
+SRS824580	SRP052740	1	0	0	tumor biopsy	NA	
+SRS833001	SRP042228	0	0	0	Ileal biopsy in treatment-naïve patient, CD	intestine	
+SRS850606	SRP055153	0	0	0	Primary foreskin fibroblast cells	foreskin	
+SRS852215	SRP055390	0	1	0	Normal CD19+ B-cells	blood	
+SRS866538	SRP055918	0	0	0	placenta	placenta	
+SRS874618	SRP056197	1	1	0	acute myeloid leukemia	blood	
+SRS876077	SRP056295	1	1	0	acute myeloid leukemia	blood	
+SRS882128	SRP056477	0	0	0	brain	brain	
+SRS888571	SRP056696	0	0	0	hepatocyte	liver	
+SRS892696	SRP056840	0	1	0	Whole Blood Cells	blood	
+SRS910176	SRP057196	0	0	0	Brain	brain	
+SRS911013	SRP057205	0	0	1	Detroit 551	embryo | skin	Detrot Human Caucasian embryo skin Derived from a skin biopsy of a normal Caucasian female embryo
+SRS915434	SRP057500	NA	NA	NA	Chol-442	NA	
+SRS924565	SRP057758	1	0	1	MCF7_E2	breast	
+SRS931213	SRP050499	0	0	0	Primordial Germ Cells	germ	
+SRS947393	SRP058773	0	1	0	MEF-depleted hiF-T cells at day 10 of reprogramming	blood	
+SRS948488	SRP058840	NA	1	NA	hiF-T cells	blood	
+SRS949232	SRP058856	NA	NA	NA	SL98452	NA	
+SRS951800	SRP059035	1	0	1	human lung cancer cell line	lung	
+SRS952578	SRP059057	0	1	0	CD4+ T cells	blood	
+SRS954288	SRP059172	0	0	0	patients with suspected brucellosis	NA	
+SRS968948	SRP059775	0	0	1	HEK and 3T3 mix	NA	mouse + human
+SRS975880	SRP059959	0	1	0	human primary granulocytes	blood	
+SRS976926	SRP060205	NA	NA	NA	MCI - LOW	NA	
+SRS993904	SRP061240	0	1	0	plasma microvesicles	blood	
