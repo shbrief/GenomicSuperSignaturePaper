@@ -41,13 +41,21 @@ plot2 <- readRDS("SLE-WB/outputs/neutrophil_estimate.rds")
 plot3 <- readRDS("NARES/outputs/nares_neutrophil.rds")
 ```
 
-```{r fig.width=11, fig.height=4.3}
+```{r fig.width=11, fig.height=4.3, eval=FALSE}
 plot_all <- plot1 | plot2 | plot3
 plot_all
 ```
 
+```{r fig_4, fig.width=11, fig.height=3.8}
+plot_all <- ggpubr::ggarrange(plot1, plot2, plot3, 
+                              labels = c("A", "B", "C"), 
+                              font.label = list(size = 20),
+                              ncol = 3)
+plot_all
+```
+
 ```{r echo=FALSE, eval=FALSE}
-png("multiPLIER_Fig3.png", width = 1100, height = 430)
+png("multiPLIER_Fig3.png", width = 1100, height = 380)
 plot_all
 dev.off()
 ```

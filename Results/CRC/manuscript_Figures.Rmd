@@ -1,0 +1,115 @@
+---
+title: "Fig 3. Sample scores for disease subtyping and metadata characterization"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+```{r echo=FALSE}
+suppressPackageStartupMessages({
+  library(ggpubr)
+})
+```
+
+# Figure 3
+```{r}
+a <- readRDS("outputs/scatter_834_833.rds")
+b <- readRDS("outputs/boxplot_CMS_vs_834_833.rds")
+c <- readRDS("outputs/boxplot_PCSS_vs_834_833.rds")
+```
+
+```{r Fig3, fig.width=10, fig.height=5.5}
+abc <- ggarrange(ggarrange(a$value, labels = "A"),
+                 ggarrange(b$value, c$value,
+                           labels = c("B", "C"),
+                           nrow = 2, align = "hv",
+                           heights = c(1, 1)),
+                 ncol = 2,
+                 widths = c(1.4, 1),
+                 font.label = list(size = 15),
+                 align = "hv")
+abc
+
+## Save Supplementary Figure 3
+png("manuscript_Fig3.png", width = 1000, height = 550)
+abc
+dev.off()
+
+## Clean-up
+rm(a,b,c,abc)
+```
+
+
+# Supplementary Figure 5
+```{r}
+a <- readRDS("outputs/scatter_1575_834.rds")
+b <- readRDS("outputs/boxplot_CMS_vs_1575_834.rds")
+c <- readRDS("outputs/boxplot_PCSS_vs_1575_834.rds")
+d <- readRDS("outputs/scatter_832_188.rds")
+e <- readRDS("outputs/boxplot_CMS_vs_832_188.rds")
+f <- readRDS("outputs/boxplot_PCSS_vs_832_188.rds")
+```
+
+```{r Sup_Fig5, fig.width=10, fig.height=11}
+all <- ggarrange(ggarrange(a$value, d$value,
+                           labels = c("A", "D"), 
+                           nrow = 2),
+                 ggarrange(b$value, c$value, e$value, f$value,
+                           labels = c("B", "C", "E", "F"),
+                           nrow = 4),
+                 ncol = 2,
+                 widths = c(1.4, 1),
+                 font.label = list(size = 15),
+                 align = "hv")
+all
+
+## Save Supplementary Figure 3
+png("manuscript_Sup_Fig5.png", width = 1000, height = 1100)
+all
+dev.off()
+
+## Clean-up
+rm(a,b,c,d,e,f,all)
+```
+
+
+
+
+# Supplementary Figure 6
+```{r}
+a <- readRDS("outputs/10_CRC_datasets/scatter_PCSS.rds")
+b <- readRDS("outputs/10_CRC_datasets/scatter_834_833.rds")
+c <- readRDS("outputs/10_CRC_datasets/boxplot_CMS_vs_PCSS.rds")
+d <- readRDS("outputs/10_CRC_datasets/boxplot_CMS_vs_834_833.rds")
+e <- readRDS("outputs/10_CRC_datasets/boxplot_PCSS_vs_834_833.rds")
+```
+
+```{r Sup_Fig6, fig.width=9.7, fig.height=11}
+all <- ggarrange(ggarrange(a, b$value,
+                           labels = c("A", "B"), 
+                           nrow = 2),
+                 ggarrange(c$value, d$value, e$value,
+                           labels = c("C", "D", "E"),
+                           nrow = 3),
+                 ncol = 2,
+                 widths = c(1.4, 1),
+                 font.label = list(size = 15),
+                 align = "hv")
+all
+
+## Save Supplementary Figure 3
+png("manuscript_Sup_Fig6.png", width = 700, height = 770)
+all
+dev.off()
+
+## Clean-up
+rm(a,b,c,d,e,all)
+```

@@ -142,7 +142,7 @@ sampleScore <- calculateScore(dataset, RAVmodel)
 #                    row_names_gp = 4)
 ```
 
-## Keyword in GSEA
+## Keyword search in GSEA annotation
 ```{r}
 ## RAVs containing the keyword, "neutrophil", within top 3 enriched pathways 
 findSignature(RAVmodel, "neutrophil", n = 3)

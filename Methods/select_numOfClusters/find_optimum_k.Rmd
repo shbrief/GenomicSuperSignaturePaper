@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
 ```{r echo=FALSE, eval=TRUE}
@@ -129,8 +129,10 @@ plot <- ComplexHeatmap::Heatmap(as.matrix(res.dist.neg),
                                 column_names_gp = grid::gpar(fontsize = 5),
                                 column_title = "A. Distance Matrix",
                                 column_title_side = "top",
+                                column_title_gp = grid::gpar(fontsize = 14, fontface = "bold"),
                                 col = circlize::colorRamp2(breaks = c(0, dist_med, dist_max), 
-                                                colors = c("blue", "white", "red")))
+                                                colors = c("blue", "white", "red")),
+                                heatmap_legend_param = list(title = "Distance"))
 
 png("outputs/png/A.heatmap_neg50.png", width = 400, height = 380)
 plot
@@ -180,7 +182,8 @@ when **d = 2.25**.
 plot1 <- ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
   geom_line(aes(colour = numOfControls)) + 
   geom_point() + 
-  ggtitle("B. Proportion of separated negative controls")
+  ggtitle("B. Proportion of separated negative controls") + 
+  theme(plot.title = element_text(size = 14, face = "bold"))
 
 plot1
 
@@ -203,7 +206,8 @@ df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
 plot2 <- ggplot(df, aes(x = numOfCluster, y = numUnseparated)) + 
   geom_line(aes(colour = numOfControls)) + 
   geom_point() + 
-  ggtitle("C. Number of non-separated negative controls")
+  ggtitle("C. Number of non-separated negative controls") + 
+  theme(plot.title = element_text(size = 14, face = "bold"))
 
 plot2
 
@@ -215,6 +219,20 @@ dev.off()
 
 ```{r echo=FALSE, eval=TRUE, fig.width=6.5, fig.height=4}
 knitr::include_graphics("outputs/png/C.numUnseparated.png")
+```
+
+```{r sup_fig_3, fig.width=18, fig.height=4.5, echo=FALSE, eval=FALSE}
+## Capture ComplexHeatmap output as a glob object
+gb <- grid::grid.grabExpr(ComplexHeatmap::draw(plot))
+
+
+## Save Supplementary Figure 3
+png("outputs/png/Sup_Fig_3.png", width = 1800, height = 450)
+plot_all <- ggpubr::ggarrange(gb, plot1, plot2, 
+                              widths = c(0.8, 1, 1),
+                              ncol = 3)
+plot_all
+dev.off()
 ```
 
 # Session Info

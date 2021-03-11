@@ -14,7 +14,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
 ```
 
 # Setup
@@ -88,6 +88,25 @@ print(x)$visible
 dev.off()
 ```
 
+## CMS vs. RAV832/188
+RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.
+
+```{r fig.width=5, fig.height=3.5, eval=TRUE}
+m2_name <- "RAV"
+m2_1 <- "RAV832"
+m2_2 <- "RAV188"
+source("R/Fig4C_CMSvs.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_CMSvs.R")
+saveRDS(x, "outputs/boxplot_CMS_vs_832_188.rds")
+
+png("outputs/png/boxplot_CMS_vs_832_188.png", width = 600, height = 500)
+print(x)$visible
+dev.off()
+```
+
 
 
 # Compare continuous scores
@@ -127,6 +146,23 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_834_833.rds")
 png("outputs/png/boxplot_PCSS_vs_834_833.png", width = 600, height = 500)
 print(x)$visible
 dev.off()
+```
+
+## PCSS vs. RAV832/188
+```{r fig.width=5, fig.height=3.5, eval=TRUE}
+m1_name <- "PCSS"
+m1_1 <- "PCSS1"
+m1_2 <- "PCSS2"
+m2_name <- "RAV"
+m2_1 <- "RAV832"
+m2_2 <- "RAV188"
+
+source("R/Fig4C_contScores.R", print.eval = TRUE)
+```
+
+```{r echo=FALSE}
+x <- source("R/Fig4C_contScores.R")
+saveRDS(x, "outputs/boxplot_PCSS_vs_832_188.rds")
 ```
 
 ## PCSS vs. RAV834/3290

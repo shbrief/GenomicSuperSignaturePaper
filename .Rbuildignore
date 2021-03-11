@@ -17,3 +17,7 @@
 ^Neg_Controls$
 ^neutrophil_estimate\.rds$
 ^SRAmetadb$
+^inst/extdata/RAVmodel_C2\.rds$
+^inst/extdata/RAVmodel_PLIERpriors\.rds$
+^inst/extdata/aggregated_metadata\.json$
+^inst/extdata/SupTable3_RAVmodels_Instruction\.R$

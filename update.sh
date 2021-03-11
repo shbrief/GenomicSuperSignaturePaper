@@ -28,6 +28,7 @@ git checkout gh-pages
 git pull origin gh-pages
 mv -f docs/* .   # need to overwrite previous 'articles' and 'reference' directories
 rm -rf docs/
+# [Note] Any html files not built through vignettes should be manually updated in the gh-pages branch
 git stage *
 git reset HEAD inst/extdata/*   # large data file
 git reset HEAD Results/CRC/data/*   # large data file

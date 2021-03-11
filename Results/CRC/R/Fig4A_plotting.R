@@ -1,6 +1,8 @@
 ##### Required environmental variables #########################################
 # This script requires two environmental variables set before running:
 # `sampleScore1` and `sampleScore2`
+# Also, a logical variable, `val_only`, is required. If it's `TRUE`, only 10 CRC
+# datasets will be used instead of 18 datasets.
 ################################################################################
 
 df.results <- readRDS("data/SummaryForFig4.rds")

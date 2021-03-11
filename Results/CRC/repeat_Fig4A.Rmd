@@ -138,9 +138,14 @@ saveRDS(pA, "outputs/scatter_PCSS.rds")
 
 # CRC subtyping using GenomicSuperSignature
 ## Most similar to PCSS1/PCSS2
+
+[Update on 02.18.21] To use only 10 CRC validation datasets, you set the `val_only` 
+variable before running `R/Fig4A_plotting.R` script.
+
 ```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
 sampleScore1 <- 1575
 sampleScore2 <- 834
+val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 

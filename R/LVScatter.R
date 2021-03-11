@@ -21,9 +21,14 @@ LVScatter <- function(dat, lv, y.var = "Neutrophil.Count", ylab = "",
 
   # calculate where to put the r-squared value
   x.range <- max(neutro.df[, lv]) - min(neutro.df[, lv])
-  x.coord <- min(neutro.df[, lv]) + (x.range * 0.2)
+  x.coord <- min(neutro.df[, lv]) + (x.range * 0.25)
   y.range <- max(neutro.df[, y.var]) - min(neutro.df[, y.var])
-  y.coord <- max(neutro.df[, y.var]) - (y.range * 0.05)
+  if (y.range >= 5) {
+    y.coord <- max(neutro.df[, y.var]) - (y.range * 0.05)
+  } else {
+    y.coord <- max(neutro.df[, y.var])
+  }
+
 
   rsq <- calculateRsq(neutro.df[, lv], neutro.df[, y.var])
   rsq <- round(rsq, 3)
@@ -35,9 +40,9 @@ LVScatter <- function(dat, lv, y.var = "Neutrophil.Count", ylab = "",
     labs(y = ylab) +
     labs(title = title, subtitle = subtitle) +
     theme(legend.position = "none",
-                   text = element_text(size = 14),
-                   plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
-                   plot.subtitle = element_text(size = 14, hjust = 0.5)) +
-    annotate("text", x = x.coord, y = y.coord,
+          text = element_text(size = 16),
+          plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+          plot.subtitle = element_text(size = 16, hjust = 0.5)) +
+    annotate("text", x = x.coord, y = y.coord, size = 5,
              label = paste("r-squared =", rsq))
 }

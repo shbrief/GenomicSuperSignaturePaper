@@ -1,0 +1,6 @@
+"Category","Name","Size..Mb.","studies","runs","samples","top.PCs","RAVs","d","genes","Gene.sets"
+"Default RAVmodels","RAVmodel_C2",476,536,44890,34616,20,4764,2.25,13934,"MSigDB C2 (ver.7.1)"
+"","RAVmodel_PLIERpriors",475,536,44890,34616,20,4764,2.25,13934,"PLIER priors (bloodCellMarkersIRISDMAP, canonicalPathways, and svmMarkers)"
+"Model building variations","RAVmodel_C2_10PC",237,536,44890,34616,10,2382,2.25,13934,"MSigDB C2 (ver.7.1)"
+"","RAVmodel_C2_clNum4",268,536,44890,34616,20,2680,4,13934,"MSigDB C2 (ver.7.1)"
+"","RAVmodel_1399",712,1399,75433,NA,NA,NA,NA,7951,"MSigDB C2 (ver.7.1)"
