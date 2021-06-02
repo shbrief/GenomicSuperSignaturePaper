@@ -1,7 +1,7 @@
 ## GenomicSuperSignaturePaper
 Here, we are presenting the usecases and benchmarking examples of [GenomicSuperSignature](https://shbrief.github.io/GenomicSuperSignature/) R package.
 
-### CRC paper
+### Disease Subtyping
 One of the benchmarking papers is [Continuity of transcriptomes among colorectal cancer subtypes based on meta-analysis](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4). 
 
 #### Continuous Subtype Score
@@ -41,7 +41,7 @@ to the combined model.
 
 <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300">
 
-### multiPLIER paper
+### Transfer Learning
 The other benchmarking paper is [MultiPLIER: A Transfer Learning Framework for Transcriptomics Reveals Systemic Features of Rare Disease](https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30119-X?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121930119X%3Fshowall%3Dtrue). 
 
 #### Neutrophil Counts/Estimates
@@ -63,6 +63,3 @@ and NARES.
 We used the same datasets, SLE-WB and NARES, to find the neutrophil-associated RAV.
 
 <img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/multiPLIER_Fig3.png" width="600" height="200">
-
-
-#### Cell Type Discovery
