@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 output:
   BiocStyle::html_document:
-    number_sections: no
+    number_sections: yes
     toc: yes
     toc_depth: 3
   BiocStyle::pdf_document:
@@ -19,7 +19,8 @@ output:
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  comment = "#>", collapse = TRUE, message = FALSE, warning = FALSE, eval=FALSE 
+  comment = "#>", collapse = TRUE, message = FALSE, warning = FALSE,
+  out.height="50%", out.width="50%"
 )
 ```
 
@@ -100,6 +101,10 @@ x <- readRDS("NARES/outputs/nares_neutrophil.rds")
 x
 ```
 
+# Session Info
+
+<details>
 ```{r}
 sessionInfo()
 ```
+</details>

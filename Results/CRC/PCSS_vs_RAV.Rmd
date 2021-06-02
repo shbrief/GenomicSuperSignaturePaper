@@ -26,8 +26,8 @@ suppressPackageStartupMessages({
 ```
 
 # avgLoading from CRC paper
-This is the table of top 4 average loadings (= PCSS, PC Cluster Subtype Scores) built 
-in the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4).
+This is the table of top 4 average loadings (= PCSS, PC Cluster Subtype Scores) 
+built in the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4).
 
 ```{r}
 avgLoading <- read.table("data/avg_loadings.csv", 
@@ -37,21 +37,30 @@ colnames(avgLoading) <- paste0("PCSS", 1:4)
 ```
 
 # RAVmodel
-```{r message=FALSE, warning=FALSE, collapse=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("C2", load=TRUE)
+```
+
+```{r}
 RAVmodel
+
 updateNote(RAVmodel)
 ```
 
 # RAVs most similar to PCSS1/PCSS2
-We identified RAV1575 and RAV834 as the most similar RAVs to PCSS1 and PCSS2, respectively,
-based on Pearson correlation coefficient.
+We identified RAV1575 and RAV834 as the most similar RAVs to PCSS1 and PCSS2, 
+respectively, based on Pearson correlation coefficient.
 
 ```{r}
 cg <- intersect(rownames(avgLoading), rownames(RAVmodel))
-loading_cor <- abs(stats::cor(avgLoading[cg,], model(RAVmodel)[cg,], 
-                              use = "pairwise.complete.obs", method = "pearson"))
+loading_cor <- abs(stats::cor(avgLoading[cg,], RAVindex(RAVmodel)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
 
 max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
 max2 <- which.max(loading_cor[2,])  # max. correlation with PCSS2
@@ -60,8 +69,8 @@ loading_cor[1, max1, drop = FALSE]
 loading_cor[2, max2, drop = FALSE]
 ```
 
-Using `annotateRAV` function, we checked the MSigDB C2 genesets that are enriched
-in RAV1575 and RAV834.
+Using `annotateRAV` function, we checked the MSigDB C2 genesets that are 
+enriched in RAV1575 and RAV834.
 
 ```{r collapse=FALSE}
 annotateRAV(RAVmodel, 1575)
@@ -69,7 +78,10 @@ annotateRAV(RAVmodel, 834)
 ```
 
 # Session Info
+
+<details>
 ```{r}
 sessionInfo()
 ```
+</details>
 

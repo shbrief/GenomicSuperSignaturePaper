@@ -17,16 +17,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
-```{r echo=FALSE}
-## Packages in GitHub
-pkgs <- c("GenomicSuperSignature", "GenomicSuperSignaturePaper")
-new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
-if(length(new_pkgs) != 0) devtools::install_github(paste0("shbrief/", new_pkgs))
-
-## BioC or CRAN packages
-pkgs <- c("ggplot2", "ggpubr", "dplyr", "Biobase")
-new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
-if(length(new_pkgs) != 0) BiocManager::install(new_pkgs)
+# Setup
+## Load packages
+```{r}
+if (!"GenomicSuperSignaturePaper" %in% installed.packages())
+    devtools::install_github("shbrief/GenomicSuperSignaturePaper")
 
 ## Load packages
 suppressPackageStartupMessages({
@@ -39,14 +34,22 @@ suppressPackageStartupMessages({
 })
 ```
 
-# Setup
 ## RAVmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("C2", load=TRUE)
+```
+
+```{r}
 RAVmodel
 updateNote(RAVmodel)
 ```
+
 
 ## CRC validation datasets
 ```{r}
@@ -190,6 +193,10 @@ head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
 ## CMS-associated RAVs
 Top 2 RAVs (834 and 833) are same from both ANOVA and Kruskal-Wallis Rank Sum Test.
 
+```{r echo=FALSE}
+val_only = FALSE   # use all 18 CRC datasets
+```
+
 ```{r message=FALSE, warning=FALSE, fig.width=6, fig.height=5.5}
 sampleScore1 <- 834
 sampleScore2 <- 833
@@ -301,7 +308,9 @@ head(stage.t.test)
 ```
 
 # Session Info
+
+<details>
 ```{r}
 sessionInfo()
 ```
-
+</details>

@@ -39,12 +39,22 @@ using GenomicSuperSignature and referencing some script from [this vignette](htt
 To directly compare with the results from multiPLIER paper, we used the RAVmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("PLIERpriors", load=TRUE)
+```
+
+```{r}
 RAVmodel
 updateNote(RAVmodel)
 ```
+
+
 
 ## SLE-WB data (E-GEOD-65391)
 ### Expression data
@@ -328,6 +338,9 @@ annotatePC(c(1,8), val_all = val_all, RAVmodel = RAVmodel, simplify = FALSE)
 
 
 # Session Info
+
+<details>
 ```{r}
 sessionInfo()
 ```
+</details>

@@ -43,9 +43,18 @@ using GenomicSuperSignature.
 
 ## RAVmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("C2", load=TRUE)
+```
+
+```{r}
 RAVmodel
+
 updateNote(RAVmodel)
 ```
 

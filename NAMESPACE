@@ -2,6 +2,7 @@
 
 export(LVScatter)
 export(checkPathwaySeparation)
+export(commonGene)
 export(getAssociatedRAVs)
 export(gg_color_hue)
 import(ggplot2)

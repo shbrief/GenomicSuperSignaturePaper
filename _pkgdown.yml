@@ -8,10 +8,16 @@ navbar:
     - text: RAVmodel
       menu:
       - text: Training Data
-        href: Methods/training_datasets/available_samples.html
+        href: articles/training_datasets/available_samples.html
       - text: Number of clusters
-        href: Methods/select_numOfClusters/find_optimum_k.html
-    - text: CRC
+        href: articles/select_numOfClusters/find_optimum_k.html
+      - text: Pathway separation
+        href: articles/others/repeat_Fig5_Pathway_Separation.html
+    - text: EDA
+      menu:
+      - text: Exploratory Data Analysis
+        href: articles/TCGA/TCGA_5studies.html
+    - text: Subtyping
       menu:
       - text: RAVs similar to PCSS1/2
         href: articles/CRC/PCSS_vs_RAV.html
@@ -21,14 +27,12 @@ navbar:
         href: articles/CRC/repeat_Fig4A.html
       - text: CRC clinical variables
         href: articles/CRC/repeat_Fig4C.html
-    - text: multiPLIER
+    - text: Transfer Learning
       menu:
       - text: Neutrophil (SLE-WB)
         href: articles/SLE-WB/repeat_Fig3_SLE-WB.html
       - text: Neutrophil (NARES)
         href: articles/NARES/repeat_Fig3_NARES.html
-      - text: Pathway separation
-        href: articles/others/repeat_Fig5_Pathway_Separation.html
   right:
    - icon: fa-github fa-lg
      href: https://github.com/shbrief/GenomicSuperSignaturePaper

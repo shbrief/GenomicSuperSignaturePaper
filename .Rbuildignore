@@ -21,3 +21,6 @@
 ^inst/extdata/RAVmodel_PLIERpriors\.rds$
 ^inst/extdata/aggregated_metadata\.json$
 ^inst/extdata/SupTable3_RAVmodels_Instruction\.R$
+^Results/TCGA/data/*\.rda$
+^E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol\.pcl$
+^inst/extdata/sra_to_mesh-000000000000\.json$

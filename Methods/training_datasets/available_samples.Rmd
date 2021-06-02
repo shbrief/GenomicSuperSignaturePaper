@@ -30,7 +30,7 @@ datasets. More detail is described below.
 
 ```{r eval=TRUE}
 extdata <- system.file("extdata", package = "GenomicSuperSignature")
-studyMeta <- read.table(file.path(extdata, "studyMeta.tsv"))
+studyMeta <- read.table(file.path(extdata, "studyMeta.tsv.gz"))
 head(studyMeta)
 ```
 
@@ -329,9 +329,13 @@ i <- length(intersect(unique(recount2$study), unique(res_all$study)))
 
 
 # Session Info
-```{r eval=TRUE}
+
+<details>
+```{r}
 sessionInfo()
 ```
+</details>
+
 
 
 

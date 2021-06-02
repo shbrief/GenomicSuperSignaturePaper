@@ -46,7 +46,7 @@ m2_2 <- "PCSS2"
 source("R/Fig4C_CMSvs.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_CMSvs.R")
 saveRDS(x, "outputs/boxplot_CMS_vs_PCSS.rds")
 ```
@@ -63,7 +63,7 @@ m2_2 <- "RAV834"
 source("R/Fig4C_CMSvs.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_CMSvs.R")
 saveRDS(x, "outputs/boxplot_CMS_vs_1575_834.rds")
 ```
@@ -79,7 +79,7 @@ m2_2 <- "RAV833"
 source("R/Fig4C_CMSvs.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_CMSvs.R")
 saveRDS(x, "outputs/boxplot_CMS_vs_834_833.rds")
 
@@ -98,7 +98,7 @@ m2_2 <- "RAV188"
 source("R/Fig4C_CMSvs.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_CMSvs.R")
 saveRDS(x, "outputs/boxplot_CMS_vs_832_188.rds")
 
@@ -122,7 +122,7 @@ m2_2 <- "RAV834"
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_1575_834.rds")
 ```
@@ -139,7 +139,7 @@ m2_2 <- "RAV833"
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_834_833.rds")
 
@@ -160,7 +160,7 @@ m2_2 <- "RAV188"
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_832_188.rds")
 ```
@@ -179,7 +179,7 @@ m2_2 <- "RAV3290"
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_834_3290.rds")
 ```
@@ -198,12 +198,15 @@ m2_2 <- "RAV596"
 source("R/Fig4C_contScores.R", print.eval = TRUE)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 x <- source("R/Fig4C_contScores.R")
 saveRDS(x, "outputs/boxplot_PCSS_vs_834_596.rds")
 ```
 
 # Session Info
-```{r eval=TRUE}
+
+<details>
+```{r}
 sessionInfo()
 ```
+</details>

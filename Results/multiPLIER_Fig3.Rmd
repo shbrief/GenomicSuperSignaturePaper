@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 output:
   BiocStyle::html_document:
-    number_sections: no
+    number_sections: yes
     toc: yes
     toc_depth: 3
   BiocStyle::pdf_document:
@@ -61,6 +61,10 @@ dev.off()
 ```
 
 # Session Info
+
+<details>
 ```{r}
 sessionInfo()
 ```
+</details>
+

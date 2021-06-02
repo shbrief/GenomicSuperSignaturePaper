@@ -1,0 +1,319 @@
+---
+title: "PCA E-MTAB-2452"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{PCA E-MTAB-2452}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>", message = FALSE, warning = FALSE, collapse = TRUE,
+  out.height="50%", out.width="50%"
+)
+```
+
+# Setup
+## Load packages
+```{r}
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(GenomicSuperSignature)
+  library(ggplot2)
+  library(EBImage)
+})
+```
+
+## RAVmodel
+Because this dataset is comprised of isolated immune subsets and was analyzed in
+multiPLIER paper, I used the model annotated with PLIER priors.
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("PLIERpriors", load=TRUE)
+```
+
+```{r}
+RAVmodel
+
+updateNote(RAVmodel)
+```
+
+
+## Load E-MTAB-2452
+```{r}
+annot.dat <- readr::read_tsv("data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl") %>% as.data.frame
+rownames(annot.dat) <- annot.dat[, 2]
+
+dataset <- as.matrix(annot.dat[, 3:ncol(annot.dat)])
+rownames(dataset) <- annot.dat$GeneSymbol
+dataset[1:2, 1:4]
+```
+
+# Basic EDA
+```{r fig.width=3.5, fig.height=2.5}
+val_all <- validate(dataset, RAVmodel)
+heatmapTable(val_all, swCutoff = 0)
+```
+
+```{r fig.width=5.5, fig.height=5.5}
+drawWordcloud(RAVmodel, 1551)
+```
+
+```{r fig.width=6, fig.height=4.5, out.height="80%", out.width="80%"}
+plotValidate(val_all)
+```
+
+```{r collapse=FALSE, echo=FALSE, eval=FALSE}
+# PCA
+## Directly on E-MTAB-2452
+gene_common <- intersect(rownames(RAVmodel), rownames(dataset))
+prcomRes <- stats::prcomp(t(dataset[gene_common,]))
+loadings <- prcomRes$rotation[, 1:8]
+
+### GSEA on top 8 PCs
+library(PLIER)
+library(clusterProfiler)
+
+data(canonicalPathways)
+data(bloodCellMarkersIRISDMAP)
+data(svmMarkers)
+allPaths <- combinePaths(canonicalPathways, bloodCellMarkersIRISDMAP, svmMarkers)
+
+source('~/data2/[archive]GenomicSuperSignature/R/gmtToMatrix.R')
+term2gene <- matrixToTERM2GENE(allPaths)
+
+res_all <- list()
+for (i in seq_len(ncol(loadings))) {
+  ## Run GSEA on ranked gene list
+  geneList <- loadings[,i]
+  geneList <- sort(geneList, decreasing = TRUE)
+  res <- GSEA(geneList, TERM2GENE = term2gene, pvalueCutoff = 0.05)
+  ## Subset to the most significant pathways
+  res <- res[which(res$qvalues == min(res$qvalues)), c("Description", "NES", "pvalue", "qvalues"), drop = FALSE]
+  resName <- paste0("PC", i)
+  res_all[[resName]] <- res
+  res_all[[i]] <- res
+}
+
+summary <- list()
+for (i in 1:8) {
+  annotatedPC <- res_all[[i]]
+  topAnnotation <- annotatedPC[order(abs(annotatedPC$NES), decreasing = TRUE),][1:5,]
+  rownames(topAnnotation) <- NULL
+  summary[[i]] <- topAnnotation
+  names(summary)[i] <- paste0("PC", i)
+}
+
+# Simple version of the output - only witt the description
+simple_summary <- sapply(summary, function(x) x$Description) %>% as.data.frame
+simple_summary  
+```
+
+
+# Plot
+## Annotated PCA
+```{r}
+annotatePC(1:8, val_all, RAVmodel, n = 5, simplify = TRUE)  # default scoreCutoff = 0.5
+annotatePC(1:8, val_all, RAVmodel, n = 5, simplify = TRUE, scoreCutoff = 0)
+```
+
+## Cell types
+Label each sample with the known cell types.
+```{r}
+cellType <- gsub("_.*$", "", colnames(dataset))
+cellType <- gsub("CD4", "CD4,T cell", cellType)
+cellType <- gsub("CD14", "CD14,monocyte", cellType)
+cellType <- gsub("CD16", "CD16,neutrophil", cellType)
+names(cellType) <- colnames(dataset)
+```
+
+## Pairs plot
+```{r echo=FALSE}
+library(tibble)
+res <- stats::prcomp(dataset)$rotation %>% as.data.frame
+res <- tibble::rownames_to_column(res, "SampleID")
+ct <- data.frame(cellType)
+ct <- tibble::rownames_to_column(ct, "SampleID")
+
+res.df <- dplyr::full_join(res, ct, by = "SampleID") %>%
+  dplyr::mutate(PC1 = as.numeric(as.character(PC1)),
+                PC2 = as.numeric(as.character(PC2)),
+                PC3 = as.numeric(as.character(PC3)),
+                PC4 = as.numeric(as.character(PC4)),
+                Dataset = factor(cellType, 
+                                 levels = c("CD14,monocyte", "CD16,neutrophil", "CD4,T cell")))
+```
+
+```{r echo=FALSE,fig.width=4.8,fig.height=5.5,out.height="80%",out.width="80%"}
+PC1 <- res.df[,"PC1"]
+PC2 <- res.df[,"PC2"]
+PC3 <- res.df[,"PC3"]
+PC4 <- res.df[,"PC4"]
+data <- data.frame(PC1, PC2, PC3, PC4)
+group <- as.factor(res.df$cellType)
+
+pairs(data, col = group, oma=c(10,3,3,3), pch = c(19), cex = 1)
+par(xpd = TRUE)
+legend("bottom", fill = unique(group), legend = c(levels(group)), cex = 0.7)
+```
+
+Tried `GGally::ggpairs`...
+
+```{r echo=FALSE, fig.width=6.5, fig.height=5, out.height="80%",out.width="80%"}
+library(GGally)
+ggpairs(data, aes(color = group), columns = 1:4, upper = "blank",
+        legend = c(1,1))
+```
+
+## Annotated PCA plot
+### PC1 vs. PC2
+```{r fig.width=7, fig.height=7, out.height="80%", out.width="80%"}
+plotAnnotatedPCA(dataset, RAVmodel, PCnum = c(1,2), val_all = val_all, 
+                 scoreCutoff = 0.3, color_by = cellType, 
+                 color_lab = "Cell Type", trimed_pathway_len = 45)
+```
+
+### PC1 vs. PC3
+```{r fig.width=7, fig.height=7, out.height="80%", out.width="80%"}
+plotAnnotatedPCA(dataset, RAVmodel, PCnum = c(1,3), val_all = val_all, 
+                 scoreCutoff = 0.3, color_by = cellType, 
+                 color_lab = "Cell Type", trimed_pathway_len = 45)
+```
+
+### PC2 vs. PC3
+```{r fig.width=7, fig.height=7, out.height="80%", out.width="80%"}
+plotAnnotatedPCA(dataset, RAVmodel, PCnum = c(2,3), val_all = val_all, 
+                 scoreCutoff = 0.3, color_by = cellType, 
+                 color_lab = "Cell Type", trimed_pathway_len = 45)
+```
+
+# Figures for the paper
+## Figure 1
+### Figure 1B top-left
+```{r eval=FALSE}
+x <- calculateScore(dataset, RAVmodel)
+top_PC_annot <- c(23,1552,1387,684,338,299,21,312)
+Fig1B_topleft <- sampleScoreHeatmap(x[,top_PC_annot],                    
+                                    dataName = "E-MTAB-2452", 
+                                    modelName = "RAVs for top 8 PCs", 
+                                    row_names_gp = 5, column_names_gp = 7, 
+                                    cluster_columns = FALSE, cluster_row = FALSE)
+Fig1B_topleft
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Save the Figure 1B top-left
+png("manuscript_Fig1B_topleft.png", width = 1500, height = 1500, res = 300)
+Fig1B_topleft
+dev.off()
+```
+
+```{r fig.width=7, fig.height=9, echo=FALSE}
+img <- readImage("manuscript_Fig1B_topleft.png")
+display(img, method = "raster")
+```
+
+### Figure 1B bottom-left
+Output from `drawWordcloud(RAVmodel, 1551)`.
+```{r echo=FALSE, eval=FALSE}
+## Save the Figure 1B bottom-left
+png("manuscript_Fig1B_bottomleft.png", width = 1500, height = 1500, res = 300)
+drawWordcloud(RAVmodel, 1551)
+dev.off()
+```
+
+```{r fig.width=7, fig.height=9, echo=FALSE}
+img <- readImage("manuscript_Fig1B_bottomleft.png")
+display(img, method = "raster")
+```
+
+### Figure 1B bottom-right
+```{r fig.width=6, fig.height=6, echo=FALSE, eval=FALSE}
+a14 <- annotatePC(1:4, val_all, RAVmodel, n = 5, simplify = TRUE, scoreCutoff = 0)
+a58 <- annotatePC(5:8, val_all, RAVmodel, n = 5, simplify = TRUE, scoreCutoff = 0)
+b <- plotAnnotatedPCA(dataset, RAVmodel, PCnum = c(1,3), val_all = val_all, 
+                      scoreCutoff = 0.3, color_by = cellType, 
+                      color_lab = "Cell Type", trimed_pathway_len = 45)
+
+library(flextable)
+set_flextable_defaults(na_str = "NA")
+a14_ft <- flextable(a14) %>% width(., width = 2.5)
+a14_ft <- grid::rasterGrob(as_raster(a14_ft))
+
+a58_ft <- flextable(a58) %>% width(., width = 1.5)
+a58_ft <- grid::rasterGrob(as_raster(a58_ft))
+
+# ggpubr::ggarrange(a14_ft, a58_ft, labels = c("A", " "), 
+#                   hjust = 0.1, vjust = 1.5, align = "hv",
+#                   nrow = 2, 
+#                   heights = c(0.8, 1),
+#                   font.label = list(size = 15)) 
+```
+
+```{r eval=FALSE}
+Fig1B_bottomright <- plotAnnotatedPCA(dataset, RAVmodel, PCnum = c(2,3), 
+                                      val_all = val_all, scoreCutoff = 0.3, 
+                                      color_by = cellType, 
+                                      color_lab = "Cell Type", 
+                                      trimed_pathway_len = 45)
+Fig1B_bottomright
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Save the Figure 1B bottom-right
+png("manuscript_Fig1B_bottomright.png", width = 1500, height = 1500, res = 300)
+Fig1B_bottomright
+dev.off()
+```
+
+```{r fig.width=7, fig.height=9, echo=FALSE, out.height="80%", out.width="80%"}
+img <- readImage("manuscript_Fig1B_bottomright.png")
+display(img, method = "raster")
+```
+
+## Supplementary Figure 8
+PCA result of leukocyte gene expression data (E-MTAB-2452) is displayed in A) a 
+table or B) a scatter plot. PCA is done on a centered, but not scaled, input 
+dataset by default. Different cutoff parameters for GSEA annotation, such as 
+minimum validation score or NES, can be set.
+
+```{r eval=FALSE}
+supFig8 <- ggpubr::ggarrange(a14_ft, b, labels = c("A", "B"),
+                             nrow = 2, heights = c(2.5, 5), align = "hv") 
+
+supFig8
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Save the Supplementary Figure 8
+png("manuscript_Sup_Fig8.png", width = 700, height = 900)
+supFig8
+dev.off()
+```
+
+```{r fig.width=7, fig.height=9, echo=FALSE, out.height="80%", out.width="80%"}
+img <- readImage("manuscript_Sup_Fig8.png")
+display(img, method = "raster")
+```
+
+
+# Session Info
+
+<details>
+```{r}
+sessionInfo()
+```
+</details>

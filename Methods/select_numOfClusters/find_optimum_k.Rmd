@@ -236,8 +236,9 @@ dev.off()
 ```
 
 # Session Info
-```{r eval=TRUE}
+
+<details>
+```{r}
 sessionInfo()
 ```
-
-
+</details>

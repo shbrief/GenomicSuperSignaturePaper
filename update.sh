@@ -20,10 +20,15 @@
 # git push origin gh-pages
 
 
-## For GenomicSuperSignaturePaper package
-ln -s Results vignettes   # set the soft symbolic link to make build docs
+##### For GenomicSuperSignaturePaper package ###################################
+## Set the soft symbolic link to make build docs
+ln -s Results vignettes   # Results
 Rscript --vanilla -e "pkgdown::build_site(lazy=TRUE)"
-rm vignettes   # remove symbolic link
+rm vignettes
+ln -s Methods vignettes   # Methods
+Rscript --vanilla -e "pkgdown::build_site(lazy=TRUE)"
+rm vignettes
+
 git checkout gh-pages
 git pull origin gh-pages
 mv -f docs/* .   # need to overwrite previous 'articles' and 'reference' directories
@@ -33,6 +38,7 @@ git stage *
 git reset HEAD inst/extdata/*   # large data file
 git reset HEAD Results/CRC/data/*   # large data file
 git reset HEAD Results/SLE-WB/data/*   # large data file
+git reset HEAD Results/TCGA/data/*   # large data file
 git reset HEAD SRAmetadb.sqlite.gz   # large data file
 git reset HEAD Methods/prepare_Inputs   # temporary work
 git reset HEAD Results_temp/*   # temporary works
