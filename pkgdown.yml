@@ -1,15 +1,10 @@
-pandoc: 2.7.3
+pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  CRC/PCSS_vs_RAV: PCSS_vs_RAV.html
-  CRC/metadata_based_search: metadata_based_search.html
-  CRC/repeat_Fig4A: repeat_Fig4A.html
-  CRC/repeat_Fig4C: repeat_Fig4C.html
-  NARES/repeat_Fig3_NARES: repeat_Fig3_NARES.html
-  SLE-WB/repeat_Fig3_SLE-WB: repeat_Fig3_SLE-WB.html
-  manuscript: manuscript.html
-  multiPLIER_Fig3: multiPLIER_Fig3.html
-  others/repeat_Fig5_Pathway_Separation: repeat_Fig5_Pathway_Separation.html
-last_built: 2020-12-22T04:50Z
+  prepare_Inputs/preprocess_on_score: preprocess_on_score.html
+  prepare_Inputs/preprocess_on_validation: preprocess_on_validation.html
+  select_numOfClusters/find_optimum_k: find_optimum_k.html
+  training_datasets/available_samples: available_samples.html
+last_built: 2021-06-02T17:09Z
 

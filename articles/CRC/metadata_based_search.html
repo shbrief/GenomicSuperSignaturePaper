@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
       </span>
     </div>
 
@@ -45,10 +45,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../Methods/training_datasets/available_samples.html">Training Data</a>
+      <a href="../../articles/training_datasets/available_samples.html">Training Data</a>
     </li>
     <li>
-      <a href="../../Methods/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
+      <a href="../../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
   </ul>
 </li>
@@ -109,13 +109,13 @@
 
       
 
-      </header><script src="metadata_based_search_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="metadata_based_search_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Find the signature using metadata</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2020-12-21</h4>
+            <h4 class="date">2021-06-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/metadata_based_search.Rmd"><code>vignettes/CRC/metadata_based_search.Rmd</code></a></small>
       <div class="hidden name"><code>metadata_based_search.Rmd</code></div>
@@ -127,27 +127,49 @@
 <div id="setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h1>
+<div id="load-packages" class="section level2">
+<h2 class="hasAnchor">
+<a href="#load-packages" class="anchor"></a>Load packages</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="st">"GenomicSuperSignaturePaper"</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"shbrief/GenomicSuperSignaturePaper"</span><span class="op">)</span>
+
+<span class="co">## Load packages</span>
+<span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shbrief/GenomicSuperSignature">GenomicSuperSignature</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shbrief.github.io/GenomicSuperSignaturePaper">GenomicSuperSignaturePaper</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/">ggpubr</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biobase">Biobase</a></span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+</div>
 <div id="ravmodel" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
-<pre><code>## class: PCAGenomicSignatures 
-## dim: 13934 4764 
-## metadata(7): cluster size ... updateNote version
-## assays(1): model
-## rownames(13934): CASKIN1 DDX3Y ... CTC-457E21.9 AC007966.1
-## rowData names(0):
-## colnames(4764): RAV1 RAV2 ... RAV4763 RAV4764
-## colData names(4): RAV studies silhouetteWidth gsea
-## trainingData(2): PCAsummary MeSH
-## trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526
-## [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with MSigDB C2"</code></pre>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/getModel.html">getModel</a></span><span class="op">(</span><span class="st">"C2"</span>, load<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">RAVmodel</span>
+<span class="co">## class: PCAGenomicSignatures </span>
+<span class="co">## dim: 13934 4764 </span>
+<span class="co">## metadata(7): cluster size ... updateNote version</span>
+<span class="co">## assays(1): RAVindex</span>
+<span class="co">## rownames(13934): CASKIN1 DDX3Y ... CTC-457E21.9 AC007966.1</span>
+<span class="co">## rowData names(0):</span>
+<span class="co">## colnames(4764): RAV1 RAV2 ... RAV4763 RAV4764</span>
+<span class="co">## colData names(4): RAV studies silhouetteWidth gsea</span>
+<span class="co">## trainingData(2): PCAsummary MeSH</span>
+<span class="co">## trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</span>
+<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">updateNote</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span>
+<span class="co">## [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with MSigDB C2"</span></code></pre></div>
 </div>
 <div id="crc-validation-datasets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#crc-validation-datasets" class="anchor"></a>CRC validation datasets</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"data/eSets/setNames.RData"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Load validation samples</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">set</span> <span class="kw">in</span> <span class="va">setNames</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/eSets_new/"</span>, <span class="va">set</span>, <span class="st">'.RData'</span><span class="op">)</span><span class="op">)</span>
@@ -161,50 +183,50 @@
 <h2 class="hasAnchor">
 <a href="#get-phenotype-data" class="anchor"></a>Get phenotype data</h2>
 <p>Combine all the phenotype data from CRC validation datasets.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## phenotype tables combined</span>
-<span class="va">pdata_df</span> <span class="op">&lt;-</span> <span class="va">setNames</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">set</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">eSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="va">set</span><span class="op">)</span>
-  <span class="va">pdata</span> <span class="op">&lt;-</span> <span class="fu">pData</span><span class="op">(</span><span class="va">eSet</span><span class="op">)</span>
-  <span class="va">eSet_tmp</span> <span class="op">&lt;-</span> <span class="va">eSet</span><span class="op">[</span>, <span class="va">pdata</span><span class="op">$</span><span class="va">sample_type</span> <span class="op">%in%</span> <span class="st">"tumor"</span><span class="op">]</span>
-  <span class="va">pdata_tmp</span> <span class="op">&lt;-</span> <span class="fu">pData</span><span class="op">(</span><span class="va">eSet_tmp</span><span class="op">)</span>
+<span class="va">pdata_df</span> <span class="op">&lt;-</span> <span class="va">setNames</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">lapply</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">set</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">eSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/get.html">get</a></span><span class="op">(</span><span class="va">set</span><span class="op">)</span>
+  <span class="va">pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span><span class="op">(</span><span class="va">eSet</span><span class="op">)</span>
+  <span class="va">eSet_tmp</span> <span class="op">&lt;-</span> <span class="va">eSet</span><span class="op">[</span>, <span class="va">pdata</span><span class="op">$</span><span class="va">sample_type</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html">%in%</a></span> <span class="st">"tumor"</span><span class="op">]</span>
+  <span class="va">pdata_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span><span class="op">(</span><span class="va">eSet_tmp</span><span class="op">)</span>
   
-  <span class="va">ind_rm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"CRIS_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">pdata_tmp</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">ind_rm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html">grep</a></span><span class="op">(</span><span class="st">"CRIS_"</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">pdata_tmp</span><span class="op">)</span><span class="op">)</span>
   <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ind_rm</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span><span class="va">pdata_tmp</span> <span class="op">&lt;-</span> <span class="va">pdata_tmp</span><span class="op">[</span>,<span class="op">-</span><span class="va">ind_rm</span><span class="op">]</span><span class="op">}</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">pdata_tmp</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">'rbind'</span>, <span class="va">.</span><span class="op">)</span></code></pre></div>
+<span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">'rbind'</span>, <span class="va">.</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="get-expression-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#get-expression-data" class="anchor"></a>Get expression data</h2>
 <p>Combine all expression profiles from CRC validation datasets, subset with the common genes among them.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## common genes between all validation datasets</span>
 <span class="va">all_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">set</span> <span class="kw">in</span> <span class="va">setNames</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">eSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="va">set</span><span class="op">)</span>
-  <span class="va">exprs</span> <span class="op">&lt;-</span> <span class="fu">exprs</span><span class="op">(</span><span class="va">eSet</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">rmNaInf</span>
-  <span class="va">all_genes</span><span class="op">[[</span><span class="va">set</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">)</span>
+  <span class="va">eSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/get.html">get</a></span><span class="op">(</span><span class="va">set</span><span class="op">)</span>
+  <span class="va">exprs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/tidyeval.html">exprs</a></span><span class="op">(</span><span class="va">eSet</span><span class="op">)</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="va">rmNaInf</span>
+  <span class="va">all_genes</span><span class="op">[[</span><span class="va">set</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="va">cg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="va">intersect</span>, <span class="va">all_genes</span><span class="op">)</span>
+<span class="va">cg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/funprog.html">Reduce</a></span><span class="op">(</span><span class="va">intersect</span>, <span class="va">all_genes</span><span class="op">)</span>
 
 <span class="co">## expression matrix combined</span>
-<span class="va">exprs_df</span> <span class="op">&lt;-</span> <span class="va">setNames</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">set</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">eSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span><span class="op">(</span><span class="va">set</span><span class="op">)</span>
-  <span class="va">pdata</span> <span class="op">&lt;-</span> <span class="fu">pData</span><span class="op">(</span><span class="va">eSet</span><span class="op">)</span>
-  <span class="va">eSet_tmp</span> <span class="op">&lt;-</span> <span class="va">eSet</span><span class="op">[</span><span class="va">cg</span>, <span class="va">pdata</span><span class="op">$</span><span class="va">sample_type</span> <span class="op">%in%</span> <span class="st">"tumor"</span><span class="op">]</span>
-  <span class="va">exprs_tmp</span> <span class="op">&lt;-</span> <span class="fu">exprs</span><span class="op">(</span><span class="va">eSet_tmp</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">rmNaInf</span>
-  <span class="va">exprs_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">exprs_tmp</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">t</span>
+<span class="va">exprs_df</span> <span class="op">&lt;-</span> <span class="va">setNames</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">lapply</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">set</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">eSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/get.html">get</a></span><span class="op">(</span><span class="va">set</span><span class="op">)</span>
+  <span class="va">pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span><span class="op">(</span><span class="va">eSet</span><span class="op">)</span>
+  <span class="va">eSet_tmp</span> <span class="op">&lt;-</span> <span class="va">eSet</span><span class="op">[</span><span class="va">cg</span>, <span class="va">pdata</span><span class="op">$</span><span class="va">sample_type</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html">%in%</a></span> <span class="st">"tumor"</span><span class="op">]</span>
+  <span class="va">exprs_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/tidyeval.html">exprs</a></span><span class="op">(</span><span class="va">eSet_tmp</span><span class="op">)</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="va">rmNaInf</span>
+  <span class="va">exprs_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">exprs_tmp</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="va">t</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">exprs_tmp</span><span class="op">)</span>  
-<span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">'cbind'</span>, <span class="va">.</span><span class="op">)</span>   <span class="co"># 8219 genes x 3567 samples</span></code></pre></div>
+<span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">'cbind'</span>, <span class="va">.</span><span class="op">)</span>   <span class="co"># 8219 genes x 3567 samples</span></code></pre></div>
 </div>
 <div id="calculate-score" class="section level2">
 <h2 class="hasAnchor">
 <a href="#calculate-score" class="anchor"></a>Calculate Score</h2>
 <p>Calculate score and combine it with phenotype data.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sampleScore</span> <span class="op">&lt;-</span> <span class="fu">calculateScore</span><span class="op">(</span><span class="va">exprs_df</span>, <span class="va">RAVmodel</span><span class="op">)</span>
-<span class="va">data_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">sampleScore</span>, <span class="va">pdata_df</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sampleScore</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/calculateScore.html">calculateScore</a></span><span class="op">(</span><span class="va">exprs_df</span>, <span class="va">RAVmodel</span><span class="op">)</span>
+<span class="va">data_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html">cbind</a></span><span class="op">(</span><span class="va">sampleScore</span>, <span class="va">pdata_df</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="multivariable" class="section level1">
@@ -214,15 +236,15 @@
 <div id="anova" class="section level2">
 <h2 class="hasAnchor">
 <a href="#anova" class="anchor"></a>ANOVA</h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">f.stat.all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">f.stat.all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">res.aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">data_all</span><span class="op">[</span>,<span class="va">x</span><span class="op">]</span> <span class="op">~</span> <span class="va">data_all</span><span class="op">$</span><span class="va">cms_label_SSP</span><span class="op">)</span>
   <span class="va">f.stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res.aov</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">]</span>   <span class="co"># extract F-statistics from ANOVA </span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">f.stat</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">f.stat.all</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">f.stat.all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">f.stat.all</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">f.stat.all</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">f.stat.all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html">order</a></span><span class="op">(</span><span class="va">f.stat.all</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="co">##    RAV834    RAV833    RAV861    RAV188   RAV2432    RAV579 </span>
 <span class="co">## 1216.5445  834.3780  742.6224  709.8732  656.5008  642.1502</span></code></pre></div>
 </div>
@@ -230,22 +252,22 @@
 <h2 class="hasAnchor">
 <a href="#kruskal-wallis-rank-sum-test" class="anchor"></a>Kruskal-Wallis Rank Sum Test</h2>
 <p>Normality assumption is not met. Below example is a Q-Q plot from RAV834.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">data_all</span><span class="op">[</span>,<span class="st">"RAV834"</span><span class="op">]</span> <span class="op">~</span> <span class="va">data_all</span><span class="op">[</span>,<span class="st">"cms_label_SSP"</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">res.aov</span>, <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-9-1.png" width="384"></p>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-11-1.png" width="384"></p>
 <p>Try Kruskal-Wallis Rank Sum Test</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Kruskal-Wallis Rank Sum Test</span>
 <span class="co"># a non-parametric alternative to one-way ANOVA = when normality assumption is not met</span>
-<span class="va">kw.chi.sqr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+<span class="va">kw.chi.sqr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">kw.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span><span class="va">data_all</span><span class="op">[</span>,<span class="va">x</span><span class="op">]</span> <span class="op">~</span> <span class="va">data_all</span><span class="op">$</span><span class="va">cms_label_SSP</span><span class="op">)</span>
   <span class="va">kw.stat</span> <span class="op">&lt;-</span> <span class="va">kw.test</span><span class="op">$</span><span class="va">statistic</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">kw.stat</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">kw.chi.sqr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">kw.chi.sqr</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">kw.chi.sqr</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">kw.chi.sqr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"RAV"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">kw.chi.sqr</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/order.html">order</a></span><span class="op">(</span><span class="va">kw.chi.sqr</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="co">##   RAV834   RAV833   RAV188   RAV579   RAV657  RAV1957 </span>
 <span class="co">## 2146.136 1831.683 1829.326 1775.702 1750.150 1693.344</span></code></pre></div>
 </div>
@@ -253,38 +275,38 @@
 <h2 class="hasAnchor">
 <a href="#cms-associated-ravs" class="anchor"></a>CMS-associated RAVs</h2>
 <p>Top 2 RAVs (834 and 833) are same from both ANOVA and Kruskal-Wallis Rank Sum Test.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sampleScore1</span> <span class="op">&lt;-</span> <span class="fl">834</span>
 <span class="va">sampleScore2</span> <span class="op">&lt;-</span> <span class="fl">833</span>
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4A_plotting.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
 <p>Plots with different mean comparing methods.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## t.test for a few pairs</span>
 <span class="va">my_comparisons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS2"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS3"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS4"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">ggboxplot</span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">stat_compare_means</span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">my_comparisons</span>, method <span class="op">=</span> <span class="st">"t.test"</span>, <span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">..p.adj..</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">my_comparisons</span>, method <span class="op">=</span> <span class="st">"t.test"</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">..p.adj..</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Using `as.character()` on a quosure is deprecated as of rlang 0.3.0.
 ## Please use `as_label()` or `as_name()` instead.
 ## This warning is displayed once per session.</code></pre>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-11-1.png" width="480"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-14-1.png" width="480"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## ANOVA</span>
-<span class="fu">ggboxplot</span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">stat_compare_means</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"anova"</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-11-2.png" width="480"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"anova"</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-14-2.png" width="480"></p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Kruskal-Wallis Rank Sum Test </span>
-<span class="fu">ggboxplot</span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">stat_compare_means</span><span class="op">(</span>method <span class="op">=</span> <span class="st">'kruskal.test'</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-11-3.png" width="480"></p>
+<span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'kruskal.test'</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-14-3.png" width="480"></p>
 </div>
 </div>
 <div id="binary-variables" class="section level1">
 <h1 class="hasAnchor">
 <a href="#binary-variables" class="anchor"></a>Binary variables</h1>
 <p>We ran <code>t.test</code> between the below clinical variables and all sample scores. The test results were ordered based on p-value and top 6 of them are printed.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"msi"</span>, <span class="st">"summarylocation"</span>, <span class="st">"summarygrade"</span>, <span class="st">"summarystage"</span><span class="op">)</span></code></pre></div>
 <div id="msi" class="section level3">
 <h3 class="hasAnchor">
@@ -314,9 +336,9 @@
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<details><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## R version 4.0.3 (2020-10-10)</span>
+<span class="co">## R version 4.1.0 (2021-05-18)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 18.04.5 LTS</span>
 <span class="co">## </span>
@@ -337,47 +359,53 @@
 <span class="co">## [8] methods   base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">##  [1] dplyr_1.0.2                      ggpubr_0.4.0                    </span>
-<span class="co">##  [3] ggplot2_3.3.2                    GenomicSuperSignaturePaper_0.0.3</span>
-<span class="co">##  [5] GenomicSuperSignature_0.0.7      SummarizedExperiment_1.20.0     </span>
-<span class="co">##  [7] Biobase_2.50.0                   GenomicRanges_1.42.0            </span>
-<span class="co">##  [9] GenomeInfoDb_1.26.2              IRanges_2.24.1                  </span>
-<span class="co">## [11] S4Vectors_0.28.1                 BiocGenerics_0.36.0             </span>
-<span class="co">## [13] MatrixGenerics_1.2.0             matrixStats_0.57.0              </span>
-<span class="co">## [15] BiocStyle_2.18.1                </span>
+<span class="co">##  [1] dplyr_1.0.6                      ggpubr_0.4.0                    </span>
+<span class="co">##  [3] ggplot2_3.3.3                    GenomicSuperSignaturePaper_0.0.4</span>
+<span class="co">##  [5] GenomicSuperSignature_1.1.3      SummarizedExperiment_1.22.0     </span>
+<span class="co">##  [7] Biobase_2.52.0                   GenomicRanges_1.44.0            </span>
+<span class="co">##  [9] GenomeInfoDb_1.28.0              IRanges_2.26.0                  </span>
+<span class="co">## [11] S4Vectors_0.30.0                 BiocGenerics_0.38.0             </span>
+<span class="co">## [13] MatrixGenerics_1.4.0             matrixStats_0.58.0              </span>
+<span class="co">## [15] BiocStyle_2.20.0                </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] bitops_1.0-6           fs_1.5.0               bit64_4.0.5           </span>
-<span class="co">##  [4] httr_1.4.2             RColorBrewer_1.1-2     rprojroot_2.0.2       </span>
-<span class="co">##  [7] tools_4.0.3            backports_1.2.1        R6_2.5.0              </span>
-<span class="co">## [10] DBI_1.1.0              colorspace_2.0-0       GetoptLong_1.0.5      </span>
-<span class="co">## [13] withr_2.3.0            tidyselect_1.1.0       bit_4.0.4             </span>
-<span class="co">## [16] curl_4.3               compiler_4.0.3         textshaping_0.2.1     </span>
-<span class="co">## [19] Cairo_1.5-12.2         desc_1.2.0             DelayedArray_0.16.0   </span>
-<span class="co">## [22] labeling_0.4.2         bookdown_0.21          scales_1.1.1          </span>
-<span class="co">## [25] rappdirs_0.3.1         pkgdown_1.6.1          systemfonts_0.3.2     </span>
-<span class="co">## [28] stringr_1.4.0          digest_0.6.27          foreign_0.8-79        </span>
-<span class="co">## [31] rmarkdown_2.6          rio_0.5.16             XVector_0.30.0        </span>
-<span class="co">## [34] pkgconfig_2.0.3        htmltools_0.5.0        dbplyr_2.0.0          </span>
-<span class="co">## [37] rlang_0.4.9            GlobalOptions_0.1.2    readxl_1.3.1          </span>
-<span class="co">## [40] RSQLite_2.2.1          rstudioapi_0.13        farver_2.0.3          </span>
-<span class="co">## [43] shape_1.4.5            generics_0.1.0         zip_2.1.1             </span>
-<span class="co">## [46] car_3.0-10             RCurl_1.98-1.2         magrittr_2.0.1        </span>
-<span class="co">## [49] GenomeInfoDbData_1.2.4 Matrix_1.2-18          Rcpp_1.0.5            </span>
-<span class="co">## [52] munsell_0.5.0          abind_1.4-5            lifecycle_0.2.0       </span>
-<span class="co">## [55] stringi_1.5.3          yaml_2.2.1             carData_3.0-4         </span>
-<span class="co">## [58] zlibbioc_1.36.0        BiocFileCache_1.14.0   blob_1.2.1            </span>
-<span class="co">## [61] grid_4.0.3             forcats_0.5.0          crayon_1.3.4          </span>
-<span class="co">## [64] lattice_0.20-41        haven_2.3.1            circlize_0.4.11       </span>
-<span class="co">## [67] hms_0.5.3              knitr_1.30             ComplexHeatmap_2.6.2  </span>
-<span class="co">## [70] pillar_1.4.7           rjson_0.2.20           ggsignif_0.6.0        </span>
-<span class="co">## [73] glue_1.4.2             evaluate_0.14          data.table_1.13.4     </span>
-<span class="co">## [76] BiocManager_1.30.10    png_0.1-7              vctrs_0.3.6           </span>
-<span class="co">## [79] cellranger_1.1.0       gtable_0.3.0           purrr_0.3.4           </span>
-<span class="co">## [82] tidyr_1.1.2            clue_0.3-58            assertthat_0.2.1      </span>
-<span class="co">## [85] xfun_0.19              openxlsx_4.2.3         broom_0.7.3           </span>
-<span class="co">## [88] rstatix_0.6.0          ragg_0.4.0             tibble_3.0.4          </span>
-<span class="co">## [91] memoise_1.1.0          cluster_2.1.0          ellipsis_0.3.1</span></code></pre></div>
+<span class="co">##   [1] colorspace_2.0-1       ggsignif_0.6.1         rjson_0.2.20          </span>
+<span class="co">##   [4] ellipsis_0.3.2         rio_0.5.26             rprojroot_2.0.2       </span>
+<span class="co">##   [7] circlize_0.4.12        XVector_0.32.0         GlobalOptions_0.1.2   </span>
+<span class="co">##  [10] fs_1.5.0               clue_0.3-59            farver_2.1.0          </span>
+<span class="co">##  [13] bit64_4.0.5            fansi_0.5.0            codetools_0.2-18      </span>
+<span class="co">##  [16] doParallel_1.0.16      cachem_1.0.5           knitr_1.33            </span>
+<span class="co">##  [19] jsonlite_1.7.2         Cairo_1.5-12.2         broom_0.7.6           </span>
+<span class="co">##  [22] cluster_2.1.2          dbplyr_2.1.1           png_0.1-7             </span>
+<span class="co">##  [25] BiocManager_1.30.15    compiler_4.1.0         httr_1.4.2            </span>
+<span class="co">##  [28] backports_1.2.1        assertthat_0.2.1       Matrix_1.3-3          </span>
+<span class="co">##  [31] fastmap_1.1.0          htmltools_0.5.1.1      tools_4.1.0           </span>
+<span class="co">##  [34] gtable_0.3.0           glue_1.4.2             GenomeInfoDbData_1.2.6</span>
+<span class="co">##  [37] rappdirs_0.3.3         Rcpp_1.0.6             carData_3.0-4         </span>
+<span class="co">##  [40] cellranger_1.1.0       jquerylib_0.1.4        pkgdown_1.6.1         </span>
+<span class="co">##  [43] vctrs_0.3.8            iterators_1.0.13       xfun_0.23             </span>
+<span class="co">##  [46] stringr_1.4.0          openxlsx_4.2.3         lifecycle_1.0.0       </span>
+<span class="co">##  [49] rstatix_0.7.0          zlibbioc_1.38.0        scales_1.1.1          </span>
+<span class="co">##  [52] ragg_1.1.2             hms_1.1.0              RColorBrewer_1.1-2    </span>
+<span class="co">##  [55] ComplexHeatmap_2.8.0   yaml_2.2.1             curl_4.3.1            </span>
+<span class="co">##  [58] memoise_2.0.0          sass_0.4.0             stringi_1.6.2         </span>
+<span class="co">##  [61] RSQLite_2.2.7          highr_0.9              desc_1.3.0            </span>
+<span class="co">##  [64] foreach_1.5.1          filelock_1.0.2         zip_2.1.1             </span>
+<span class="co">##  [67] shape_1.4.6            rlang_0.4.11           pkgconfig_2.0.3       </span>
+<span class="co">##  [70] systemfonts_1.0.2      bitops_1.0-7           evaluate_0.14         </span>
+<span class="co">##  [73] lattice_0.20-44        purrr_0.3.4            labeling_0.4.2        </span>
+<span class="co">##  [76] bit_4.0.4              tidyselect_1.1.1       magrittr_2.0.1        </span>
+<span class="co">##  [79] bookdown_0.22          R6_2.5.0               generics_0.1.0        </span>
+<span class="co">##  [82] DelayedArray_0.18.0    DBI_1.1.1              withr_2.4.2           </span>
+<span class="co">##  [85] pillar_1.6.1           haven_2.4.1            foreign_0.8-81        </span>
+<span class="co">##  [88] abind_1.4-5            RCurl_1.98-1.3         tibble_3.1.2          </span>
+<span class="co">##  [91] crayon_1.4.1           car_3.0-10             utf8_1.2.1            </span>
+<span class="co">##  [94] BiocFileCache_2.0.0    rmarkdown_2.8          GetoptLong_1.0.5      </span>
+<span class="co">##  [97] grid_4.1.0             readxl_1.3.1           data.table_1.14.0     </span>
+<span class="co">## [100] blob_1.2.1             forcats_0.5.1          digest_0.6.27         </span>
+<span class="co">## [103] tidyr_1.1.3            textshaping_0.3.4      munsell_0.5.0         </span>
+<span class="co">## [106] bslib_0.2.5.1</span></code></pre></div>
+</details>
 </div>
   </div>
 
