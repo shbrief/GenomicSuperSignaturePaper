@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
       </span>
     </div>
 
@@ -45,10 +45,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../Methods/training_datasets/available_samples.html">Training Data</a>
+      <a href="../articles/training_datasets/available_samples.html">Training Data</a>
     </li>
     <li>
-      <a href="../Methods/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
+      <a href="../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
   </ul>
 </li>
@@ -109,13 +109,13 @@
 
       
 
-      </header><script src="multiPLIER_Fig3_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="multiPLIER_Fig3_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Reproduce multiPLIER Figure 3</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">December 21, 2020</h4>
+            <h4 class="date">June 02, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/multiPLIER_Fig3.Rmd"><code>vignettes/multiPLIER_Fig3.Rmd</code></a></small>
       <div class="hidden name"><code>multiPLIER_Fig3.Rmd</code></div>
@@ -127,7 +127,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/pdftools">pdftools</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/pdftools/">pdftools</a></span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plot1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"SLE-WB/outputs/neutrophil_count.rds"</span><span class="op">)</span>
@@ -136,11 +136,18 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plot_all</span> <span class="op">&lt;-</span> <span class="va">plot1</span> <span class="op">|</span> <span class="va">plot2</span> <span class="op">|</span> <span class="va">plot3</span>
 <span class="va">plot_all</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">plot_all</span> <span class="op">&lt;-</span> <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">plot1</span>, <span class="va">plot2</span>, <span class="va">plot3</span>, 
+                              labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, 
+                              font.label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,
+                              ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="va">plot_all</span></code></pre></div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<details><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+</details>
 </div>
   </div>
 
