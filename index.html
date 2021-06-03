@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.5</span>
       </span>
     </div>
 
@@ -50,11 +50,26 @@
     <li>
       <a href="articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
+    <li>
+      <a href="articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    CRC
+    EDA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/TCGA/TCGA_5studies.html">Exploratory Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Subtyping
      
     <span class="caret"></span>
   </a>
@@ -75,7 +90,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    multiPLIER
+    Transfer Learning
      
     <span class="caret"></span>
   </a>
@@ -85,9 +100,6 @@
     </li>
     <li>
       <a href="articles/NARES/repeat_Fig3_NARES.html">Neutrophil (NARES)</a>
-    </li>
-    <li>
-      <a href="articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
     </li>
   </ul>
 </li>
@@ -115,9 +127,9 @@
 <h2 class="hasAnchor">
 <a href="#genomicsupersignaturepaper" class="anchor"></a>GenomicSuperSignaturePaper</h2>
 <p>Here, we are presenting the usecases and benchmarking examples of <a href="https://shbrief.github.io/GenomicSuperSignature/">GenomicSuperSignature</a> R package.</p>
-<div id="crc-paper" class="section level3">
+<div id="disease-subtyping" class="section level3">
 <h3 class="hasAnchor">
-<a href="#crc-paper" class="anchor"></a>CRC paper</h3>
+<a href="#disease-subtyping" class="anchor"></a>Disease Subtyping</h3>
 <p>One of the benchmarking papers is <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">Continuity of transcriptomes among colorectal cancer subtypes based on meta-analysis</a>.</p>
 <div id="continuous-subtype-score" class="section level4">
 <h4 class="hasAnchor">
@@ -139,9 +151,9 @@
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300"></p>
 </div>
 </div>
-<div id="multiplier-paper" class="section level3">
+<div id="transfer-learning" class="section level3">
 <h3 class="hasAnchor">
-<a href="#multiplier-paper" class="anchor"></a>multiPLIER paper</h3>
+<a href="#transfer-learning" class="anchor"></a>Transfer Learning</h3>
 <p>The other benchmarking paper is <a href="https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30119-X?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121930119X%3Fshowall%3Dtrue">MultiPLIER: A Transfer Learning Framework for Transcriptomics Reveals Systemic Features of Rare Disease</a>.</p>
 <div id="neutrophil-countsestimates" class="section level4">
 <h4 class="hasAnchor">
@@ -152,10 +164,6 @@
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200"></p>
 <p>We used the same datasets, SLE-WB and NARES, to find the neutrophil-associated RAV.</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/multiPLIER_Fig3.png" width="600" height="200"></p>
-</div>
-<div id="cell-type-discovery" class="section level4">
-<h4 class="hasAnchor">
-<a href="#cell-type-discovery" class="anchor"></a>Cell Type Discovery</h4>
 </div>
 </div>
 </div>
