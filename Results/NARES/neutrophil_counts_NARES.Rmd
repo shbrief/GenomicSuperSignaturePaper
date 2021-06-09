@@ -1,0 +1,210 @@
+---
+title: "Analyze neutrophil counts of NARES data"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Quickstart}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>", collapse = TRUE, message = FALSE, warning = FALSE,
+  out.width="60%", out.height="60%"
+)
+```
+
+
+# Setup
+In this vignette, we are reproducing Figure 3D of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
+and expand the analysis using GenomicSuperSignature.
+
+## Load packages
+```{r message=FALSE, warning=FALSE}
+if (!"GenomicSuperSignaturePaper" %in% installed.packages())
+    devtools::install_github("shbrief/GenomicSuperSignaturePaper")
+
+suppressPackageStartupMessages({
+  library(GenomicSuperSignature)
+  library(GenomicSuperSignaturePaper)
+  library(dplyr)
+  library(RColorBrewer)
+  library(ComplexHeatmap)
+})
+```
+
+## RAVmodel
+To directly compare with the results from multiPLIER paper, we used the 
+RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, 
+and canonicalPathways.
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("PLIERpriors", load=TRUE)
+```
+
+```{r}
+RAVmodel
+
+updateNote(RAVmodel)
+```
+
+## NARES Nasal Brushings
+- Expression data is downloaded from [here](https://github.com/greenelab/multi-plier/blob/master/data/expression_data/NARES_SCANfast_ComBat_with_GeneSymbol.pcl)      
+- Analysis script is modified from [this](https://github.com/greenelab/multi-plier/blob/master/14-NARES_MCPcounter.Rmd)
+
+### Expression data
+NARES ([Grayson et al., 2015](https://onlinelibrary.wiley.com/doi/full/10.1002/art.39153))
+is a nasal brushing microarray dataset that includes patients with 
+ANCA-associated vasculitis, patients with sarcoidosis and healthy controls 
+among other groups. In the multiPLIER paper, NARES data was projected into 
+the MultiPLIER latent space.    
+
+```{r}
+exprs <- readr::read_tsv("data/NARES_SCANfast_ComBat_with_GeneSymbol.pcl") %>% 
+  as.data.frame
+
+rownames(exprs) <- exprs$GeneSymbol
+dataset <- as.matrix(exprs[,3:ncol(exprs)])
+dataset[1:2, 1:4]
+```
+
+```{r metadata, echo=FALSE, eval=FALSE}
+demo <- read.table("data/NARES_demographic_data.tsv", sep = "\t", header = TRUE)
+demo[1:3, 1:3]
+colnames(demo)
+```
+
+### MCPcounter
+NARES data doesn't have any information about the cell type composition of the 
+samples. So in the multiPLIER paper, the authors applied [MCPcounter](https://github.com/ebecht/MCPcounter/tree/a79614eee002c88c64725d69140c7653e7c379b4) 
+([Becht, et al. _Genome Biology_. 2016.](https://doi.org/10.1186/s13059-016-1070-5))
+, a method for estimating cell type abundance in solid tissues.
+
+As multiPLIER paper, we tested whether the *neutrophil-associated* RAV is 
+well-correlated with the neutrophil estimates.
+
+* Install MCPcounter
+```{r eval=FALSE}
+devtools::install_github("ebecht/MCPcounter", 
+                         ref = "a79614eee002c88c64725d69140c7653e7c379b4",
+                         subdir = "Source",
+                         dependencies = TRUE)
+```
+
+* Run MCPcounter
+```{r eval=FALSE}
+mcp.results <- MCPcounter::MCPcounter.estimate(exprs.mat, 
+                                               featuresType = "HUGO_symbols")
+mcp.melt <- reshape2::melt(mcp.results, 
+                           varnames = c("Cell_type", "Sample"),
+                           value.name = "MCP_estimate")
+readr::write_tsv(mcp.melt, "data/NARES_ComBat_MCPCounter_results_tidy.tsv")
+```
+
+```{r echo=FALSE}
+mcp.melt <- read.table("data/NARES_ComBat_MCPCounter_results_tidy.tsv", 
+                       header = TRUE, sep = "\t")
+```
+
+
+
+
+
+
+
+
+# Transfer Learning
+## Validation
+RAV1551, neutrophil-associated RAV based on SLE-WB dataset, is not found in the 
+top 5 validated RAVs of NARES dataset, implying that neutrophil count is not 
+the major feature of NARES dataset.
+
+```{r fig.width=4, fig.height=2}
+val_all <- validate(dataset, RAVmodel) 
+validated_ind <- validatedSignatures(val_all, num.out = 5, swCutoff = 0, indexOnly = TRUE)
+heatmapTable(val_all, num.out = 5, swCutoff = 0)
+```
+
+```{r collapse = TRUE}
+ordered <- val_all[order(val_all$score, decreasing = TRUE),]
+rankInd <- which(rownames(ordered) == "RAV1551")
+rankInd
+
+ordered[rankInd,]
+```
+
+## r-squared value 
+```{r}
+sampleScore <- calculateScore(dataset, RAVmodel)
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Only with the top 5 RAVs
+sampleScoreHeatmap(score = sampleScore[,c(validated_ind, 1551)],
+                   dataName = "NARES",
+                   modelName = "RAVmodel",
+                   show_column_names = TRUE,
+                   column_names_gp = 10,
+                   row_names_gp = 4)
+```
+
+```{r}
+## Remove Sample category "gene"
+gene_ind <- which(mcp.melt$Sample == "Gene")
+mcp.melt <- mcp.melt[-gene_ind,]
+
+## Subset sampleScore to join with MCPcounter
+sampleScore_sub <- sampleScore[, 1551] %>% as.data.frame
+sampleScore_sub <- tibble::rownames_to_column(sampleScore_sub)
+colnames(sampleScore_sub) <- c("Sample", "RAV1551")
+
+## Join with MCPcounter neutrophil estimates
+dat <- dplyr::filter(mcp.melt, Cell_type == "Neutrophils") %>%
+  dplyr::inner_join(y = sampleScore_sub, by = "Sample")
+
+head(dat, 3)
+```
+
+Here is the plot between RAV1551-assigned sample score vs. neutrophil estimate.
+```{r fig.asp=1.125}
+plot <- LVScatter(dat, "RAV1551", 
+                  y.var = "MCP_estimate",
+                  ylab = "MCPcounter Neutrophil Estimate",
+                  title = "RAVmodel",
+                  subtitle = "NARES Nasal Brushings")
+plot
+```
+
+```{r save_for_paper, fig.width=4, fig.height=4.5, echo=FALSE, eval=FALSE}
+## This chunk was executed only to save the summary table, not for vignettes.
+saveRDS(plot, "outputs/nares_neutrophil.rds")
+png("outputs/png/nares_neutrophil.png", width = 400, height = 400)
+plot
+dev.off()
+```
+
+
+
+
+# Session Info
+<details>
+    ```{r}
+sessionInfo()
+```
+</details>

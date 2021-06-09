@@ -1,5 +1,5 @@
 ---
-title: "Repeat CRC paper's Figure 4C"
+title: "Explain CRC clinical variables using RAVs"
 author: "Sehyun Oh"
 date: "`r Sys.Date()`"
 output:
@@ -14,14 +14,16 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
+                      fig.width=5, fig.height=3.5)
 ```
 
 # Setup
+## Select training dataset
 * CRC paper actually used both training and validation datasets (total of 18)
-for Figure 4. ~~`Fig4C_CMSvs.R` and `Fig4C_contScores.R` scripts are using only 10
-validation datasets. If you want to use all 18 datasets, block the below lines in
-those scripts.~~ The current version of vignette uses all 18 studies.   
+for Figure 4. ~~`Fig4C_CMSvs.R` and `Fig4C_contScores.R` scripts are using only 
+10 validation datasets. If you want to use all 18 datasets, block the below 
+lines in those scripts.~~ The current version of vignette uses all 18 studies.   
 
 ```{r eval=FALSE}
 # load("data/eSets/trainingSetNames.RData")
@@ -29,17 +31,20 @@ those scripts.~~ The current version of vignette uses all 18 studies.
 # setNames <- validationSetNames
 ```
 
-* Fig4C_CMSvs.R script requires three environmental variables set before running:
-`m2_name` (column name for the model to be compared to CMS), `m2_1` and `m2_2` (names
-of the two model variables that form the group to be compared to CMS)   
+## Required inputs
+* 3 environmental variables for `Fig4C_CMSvs.R`:    
+  - `m2_name` (column name for the model to be compared to CMS)   
+  - `m2_1` and `m2_2` (names of the two model variables that form the group to 
+be compared to CMS)   
 
-* Fig4C_contScores.R script requires six environmental variables set before running:
-`m1_name`, `m1_1`, `m1_2` for one model, `m2_name`, `m2_1`, `m2_2` for the other.
+* 6 environmental variables for `Fig4C_contScores.R`:   
+  - `m1_name`, `m1_1`, `m1_2` for one model   
+  - `m2_name`, `m2_1`, `m2_2` for the other
 
 
 # Compare to CMS
 ## CMS vs. PCSS1/2
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m2_name <- "PCSS"
 m2_1 <- "PCSS1"
 m2_2 <- "PCSS2"
@@ -56,7 +61,7 @@ saveRDS(x, "outputs/boxplot_CMS_vs_PCSS.rds")
 RAV1575/834 are the most similar PCclsuters to PCSS1/2, respectively, based 
 on Pearson correlation.
 
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m2_name <- "RAV"
 m2_1 <- "RAV1575"
 m2_2 <- "RAV834"
@@ -72,7 +77,7 @@ saveRDS(x, "outputs/boxplot_CMS_vs_1575_834.rds")
 RAV834/833 have the largest r-squared score when we compared the samples
 scores against the metadata, CMS.
 
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m2_name <- "RAV"
 m2_1 <- "RAV834"
 m2_2 <- "RAV833"
@@ -91,7 +96,7 @@ dev.off()
 ## CMS vs. RAV832/188
 RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.
 
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m2_name <- "RAV"
 m2_1 <- "RAV832"
 m2_2 <- "RAV188"
@@ -111,7 +116,7 @@ dev.off()
 
 # Compare continuous scores
 ## PCSS vs. RAV1575/834
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
@@ -128,7 +133,7 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_1575_834.rds")
 ```
 
 ## PCSS vs. RAV834/833
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
@@ -149,7 +154,7 @@ dev.off()
 ```
 
 ## PCSS vs. RAV832/188
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
@@ -168,7 +173,7 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_832_188.rds")
 ## PCSS vs. RAV834/3290
 RAV3290 is associated with "stage" metadata of CRC datasets.
 
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"
@@ -187,7 +192,7 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_834_3290.rds")
 ## PCSS vs. RAV834/596
 RAV596 is associated with "grade" metadata of CRC datasets.
 
-```{r fig.width=5, fig.height=3.5, eval=TRUE}
+```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
 m1_2 <- "PCSS2"

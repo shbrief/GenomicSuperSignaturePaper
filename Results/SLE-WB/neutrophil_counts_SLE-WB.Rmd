@@ -1,0 +1,384 @@
+---
+title: "Analyze neutrophil counts of SLE-WB Compendium data"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Quickstart}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>", message = FALSE, warning = FALSE,
+  out.width="60%", out.height="60%", fig.align="center"
+)
+```
+
+# Setup
+In this vignette, we reproduce Figure 3B and 3C of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
+and expand the analysis using GenomicSuperSignature. Analyses here are 
+referencing scripts in [this vignette](https://github.com/greenelab/multi-plier/blob/master/figure_notebooks/neutrophil_figures.Rmd).
+
+## Load packages
+```{r message=FALSE, warning=FALSE}
+if (!"GenomicSuperSignaturePaper" %in% installed.packages())
+    devtools::install_github("shbrief/GenomicSuperSignaturePaper")
+
+suppressPackageStartupMessages({
+  library(GenomicSuperSignature)
+  library(GenomicSuperSignaturePaper)
+  library(dplyr)
+})
+```
+
+## RAVmodel
+To directly compare with the results from multiPLIER paper, we used the 
+RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, 
+and canonicalPathways.
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("PLIERpriors", load=TRUE)
+```
+
+```{r}
+RAVmodel
+
+updateNote(RAVmodel)
+```
+
+
+
+## SLE-WB data (E-GEOD-65391)
+### Expression data
+Processed expression data is downloaded from [here](https://github.com/greenelab/multi-plier/blob/master/data/expression_data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl).
+
+```{r}
+fname <- "data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl"
+exprs <- readr::read_tsv(fname) %>% as.data.frame
+
+rownames(exprs) <- exprs$GeneSymbol
+dataset <- as.matrix(exprs[,3:ncol(exprs)])  # 15,825 genes x 1,640 samples
+dataset[1:2, 1:4]
+```
+
+### Metadata
+Metadata is downloaded from [here](https://github.com/greenelab/rheum-plier-data/blob/master/sle-wb/arrayexpress/E-GEOD-65391/E-GEOD-65391.sdrf.txt).
+
+```{r}
+meta <- read.table("data/E-GEOD-65391.sdrf.txt", sep = "\t", header = TRUE)
+dim(meta)   # 966 samples have metadata
+```
+
+### Neutrophil-related metadata
+There are four columns with neutrophil-related metadata.
+```{r}
+ind <- grep("neutrophil", colnames(meta), ignore.case = TRUE)
+colnames(meta)[ind]
+```
+
+Neutrophil counts information is subset and cleaned.
+```{r}
+neutrophilCount <- meta[,c("Source.Name", "Characteristics..neutrophil_count.")]
+
+## Clean the `Source.Name` column
+cleaned_name <- sapply(neutrophilCount[,1], 
+                       function(x) stringr::str_split(x, " ")[[1]][1])
+neutrophilCount[,1] <- cleaned_name
+
+## 143 NAs introduced by coercion due to the missing data
+neutrophilCount[,2] <- as.numeric(neutrophilCount[,2])
+na_ind <- which(is.na(as.numeric(neutrophilCount[,2]))) 
+
+## 853 samples with metadata after clean-up
+neutrophilCount <- neutrophilCount[-na_ind,]   
+colnames(neutrophilCount)[2] <- "Neutrophil.Count"
+head(neutrophilCount, 3)
+```
+
+### Subset to the samples with metadata
+```{r}
+cleaned_colnames <- sapply(colnames(dataset), 
+                           function(x) stringr::str_split(x, "_")[[1]][1])
+withMeta_ind <- which(cleaned_colnames %in% neutrophilCount$Source.Name)
+dataset <- dataset[, withMeta_ind]   # 15,825 genes x 853 samples
+```
+
+### MCPCounter
+Neutrophil count itself showed a somewhat weak correlation, and the authors 
+suggest that it is likely because neutrophils are terminally differentiated 
+cells, so it is a limitation of using gene expression as a measure of 
+neutrophil count rather than a limitation intrinsic to PLIER models or the 
+multiPLIER approach.    
+
+Use [MCPcounter](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1070-5) 
+to estimate cell type abundance in solid tissues.
+
+```{r}
+## Get cell type estimates with MCPcounter
+mcp.results <- MCPcounter::MCPcounter.estimate(expression = dataset,
+                                               featuresType = "HUGO_symbols")
+## Subset only the neutrophil estimates
+neutrophil.df <- reshape2::melt(mcp.results) %>%
+  dplyr::filter(Var1 == "Neutrophils") %>% 
+  dplyr::select(-Var1)
+colnames(neutrophil.df) <- c("Sample", "Neutrophil_estimate")
+```
+
+
+# Identify the relavant RAV
+In this exploratory data analysis section, we identified RAV1551 as the one
+best explaining SLE-WB data and it's neutrophil count feature. We used three
+different ways to narrow down the candidate RAVs:
+
+1. Validation score   
+2. Keyword 'neutrophil' in the enriched pathways    
+3. Metadata associated
+
+
+## Validation
+We collected top 10 validated RAVs with positive average silhouette width. Here,
+RAV1551 shows the highest score with the positive average silhouette width.
+
+```{r}
+val_all <- validate(dataset, RAVmodel) 
+validated_ind <- validatedSignatures(val_all, num.out = 10, 
+                                     swCutoff = 0, indexOnly = TRUE)
+validated_ind
+```
+
+```{r fig.width=8, fig.height=2.5}
+heatmapTable(val_all, num.out = 10, swCutoff = 0)
+```
+
+## Keyword search in GSEA annotation
+We search the keyword, 'neutrophil', in the GSEA annotation of RAVmodel. When
+we refine this search within the top 3 enriched pathways (both up- and down-
+regulated), there are 13 RAVs with two of those three enriched pathways contain 
+'neutrophil' and RAV1551 is one of them. 
+
+```{r}
+## RAVs containing the keyword, "neutrophil", within top 3 enriched pathways 
+findSignature(RAVmodel, "neutrophil", n = 3)
+
+## RAVs with two keyword-containing pathways
+sig_ind <- findSignature(RAVmodel, "neutrophil", n = 3, k = 2)
+sig_ind
+```
+
+## Metadata-associated
+We used r-squared value to identify the metadata-associated RAV. (r-squared is 
+*the proportion of the variance in the dependent variable that is predictable from the independent variable*)
+
+`rsq` function takes data frame (`data` argument) where each column represents
+different variables. `rsq` calculates the r-squared value between two variables 
+(`lv` and `y.var` arguments) and returns the numeric vector of it.
+
+```{r calculate_rsq}
+calculateRsq <- function (x, y) cor(x, y) ^ 2
+rsq <- function(data, lv, y.var = "Neutrophil_estimate") {
+  res <- calculateRsq(data[, lv], data[, y.var]) %>% round(., 3)
+  return(res)
+}
+```
+
+### Sample Score
+We calculate sample scores from expression profile to quantitatively compare
+the metadata. 
+
+```{r}
+sampleScore <- calculateScore(dataset, RAVmodel)
+dim(sampleScore)
+sampleScore[1:4, 1:4]
+```
+
+```{r sample_score_heatmap, echo=FALSE, eval=FALSE}
+## Plot sample score heatmap using only the RAVs with > 2 elements.
+# ind <- which(metadata(RAVmodel)$size > 2)
+# sampleScoreHeatmap(score = sampleScore[,ind], 
+#                    dataName = "E-GEOD-65391", 
+#                    modelName = "RAVmodel",
+#                    show_column_names = FALSE, 
+#                    row_names_gp = 4)
+```
+
+### Neutrophil count
+We computed r-squared score between the neutrophil count metadata and all RAVs
+and selected the top 10.
+
+```{r all_RAVs}
+ss <- as.data.frame(sampleScore)
+ss$Source.Name <- rownames(ss)
+
+## Combine neutrophil count and sample scores
+ss_count <- dplyr::left_join(neutrophilCount, ss, by = "Source.Name")
+
+## Calculate r-squared value for all RAVs
+rsq_count <- sapply(3:ncol(ss_count), 
+                    function(x) {rsq(ss_count, x, y.var = "Neutrophil.Count")})
+names(rsq_count) <- colnames(ss_count)[3:ncol(ss_count)]
+rsq_count <- sort(rsq_count, decreasing = TRUE)
+
+## RAVs with top 10 r-squared value
+topRAVs <- head(rsq_count, 10)
+topRAVs <- gsub("RAV", "", names(topRAVs)) %>% as.numeric
+topRAVs
+```
+
+```{r echo=FALSE, eval=FALSE}
+## r-squared value between top validated RAVs and the neutrophil count. This
+## is one way to narrow down validated RAVs.
+
+## Samples scores from five validated RAVs
+sampleScore_sub <- sampleScore[,validated_ind] %>% as.data.frame
+sampleScore_sub$Source.Name <- rownames(sampleScore_sub)
+
+## Combine neutrophil count and sample score from five validated RAVs
+dat_n.count <- dplyr::left_join(neutrophilCount, 
+                                sampleScore_sub, 
+                                by = "Source.Name")
+
+## RAV1551 shows the highest r-squared value.
+rsq_valSub <- sapply(3:ncol(dat_n.count), 
+                     function(x) {rsq(dat_n.count, 
+                                      x, y.var = "Neutrophil.Count")})
+names(rsq_valSub) <- colnames(dat_n.count)[3:ncol(dat_n.count)]
+rsq_valSub <- sort(rsq_valSub, decreasing = TRUE)
+rsq_valSub
+```
+
+## Best RAV
+We identified RAV1551 as the best RAV to explain SLE-WB data and it's neutrophil
+count feature because RAV1551 is repeatedly found in three approaches above.
+
+```{r}
+bestRAV <- intersect(validated_ind, sig_ind) %>% intersect(., topRAVs)
+bestRAV
+```
+
+
+
+# Neutrophil estimate
+Above, we identified RAV1551 in three different approaches. Here, RAV1551 shows
+the highest r-squared value among all RAVs when compared to neutrophil estimate.
+This confirms that RAV1551 best represent neutrophil feature.
+
+```{r}
+sampleScore.df <- sampleScore %>% as.data.frame(.) %>% 
+  tibble::rownames_to_column(.)
+colnames(sampleScore.df)[1] <- "Sample"
+
+## Join all the scores with neutrophil estimates
+dat_n.estimate <- dplyr::inner_join(neutrophil.df, sampleScore.df, by="Sample")
+dim(dat_n.estimate)
+dat_n.estimate[1:4, 1:4]
+
+## RAVs  the high r-squared value with the neutrophil estimate
+rsq_estimate <- sapply(3:ncol(dat_n.estimate), function(x) {rsq(dat_n.estimate,x)})
+names(rsq_estimate) <- colnames(dat_n.estimate)[3:ncol(dat_n.estimate)]
+rsq_estimate <- sort(rsq_estimate, decreasing = TRUE)
+
+head(rsq_estimate)
+```
+
+
+# Conclusion
+We recovered RAV1551 as a neutrophil-associated signature through validation,
+GSEA, and metadata-association. This result is confirmed again with the highest
+r-squared value between RAV1551 and neutrophil estimate.
+
+## Neutrophil Count
+```{r fig.asp=1.125}
+count_plot <- LVScatter(ss_count, paste0("RAV", 1551), 
+                        y.var = "Neutrophil.Count",
+                        ylab = "Neutrophil Count",
+                        title = "RAVmodel",
+                        subtitle = "SLE WB Compendium")
+count_plot
+```
+
+```{r echo=FALSE, eval=FALSE}
+saveRDS(count_plot, "outputs/neutrophil_count.rds")
+png("outputs/png/neutrophil_count.png", width = 400, height = 400)
+count_plot
+dev.off()
+```
+
+## Neutrophil Estimate
+```{r fig.asp=1.125}
+estimate_plot <- LVScatter(dat_n.estimate, paste0("RAV", 1551), 
+                           y.var = "Neutrophil_estimate",
+                           ylab = "MCPcounter neutrophil estimate",
+                           title = "RAVmodel",
+                           subtitle = "SLE WB MCPcounter")
+estimate_plot
+```
+
+```{r echo=FALSE, eval=FALSE}
+saveRDS(estimate_plot, "outputs/neutrophil_estimate.rds")
+png("outputs/png/neutrophil_estimate.png", width = 400, height = 400)
+estimate_plot
+dev.off()
+```
+
+## Others
+### Validation
+```{r fig.width=2, fig.height=2}
+heatmapTable(val_all, 1551)
+```
+
+### MeSH terms
+```{r}
+drawWordcloud(RAVmodel, 1551)
+```
+
+### GSEA
+```{r RAV1551, echo=FALSE}
+gseaRes <- gsea(RAVmodel)[[1551]]
+gseaRes <- gseaRes[order(gseaRes$NES, decreasing = TRUE),]
+keyword_ind <- grep("neutrophil", gseaRes$Description, ignore.case = TRUE)
+```
+
+All the enriched pathways for RAV1551 with the minimum p-value 
+of `r min(gseaRes$qvalues)`
+
+```{r echo=FALSE}
+gseaRes$Description
+```
+
+NES-ranked, keyword-containing pathways were placed 
+`r paste(paste(keyword_ind, collapse = ","), "out of", nrow(gseaRes))`
+
+```{r echo=FALSE}
+gseaRes[keyword_ind, c("Description", "NES", "qvalues")]
+```
+
+### Annotate PCs
+```{r collapse=FALSE}
+annotatePC(1:8, val_all = val_all, RAVmodel = RAVmodel, scoreCutoff = 0)
+annotatePC(1, val_all = val_all, RAVmodel = RAVmodel, simplify = FALSE)
+```
+
+
+# Session Info
+
+<details>
+```{r}
+sessionInfo()
+```
+</details>

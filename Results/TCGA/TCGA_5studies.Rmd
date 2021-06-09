@@ -1,5 +1,5 @@
 ---
-title: "Analyze 5 TCGA datasets using RAVmodel"
+title: "Analyze TCGA datasets using RAVmodel"
 author: "Sehyun Oh"
 date: "`r Sys.Date()`"
 output:
@@ -14,7 +14,8 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
+                      out.width="70%", out.height="70%")
 ```
 
 # Setup
@@ -28,24 +29,23 @@ suppressPackageStartupMessages({
 ```
 
 ## TCGA datasets
-`TCGA_validationDatasets` is a list containing 6 TCGA datasets: COAD, BRCA, LUAD,
-READ, UCEC, and OV. First 5 are raw read counts from `GSEABenchmarkeR` package with
-log2(count + 1) transformation. Also, `GSEABenchmarkeR::loadEData` excluded genes with 
-cpm < 2 in more than half of the samples. TCGA-OV dataset is from `curatedOvarianData`
-package. This training dataset file was build using `R/build_TCGA_validationDatasets.R`
-script.
+`TCGA_validationDatasets` is a list containing 6 TCGA datasets: COAD, BRCA, 
+LUAD, READ, UCEC, and OV. First 5 are raw read counts from `GSEABenchmarkeR` 
+package with log2(count + 1) transformation. Also, `GSEABenchmarkeR::loadEData` 
+excluded genes with cpm < 2 in more than half of the samples. TCGA-OV dataset 
+is from `curatedOvarianData` package. This training dataset file was built 
+using `Results/TCGA/R/build_TCGA_validationDatasets.R` script.
 
 ```{r collapse=TRUE}
 load("data/TCGA_validationDatasets.rda")
 names(TCGA_validationDatasets)
 
-# not using OV for this vigenette
+# not using OV for this vignette
 datasets <- TCGA_validationDatasets[1:5]
 ```
 
 ## RAVmodel
-This RAVmodel is built using top 20 PCs of 536 studies. The number of cluster was
-decided by `d=2.25` and MSigDB C2 gene sets are used for GSEA-based annotation.
+We use RAVmodel built from 536 studies and annotated with MSigDB C2 gene sets.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 ## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
@@ -66,47 +66,48 @@ updateNote(RAVmodel)
 
 
 
-# Multi-comparison (only TCGA)
+# Comparision Ver.1 (only TCGA)
 ## heatmapTable (all)
-Here, we plot the heatmapTable of validation result from multiple studies. By matching
-this result with metadata, you can identify RAVs that are more strongly associated 
-with specific features. 
+Here, we plot the heatmapTable of validation result from multiple studies. By 
+matching this result with metadata, you can identify RAVs that are more 
+strongly associated with specific features. It seems like RAV221 and RAV868 
+are specific to BRCA while RAV832 is strongly associated with colon/rectal 
+cancers. 
 
-```{r fig.width=5.5, fig.height=4, out.width="70%", out.height="70%"}
-# This process takes little time due to the size of datasets.
+```{r}
+## This process takes little time due to the size of datasets.
 val_all <- validate(datasets, RAVmodel)
 heatmapTable(val_all) 
 ```
 
-It seems like RAV221 and RAV868 are specific to BRCA while RAV832 is strongly 
-associated with colon/rectal cancers. 
 
 ## heatmapTable (one dataset)
-If you provide validation result from one dataset, `heatmapTable` include the average
-silhouette width as a reference.
+If you provide validation result from one dataset, `heatmapTable` include the 
+average silhouette width as a reference.
 
 ### COAD
-```{r fig.width=3.5, fig.height=2, out.width="70%", out.height="70%"}
+```{r}
 val_coad <- validate(datasets[["COAD"]], RAVmodel)
 heatmapTable(val_coad) 
 ```
 
 ### READ
-```{r fig.width=3.5, fig.height=2, out.width="70%", out.height="70%"}
+```{r}
 val_read <- validate(datasets[["READ"]], RAVmodel)
 heatmapTable(val_read) 
 ```
 
 ### BRCA
-RAV221 shows the highest validation score with a positive avgerage silhouette width. 
-```{r fig.width=3.5, fig.height=2, out.width="70%", out.height="70%"}
+RAV221 shows the highest validation score with a positive avgerage silhouette 
+width. 
+```{r}
 val_brca <- validate(datasets[["BRCA"]], RAVmodel)
 heatmapTable(val_brca)
 ```
 
-RAV868 didn't score top 5, so we checked a couple more top validated RAVs. RAV868
-is ranked 6th based on the score with negative average silhouette width.
-``````{r fig.width=4, fig.height=2, out.width="70%", out.height="70%"}
+RAV868 didn't score top 5, so we checked a couple more top validated RAVs. 
+RAV868 is ranked 6th based on the score with negative average silhouette width.
+```{r}
 heatmapTable(val_brca, num.out = 7) 
 ```
 
@@ -115,9 +116,9 @@ heatmapTable(val_brca, num.out = 7)
 RAV221 and RAV868 are specific to BRCA.
 
 #### RAV221
-RAV221 consists of three breast cancer studies (ERP016798, SRP023262, and SRP11343)
-and top 10 enriched pathways are associated with breast cancer. 
-```{r fig.height=5, fig.width=5, out.width="70%", out.height="70%"}
+RAV221 consists of three breast cancer studies (ERP016798, SRP023262, and 
+SRP11343) and top 10 enriched pathways are associated with breast cancer. 
+```{r}
 ind <- 221
 findStudiesInCluster(RAVmodel, ind)
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
@@ -125,7 +126,7 @@ drawWordcloud(RAVmodel, ind)
 ```
 
 #### RAV868
-```{r fig.height=5, fig.width=5, out.width="70%", out.height="70%"}
+```{r}
 ind <- 868
 findStudiesInCluster(RAVmodel, ind)
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
@@ -134,7 +135,7 @@ drawWordcloud(RAVmodel, ind)
 
 ### COAD/READ-associated
 #### RAV832
-```{r fig.height=5, fig.width=5, out.width="70%", out.height="70%"}
+```{r}
 ind <- 832
 findStudiesInCluster(RAVmodel, ind)
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
@@ -143,9 +144,9 @@ drawWordcloud(RAVmodel, ind)
 
 
 
-# Multi-comparison (TCGA + others)
+# Comparision Ver.2 (TCGA + others)
 ## heatmapTable (all)
-Here, we added SLE-WB microarray dataset and 4 colon cancer microarray dataasets
+Here, we added SLE-WB microarray dataset and 4 colon cancer microarray datasets
 to 5 TCGA dataset and `scoreCutoff` is set to 0.68 instead of the default 0.7.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
@@ -186,7 +187,7 @@ Based on this multi-datasets validation table,
 ## MeSH terms and associated studies
 ### SLE-associated
 #### RAV23
-```{r fig.height=7, fig.width=7, out.width="70%", out.height="70%"}
+```{r}
 ind <- 23
 findStudiesInCluster(RAVmodel, ind)
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
@@ -194,7 +195,7 @@ drawWordcloud(RAVmodel, ind)
 ```
 
 #### RAV1551
-```{r fig.height=7, fig.width=7, out.width="70%", out.height="70%"}
+```{r}
 ind <- 1551
 findStudiesInCluster(RAVmodel, ind)
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
@@ -202,7 +203,7 @@ drawWordcloud(RAVmodel, ind)
 ```
 
 ### COAD-specific
-```{r fig.height=7, fig.width=7, out.width="70%", out.height="70%"}
+```{r}
 ind <- 188
 findStudiesInCluster(RAVmodel, ind)
 subsetEnrichedPathways(RAVmodel, ind, both=TRUE) %>% as.data.frame
@@ -300,7 +301,10 @@ display(img, method = "raster")
 
 
 ## Sup.Fig 4. Colon and rectal cancer associated RAV
-Based on Figure 2A, RAV832 seems to be associated with TCGA-COAD and TCGA-READ. Top validation results of A) TCGA-COAD and B) TCGA-READ include RAV832 with the negative average silhouette width. C) MeSH terms associated with RAV832. D) Studies contributing to RAV832. E) MSigDB C2 gene sets enriched in RAV832.
+Based on Figure 2A, RAV832 seems to be associated with TCGA-COAD and TCGA-READ. 
+Top validation results of A) TCGA-COAD and B) TCGA-READ include RAV832 with the 
+negative average silhouette width. C) MeSH terms associated with RAV832. D) 
+Studies contributing to RAV832. E) MSigDB C2 gene sets enriched in RAV832.
 
 <br>
 
@@ -313,7 +317,9 @@ b <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_read)))
 png("manuscript_Sup_Fig4C.png", width = 350, height = 350)
 drawWordcloud(RAVmodel, ind = 832)
 dev.off()
-c <- png::readPNG("manuscript_Sup_Fig4C.png") %>% grid::rasterGrob() %>% gridExtra::grid.arrange()
+c <- png::readPNG("manuscript_Sup_Fig4C.png") %>% 
+  grid::rasterGrob() %>% 
+  gridExtra::grid.arrange()
 
 ## Make Sup.Fig4D/4E tables
 library(ggpubr)

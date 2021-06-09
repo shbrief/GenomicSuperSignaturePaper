@@ -1,5 +1,5 @@
 ---
-title: "Reproduce multiPLIER Figure 5 - Pathway Separation"
+title: "Pathway Separation"
 author: "Sehyun Oh"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
@@ -23,10 +23,11 @@ knitr::opts_chunk$set(
 We benchmarked the model validation measure, named as pathway separation, Figure 5 from the 
 previous [study](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub), 
 where authors expanded the [PLIER](https://www.nature.com/articles/s41592-019-0456-1) 
-method to the recount2 dataset. Briefly, pathway separation is defined as the ability 
-of the signature model to keep non-overlapping signatures that can differentiate 
-biologically similar pathways. 
+method to the recount2 dataset. Briefly, pathway separation is defined as the 
+ability of the signature model to keep non-overlapping signatures that can 
+differentiate biologically similar pathways. 
 
+## Load packages
 ```{r}
 suppressPackageStartupMessages({
   library(GenomicSuperSignaturePaper)
@@ -35,15 +36,25 @@ suppressPackageStartupMessages({
 })
 ```
 
-
 ## RAVmodel
 To directly compare with the results from multiPLIER paper, we used the RAVmodel
-annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
+annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and 
+canonicalPathways.
 
-```{r message=FALSE, warning=FALSE}
+## RAVmodel
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("PLIERpriors", load=TRUE)
+```
+
+```{r}
 RAVmodel
+
 updateNote(RAVmodel)
 ```
 
@@ -99,6 +110,10 @@ checkPathwaySeparation(RAVmodel, g1.set, g2.set,
 checkPathwaySeparation(RAVmodel, g1.set, g2.set, cutoff_n = 1)
 ```
 
+
+# Session Info
+<details>
 ```{r}
 sessionInfo()
 ```
+</details>

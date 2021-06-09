@@ -1,9 +1,9 @@
 Package: GenomicSuperSignaturePaper
-Title: Information to reproduce GenomicSuperSignature paper
-Version: 0.0.5
-Date: 2021-06-03
-Authors@R: person("Sehyun", "Oh", email = "Sehyun.Oh@sph.cuny.edu", role = c("aut", "cre"))
-Description: This package provides data, methods, results covered in GenomicSuperSignature. 
+Title: Reproduce GenomicSuperSignature paper
+Version: 1.0.0
+Date: 2021-06-08
+Authors@R: person("Sehyun", "Oh", email = "shbrief@gmail.com", role = c("aut", "cre"))
+Description: This package provides data, methods, results covered in GenomicSuperSignature manuscript. 
 Depends: R (>= 3.5)
 Imports:
   GenomicSuperSignature,

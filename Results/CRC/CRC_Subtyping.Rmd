@@ -1,5 +1,5 @@
 ---
-title: "Repeat CRC paper's Figure 4A"
+title: "CRC Subtyping using Sample Scores by RAVs"
 author: "Sehyun Oh"
 date: "`r Sys.Date()`"
 output:
@@ -14,19 +14,18 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.align = "center",
+                      out.width = "70%", fig.asp = 1)
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-## Packages in GitHub
-pkgs <- c("GenomicSuperSignature", "GenomicSuperSignaturePaper")
-new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
-if(length(new_pkgs) != 0) devtools::install_github(paste0("shbrief/", new_pkgs))
+# Setup
+In this vignette, we are reproducing Figure 4A of the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4)
+using GenomicSuperSignature.
 
-## BioC or CRAN packages
-pkgs <- c("Biobase", "tidyverse")
-new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
-if(length(new_pkgs) != 0) BiocManager::install(new_pkgs)
+## Load packages
+```{r message=FALSE, warning=FALSE}
+if (!"GenomicSuperSignaturePaper" %in% installed.packages())
+    devtools::install_github("shbrief/GenomicSuperSignaturePaper")
 
 ## Load packages
 suppressPackageStartupMessages({
@@ -36,10 +35,6 @@ suppressPackageStartupMessages({
   library(GenomicSuperSignaturePaper)
 })
 ```
-
-# Setup
-In this vignette, we are reproducing Figure 4A of the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4)
-using GenomicSuperSignature.
 
 ## RAVmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
@@ -63,11 +58,11 @@ updateNote(RAVmodel)
 load("data/eSets/setNames.RData")
 ```
 
-CRC paper actually used both training and validation datasets (total of 18) for 
-Figure 4. So here, we are using all of them. However, if you want to use only 10
-validation datasets, run the below chunk.
+```{r echo=FALSE, eval=FALSE}
+## CRC paper actually used both training and validation datasets (total of 18) 
+## for Figure 4. So here, we are using all of them. However, if you want to use 
+## only 10 validation datasets, run the below chunk.
 
-```{r eval=FALSE}
 # load("data/eSets/trainingSetNames.RData")
 # validationSetNames <- setdiff(setNames, trainingSetNames)
 # setNames <- validationSetNames
@@ -82,10 +77,10 @@ for (set in setNames) {
 
 
 
-# Reproduce PCSS result
-First, we simply reproduced the Figure 4A using PCSS1 and PCSS2.
+# CRC subtyping with PCSSs
+First, we simply reproduced the previous result using PCSS1 and PCSS2.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## dist’n of PCSS scores -------------------------------------------------------
 df.results <- setNames %>% lapply(function(set) {
   eSet <- get(set)
@@ -135,7 +130,9 @@ pA <- ggplot(df.results,
   geom_vline(xintercept = 0, linetype = 'dashed') +
   xlab('PCSS1') + ylab('PCSS2') +
   coord_cartesian(xlim = c(-2, 2.5)) +
-  theme(legend.direction = "horizontal", legend.justification=c(0,1), legend.position=c(0,1),
+  theme(legend.direction = "horizontal", 
+        legend.justification=c(0,1), 
+        legend.position=c(0,1),
         legend.background = element_rect(colour='black'))
 
 print(pA)
@@ -145,16 +142,24 @@ print(pA)
 saveRDS(pA, "outputs/scatter_PCSS.rds")
 ```
 
-# CRC subtyping using GenomicSuperSignature
+# CRC subtyping with RAVs
+To We tested three pairs of RAVs to 
+
 ## Most similar to PCSS1/PCSS2
+CRC paper actually used both training and validation datasets (total of 18) for 
+Figure 4. You can decided whether to use all 18 datasets or only 10 validation
+datasets by setting `val_only` variable before running `R/Fig4A_plotting.R` 
+script. Here, we are using only 10 validation datasets.
 
-[Update on 02.18.21] To use only 10 CRC validation datasets, you set the `val_only` 
-variable before running `R/Fig4A_plotting.R` script.
+```{r}
+val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
+```
 
-```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
+RAV1575 and RAV834 are identified as the most similar RAVs with PCSS1/2 in this [vignette](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/PCSS_vs_RAV.html).
+
+```{r message=FALSE, warning=FALSE}
 sampleScore1 <- 1575
 sampleScore2 <- 834
-val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
@@ -164,7 +169,7 @@ saveRDS(x, "outputs/scatter_1575_834.rds")
 ```
 
 ### wordcloud
-```{r fig.width=7, fig.height=7}
+```{r}
 drawWordcloud(RAVmodel, sampleScore1)
 drawWordcloud(RAVmodel, sampleScore2)
 ```
@@ -176,7 +181,7 @@ annotateRAV(RAVmodel, sampleScore2)
 ```
 
 
-## Best validation scores overall on CRC validation datasets
+## Highest validation score
 
 ### Validation
 Before applying `validate` function, any NA or Inf values in CRC datasets were
@@ -191,16 +196,18 @@ for (set in setNames) {
   exprs <- exprs(eSet) %>% rmNaInf
   exprs <- apply(exprs, 1, function(x) x - mean(x)) %>% t
   val_all <- validate(exprs, RAVmodel)
-  validated_ind_all[[set]] <- validatedSignatures(val_all, num.out = 10, indexOnly = TRUE)
+  validated_ind_all[[set]] <- validatedSignatures(val_all, num.out = 10, 
+                                                  indexOnly = TRUE)
 }
 ```
 
-We combined the top validated RAVs from all 18 studies and checked the frequency 
+We combined the top validated RAVs from all 18 studies and checked the frequency
 of them. Any RAV that appeared more often means they are consistently associated
 with the common feature of CRC datasets. 
 
-Top row is RAV number and the bottom row is the frequency of it making top validation.
-Because there were 18 datasets, the maximum frequeny of showing up is 18.
+Top row is RAV number and the bottom row is the frequency of it making top 
+validation. Because there were 18 datasets, the maximum frequency of showing 
+up is 18.
 
 ```{r}
 ## Top 10 validated
@@ -213,7 +220,7 @@ lapply(validated_ind_all, function(x) x[1:5]) %>%
 
 
 ### Top validated RAVs
-```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
+```{r message=FALSE, warning=FALSE}
 sampleScore1 <- 832
 sampleScore2 <- 188
 source("R/Fig4A_plotting.R", print.eval = TRUE)
@@ -224,14 +231,14 @@ x <- source("R/Fig4A_plotting.R")
 saveRDS(x, "outputs/scatter_832_188.rds")
 ```
 
-```{r message=FALSE, warning=FALSE, out.width="80%", out.height="80%", echo=FALSE, eval=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
 sampleScore1 <- 832
 sampleScore2 <- 833
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
 ### wordcloud
-```{r fig.width=7, fig.height=7}
+```{r}
 drawWordcloud(RAVmodel, sampleScore1)
 drawWordcloud(RAVmodel, sampleScore2)
 ```
@@ -244,11 +251,11 @@ annotateRAV(RAVmodel, sampleScore2)
 
 
 
-## Identified using metadata
+## Best explaining metadata
 We find the metadata-associated RAVs using Kruskal-Wallis Rank Sum Test. Further
 detail can be found [here](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/metadata_based_search.html).
 
-```{r message=FALSE, warning=FALSE, fig.width=5.8, fig.height=5.5}
+```{r message=FALSE, warning=FALSE}
 sampleScore1 <- 834
 sampleScore2 <- 833
 val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
@@ -265,7 +272,7 @@ dev.off()
 ```
 
 ### wordcloud
-```{r fig.width=6.5, fig.height=6.5}
+```{r}
 drawWordcloud(RAVmodel, sampleScore1)
 drawWordcloud(RAVmodel, sampleScore2)
 ```
@@ -276,15 +283,37 @@ annotateRAV(RAVmodel, sampleScore1)
 annotateRAV(RAVmodel, sampleScore2)
 ```
 
-# Session Info
+# Manuscript Table
+## Supplementary Table 5
 ```{r}
-sessionInfo()
+CRC_validation_df <- data.frame(matrix(unlist(validated_ind_all), 
+                                       nrow = length(validated_ind_all), 
+                                       byrow = TRUE), 
+                                stringsAsFactors=FALSE)
+rownames(CRC_validation_df) <- names(validated_ind_all)
+colnames(CRC_validation_df) <- paste0("val_ind_", 1:10)
+
+CRC_validation_df[1:4, 1:4]
+```
+
+```{r echo=FALSE, eval=FALSE}
+write.table(CRC_validation_df, "outputs/CRC_top10_validated_ind.tsv")
 ```
 
 
+# Session Info
+
+<details>
+```{r}
+sessionInfo()
+```
+</details>
 
 
-```{r fig.width=4, fig.height=4, echo=FALSE, eval=FALSE}
+
+
+
+```{r echo=FALSE, eval=FALSE}
 ## CMS by Candidate RAVs
 dat <- readRDS("data/SummaryForFig4.rds")
 score_ind <- grep("RAV", colnames(dat))
@@ -313,21 +342,4 @@ for (i in seq_along(mean_names)) {
        col = ordered.dat$cms_label_SSP,
        xlab = "", ylab = paste0("Score from RAV", cl_ind[i]))
 }
-```
-
-
-
-
-
-
-```{r echo=FALSE}
-## This chunk was executed only to save the summary table, not for vignettes.
-CRC_validation_df <- data.frame(matrix(unlist(validated_ind_all), 
-                                       nrow = length(validated_ind_all), 
-                                       byrow = TRUE), 
-                                stringsAsFactors=FALSE)
-rownames(CRC_validation_df) <- names(validated_ind_all)
-colnames(CRC_validation_df) <- paste0("val_ind_", 1:10)
-
-write.table(CRC_validation_df, "outputs/CRC_top10_validated_ind.tsv")
 ```

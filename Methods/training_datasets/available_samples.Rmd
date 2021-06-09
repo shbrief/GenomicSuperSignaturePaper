@@ -1,5 +1,5 @@
 ---
-title: "Available samples from refine.bio"
+title: "Training datasets for RAVmodel building"
 author: "Sehyun Oh"
 date: "`r Sys.Date()`"
 output:
@@ -23,10 +23,20 @@ suppressPackageStartupMessages({
 })
 ```
 
-# Information on training datasets
-`studyMeta.tsv` table is available through `GenomicSuperSignature` package. In this
-table, we summarized the details on GenomicSuperSignature models and their training
-datasets. More detail is described below.
+# Training datasets
+We used human RNA sequencing datasets from RNA-seq Sample Compendia in 
+[refine.bio](https://www.refine.bio/), which hosts uniformly processed gene 
+expression data from EBI’s ArrayExpress, NCBI’s GEO and SRA. Data were 
+downloaded on April 10th, 2020, and we selected studies based on the following 
+criteria: 1) Exclude studies with more than 1,000 samples because they are 
+more likely to be single-cell RNA sequencing datasets. 2) Exclude studies 
+assigned with a Medical Subject Headings (MeSH) term, “Single-Cell Analysis”. 
+3) Exclude studies with less than or equal to 50 successfully downloaded and 
+imported samples. After filtering, the complete compendium includes 536 
+studies (defined as a single SRA study) comprising 44,890 samples.
+
+The detail of training data is summarized in `studyMeta.tsv` table 
+in `GenomicSuperSignature` package. 
 
 ```{r eval=TRUE}
 extdata <- system.file("extdata", package = "GenomicSuperSignature")
@@ -34,22 +44,16 @@ studyMeta <- read.table(file.path(extdata, "studyMeta.tsv.gz"))
 head(studyMeta)
 ```
 
-
-
-# Available datasets
-## From metadata
-`aggregated_metadata.json` is downloaded along with the dataset we downloaded
-from [refine.bio](https://www.refine.bio/). We collect the number of samples per 
-study based on this metadata.
+## Availability based on metadata
+`aggregated_metadata.json` is downloaded along with the training dataset. We 
+collect the number of samples per study based on this metadata.
 
 ```{r}
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 meta_json <- jsonlite::fromJSON(file.path(data.dir, 
                                           "aggregated_metadata.json"))
-experiments <- meta_json[[2]]   # experiments
-```
+experiments <- meta_json[[2]] 
 
-```{r}
 studies <- list()
 for (i in seq_along(experiments)) {
   studies <- append(studies, list(experiments[[i]]$sample_accession_codes))
@@ -60,10 +64,10 @@ sampleNum <- sapply(studies, function(x) length(x))
 ```
 
 
-## Downloaded samples
-I summarized the number of samples based on `aggregated_metadata.json` under `metadata`
-column and the number of actually downloaded `_quant.sf` sample files under `downloaded`
-column in a data frame, `studyMeta`.  
+## Availability based on download/import
+I summarized the number of samples based on `aggregated_metadata.json` under 
+`metadata` column and the number of actually downloaded `_quant.sf` sample 
+files under `downloaded` column in the `studyMeta` table.  
 
 ```{r echo=FALSE, eval=TRUE}
 ## Directory where refine.bio human samples were downloaded
@@ -91,14 +95,14 @@ for (i in seq_along(dirNames)) {
   studyMeta$downloaded[ind1] <- grep("_quant.sf", 
                                      list.files(dir_path)) %>% length
    
-  ## availalbe samples based on metadata
+  ## available samples based on metadata
   ind2 <- which(names(sampleNum) == dirNames[i])  
   studyMeta$metadata[ind2] <- sampleNum[ind2]
 }
 ```
 
 ## Imported samples
-The number samples succesfully imported by `tximport::tximport` 
+1399 studies > 20 samples were successfully imported by `tximport::tximport` 
 ```{r echo=FALSE}
 download.dir2 <- "/nobackup/16tb_b/GenomicSignatures/refinebio/rna_seq_v2"
 ```
@@ -107,6 +111,7 @@ download.dir2 <- "/nobackup/16tb_b/GenomicSignatures/refinebio/rna_seq_v2"
 studyNames <- studyMeta$studyName
 importedFiles <- c()
 
+# download.dir2 <- "path/to/imported/directory"
 for (i in seq_along(studyNames)) {
   out.path <- file.path(download.dir2, studyNames[i])
   fname <- file.path(out.path, paste0(studyNames[i], ".rds"))
@@ -114,9 +119,6 @@ for (i in seq_along(studyNames)) {
     importedFiles <- c(importedFiles, studyNames[i])
   }
 }
-
-# 1399 studies > 20 samples were successfully tximport-ed
-length(importedFiles) 
 ```
 
 ```{r}
@@ -133,20 +135,16 @@ for (i in seq_along(experiments)) {
 }
 ```
 
+## Summary plot
+Metadata bar (light blue) shows the number of studies with the given ranges of 
+study sizes based on the metadata. Downloaded bar (pink) represents the number 
+of studies with the given ranges of study sizes that were successfully 
+downloaded and imported through `tximport`. Based on metadata, there were 
+studies with more than 100 samples, but at the time of snapshot, only up to 
+100 samples were available. Thus, the plot displays only up to 100 samples/study
+cases. Due to the unavailability of certain samples, more studies belong to 0-5 
+samples/study bracket than metadata suggests.
 
-
-# Compare
-```{r eval=TRUE}
-## Cases where all the available samples (based on metadata) were downloaded
-sum(studyMeta$downloaded == studyMeta$metadata)
-
-## The number of studies with more than 100 samples: 
-## Actually downloaded vs. expected by metadata
-sum(studyMeta$downloaded > 100)
-sum(studyMeta$metadata > 100)
-```
-
-## Sample availability in histogram
 ```{r fig.width=6, fig.height=4.5, echo=FALSE, eval=TRUE}
 ## Colors
 c1 <- rgb(173,216,230, max = 255, alpha = 95, names = "lt.blue")
@@ -165,6 +163,15 @@ plot(hg_download, col = c2, ylim = c(1, 2000), add = TRUE)
 legend("topright", c("metadata", "downloaded"), col = c(c1, c2), lwd = 10)
 ```
 
+```{r eval=TRUE}
+## Cases where all the available samples (based on metadata) were downloaded
+sum(studyMeta$downloaded == studyMeta$metadata)
+
+## The number of studies with more than 100 samples: 
+## Actually downloaded vs. expected by metadata
+sum(studyMeta$downloaded > 100)
+sum(studyMeta$metadata > 100)
+```
 
 ## Example
 Example study, `SRP152576`:   
@@ -191,17 +198,18 @@ head(sampleMeta, 3)
 
 
 # Studies used for model buildling
-## PCAmodel_677
+## RAVmodel_677
+
 `studies_with_error.csv` file contains the sample names that were failed to be 
-downloaded/imported when I tried to use studies > 50 samples based on the metadata.
-You can find more documentation on this under `Methods/model_building`.
+downloaded/imported when I tried to use studies > 50 samples based on the 
+metadata. You can find more documentation on this under `Methods/model_building`.
 
 ```{r echo=FALSE}
 gsig.dir <- "/nobackup/16tb_b/GenomicSignatures/refinebio"
 lib.dir <- "~/data2/PCAGenomicSignatureLibrary/refinebioRseq/canonicalPathways"
 ```
 
-```{r eval=FALSE}
+```{r echo=FALSE, eval=FALSE}
 ## Name of studies that tximport failed due to malformed quant.sf
 # gsig.dir <- "path/to/tximport/directory"
 errors <- read.table(file.path(gsig.dir, "studies_with_error.csv"))
@@ -215,23 +223,24 @@ dat <- readRDS(file.path(lib.dir, "allZ.rds"))
 final <- gsub(".PC.*$", "", colnames(dat)) %>% unique   # 677 studies
 ind_677 <- which(studyMeta$studyName %in% final)
 
-studyMeta$PCAmodel_677 <- FALSE
-studyMeta$PCAmodel_677[ind_677] <- TRUE 
+studyMeta$RAVmodel_677 <- FALSE
+studyMeta$RAVmodel_677[ind_677] <- TRUE 
 ```
 
-## PCAmodel_1399
+## RAVmodel_1399
 All the studies that have more than 20 successfully imported samples. So, it's 
 practically same as `imported` column.
 
-```{r}
-studyMeta$PCAmodel_1399 <- studyMeta$imported
+```{r echo=FALSE, eval=FALSE}
+studyMeta$RAVmodel_1399 <- studyMeta$imported
 ```
 
-## PCAmodel_536
-These 536 studies meet the criteria, > 50 (downloaded) and <1000 (metadata) samples 
-per study. Also, any study with “Single-Cell Analysis” MeSH term was removed.
+## RAVmodel_536
+These 536 studies meet the criteria, > 50 (downloaded) and <1000 (metadata) 
+samples per study. Also, any study with “Single-Cell Analysis” MeSH term was 
+removed.
 
-```{r}
+```{r echo=FALSE, eval=FALSE}
 mesh <- readRDS(file.path(extdata, "MeSH_terms_1399refinebio.rds"))
 sc <- which(mesh$name %in% "Single-Cell Analysis")
 sc_studies <- mesh$identifier[sc]   # single-cell associated studies to exclude
@@ -242,17 +251,17 @@ sn_ind <- which(studyMeta$downloaded > 50 &
                   studyMeta$imported == "TRUE")
 ind_536 <- setdiff(sn_ind, sc_ind)
 
-studyMeta$PCAmodel_536 <- FALSE
-studyMeta$PCAmodel_536[ind_536] <- TRUE 
+studyMeta$RAVmodel_536 <- FALSE
+studyMeta$RAVmodel_536[ind_536] <- TRUE 
 ```
 
-# Compare to multiPLIER training datasets
+# Training datasets: multiPLIER vs. RAVmodel
 ```{r accession, echo=FALSE, eval=FALSE}
 ## Table with sample and run information
 dir <- system.file("extdata", package = "GenomicSuperSignature")
 studyMeta <- read.table(file.path(dir, "studyMeta.tsv"), header = TRUE)
 
-ind <- which(studyMeta$PCAmodel_536 == "TRUE")
+ind <- which(studyMeta$RAVmodel_536 == "TRUE")
 studies <- vector(mode = "list", length = 536)
 names(studies) <- studyMeta$studyName[ind]
 

@@ -32,7 +32,7 @@ This script will execute the following processes:
 
 1. Generate 50 synthetic datasets:   
    - Each dataset contains 50 random samples from 44,890 samples (with replacement).   
-   - Scaramble genes in each dataset by random selection without replacement and
+   - Scramble genes in each dataset by random selection without replacement and
    add random value between -0.1 and 0.1   
    
 2. Row-normalize synthetic datasets   
@@ -52,9 +52,9 @@ This script will execute the following processes:
 
 
 ## Validate negative controls
-Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 studies).
-We want to create a synthetic dataset as a negative control with the distance 
-rangeing median or higher.
+Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 
+536 studies). We want to create a synthetic dataset as a negative control with 
+the distance ranging median or higher.
 
 ```{r collapse=FALSE, echo=FALSE, eval=TRUE}
 wd <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/PCAmodel_536"
@@ -70,8 +70,8 @@ summary(res_dist)
 
 
 We tested the distance matrix with 50 'negative controls', generated from the 
-`neg_controls.R` script above. Distance ranges roughly between 1st quarter and 3rd 
-quarter of training datasets' distance distribution. 
+`neg_controls.R` script above. Distance ranges roughly between 1st quarter and 
+3rd quarter of training datasets' distance distribution. 
 
 ```{r collapse=FALSE, echo=FALSE, eval=TRUE}
 dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
@@ -92,10 +92,11 @@ res.dist.neg <- factoextra::get_dist(control_dat, method = "spearman")
 summary(res.dist.neg)
 ```
 
-We plot the heatmap of distance matrix with different number of negative controls
-(PC1s from synthetic datasets) and confirmed that they can serve as a negative control.
+We plot the heatmap of distance matrix with different number of negative 
+controls (PC1s from synthetic datasets) and confirmed that they can serve 
+as a negative control.
 
-```{r fig.width=6, fig.height=5.5, echo=FALSE}
+```{r echo=FALSE}
 dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
 neg <- readRDS(file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 data <- lapply(neg, function(x) x$rotation) %>% Reduce(cbind,.) %>% t
@@ -139,16 +140,16 @@ plot
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, fig.width=6, fig.height=5.5}
+```{r echo=FALSE, eval=TRUE, fig.width=12, fig.height=10}
 knitr::include_graphics("outputs/png/A.heatmap_neg50.png")
 ```
 
 
 # Optimum k for different numbers of controls
-Next we combined top 20 PCs of training datasets and PC1s from varying numbers of 
-negative controls (10, 20, 30, 40, and 50) and performed hierarchical clustering 
-with different numbers of clusters. Here, we plotted the proportion of separated 
-negative controls against the number of clusters.
+Next we combined top 20 PCs of training datasets and PC1s from varying numbers 
+of negative controls (10, 20, 30, 40, and 50) and performed hierarchical 
+clustering with different numbers of clusters. Here, we plotted the proportion 
+of separated negative controls against the number of clusters.
 
 Number of clusters for each combined datastes were rounds of the number of PCs 
 divided by 9 different numbers (**d** = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).
@@ -173,12 +174,12 @@ df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
 ```
 
 ## Proportion of the separated negative controls
-This plot shows the proportion of the negative controls that are separated under
-different numbers of clusters. For all five different numbers of negative controls, 
-more than 90% of them were separated when **d = 4** and 100% of them were separated 
-when **d = 2.25**.
+This plot shows the proportion of the negative controls that are separated 
+under different numbers of clusters. For all five different numbers of negative
+controls, more than 90% of them were separated when **d = 4** and 100% of them 
+were separated when **d = 2.25**.
 
-```{r plot1, echo=FALSE, fig.width=6.5, fig.height=4}
+```{r plot1, echo=FALSE, fig.width=13, fig.height=8}
 plot1 <- ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
   geom_line(aes(colour = numOfControls)) + 
   geom_point() + 
@@ -193,13 +194,13 @@ plot1
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, fig.width=6.5, fig.height=4}
+```{r echo=FALSE, eval=TRUE, fig.width=13, fig.height=8}
 knitr::include_graphics("outputs/png/B.separatedPortion.png")
 ```
 
 ## Number of the non-separated negative controls
-This plot shows the actual number of negative controls that weren't separated under
-different numbers of clusters.
+This plot shows the actual number of negative controls that weren't separated 
+under different numbers of clusters.
 
 ```{r plot2, echo=FALSE, fig.width=6.5, fig.height=4}
 df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)

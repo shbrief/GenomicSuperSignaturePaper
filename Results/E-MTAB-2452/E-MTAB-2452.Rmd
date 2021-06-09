@@ -16,7 +16,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   comment = "#>", message = FALSE, warning = FALSE, collapse = TRUE,
-  out.height="50%", out.width="50%"
+  out.height="75%", out.width="75%"
 )
 ```
 
@@ -31,9 +31,34 @@ suppressPackageStartupMessages({
 })
 ```
 
+## E-MTAB-2452
+[E-MTAB-2452](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2452/): 
+Sorted peripheral blood cells (CD4+ T cells, CD14+ monocytes, CD16+ neutrophils)
+profiled on microarray from several autoimmune diseases.   
+
+This expression data is pre-processed by Greene lab and available [here](https://github.com/greenelab/multi-plier/blob/master/data/expression_data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl).
+
+```{r}
+annot.dat <- readr::read_tsv("data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl") %>% as.data.frame
+rownames(annot.dat) <- annot.dat[, 2]
+
+dataset <- as.matrix(annot.dat[, 3:ncol(annot.dat)])
+rownames(dataset) <- annot.dat$GeneSymbol
+dataset[1:2, 1:4]
+```
+
+Label each sample with the known cell types.
+```{r}
+cellType <- gsub("_.*$", "", colnames(dataset))
+cellType <- gsub("CD4", "CD4,T cell", cellType)
+cellType <- gsub("CD14", "CD14,monocyte", cellType)
+cellType <- gsub("CD16", "CD16,neutrophil", cellType)
+names(cellType) <- colnames(dataset)
+```
+
 ## RAVmodel
-Because this dataset is comprised of isolated immune subsets and was analyzed in
-multiPLIER paper, I used the model annotated with PLIER priors.
+Because E-MTAB-2452 data is comprised of isolated immune subsets and was 
+analyzed in multiPLIER paper, we used the model annotated with PLIER priors.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 ## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
@@ -52,28 +77,20 @@ updateNote(RAVmodel)
 ```
 
 
-## Load E-MTAB-2452
+# Database search
+## Associated RAV
 ```{r}
-annot.dat <- readr::read_tsv("data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl") %>% as.data.frame
-rownames(annot.dat) <- annot.dat[, 2]
-
-dataset <- as.matrix(annot.dat[, 3:ncol(annot.dat)])
-rownames(dataset) <- annot.dat$GeneSymbol
-dataset[1:2, 1:4]
-```
-
-# Basic EDA
-```{r fig.width=3.5, fig.height=2.5}
 val_all <- validate(dataset, RAVmodel)
 heatmapTable(val_all, swCutoff = 0)
 ```
 
-```{r fig.width=5.5, fig.height=5.5}
-drawWordcloud(RAVmodel, 1551)
+```{r}
+plotValidate(val_all)
 ```
 
-```{r fig.width=6, fig.height=4.5, out.height="80%", out.width="80%"}
-plotValidate(val_all)
+## MeSH terms
+```{r out.height="60%", out.width="60%"}
+drawWordcloud(RAVmodel, 1551)
 ```
 
 ```{r collapse=FALSE, echo=FALSE, eval=FALSE}
@@ -124,23 +141,22 @@ simple_summary
 
 
 # Plot
-## Annotated PCA
+## Annotate top PCs
+We checked the enriched pathways for top 8 PCs of E-MTAB-2452 data. Under the
+default, RAVs with the validation score above 0.5 are assigned. Here, only PC1
+and PC2 have associated RAV under the default condition.
 ```{r}
-annotatePC(1:8, val_all, RAVmodel, n = 5, simplify = TRUE)  # default scoreCutoff = 0.5
+annotatePC(1:8, val_all, RAVmodel, n = 5, simplify = TRUE)  
+```
+
+We lowered the validation score cutoff to 0 and the output returned with more 
+enriched pathways.
+```{r}
 annotatePC(1:8, val_all, RAVmodel, n = 5, simplify = TRUE, scoreCutoff = 0)
 ```
 
-## Cell types
-Label each sample with the known cell types.
-```{r}
-cellType <- gsub("_.*$", "", colnames(dataset))
-cellType <- gsub("CD4", "CD4,T cell", cellType)
-cellType <- gsub("CD14", "CD14,monocyte", cellType)
-cellType <- gsub("CD16", "CD16,neutrophil", cellType)
-names(cellType) <- colnames(dataset)
-```
-
 ## Pairs plot
+Different pairs of top 4 PCs are plotted in pairs plot.
 ```{r echo=FALSE}
 library(tibble)
 res <- stats::prcomp(dataset)$rotation %>% as.data.frame
@@ -200,7 +216,7 @@ plotAnnotatedPCA(dataset, RAVmodel, PCnum = c(2,3), val_all = val_all,
                  color_lab = "Cell Type", trimed_pathway_len = 45)
 ```
 
-# Figures for the paper
+# Manuscript Figures
 ## Figure 1
 ### Figure 1B top-left
 ```{r eval=FALSE}
@@ -221,7 +237,8 @@ Fig1B_topleft
 dev.off()
 ```
 
-```{r fig.width=7, fig.height=9, echo=FALSE}
+```{r 1B_top_left, out.height="60%", out.width="60%", echo=FALSE}
+## SamplesScore heatmap
 img <- readImage("manuscript_Fig1B_topleft.png")
 display(img, method = "raster")
 ```
@@ -235,13 +252,14 @@ drawWordcloud(RAVmodel, 1551)
 dev.off()
 ```
 
-```{r fig.width=7, fig.height=9, echo=FALSE}
+```{r 1B_bottom_left, echo=FALSE, out.height="60%", out.width="60%"}
+## wordcloud
 img <- readImage("manuscript_Fig1B_bottomleft.png")
 display(img, method = "raster")
 ```
 
 ### Figure 1B bottom-right
-```{r fig.width=6, fig.height=6, echo=FALSE, eval=FALSE}
+```{r echo=FALSE, eval=FALSE}
 a14 <- annotatePC(1:4, val_all, RAVmodel, n = 5, simplify = TRUE, scoreCutoff = 0)
 a58 <- annotatePC(5:8, val_all, RAVmodel, n = 5, simplify = TRUE, scoreCutoff = 0)
 b <- plotAnnotatedPCA(dataset, RAVmodel, PCnum = c(1,3), val_all = val_all, 
@@ -279,7 +297,8 @@ Fig1B_bottomright
 dev.off()
 ```
 
-```{r fig.width=7, fig.height=9, echo=FALSE, out.height="80%", out.width="80%"}
+```{r 1B_bottom_right, echo=FALSE, out.height="80%", out.width="80%"}
+## Annotated PCA plot
 img <- readImage("manuscript_Fig1B_bottomright.png")
 display(img, method = "raster")
 ```
@@ -304,7 +323,7 @@ supFig8
 dev.off()
 ```
 
-```{r fig.width=7, fig.height=9, echo=FALSE, out.height="80%", out.width="80%"}
+```{r echo=FALSE, out.height="80%", out.width="80%"}
 img <- readImage("manuscript_Sup_Fig8.png")
 display(img, method = "raster")
 ```

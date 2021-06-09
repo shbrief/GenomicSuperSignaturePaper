@@ -58,12 +58,17 @@ load("data/eSets/setNames.RData")
 
 ```{r echo=FALSE, eval=FALSE}
 ## CRC paper actually used both training and validation datasets (total of 18)
-## for Figure 4. So here, we are using all of them. However, for Figure 4C, we'll
-## try to use only 10 validation datasets. 
+## for Figure 4. So here, we are using all of them. However, for Figure 4C, 
+## we'll try to use only 10 validation datasets. 
 # load(file.path(wd, "trainingSetNames.RData"))
 # validationSetNames <- setdiff(setNames, trainingSetNames)
 ```
 
+```{r echo=FALSE}
+val_only = FALSE   # use all 18 CRC datasets
+```
+
+`eSets_new` data is available upon request.
 ```{r}
 ## Load validation samples
 for (set in setNames) {
@@ -73,9 +78,10 @@ for (set in setNames) {
 
 
 
-# Processing datasets
+# Pre-processing
 ## Get phenotype data
 Combine all the phenotype data from CRC validation datasets.
+
 ```{r}
 ## phenotype tables combined
 pdata_df <- setNames %>% lapply(function(set) {
@@ -91,8 +97,8 @@ pdata_df <- setNames %>% lapply(function(set) {
 ```
 
 ## Get expression data
-Combine all expression profiles from CRC validation datasets, subset with the common
-genes among them.
+Combine all expression profiles from CRC validation datasets and subset with 
+the common genes among them.
 
 ```{r}
 ## common genes between all validation datasets
@@ -115,8 +121,8 @@ exprs_df <- setNames %>% lapply(function(set) {
 }) %>% Reduce('cbind', .)   # 8219 genes x 3567 samples
 ```
 
-## Calculate Score
-Calculate score and combine it with phenotype data.
+## Calculate sample score
+Calculate sample scores and combine them with the phenotype data.
 ```{r}
 sampleScore <- calculateScore(exprs_df, RAVmodel)
 data_all <- cbind(sampleScore, pdata_df)
@@ -130,12 +136,12 @@ data_all <- data_all[, -rm_ind]
 
 
 
+# Metadata-based search
+## Multivariable
+Here, I'm using the four CMS subtypes as an example of identifying significant 
+RAVs using discrete, multivariate metadata.
 
-# Multivariable
-Here, I'm using 4 CMS subtypes of CRC validation datasets as an example of identifying 
-signifcant RAVs using discrete, multivariable metdata.
-
-## ANOVA
+### ANOVA
 ```{r ANOVA}
 f.stat.all <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   res.aov <- aov(data_all[,x] ~ data_all$cms_label_SSP)
@@ -147,7 +153,7 @@ names(f.stat.all) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 head(f.stat.all[order(f.stat.all, decreasing = TRUE)])
 ```
 
-## Kruskal-Wallis Rank Sum Test
+### Kruskal-Wallis Rank Sum Test
 Normality assumption is not met. Below example is a Q-Q plot from RAV834.
 ```{r fig.width=4, fig.height=4}
 res.aov <- aov(data_all[,"RAV834"] ~ data_all[,"cms_label_SSP"])
@@ -176,10 +182,12 @@ names(normality) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 summary(normality)
 ```
 
+<br>
+
 Try Kruskal-Wallis Rank Sum Test
 ```{r Kruskal-Wallis}
-# Kruskal-Wallis Rank Sum Test
-# a non-parametric alternative to one-way ANOVA = when normality assumption is not met
+# Kruskal-Wallis Rank Sum Test : a non-parametric alternative to one-way ANOVA, 
+# when normality assumption is not met
 kw.chi.sqr <- sapply(seq_len(ncol(RAVmodel)), function(x) {
   kw.test <- kruskal.test(data_all[,x] ~ data_all$cms_label_SSP)
   kw.stat <- kw.test$statistic
@@ -190,12 +198,10 @@ names(kw.chi.sqr) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
 ```
 
+# Subtyping with RAVs
 ## CMS-associated RAVs
-Top 2 RAVs (834 and 833) are same from both ANOVA and Kruskal-Wallis Rank Sum Test.
-
-```{r echo=FALSE}
-val_only = FALSE   # use all 18 CRC datasets
-```
+Top two RAVs (834 and 833) are identified from both ANOVA and Kruskal-Wallis 
+Rank Sum Test.
 
 ```{r message=FALSE, warning=FALSE, fig.width=6, fig.height=5.5}
 sampleScore1 <- 834
@@ -203,18 +209,26 @@ sampleScore2 <- 833
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
-Plots with different mean comparing methods.
-```{r collapse=FALSE, fig.width=5, fig.height=4}
-## t.test for a few pairs
+## Mean comparing methods
+I further quantified how RAV834 differentiates four CMS subtypes using 
+different mean comparing methods.
+
+### t.test for a few pairs
+```{r collapse=FALSE, warning=FALSE, fig.width=5, fig.height=4}
 my_comparisons <- list(c("CMS1", "CMS2"),c("CMS1", "CMS3"),c("CMS1", "CMS4"))
 ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
-  stat_compare_means(comparisons = my_comparisons, method = "t.test", aes(label = ..p.adj..))
+  stat_compare_means(comparisons = my_comparisons, 
+                     method = "t.test", aes(label = ..p.adj..))
+```
 
-## ANOVA
+### ANOVA
+```{r collapse=FALSE, warning=FALSE, fig.width=5, fig.height=4}
 ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
   stat_compare_means(method = "anova", label.y = 7) # Add global p-value
+```
 
-## Kruskal-Wallis Rank Sum Test 
+### Kruskal-Wallis Rank Sum Test
+```{r collapse=FALSE, warning=FALSE, fig.width=5, fig.height=4}
 ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
   stat_compare_means(method = 'kruskal.test', label.y = 7) # Add global p-value
 ```
@@ -223,15 +237,17 @@ ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
 
 
 
-# Binary variables
-We ran `t.test` between the below clinical variables and all sample scores. The test 
-results were ordered based on p-value and top 6 of them are printed.
+## Binary variables
+We ran `t.test` between the below clinical variables and all sample scores. 
+The test results were ordered based on p-value and top 6 of them are printed.
 
-```{r}
+```{r echo=FALSE}
 vars <- c("msi", "summarylocation", "summarygrade", "summarystage")
 ```
 
 ### MSI
+Microsatellite instability
+
 ```{r echo=FALSE}
 # MSI
 var <- vars[1]
@@ -251,6 +267,7 @@ head(msi.t.test)
 ```
 
 ### Location
+Tumor location
 ```{r echo=FALSE}
 # Location
 var <- vars[2]
@@ -306,6 +323,7 @@ stage.t.test <- stage.t.test[order(stage.t.test)]
 # head(names(stage.t.test))
 head(stage.t.test)
 ```
+
 
 # Session Info
 

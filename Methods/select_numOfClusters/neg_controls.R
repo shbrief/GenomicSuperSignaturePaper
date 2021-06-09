@@ -1,18 +1,24 @@
-#' Build synthetic datasets as negative controls to decide the optimum culster number
+#' Build synthetic datasets as negative controls to decide the optimum
+#' cluster number
 #'
 #' Process:
 #' 1. Generate 50 synthetic datasets:
-#'    - Each dataset contains 50 random samples from 44,890 samples (with replacement).
-#'    - Scaramble genes in each dataset by random selection without replacement and
-#'    add random value between -0.1 and 0.1
+#'    - Each contains 50 random samples from 44,890 samples (with replacement).
+#'    - Scramble genes in each dataset by random selection without replacement
+#'    and add random value between -0.1 and 0.1
 #' 2. Row-normalize synthetic datasets
 #' 3. PCA on synthetic datasets --> `bootstrap_PCs_rowNorm_Neg.rds`
-#' 4. Combine top 20 PCs from traning datasets and PC1s from synthetic datasets --> `all_{#neg}.rds`
-#' 5. Calculate distance matrix and hcut for each combined dataset --> `res_dist_{#neg}.rds` and `res_hclust_{#neg}.rds`
-#' 6. Evaluate how the negative controls were separated --> `evals_{#neg}.rds` and `eval_summary_{#neg}.rds`
+#' 4. Combine top 20 PCs from training datasets and PC1s from synthetic datasets
+#' --> `all_{#neg}.rds`
+#' 5. Calculate distance matrix and hcut for each combined dataset
+#' --> `res_dist_{#neg}.rds` and `res_hclust_{#neg}.rds`
+#' 6. Evaluate how the negative controls were separated
+#' --> `evals_{#neg}.rds` and `eval_summary_{#neg}.rds`
 #'
 #' Outputs:
-#' Resulting files from this script are saved under `GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls` directory
+#' Resulting files from this script are saved under
+#' `GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls` directory. These
+#' files will be available upon request.
 
 
 
@@ -34,9 +40,7 @@ n <- numOfTopPCs <- 20
 
 
 
-
-
-##### Synthetic 'experiment' from random sample selectiong #####################
+##### Synthetic 'experiment' from random sample selecting ######################
 fname <- paste0("Neg_", 1:50)
 synData <- vector("list", length(fname))
 names(synData) <- fname
@@ -54,6 +58,7 @@ for (i in seq_along(fname)) {
     synData[[dataName]] <- scrambled
 
 }
+
 
 
 
@@ -88,8 +93,6 @@ saveRDS(synData_PCA, file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 
 
 
-
-
 ##### Distance matrix ##########################################################
 dat_dir <- "~/data2/GenomicSuperSignaturePaper/inst/extdata/Neg_Controls"
 neg <- readRDS(file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
@@ -114,7 +117,6 @@ for (numOfDataset in numOfDatasets) {
     saveRDS(res.dist, file.path(dat_dir, paste0("res_dist_",numOfDataset,".rds")))
     saveRDS(res.hclust, file.path(dat_dir, paste0("res_hclust_",numOfDataset,".rds")))
 }
-
 
 
 
@@ -152,5 +154,6 @@ for (numOfDataset in numOfDatasets) {
 
     ## Save
     saveRDS(evals, file.path(dat_dir, paste0("evals_",numOfDataset,".rds")))
-    saveRDS(eval_summary, file.path(dat_dir, paste0("eval_summary_",numOfDataset,".rds")))
+    saveRDS(eval_summary,
+            file.path(dat_dir, paste0("eval_summary_",numOfDataset,".rds")))
 }

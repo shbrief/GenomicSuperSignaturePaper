@@ -13,30 +13,31 @@ output:
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-## Packages in GitHub
-pkgs <- c("GenomicSuperSignature")
-new_pkgs <- pkgs[!(pkgs %in% rownames(installed.packages()))]
-if(length(new_pkgs) != 0) devtools::install_github(paste0("shbrief/", new_pkgs))
-
-## Load packages
+# Setup
+## Load package
+```{r}
 suppressPackageStartupMessages({
   library(GenomicSuperSignature)
 })
 ```
 
-# avgLoading from CRC paper
-This is the table of top 4 average loadings (= PCSS, PC Cluster Subtype Scores) 
-built in the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4).
+## PCSSs
+[Ma *et al.*](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4) 
+proposed a continuous scoring system (PCSS) based on an analysis of 8 colorectal
+cancer microarray datasets comprising 1,867 samples, and found it was more 
+closely correlated to microsatellite instability (MSI), grade, stage, and tumor 
+location. Below is the table of top 4 PCSSs.
 
 ```{r}
 avgLoading <- read.table("data/avg_loadings.csv", 
                          header = TRUE, sep = ",")
 avgLoading <- tibble::column_to_rownames(avgLoading, var="X")
 colnames(avgLoading) <- paste0("PCSS", 1:4)
+
+head(avgLoading)
 ```
 
-# RAVmodel
+## RAVmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 ## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
@@ -53,7 +54,8 @@ RAVmodel
 updateNote(RAVmodel)
 ```
 
-# RAVs most similar to PCSS1/PCSS2
+# RAVs vs. PCSSs
+## Most similar to PCSS1/2
 We identified RAV1575 and RAV834 as the most similar RAVs to PCSS1 and PCSS2, 
 respectively, based on Pearson correlation coefficient.
 
@@ -64,15 +66,18 @@ loading_cor <- abs(stats::cor(avgLoading[cg,], RAVindex(RAVmodel)[cg,],
 
 max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
 max2 <- which.max(loading_cor[2,])  # max. correlation with PCSS2
+```
 
+```{r}
 loading_cor[1, max1, drop = FALSE]
 loading_cor[2, max2, drop = FALSE]
 ```
 
+## Enriched pathways
 Using `annotateRAV` function, we checked the MSigDB C2 genesets that are 
 enriched in RAV1575 and RAV834.
 
-```{r collapse=FALSE}
+```{r}
 annotateRAV(RAVmodel, 1575)
 annotateRAV(RAVmodel, 834)
 ```
