@@ -130,7 +130,7 @@
       <h1 data-toc-skip>PCA E-MTAB-2452</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">June 08, 2021</h4>
+            <h4 class="date">June 09, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/E-MTAB-2452/E-MTAB-2452.Rmd"><code>vignettes/E-MTAB-2452/E-MTAB-2452.Rmd</code></a></small>
       <div class="hidden name"><code>E-MTAB-2452.Rmd</code></div>
@@ -160,10 +160,10 @@
 <p>This expression data is pre-processed by Greene lab and available <a href="https://github.com/greenelab/multi-plier/blob/master/data/expression_data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl">here</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">annot.dat</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="st">"data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
 
-<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">$</span><span class="va">GeneSymbol</span>
+<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">$</span><span class="va">GeneSymbol</span>
 <span class="va">dataset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>
 <span class="co">#&gt;      CD14_triad0058_1.CEL CD14_triad0058_2.CEL CD14_triad0058_3.CEL</span>
 <span class="co">#&gt; A1BG         1.154439e-01           0.17987252           0.17031624</span>
@@ -173,11 +173,11 @@
 <span class="co">#&gt; NAT2           -0.1269907</span></code></pre></div>
 <p>Label each sample with the known cell types.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_.*$"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_.*$"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD4"</span>, <span class="st">"CD4,T cell"</span>, <span class="va">cellType</span><span class="op">)</span>
 <span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD14"</span>, <span class="st">"CD14,monocyte"</span>, <span class="va">cellType</span><span class="op">)</span>
 <span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD16"</span>, <span class="st">"CD16,neutrophil"</span>, <span class="va">cellType</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">cellType</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">cellType</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="ravmodel" class="section level2">
 <h2 class="hasAnchor">
@@ -445,7 +445,7 @@
 <span class="co">#&gt;  [91] curl_4.3.1             png_0.1-7              ggsignif_0.6.1        </span>
 <span class="co">#&gt;  [94] bslib_0.2.5.1          stringi_1.6.2          ps_1.6.0              </span>
 <span class="co">#&gt;  [97] highr_0.9              desc_1.3.0             gdtools_0.2.3         </span>
-<span class="co">#&gt; [100] forcats_0.5.1          lattice_0.20-44        Matrix_1.3-3          </span>
+<span class="co">#&gt; [100] forcats_0.5.1          lattice_0.20-44        Matrix_1.3-4          </span>
 <span class="co">#&gt; [103] vctrs_0.3.8            pillar_1.6.1           lifecycle_1.0.0       </span>
 <span class="co">#&gt; [106] BiocManager_1.30.15    jquerylib_0.1.4        GlobalOptions_0.1.2   </span>
 <span class="co">#&gt; [109] cowplot_1.1.1          flextable_0.6.6        data.table_1.14.0     </span>

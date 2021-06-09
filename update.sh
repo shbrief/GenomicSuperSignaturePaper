@@ -41,6 +41,6 @@ git reset HEAD Results/SLE-WB/data/*   # large data file
 git reset HEAD Results/TCGA/data/*   # large data file
 git reset HEAD SRAmetadb.sqlite.gz   # large data file
 git reset HEAD Methods/prepare_Inputs   # temporary work
-git reset HEAD Results_temp/*   # temporary works
+git reset HEAD Ongoing/*   # temporary works
 git commit -m "update GitHub pages"
 git push origin gh-pages
