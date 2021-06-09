@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -50,11 +50,29 @@
     <li>
       <a href="../../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
+    <li>
+      <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    CRC
+    EDA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../../articles/TCGA/TCGA_5studies.html">Database search</a>
+    </li>
+    <li>
+      <a href="../../articles/E-MTAB-2452/E-MTAB-2452.html">Annoated PCA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Subtyping
      
     <span class="caret"></span>
   </a>
@@ -66,28 +84,25 @@
       <a href="../../articles/CRC/metadata_based_search.html">Metadata based search</a>
     </li>
     <li>
-      <a href="../../articles/CRC/repeat_Fig4A.html">CRC subtype scores</a>
+      <a href="../../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
     </li>
     <li>
-      <a href="../../articles/CRC/repeat_Fig4C.html">CRC clinical variables</a>
+      <a href="../../articles/CRC/CRC_ClinicalVar.html">CRC clinical variables</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    multiPLIER
+    Transfer Learning
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/SLE-WB/repeat_Fig3_SLE-WB.html">Neutrophil (SLE-WB)</a>
+      <a href="../../articles/SLE-WB/neutrophil_counts_SLE-WB.html">Neutrophil (SLE-WB)</a>
     </li>
     <li>
-      <a href="../../articles/NARES/repeat_Fig3_NARES.html">Neutrophil (NARES)</a>
-    </li>
-    <li>
-      <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+      <a href="../../articles/NARES/neutrophil_counts_NARES.html">Neutrophil (NARES)</a>
     </li>
   </ul>
 </li>
@@ -115,7 +130,7 @@
       <h1 data-toc-skip>PCA E-MTAB-2452</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">June 02, 2021</h4>
+            <h4 class="date">June 08, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/E-MTAB-2452/E-MTAB-2452.Rmd"><code>vignettes/E-MTAB-2452/E-MTAB-2452.Rmd</code></a></small>
       <div class="hidden name"><code>E-MTAB-2452.Rmd</code></div>
@@ -138,13 +153,39 @@
   <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/aoles/EBImage">EBImage</a></span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 </div>
+<div id="e-mtab-2452" class="section level2">
+<h2 class="hasAnchor">
+<a href="#e-mtab-2452" class="anchor"></a>E-MTAB-2452</h2>
+<p><a href="https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2452/">E-MTAB-2452</a>: Sorted peripheral blood cells (CD4+ T cells, CD14+ monocytes, CD16+ neutrophils) profiled on microarray from several autoimmune diseases.</p>
+<p>This expression data is pre-processed by Greene lab and available <a href="https://github.com/greenelab/multi-plier/blob/master/data/expression_data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl">here</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">annot.dat</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="st">"data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
+<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
+
+<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">$</span><span class="va">GeneSymbol</span>
+<span class="va">dataset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>
+<span class="co">#&gt;      CD14_triad0058_1.CEL CD14_triad0058_2.CEL CD14_triad0058_3.CEL</span>
+<span class="co">#&gt; A1BG         1.154439e-01           0.17987252           0.17031624</span>
+<span class="co">#&gt; NAT2        -7.464545e-06          -0.09915562          -0.02097987</span>
+<span class="co">#&gt;      CD14_triad0058_4.CEL</span>
+<span class="co">#&gt; A1BG            0.1767473</span>
+<span class="co">#&gt; NAT2           -0.1269907</span></code></pre></div>
+<p>Label each sample with the known cell types.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_.*$"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span>
+<span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD4"</span>, <span class="st">"CD4,T cell"</span>, <span class="va">cellType</span><span class="op">)</span>
+<span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD14"</span>, <span class="st">"CD14,monocyte"</span>, <span class="va">cellType</span><span class="op">)</span>
+<span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD16"</span>, <span class="st">"CD16,neutrophil"</span>, <span class="va">cellType</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">cellType</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></code></pre></div>
+</div>
 <div id="ravmodel" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
-<p>Because this dataset is comprised of isolated immune subsets and was analyzed in multiPLIER paper, I used the model annotated with PLIER priors.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>Because E-MTAB-2452 data is comprised of isolated immune subsets and was analyzed in multiPLIER paper, we used the model annotated with PLIER priors.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/getModel.html">getModel</a></span><span class="op">(</span><span class="st">"PLIERpriors"</span>, load<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RAVmodel</span>
 <span class="co">#&gt; class: PCAGenomicSignatures </span>
 <span class="co">#&gt; dim: 13934 4764 </span>
@@ -160,46 +201,38 @@
 <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">updateNote</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span>
 <span class="co">#&gt; [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with 3 priors from PLIER (bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways)"</span></code></pre></div>
 </div>
-<div id="load-e-mtab-2452" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-e-mtab-2452" class="anchor"></a>Load E-MTAB-2452</h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">annot.dat</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="st">"data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
-
-<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">$</span><span class="va">GeneSymbol</span>
-<span class="va">dataset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>
-<span class="co">#&gt;      CD14_triad0058_1.CEL CD14_triad0058_2.CEL CD14_triad0058_3.CEL</span>
-<span class="co">#&gt; A1BG         1.154439e-01           0.17987252           0.17031624</span>
-<span class="co">#&gt; NAT2        -7.464545e-06          -0.09915562          -0.02097987</span>
-<span class="co">#&gt;      CD14_triad0058_4.CEL</span>
-<span class="co">#&gt; A1BG            0.1767473</span>
-<span class="co">#&gt; NAT2           -0.1269907</span></code></pre></div>
 </div>
-</div>
-<div id="basic-eda" class="section level1">
+<div id="database-search" class="section level1">
 <h1 class="hasAnchor">
-<a href="#basic-eda" class="anchor"></a>Basic EDA</h1>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<a href="#database-search" class="anchor"></a>Database search</h1>
+<div id="associated-rav" class="section level2">
+<h2 class="hasAnchor">
+<a href="#associated-rav" class="anchor"></a>Associated RAV</h2>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">val_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/validate.html">validate</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/heatmapTable.html">heatmapTable</a></span><span class="op">(</span><span class="va">val_all</span>, swCutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-6-1.png" width="50%" height="50%"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/drawWordcloud.html">drawWordcloud</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1551</span><span class="op">)</span></code></pre></div>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-7-1.png" width="50%" height="50%"></p>
+<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-7-1.png" width="75%" height="75%"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotValidate.html">plotValidate</a></span><span class="op">(</span><span class="va">val_all</span><span class="op">)</span></code></pre></div>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-8-1.png" width="80%" height="80%"></p>
+<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-8-1.png" width="75%" height="75%"></p>
+</div>
+<div id="mesh-terms" class="section level2">
+<h2 class="hasAnchor">
+<a href="#mesh-terms" class="anchor"></a>MeSH terms</h2>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/drawWordcloud.html">drawWordcloud</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1551</span><span class="op">)</span></code></pre></div>
+<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-9-1.png" width="60%" height="60%"></p>
+</div>
 </div>
 <div id="plot" class="section level1">
 <h1 class="hasAnchor">
 <a href="#plot" class="anchor"></a>Plot</h1>
-<div id="annotated-pca" class="section level2">
+<div id="annotate-top-pcs" class="section level2">
 <h2 class="hasAnchor">
-<a href="#annotated-pca" class="anchor"></a>Annotated PCA</h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotatePC.html">annotatePC</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="va">val_all</span>, <span class="va">RAVmodel</span>, n <span class="op">=</span> <span class="fl">5</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  <span class="co"># default scoreCutoff = 0.5</span>
+<a href="#annotate-top-pcs" class="anchor"></a>Annotate top PCs</h2>
+<p>We checked the enriched pathways for top 8 PCs of E-MTAB-2452 data. Under the default, RAVs with the validation score above 0.5 are assigned. Here, only PC1 and PC2 have associated RAV under the default condition.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotatePC.html">annotatePC</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="va">val_all</span>, <span class="va">RAVmodel</span>, n <span class="op">=</span> <span class="fl">5</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  
 <span class="co">#&gt;                        PC1.RAV23                PC2.RAV1552</span>
 <span class="co">#&gt; 1                SVM T cells CD8         IRIS_Monocyte-Day0</span>
 <span class="co">#&gt; 2          SVM T cells CD4 naive IRIS_DendriticCell-Control</span>
@@ -217,20 +250,22 @@
 <span class="co">#&gt; 2 No significant pathways No significant pathways No significant pathways</span>
 <span class="co">#&gt; 3 No significant pathways No significant pathways No significant pathways</span>
 <span class="co">#&gt; 4 No significant pathways No significant pathways No significant pathways</span>
-<span class="co">#&gt; 5 No significant pathways No significant pathways No significant pathways</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotatePC.html">annotatePC</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="va">val_all</span>, <span class="va">RAVmodel</span>, n <span class="op">=</span> <span class="fl">5</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span>, scoreCutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="co">#&gt; 5 No significant pathways No significant pathways No significant pathways</span></code></pre></div>
+<p>We lowered the validation score cutoff to 0 and the output returned with more enriched pathways.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotatePC.html">annotatePC</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="va">val_all</span>, <span class="va">RAVmodel</span>, n <span class="op">=</span> <span class="fl">5</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span>, scoreCutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt;                        PC1.RAV23                PC2.RAV1552</span>
 <span class="co">#&gt; 1                SVM T cells CD8         IRIS_Monocyte-Day0</span>
 <span class="co">#&gt; 2          SVM T cells CD4 naive IRIS_DendriticCell-Control</span>
 <span class="co">#&gt; 3  SVM T cells follicular helper                 DMAP_MONO2</span>
 <span class="co">#&gt; 4 SVM T cells regulatory (Tregs)         IRIS_Monocyte-Day7</span>
 <span class="co">#&gt; 5        SVM T cells gamma delta              SVM Monocytes</span>
-<span class="co">#&gt;                                        PC3.RAV1387                  PC4.RAV684</span>
-<span class="co">#&gt; 1                  MIPS_55S_RIBOSOME_MITOCHONDRIAL         REACTOME_CELL_CYCLE</span>
-<span class="co">#&gt; 2 REACTOME_RESPIRATORY_ELECTRON_TRANSPORT_ATP_S... REACTOME_CELL_CYCLE_MITOTIC</span>
-<span class="co">#&gt; 3         MIPS_39S_RIBOSOMAL_SUBUNIT_MITOCHONDRIAL                        &lt;NA&gt;</span>
-<span class="co">#&gt; 4          REACTOME_RESPIRATORY_ELECTRON_TRANSPORT                        &lt;NA&gt;</span>
-<span class="co">#&gt; 5 REACTOME_TCA_CYCLE_AND_RESPIRATORY_ELECTRON_T...                        &lt;NA&gt;</span>
+<span class="co">#&gt;                                        PC3.RAV1387 PC4.RAV2766</span>
+<span class="co">#&gt; 1                  MIPS_55S_RIBOSOME_MITOCHONDRIAL   DMAP_ERY3</span>
+<span class="co">#&gt; 2 REACTOME_RESPIRATORY_ELECTRON_TRANSPORT_ATP_S...   DMAP_ERY5</span>
+<span class="co">#&gt; 3         MIPS_39S_RIBOSOMAL_SUBUNIT_MITOCHONDRIAL   DMAP_ERY4</span>
+<span class="co">#&gt; 4          REACTOME_RESPIRATORY_ELECTRON_TRANSPORT        &lt;NA&gt;</span>
+<span class="co">#&gt; 5 REACTOME_TCA_CYCLE_AND_RESPIRATORY_ELECTRON_T...        &lt;NA&gt;</span>
 <span class="co">#&gt;                                         PC5.RAV338</span>
 <span class="co">#&gt; 1                      MIPS_PA700_20S_PA28_COMPLEX</span>
 <span class="co">#&gt; 2          REACTOME_RESPIRATORY_ELECTRON_TRANSPORT</span>
@@ -250,23 +285,13 @@
 <span class="co">#&gt; 4            REACTOME_CELL_CYCLE</span>
 <span class="co">#&gt; 5                           &lt;NA&gt;</span></code></pre></div>
 </div>
-<div id="cell-types" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cell-types" class="anchor"></a>Cell types</h2>
-<p>Label each sample with the known cell types.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"_.*$"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span>
-<span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD4"</span>, <span class="st">"CD4,T cell"</span>, <span class="va">cellType</span><span class="op">)</span>
-<span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD14"</span>, <span class="st">"CD14,monocyte"</span>, <span class="va">cellType</span><span class="op">)</span>
-<span class="va">cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"CD16"</span>, <span class="st">"CD16,neutrophil"</span>, <span class="va">cellType</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">cellType</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></code></pre></div>
-</div>
 <div id="pairs-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pairs-plot" class="anchor"></a>Pairs plot</h2>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-13-1.png" width="80%" height="80%"></p>
-<p>Tried <code><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">GGally::ggpairs</a></code>…</p>
+<p>Different pairs of top 4 PCs are plotted in pairs plot.</p>
 <p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-14-1.png" width="80%" height="80%"></p>
+<p>Tried <code><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">GGally::ggpairs</a></code>…</p>
+<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-15-1.png" width="80%" height="80%"></p>
 </div>
 <div id="annotated-pca-plot" class="section level2">
 <h2 class="hasAnchor">
@@ -274,42 +299,42 @@
 <div id="pc1-vs--pc2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pc1-vs--pc2" class="anchor"></a>PC1 vs. PC2</h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotAnnotatedPCA.html">plotAnnotatedPCA</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span>, PCnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, 
-                 scoreCutoff <span class="op">=</span> <span class="fl">0.3</span>, color_by <span class="op">=</span> <span class="va">cellType</span>, 
-                 color_lab <span class="op">=</span> <span class="st">"Cell Type"</span>, trimed_pathway_len <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></code></pre></div>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-15-1.png" width="80%" height="80%"></p>
-</div>
-<div id="pc1-vs--pc3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pc1-vs--pc3" class="anchor"></a>PC1 vs. PC3</h3>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotAnnotatedPCA.html">plotAnnotatedPCA</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span>, PCnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, 
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotAnnotatedPCA.html">plotAnnotatedPCA</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span>, PCnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, 
                  scoreCutoff <span class="op">=</span> <span class="fl">0.3</span>, color_by <span class="op">=</span> <span class="va">cellType</span>, 
                  color_lab <span class="op">=</span> <span class="st">"Cell Type"</span>, trimed_pathway_len <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></code></pre></div>
 <p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-16-1.png" width="80%" height="80%"></p>
 </div>
-<div id="pc2-vs--pc3" class="section level3">
+<div id="pc1-vs--pc3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#pc2-vs--pc3" class="anchor"></a>PC2 vs. PC3</h3>
+<a href="#pc1-vs--pc3" class="anchor"></a>PC1 vs. PC3</h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotAnnotatedPCA.html">plotAnnotatedPCA</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span>, PCnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, 
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotAnnotatedPCA.html">plotAnnotatedPCA</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span>, PCnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, 
                  scoreCutoff <span class="op">=</span> <span class="fl">0.3</span>, color_by <span class="op">=</span> <span class="va">cellType</span>, 
                  color_lab <span class="op">=</span> <span class="st">"Cell Type"</span>, trimed_pathway_len <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></code></pre></div>
 <p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-17-1.png" width="80%" height="80%"></p>
 </div>
+<div id="pc2-vs--pc3" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pc2-vs--pc3" class="anchor"></a>PC2 vs. PC3</h3>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotAnnotatedPCA.html">plotAnnotatedPCA</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span>, PCnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, val_all <span class="op">=</span> <span class="va">val_all</span>, 
+                 scoreCutoff <span class="op">=</span> <span class="fl">0.3</span>, color_by <span class="op">=</span> <span class="va">cellType</span>, 
+                 color_lab <span class="op">=</span> <span class="st">"Cell Type"</span>, trimed_pathway_len <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></code></pre></div>
+<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-18-1.png" width="80%" height="80%"></p>
 </div>
 </div>
-<div id="figures-for-the-paper" class="section level1">
+</div>
+<div id="manuscript-figures" class="section level1">
 <h1 class="hasAnchor">
-<a href="#figures-for-the-paper" class="anchor"></a>Figures for the paper</h1>
+<a href="#manuscript-figures" class="anchor"></a>Manuscript Figures</h1>
 <div id="figure-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-1" class="anchor"></a>Figure 1</h2>
 <div id="figure-1b-top-left" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-1b-top-left" class="anchor"></a>Figure 1B top-left</h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/calculateScore.html">calculateScore</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span>
 <span class="va">top_PC_annot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">23</span>,<span class="fl">1552</span>,<span class="fl">1387</span>,<span class="fl">684</span>,<span class="fl">338</span>,<span class="fl">299</span>,<span class="fl">21</span>,<span class="fl">312</span><span class="op">)</span>
 <span class="va">Fig1B_topleft</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/sampleScoreHeatmap.html">sampleScoreHeatmap</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="va">top_PC_annot</span><span class="op">]</span>,                    
@@ -318,43 +343,43 @@
                                     row_names_gp <span class="op">=</span> <span class="fl">5</span>, column_names_gp <span class="op">=</span> <span class="fl">7</span>, 
                                     cluster_columns <span class="op">=</span> <span class="cn">FALSE</span>, cluster_row <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">Fig1B_topleft</span></code></pre></div>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-20-1.png" width="50%" height="50%"></p>
+<p><img src="E-MTAB-2452_files/figure-html/1B_top_left-1.png" width="60%" height="60%"></p>
 </div>
 <div id="figure-1b-bottom-left" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-1b-bottom-left" class="anchor"></a>Figure 1B bottom-left</h3>
 <p>Output from <code>drawWordcloud(RAVmodel, 1551)</code>.</p>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-22-1.png" width="50%" height="50%"></p>
+<p><img src="E-MTAB-2452_files/figure-html/1B_bottom_left-1.png" width="60%" height="60%"></p>
 </div>
 <div id="figure-1b-bottom-right" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-1b-bottom-right" class="anchor"></a>Figure 1B bottom-right</h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Fig1B_bottomright</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/plotAnnotatedPCA.html">plotAnnotatedPCA</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span>, PCnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, 
                                       val_all <span class="op">=</span> <span class="va">val_all</span>, scoreCutoff <span class="op">=</span> <span class="fl">0.3</span>, 
                                       color_by <span class="op">=</span> <span class="va">cellType</span>, 
                                       color_lab <span class="op">=</span> <span class="st">"Cell Type"</span>, 
                                       trimed_pathway_len <span class="op">=</span> <span class="fl">45</span><span class="op">)</span>
 <span class="va">Fig1B_bottomright</span></code></pre></div>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-26-1.png" width="80%" height="80%"></p>
+<p><img src="E-MTAB-2452_files/figure-html/1B_bottom_right-1.png" width="80%" height="80%"></p>
 </div>
 </div>
 <div id="supplementary-figure-8" class="section level2">
 <h2 class="hasAnchor">
 <a href="#supplementary-figure-8" class="anchor"></a>Supplementary Figure 8</h2>
 <p>PCA result of leukocyte gene expression data (E-MTAB-2452) is displayed in A) a table or B) a scatter plot. PCA is done on a centered, but not scaled, input dataset by default. Different cutoff parameters for GSEA annotation, such as minimum validation score or NES, can be set.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">supFig8</span> <span class="op">&lt;-</span> <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">a14_ft</span>, <span class="va">b</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,
                              nrow <span class="op">=</span> <span class="fl">2</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">5</span><span class="op">)</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span> 
 
 <span class="va">supFig8</span></code></pre></div>
-<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-29-1.png" width="80%" height="80%"></p>
+<p><img src="E-MTAB-2452_files/figure-html/unnamed-chunk-27-1.png" width="80%" height="80%"></p>
 </div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<details><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<details><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; R version 4.1.0 (2021-05-18)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
@@ -383,7 +408,7 @@
 <span class="co">#&gt;  [7] Biobase_2.52.0              GenomicRanges_1.44.0       </span>
 <span class="co">#&gt;  [9] GenomeInfoDb_1.28.0         IRanges_2.26.0             </span>
 <span class="co">#&gt; [11] S4Vectors_0.30.0            BiocGenerics_0.38.0        </span>
-<span class="co">#&gt; [13] MatrixGenerics_1.4.0        matrixStats_0.58.0         </span>
+<span class="co">#&gt; [13] MatrixGenerics_1.4.0        matrixStats_0.59.0         </span>
 <span class="co">#&gt; [15] dplyr_1.0.6                 BiocStyle_2.20.0           </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
@@ -415,7 +440,7 @@
 <span class="co">#&gt;  [76] stringr_1.4.0          fastmap_1.1.0          fftwtools_0.9-11      </span>
 <span class="co">#&gt;  [79] yaml_2.2.1             ragg_1.1.2             processx_3.5.2        </span>
 <span class="co">#&gt;  [82] knitr_1.33             bit64_4.0.5            fs_1.5.0              </span>
-<span class="co">#&gt;  [85] zip_2.1.1              purrr_0.3.4            xml2_1.3.2            </span>
+<span class="co">#&gt;  [85] zip_2.2.0              purrr_0.3.4            xml2_1.3.2            </span>
 <span class="co">#&gt;  [88] compiler_4.1.0         rstudioapi_0.13        filelock_1.0.2        </span>
 <span class="co">#&gt;  [91] curl_4.3.1             png_0.1-7              ggsignif_0.6.1        </span>
 <span class="co">#&gt;  [94] bslib_0.2.5.1          stringi_1.6.2          ps_1.6.0              </span>

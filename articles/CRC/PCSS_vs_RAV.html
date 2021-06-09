@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -50,11 +50,29 @@
     <li>
       <a href="../../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
+    <li>
+      <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    CRC
+    EDA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../../articles/TCGA/TCGA_5studies.html">Database search</a>
+    </li>
+    <li>
+      <a href="../../articles/E-MTAB-2452/E-MTAB-2452.html">Annoated PCA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Subtyping
      
     <span class="caret"></span>
   </a>
@@ -66,28 +84,25 @@
       <a href="../../articles/CRC/metadata_based_search.html">Metadata based search</a>
     </li>
     <li>
-      <a href="../../articles/CRC/repeat_Fig4A.html">CRC subtype scores</a>
+      <a href="../../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
     </li>
     <li>
-      <a href="../../articles/CRC/repeat_Fig4C.html">CRC clinical variables</a>
+      <a href="../../articles/CRC/CRC_ClinicalVar.html">CRC clinical variables</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    multiPLIER
+    Transfer Learning
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/SLE-WB/repeat_Fig3_SLE-WB.html">Neutrophil (SLE-WB)</a>
+      <a href="../../articles/SLE-WB/neutrophil_counts_SLE-WB.html">Neutrophil (SLE-WB)</a>
     </li>
     <li>
-      <a href="../../articles/NARES/repeat_Fig3_NARES.html">Neutrophil (NARES)</a>
-    </li>
-    <li>
-      <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+      <a href="../../articles/NARES/neutrophil_counts_NARES.html">Neutrophil (NARES)</a>
     </li>
   </ul>
 </li>
@@ -115,7 +130,7 @@
       <h1 data-toc-skip>Compare PCSS and RAVs</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-06-02</h4>
+            <h4 class="date">2021-06-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/PCSS_vs_RAV.Rmd"><code>vignettes/CRC/PCSS_vs_RAV.Rmd</code></a></small>
       <div class="hidden name"><code>PCSS_vs_RAV.Rmd</code></div>
@@ -124,22 +139,42 @@
 
     
     
-<div id="avgloading-from-crc-paper" class="section level1">
+<div id="setup" class="section level1">
 <h1 class="hasAnchor">
-<a href="#avgloading-from-crc-paper" class="anchor"></a>avgLoading from CRC paper</h1>
-<p>This is the table of top 4 average loadings (= PCSS, PC Cluster Subtype Scores) built in the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">CRC paper</a>.</p>
+<a href="#setup" class="anchor"></a>Setup</h1>
+<div id="load-package" class="section level2">
+<h2 class="hasAnchor">
+<a href="#load-package" class="anchor"></a>Load package</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shbrief/GenomicSuperSignature">GenomicSuperSignature</a></span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="pcsss" class="section level2">
+<h2 class="hasAnchor">
+<a href="#pcsss" class="anchor"></a>PCSSs</h2>
+<p><a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">Ma <em>et al.</em></a> proposed a continuous scoring system (PCSS) based on an analysis of 8 colorectal cancer microarray datasets comprising 1,867 samples, and found it was more closely correlated to microsatellite instability (MSI), grade, stage, and tumor location. Below is the table of top 4 PCSSs.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avgLoading</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"data/avg_loadings.csv"</span>, 
                          header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span>
 <span class="va">avgLoading</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">column_to_rownames</a></span><span class="op">(</span><span class="va">avgLoading</span>, var<span class="op">=</span><span class="st">"X"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"PCSS"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"PCSS"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span>
+<span class="co">##              PCSS1        PCSS2        PCSS3         PCSS4</span>
+<span class="co">## A1CF  -0.018923764  0.015043200  0.016192833  0.0027314229</span>
+<span class="co">## A2M    0.022619204  0.016479342  0.008791011 -0.0007293910</span>
+<span class="co">## AAAS  -0.002700998 -0.005051213 -0.001248883  0.0037994266</span>
+<span class="co">## AACS  -0.002542282 -0.006858940  0.005834412  0.0058956790</span>
+<span class="co">## AADAC -0.003473766 -0.002360232 -0.003660762 -0.0047612188</span>
+<span class="co">## AAK1   0.001522205  0.005908014 -0.004708509 -0.0006853461</span></code></pre></div>
 </div>
-<div id="ravmodel" class="section level1">
-<h1 class="hasAnchor">
-<a href="#ravmodel" class="anchor"></a>RAVmodel</h1>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu">getModel</span><span class="op">(</span><span class="st">"C2"</span>, load<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div id="ravmodel" class="section level2">
+<h2 class="hasAnchor">
+<a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/getModel.html">getModel</a></span><span class="op">(</span><span class="st">"C2"</span>, load<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RAVmodel</span>
 <span class="co">## class: PCAGenomicSignatures </span>
 <span class="co">## dim: 13934 4764 </span>
@@ -152,55 +187,63 @@
 <span class="co">## trainingData(2): PCAsummary MeSH</span>
 <span class="co">## trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</span>
 
-<span class="fu">updateNote</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">updateNote</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span>
 <span class="co">## [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with MSigDB C2"</span></code></pre></div>
 </div>
-<div id="ravs-most-similar-to-pcss1pcss2" class="section level1">
+</div>
+<div id="ravs-vs--pcsss" class="section level1">
 <h1 class="hasAnchor">
-<a href="#ravs-most-similar-to-pcss1pcss2" class="anchor"></a>RAVs most similar to PCSS1/PCSS2</h1>
+<a href="#ravs-vs--pcsss" class="anchor"></a>RAVs vs. PCSSs</h1>
+<div id="most-similar-to-pcss12" class="section level2">
+<h2 class="hasAnchor">
+<a href="#most-similar-to-pcss12" class="anchor"></a>Most similar to PCSS1/2</h2>
 <p>We identified RAV1575 and RAV834 as the most similar RAVs to PCSS1 and PCSS2, respectively, based on Pearson correlation coefficient.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span>
-<span class="va">loading_cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, <span class="fu">RAVindex</span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, 
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">)</span>, <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">)</span>
+<span class="va">loading_cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">avgLoading</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">RAVindex</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span><span class="op">[</span><span class="va">cg</span>,<span class="op">]</span>, 
                               use<span class="op">=</span><span class="st">"pairwise.complete.obs"</span>, method<span class="op">=</span><span class="st">"pearson"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">max1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">loading_cor</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span>  <span class="co"># max. correlation with PCSS1</span>
-<span class="va">max2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">loading_cor</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span>  <span class="co"># max. correlation with PCSS2</span>
-
-<span class="va">loading_cor</span><span class="op">[</span><span class="fl">1</span>, <span class="va">max1</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
+<span class="va">max1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.min.html">which.max</a></span><span class="op">(</span><span class="va">loading_cor</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span>  <span class="co"># max. correlation with PCSS1</span>
+<span class="va">max2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.min.html">which.max</a></span><span class="op">(</span><span class="va">loading_cor</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span>  <span class="co"># max. correlation with PCSS2</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">loading_cor</span><span class="op">[</span><span class="fl">1</span>, <span class="va">max1</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
 <span class="co">##         RAV1575</span>
 <span class="co">## PCSS1 0.5894306</span>
 <span class="va">loading_cor</span><span class="op">[</span><span class="fl">2</span>, <span class="va">max2</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
 <span class="co">##          RAV834</span>
 <span class="co">## PCSS2 0.5624299</span></code></pre></div>
+</div>
+<div id="enriched-pathways" class="section level2">
+<h2 class="hasAnchor">
+<a href="#enriched-pathways" class="anchor"></a>Enriched pathways</h2>
 <p>Using <code>annotateRAV</code> function, we checked the MSigDB C2 genesets that are enriched in RAV1575 and RAV834.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">annotateRAV</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1575</span><span class="op">)</span></code></pre></div>
-<pre><code>##                                  Description      NES pvalue      qvalues
-## 1   SCHUETZ_BREAST_CANCER_DUCTAL_INVASIVE_UP 2.794522  1e-10 1.733483e-09
-## 2          SMID_BREAST_CANCER_NORMAL_LIKE_UP 2.681439  1e-10 1.733483e-09
-## 3                       BOQUEST_STEM_CELL_UP 2.630321  1e-10 1.733483e-09
-## 4 VECCHI_GASTRIC_CANCER_ADVANCED_VS_EARLY_UP 2.596083  1e-10 1.733483e-09
-## 5                 MCLACHLAN_DENTAL_CARIES_UP 2.566848  1e-10 1.733483e-09</code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">annotateRAV</span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">834</span><span class="op">)</span></code></pre></div>
-<pre><code>##                                             Description      NES pvalue
-## 1 ALTEMEIER_RESPONSE_TO_LPS_WITH_MECHANICAL_VENTILATION 2.868397  1e-10
-## 2                            MCLACHLAN_DENTAL_CARIES_UP 2.627526  1e-10
-## 3                           WIELAND_UP_BY_HBV_INFECTION 2.541545  1e-10
-## 4            ZHANG_RESPONSE_TO_IKK_INHIBITOR_AND_TNF_UP 2.339746  1e-10
-## 5                       POOLA_INVASIVE_BREAST_CANCER_UP 2.334263  1e-10
-##        qvalues
-## 1 4.683457e-08
-## 2 4.683457e-08
-## 3 4.683457e-08
-## 4 4.683457e-08
-## 5 4.683457e-08</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotateRAV.html">annotateRAV</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1575</span><span class="op">)</span>
+<span class="co">##                                  Description      NES pvalue      qvalues</span>
+<span class="co">## 1   SCHUETZ_BREAST_CANCER_DUCTAL_INVASIVE_UP 2.794522  1e-10 1.733483e-09</span>
+<span class="co">## 2          SMID_BREAST_CANCER_NORMAL_LIKE_UP 2.681439  1e-10 1.733483e-09</span>
+<span class="co">## 3                       BOQUEST_STEM_CELL_UP 2.630321  1e-10 1.733483e-09</span>
+<span class="co">## 4 VECCHI_GASTRIC_CANCER_ADVANCED_VS_EARLY_UP 2.596083  1e-10 1.733483e-09</span>
+<span class="co">## 5                 MCLACHLAN_DENTAL_CARIES_UP 2.566848  1e-10 1.733483e-09</span>
+<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotateRAV.html">annotateRAV</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">834</span><span class="op">)</span>
+<span class="co">##                                             Description      NES pvalue</span>
+<span class="co">## 1 ALTEMEIER_RESPONSE_TO_LPS_WITH_MECHANICAL_VENTILATION 2.868397  1e-10</span>
+<span class="co">## 2                            MCLACHLAN_DENTAL_CARIES_UP 2.627526  1e-10</span>
+<span class="co">## 3                           WIELAND_UP_BY_HBV_INFECTION 2.541545  1e-10</span>
+<span class="co">## 4            ZHANG_RESPONSE_TO_IKK_INHIBITOR_AND_TNF_UP 2.339746  1e-10</span>
+<span class="co">## 5                       POOLA_INVASIVE_BREAST_CANCER_UP 2.334263  1e-10</span>
+<span class="co">##        qvalues</span>
+<span class="co">## 1 4.683457e-08</span>
+<span class="co">## 2 4.683457e-08</span>
+<span class="co">## 3 4.683457e-08</span>
+<span class="co">## 4 4.683457e-08</span>
+<span class="co">## 5 4.683457e-08</span></code></pre></div>
+</div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<details><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<details><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## R version 4.1.0 (2021-05-18)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
@@ -227,7 +270,7 @@
 <span class="co">##  [3] Biobase_2.52.0              GenomicRanges_1.44.0       </span>
 <span class="co">##  [5] GenomeInfoDb_1.28.0         IRanges_2.26.0             </span>
 <span class="co">##  [7] S4Vectors_0.30.0            BiocGenerics_0.38.0        </span>
-<span class="co">##  [9] MatrixGenerics_1.4.0        matrixStats_0.58.0         </span>
+<span class="co">##  [9] MatrixGenerics_1.4.0        matrixStats_0.59.0         </span>
 <span class="co">## [11] BiocStyle_2.20.0           </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
@@ -253,7 +296,7 @@
 <span class="co">##  [58] curl_4.3.1             memoise_2.0.0          ggplot2_3.3.3         </span>
 <span class="co">##  [61] sass_0.4.0             stringi_1.6.2          RSQLite_2.2.7         </span>
 <span class="co">##  [64] desc_1.3.0             foreach_1.5.1          filelock_1.0.2        </span>
-<span class="co">##  [67] zip_2.1.1              shape_1.4.6            rlang_0.4.11          </span>
+<span class="co">##  [67] zip_2.2.0              shape_1.4.6            rlang_0.4.11          </span>
 <span class="co">##  [70] pkgconfig_2.0.3        systemfonts_1.0.2      bitops_1.0-7          </span>
 <span class="co">##  [73] evaluate_0.14          lattice_0.20-44        purrr_0.3.4           </span>
 <span class="co">##  [76] bit_4.0.4              tidyselect_1.1.1       magrittr_2.0.1        </span>

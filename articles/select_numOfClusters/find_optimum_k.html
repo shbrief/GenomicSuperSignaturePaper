@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -50,11 +50,29 @@
     <li>
       <a href="../../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
+    <li>
+      <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    CRC
+    EDA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../../articles/TCGA/TCGA_5studies.html">Database search</a>
+    </li>
+    <li>
+      <a href="../../articles/E-MTAB-2452/E-MTAB-2452.html">Annoated PCA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Subtyping
      
     <span class="caret"></span>
   </a>
@@ -66,28 +84,25 @@
       <a href="../../articles/CRC/metadata_based_search.html">Metadata based search</a>
     </li>
     <li>
-      <a href="../../articles/CRC/repeat_Fig4A.html">CRC subtype scores</a>
+      <a href="../../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
     </li>
     <li>
-      <a href="../../articles/CRC/repeat_Fig4C.html">CRC clinical variables</a>
+      <a href="../../articles/CRC/CRC_ClinicalVar.html">CRC clinical variables</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    multiPLIER
+    Transfer Learning
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/SLE-WB/repeat_Fig3_SLE-WB.html">Neutrophil (SLE-WB)</a>
+      <a href="../../articles/SLE-WB/neutrophil_counts_SLE-WB.html">Neutrophil (SLE-WB)</a>
     </li>
     <li>
-      <a href="../../articles/NARES/repeat_Fig3_NARES.html">Neutrophil (NARES)</a>
-    </li>
-    <li>
-      <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+      <a href="../../articles/NARES/neutrophil_counts_NARES.html">Neutrophil (NARES)</a>
     </li>
   </ul>
 </li>
@@ -115,7 +130,7 @@
       <h1 data-toc-skip>Find the optimum number of clusters for hierarchical clustering</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-06-02</h4>
+            <h4 class="date">2021-06-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/select_numOfClusters/find_optimum_k.Rmd"><code>vignettes/select_numOfClusters/find_optimum_k.Rmd</code></a></small>
       <div class="hidden name"><code>find_optimum_k.Rmd</code></div>
@@ -140,7 +155,7 @@
 <ul>
 <li>Each dataset contains 50 random samples from 44,890 samples (with replacement).<br>
 </li>
-<li>Scaramble genes in each dataset by random selection without replacement and add random value between -0.1 and 0.1</li>
+<li>Scramble genes in each dataset by random selection without replacement and add random value between -0.1 and 0.1</li>
 </ul>
 </li>
 <li><p>Row-normalize synthetic datasets</p></li>
@@ -157,7 +172,7 @@
 <div id="validate-negative-controls" class="section level2">
 <h2 class="hasAnchor">
 <a href="#validate-negative-controls" class="anchor"></a>Validate negative controls</h2>
-<p>Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 studies). We want to create a synthetic dataset as a negative control with the distance rangeing median or higher.</p>
+<p>Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 studies). We want to create a synthetic dataset as a negative control with the distance ranging median or higher.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res_dist</span><span class="op">)</span>
 <span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>

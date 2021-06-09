@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -50,11 +50,29 @@
     <li>
       <a href="../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
     </li>
+    <li>
+      <a href="../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    CRC
+    EDA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/TCGA/TCGA_5studies.html">Database search</a>
+    </li>
+    <li>
+      <a href="../articles/E-MTAB-2452/E-MTAB-2452.html">Annoated PCA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Subtyping
      
     <span class="caret"></span>
   </a>
@@ -66,28 +84,25 @@
       <a href="../articles/CRC/metadata_based_search.html">Metadata based search</a>
     </li>
     <li>
-      <a href="../articles/CRC/repeat_Fig4A.html">CRC subtype scores</a>
+      <a href="../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
     </li>
     <li>
-      <a href="../articles/CRC/repeat_Fig4C.html">CRC clinical variables</a>
+      <a href="../articles/CRC/CRC_ClinicalVar.html">CRC clinical variables</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    multiPLIER
+    Transfer Learning
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/SLE-WB/repeat_Fig3_SLE-WB.html">Neutrophil (SLE-WB)</a>
+      <a href="../articles/SLE-WB/neutrophil_counts_SLE-WB.html">Neutrophil (SLE-WB)</a>
     </li>
     <li>
-      <a href="../articles/NARES/repeat_Fig3_NARES.html">Neutrophil (NARES)</a>
-    </li>
-    <li>
-      <a href="../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
+      <a href="../articles/NARES/neutrophil_counts_NARES.html">Neutrophil (NARES)</a>
     </li>
   </ul>
 </li>
@@ -115,7 +130,7 @@
       <h1 data-toc-skip>Figures and Tables for GenomicSuperSignature Paper</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">June 02, 2021</h4>
+            <h4 class="date">June 09, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/manuscript.Rmd"><code>vignettes/manuscript.Rmd</code></a></small>
       <div class="hidden name"><code>manuscript.Rmd</code></div>
@@ -155,7 +170,7 @@
 <p>Scatter plots showing how different signatures perform with CRC subtyping. These plots were created in <code>CRC/repeat_Fig4A.Rmd</code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span><span class="op">)</span>
-<span class="va">scatterplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html">grep</a></span><span class="op">(</span><span class="st">"scatter_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
+<span class="va">scatterplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"scatter_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">plot</span> <span class="kw">in</span> <span class="va">scatterplots</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span>, <span class="va">plot</span><span class="op">)</span><span class="op">)</span>
@@ -186,7 +201,7 @@
 <p>Bar plots comparing different models in differentiating CRC binary clinical variables. These plots were created in <code>CRC/repeat_Fig4C.Rmd</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span><span class="op">)</span>
-<span class="va">barplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html">grep</a></span><span class="op">(</span><span class="st">"boxplot_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
+<span class="va">barplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"boxplot_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">plot</span> <span class="kw">in</span> <span class="va">barplots</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span>, <span class="va">plot</span><span class="op">)</span><span class="op">)</span>
@@ -205,7 +220,6 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"SLE-WB/outputs/neutrophil_estimate.rds"</span><span class="op">)</span>
 <span class="va">x</span></code></pre></div>
-<p><img src="manuscript_files/figure-html/unnamed-chunk-5-1.png" width="50%" height="50%"></p>
 </div>
 <div id="nares_neutrophil-rds" class="section level2">
 <h2 class="hasAnchor">
@@ -214,7 +228,6 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"NARES/outputs/nares_neutrophil.rds"</span><span class="op">)</span>
 <span class="va">x</span></code></pre></div>
-<p><img src="manuscript_files/figure-html/unnamed-chunk-6-1.png" width="50%" height="50%"></p>
 </div>
 </div>
 <div id="session-info" class="section level1">
@@ -245,27 +258,25 @@
 <span class="co">#&gt; [1] BiocStyle_2.20.0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] tidyselect_1.1.1    xfun_0.23           bslib_0.2.5.1      </span>
-<span class="co">#&gt;  [4] purrr_0.3.4         lattice_0.20-44     splines_4.1.0      </span>
-<span class="co">#&gt;  [7] colorspace_2.0-1    vctrs_0.3.8         generics_0.1.0     </span>
-<span class="co">#&gt; [10] htmltools_0.5.1.1   yaml_2.2.1          mgcv_1.8-35        </span>
-<span class="co">#&gt; [13] utf8_1.2.1          rlang_0.4.11        pkgdown_1.6.1      </span>
-<span class="co">#&gt; [16] jquerylib_0.1.4     pillar_1.6.1        glue_1.4.2         </span>
-<span class="co">#&gt; [19] withr_2.4.2         DBI_1.1.1           lifecycle_1.0.0    </span>
-<span class="co">#&gt; [22] stringr_1.4.0       munsell_0.5.0       gtable_0.3.0       </span>
-<span class="co">#&gt; [25] ragg_1.1.2          memoise_2.0.0       evaluate_0.14      </span>
-<span class="co">#&gt; [28] labeling_0.4.2      knitr_1.33          fastmap_1.1.0      </span>
-<span class="co">#&gt; [31] fansi_0.5.0         highr_0.9           scales_1.1.1       </span>
-<span class="co">#&gt; [34] BiocManager_1.30.15 cachem_1.0.5        desc_1.3.0         </span>
-<span class="co">#&gt; [37] jsonlite_1.7.2      farver_2.1.0        systemfonts_1.0.2  </span>
-<span class="co">#&gt; [40] fs_1.5.0            textshaping_0.3.4   ggplot2_3.3.3      </span>
-<span class="co">#&gt; [43] digest_0.6.27       stringi_1.6.2       bookdown_0.22      </span>
-<span class="co">#&gt; [46] dplyr_1.0.6         grid_4.1.0          rprojroot_2.0.2    </span>
-<span class="co">#&gt; [49] tools_4.1.0         magrittr_2.0.1      sass_0.4.0         </span>
-<span class="co">#&gt; [52] tibble_3.1.2        crayon_1.4.1        pkgconfig_2.0.3    </span>
-<span class="co">#&gt; [55] Matrix_1.3-3        ellipsis_0.3.2      assertthat_0.2.1   </span>
-<span class="co">#&gt; [58] rmarkdown_2.8       R6_2.5.0            nlme_3.1-152       </span>
-<span class="co">#&gt; [61] compiler_4.1.0</span></code></pre></div>
+<span class="co">#&gt;  [1] highr_0.9           bslib_0.2.5.1       compiler_4.1.0     </span>
+<span class="co">#&gt;  [4] pillar_1.6.1        BiocManager_1.30.15 jquerylib_0.1.4    </span>
+<span class="co">#&gt;  [7] tools_4.1.0         digest_0.6.27       jsonlite_1.7.2     </span>
+<span class="co">#&gt; [10] evaluate_0.14       memoise_2.0.0       lifecycle_1.0.0    </span>
+<span class="co">#&gt; [13] tibble_3.1.2        gtable_0.3.0        pkgconfig_2.0.3    </span>
+<span class="co">#&gt; [16] rlang_0.4.11        DBI_1.1.1           yaml_2.2.1         </span>
+<span class="co">#&gt; [19] pkgdown_1.6.1       xfun_0.23           fastmap_1.1.0      </span>
+<span class="co">#&gt; [22] withr_2.4.2         dplyr_1.0.6         stringr_1.4.0      </span>
+<span class="co">#&gt; [25] knitr_1.33          generics_0.1.0      vctrs_0.3.8        </span>
+<span class="co">#&gt; [28] desc_1.3.0          fs_1.5.0            sass_0.4.0         </span>
+<span class="co">#&gt; [31] systemfonts_1.0.2   tidyselect_1.1.1    rprojroot_2.0.2    </span>
+<span class="co">#&gt; [34] grid_4.1.0          glue_1.4.2          R6_2.5.0           </span>
+<span class="co">#&gt; [37] textshaping_0.3.4   fansi_0.5.0         rmarkdown_2.8      </span>
+<span class="co">#&gt; [40] bookdown_0.22       farver_2.1.0        purrr_0.3.4        </span>
+<span class="co">#&gt; [43] ggplot2_3.3.3       magrittr_2.0.1      scales_1.1.1       </span>
+<span class="co">#&gt; [46] htmltools_0.5.1.1   ellipsis_0.3.2      assertthat_0.2.1   </span>
+<span class="co">#&gt; [49] colorspace_2.0-1    labeling_0.4.2      ragg_1.1.2         </span>
+<span class="co">#&gt; [52] utf8_1.2.1          stringi_1.6.2       munsell_0.5.0      </span>
+<span class="co">#&gt; [55] cachem_1.0.5        crayon_1.4.1</span></code></pre></div>
 </details>
 </div>
   </div>
