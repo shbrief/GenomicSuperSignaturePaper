@@ -15,8 +15,10 @@ navbar:
         href: articles/others/repeat_Fig5_Pathway_Separation.html
     - text: EDA
       menu:
-      - text: Exploratory Data Analysis
+      - text: Database search
         href: articles/TCGA/TCGA_5studies.html
+      - text: Annoated PCA
+        href: articles/E-MTAB-2452/E-MTAB-2452.html
     - text: Subtyping
       menu:
       - text: RAVs similar to PCSS1/2
@@ -24,15 +26,15 @@ navbar:
       - text: Metadata based search
         href: articles/CRC/metadata_based_search.html
       - text: CRC subtype scores
-        href: articles/CRC/repeat_Fig4A.html
+        href: articles/CRC/CRC_Subtyping.html
       - text: CRC clinical variables
-        href: articles/CRC/repeat_Fig4C.html
+        href: articles/CRC/CRC_ClinicalVar.html
     - text: Transfer Learning
       menu:
       - text: Neutrophil (SLE-WB)
-        href: articles/SLE-WB/repeat_Fig3_SLE-WB.html
+        href: articles/SLE-WB/neutrophil_counts_SLE-WB.html
       - text: Neutrophil (NARES)
-        href: articles/NARES/repeat_Fig3_NARES.html
+        href: articles/NARES/neutrophil_counts_NARES.html
   right:
    - icon: fa-github fa-lg
      href: https://github.com/shbrief/GenomicSuperSignaturePaper
