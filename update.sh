@@ -31,16 +31,30 @@ rm vignettes
 
 git checkout gh-pages
 git pull origin gh-pages
-mv -f docs/* .   # need to overwrite previous 'articles' and 'reference' directories
+
+## Need to overwrite previous 'articles' and 'references' directories
+rm -rf articles
+rm -rf references
+
+mv -f docs/* .
 rm -rf docs/
-# [Note] Any html files not built through vignettes should be manually updated in the gh-pages branch
+
+## [Note] Any html files not built through vignettes should be manually updated
+## in the gh-pages branch
+
 git stage *
-git reset HEAD inst/extdata/*   # large data file
-git reset HEAD Results/CRC/data/*   # large data file
-git reset HEAD Results/SLE-WB/data/*   # large data file
-git reset HEAD Results/TCGA/data/*   # large data file
-git reset HEAD SRAmetadb.sqlite.gz   # large data file
-git reset HEAD Methods/prepare_Inputs   # temporary work
-git reset HEAD Results_temp/*   # temporary works
+
+## Reset large data files
+git reset HEAD inst/extdata/*
+git reset HEAD Results/CRC/data/*
+git reset HEAD Results/SLE-WB/data/*
+git reset HEAD Results/TCGA/data/*
+git reset HEAD Results/E-MTAB-2452/data/*
+git reset HEAD SRAmetadb.sqlite.gz
+
+## Reset temporary works
+git reset HEAD Methods/prepare_Inputs
+git reset HEAD Ongoing/*
+
 git commit -m "update GitHub pages"
 git push origin gh-pages
