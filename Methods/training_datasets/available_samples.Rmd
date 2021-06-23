@@ -23,7 +23,7 @@ suppressPackageStartupMessages({
 })
 ```
 
-# Training datasets
+# Source
 We used human RNA sequencing datasets from RNA-seq Sample Compendia in 
 [refine.bio](https://www.refine.bio/), which hosts uniformly processed gene 
 expression data from EBI’s ArrayExpress, NCBI’s GEO and SRA. Data were 
@@ -36,7 +36,8 @@ imported samples. After filtering, the complete compendium includes 536
 studies (defined as a single SRA study) comprising 44,890 samples.
 
 The detail of training data is summarized in `studyMeta.tsv` table 
-in `GenomicSuperSignature` package. 
+in `GenomicSuperSignature` package. This vignette explains how this summary 
+table is built. 
 
 ```{r eval=TRUE}
 extdata <- system.file("extdata", package = "GenomicSuperSignature")
@@ -44,7 +45,7 @@ studyMeta <- read.table(file.path(extdata, "studyMeta.tsv.gz"))
 head(studyMeta)
 ```
 
-## Availability based on metadata
+# Availability: metadata
 `aggregated_metadata.json` is downloaded along with the training dataset. We 
 collect the number of samples per study based on this metadata.
 
@@ -64,7 +65,7 @@ sampleNum <- sapply(studies, function(x) length(x))
 ```
 
 
-## Availability based on download/import
+# Availability: download/import
 I summarized the number of samples based on `aggregated_metadata.json` under 
 `metadata` column and the number of actually downloaded `_quant.sf` sample 
 files under `downloaded` column in the `studyMeta` table.  
@@ -101,8 +102,10 @@ for (i in seq_along(dirNames)) {
 }
 ```
 
-## Imported samples
-1399 studies > 20 samples were successfully imported by `tximport::tximport` 
+# Imported samples
+1399 studies with more than 20 samples were successfully imported 
+by `tximport::tximport` 
+
 ```{r echo=FALSE}
 download.dir2 <- "/nobackup/16tb_b/GenomicSignatures/refinebio/rna_seq_v2"
 ```
@@ -127,7 +130,7 @@ studyMeta$imported <- FALSE
 studyMeta$imported[imported_ind] <- TRUE 
 ```
 
-## Title of the studies
+Study title is also added.
 ```{r}
 for (i in seq_along(experiments)) {
   title <- experiments[[i]]$title
@@ -135,7 +138,7 @@ for (i in seq_along(experiments)) {
 }
 ```
 
-## Summary plot
+# Summary plot
 Metadata bar (light blue) shows the number of studies with the given ranges of 
 study sizes based on the metadata. Downloaded bar (pink) represents the number 
 of studies with the given ranges of study sizes that were successfully 
@@ -173,7 +176,7 @@ sum(studyMeta$downloaded > 100)
 sum(studyMeta$metadata > 100)
 ```
 
-## Example
+### Example
 Example study, `SRP152576`:   
 - 13,127 samples are available based on `aggregated_metadata.json`.     
 - No sample is available based on [refine.bio](https://www.refine.bio/) webpage.      
@@ -255,7 +258,9 @@ studyMeta$RAVmodel_536 <- FALSE
 studyMeta$RAVmodel_536[ind_536] <- TRUE 
 ```
 
-# Training datasets: multiPLIER vs. RAVmodel
+
+
+# MultiPLIER vs. RAVmodel
 ```{r accession, echo=FALSE, eval=FALSE}
 ## Table with sample and run information
 dir <- system.file("extdata", package = "GenomicSuperSignature")
@@ -338,7 +343,6 @@ i <- length(intersect(unique(recount2$study), unique(res_all$study)))
 
 
 # Session Info
-
 <details>
 ```{r}
 sessionInfo()
@@ -349,9 +353,10 @@ sessionInfo()
 
 
 
-```{r fig.width=6, fig.height=4.5, echo=FALSE, eval=FALSE}
+```{r manuscript_fig, fig.width=6, fig.height=4.5, echo=FALSE, eval=FALSE}
 ## Save summary table
-write.table(studyMeta, "~/data2/GenomicSuperSignature/inst/extdata/studyMeta.tsv")
+write.table(studyMeta, 
+            "~/data2/GenomicSuperSignature/inst/extdata/studyMeta.tsv")
 
 ## Save histogram comparing metadata vs. downloaded data
 ## `available_samples.png` is moved to `Results/others` 

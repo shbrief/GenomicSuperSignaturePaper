@@ -22,17 +22,20 @@ suppressPackageStartupMessages({
 
 # Preparae negative controls
 ## Build negative controls
+We used the negative-control dataset to explore the optimum number of clusters 
+for hierarchical clustering. Negative-control dataset was built using the below
+script.
 
 ```{r eval=FALSE}
 ## Do not run this script without checking it first!!
 source("neg_controls.R")
 ```
 
-This script will execute the following processes:    
+This script runs the following processes:    
 
 1. Generate 50 synthetic datasets:   
-   - Each dataset contains 50 random samples from 44,890 samples (with replacement).   
-   - Scramble genes in each dataset by random selection without replacement and
+--> Each dataset contains 50 random samples from 44,890 samples (with replacement).   
+--> Scramble genes in each dataset by random selection without replacement and
    add random value between -0.1 and 0.1   
    
 2. Row-normalize synthetic datasets   
@@ -53,8 +56,7 @@ This script will execute the following processes:
 
 ## Validate negative controls
 Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 
-536 studies). We want to create a synthetic dataset as a negative control with 
-the distance ranging median or higher.
+536 studies). 
 
 ```{r collapse=FALSE, echo=FALSE, eval=TRUE}
 wd <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/PCAmodel_536"
@@ -68,10 +70,10 @@ res_dist <- readRDS(file.path(wd, "res_dist.rds"))
 summary(res_dist)
 ```
 
-
-We tested the distance matrix with 50 'negative controls', generated from the 
-`neg_controls.R` script above. Distance ranges roughly between 1st quarter and 
-3rd quarter of training datasets' distance distribution. 
+We create a synthetic dataset whose distance ranges median or higher of the 
+actual 536 training dataset. Below is the distance matrix of the 50 negative 
+controls generated from the `neg_controls.R` script. Distance ranges roughly 
+between 1st and 3rd quarters of training dataset's distance distribution.
 
 ```{r collapse=FALSE, echo=FALSE, eval=TRUE}
 dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
@@ -92,9 +94,9 @@ res.dist.neg <- factoextra::get_dist(control_dat, method = "spearman")
 summary(res.dist.neg)
 ```
 
-We plot the heatmap of distance matrix with different number of negative 
-controls (PC1s from synthetic datasets) and confirmed that they can serve 
-as a negative control.
+We plot the heatmap of distance matrix using the different number of negative 
+controls (PC1s from synthetic datasets). They are different within the range we 
+want to separate.
 
 ```{r echo=FALSE}
 dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
@@ -140,19 +142,17 @@ plot
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, fig.width=12, fig.height=10}
+```{r echo=FALSE, eval=TRUE, out.width="120%", out.height="100%"}
 knitr::include_graphics("outputs/png/A.heatmap_neg50.png")
 ```
 
 
-# Optimum k for different numbers of controls
-Next we combined top 20 PCs of training datasets and PC1s from varying numbers 
-of negative controls (10, 20, 30, 40, and 50) and performed hierarchical 
-clustering with different numbers of clusters. Here, we plotted the proportion 
-of separated negative controls against the number of clusters.
-
-Number of clusters for each combined datastes were rounds of the number of PCs 
-divided by 9 different numbers (**d** = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).
+# Optimum number of clusters
+Next we combined top 20 PCs of training datasets and PC1s from the varying 
+numbers of negative controls (10, 20, 30, 40, and 50) and performed 
+hierarchical clustering with the different numbers of clusters. Number of 
+clusters was the rounds of the number of PCs divided by 9 different numbers 
+(**d** = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).
 
 ```{r echo=FALSE}
 dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
@@ -173,13 +173,13 @@ df$separtedPortion <- as.numeric(df$numSeparated)/as.numeric(df$numOfControls)
 df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
 ```
 
-## Proportion of the separated negative controls
+### Proportion of the separated
 This plot shows the proportion of the negative controls that are separated 
-under different numbers of clusters. For all five different numbers of negative
-controls, more than 90% of them were separated when **d = 4** and 100% of them 
-were separated when **d = 2.25**.
+with the different numbers of clusters. For all five different numbers of 
+negative controls, more than 90% of them were separated when **d = 4** and 
+100% of them were separated when **d = 2.25**.
 
-```{r plot1, echo=FALSE, fig.width=13, fig.height=8}
+```{r plot1, echo=FALSE}
 plot1 <- ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
   geom_line(aes(colour = numOfControls)) + 
   geom_point() + 
@@ -194,15 +194,15 @@ plot1
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, fig.width=13, fig.height=8}
+```{r echo=FALSE, eval=TRUE, out.width="100%", out.height="60%"}
 knitr::include_graphics("outputs/png/B.separatedPortion.png")
 ```
 
-## Number of the non-separated negative controls
+### Number of the non-separated
 This plot shows the actual number of negative controls that weren't separated 
-under different numbers of clusters.
+with the different numbers of clusters.
 
-```{r plot2, echo=FALSE, fig.width=6.5, fig.height=4}
+```{r plot2, echo=FALSE}
 df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
 plot2 <- ggplot(df, aes(x = numOfCluster, y = numUnseparated)) + 
   geom_line(aes(colour = numOfControls)) + 
@@ -218,14 +218,13 @@ plot2
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, fig.width=6.5, fig.height=4}
+```{r echo=FALSE, eval=TRUE, out.width="100%", out.height="60%"}
 knitr::include_graphics("outputs/png/C.numUnseparated.png")
 ```
 
-```{r sup_fig_3, fig.width=18, fig.height=4.5, echo=FALSE, eval=FALSE}
+```{r sup_fig_3, echo=FALSE, eval=FALSE, out.width="180%", out.height="45%"}
 ## Capture ComplexHeatmap output as a glob object
 gb <- grid::grid.grabExpr(ComplexHeatmap::draw(plot))
-
 
 ## Save Supplementary Figure 3
 png("outputs/png/Sup_Fig_3.png", width = 1800, height = 450)

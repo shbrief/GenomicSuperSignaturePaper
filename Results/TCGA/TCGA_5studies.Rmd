@@ -1,5 +1,5 @@
 ---
-title: "Analyze TCGA datasets using RAVmodel"
+title: "Analyze TCGA data using RAVmodel"
 author: "Sehyun Oh"
 date: "`r Sys.Date()`"
 output:
@@ -19,6 +19,9 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
 ```
 
 # Setup
+To demonstrate the ability to match datasets under new analysis to relevant 
+published datasets, we applied RAVmodel on five TCGA datasets.
+
 ## Load packages
 ```{r}
 suppressPackageStartupMessages({
@@ -31,21 +34,20 @@ suppressPackageStartupMessages({
 ## TCGA datasets
 `TCGA_validationDatasets` is a list containing 6 TCGA datasets: COAD, BRCA, 
 LUAD, READ, UCEC, and OV. First 5 are raw read counts from `GSEABenchmarkeR` 
-package with log2(count + 1) transformation. Also, `GSEABenchmarkeR::loadEData` 
-excluded genes with cpm < 2 in more than half of the samples. TCGA-OV dataset 
-is from `curatedOvarianData` package. This training dataset file was built 
-using `Results/TCGA/R/build_TCGA_validationDatasets.R` script.
+package with log2(count + 1) transformation. FYI, `GSEABenchmarkeR::loadEData` 
+excludes genes with cpm < 2 in more than half of the samples. TCGA-OV dataset 
+is from `curatedOvarianData` package. These datasets were assembled using `Results/TCGA/R/build_TCGA_validationDatasets.R` script.
 
 ```{r collapse=TRUE}
 load("data/TCGA_validationDatasets.rda")
 names(TCGA_validationDatasets)
 
-# not using OV for this vignette
+## We're not using OV for this vignette
 datasets <- TCGA_validationDatasets[1:5]
 ```
 
 ## RAVmodel
-We use RAVmodel built from 536 studies and annotated with MSigDB C2 gene sets.
+We use RAVmodel annotated with MSigDB C2 gene sets.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 ## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
@@ -66,13 +68,11 @@ updateNote(RAVmodel)
 
 
 
-# Comparision Ver.1 (only TCGA)
+# Comparison Ver.1 (TCGA only)
 ## heatmapTable (all)
-Here, we plot the heatmapTable of validation result from multiple studies. By 
-matching this result with metadata, you can identify RAVs that are more 
-strongly associated with specific features. It seems like RAV221 and RAV868 
-are specific to BRCA while RAV832 is strongly associated with colon/rectal 
-cancers. 
+We plot the heatmapTable of the validation result from multiple studies. It 
+seems like RAV221 and RAV868 are specific to BRCA while RAV832 is strongly 
+associated with colon/rectal cancers. 
 
 ```{r}
 ## This process takes little time due to the size of datasets.
@@ -82,31 +82,29 @@ heatmapTable(val_all)
 
 
 ## heatmapTable (one dataset)
-If you provide validation result from one dataset, `heatmapTable` include the 
-average silhouette width as a reference.
+If you provide validation result from one dataset, `heatmapTable` also returns 
+the average silhouette width as a reference.
 
+```{r echo=FALSE}
 ### COAD
-```{r}
 val_coad <- validate(datasets[["COAD"]], RAVmodel)
-heatmapTable(val_coad) 
-```
+# heatmapTable(val_coad) 
 
 ### READ
-```{r}
 val_read <- validate(datasets[["READ"]], RAVmodel)
-heatmapTable(val_read) 
+# heatmapTable(val_read) 
 ```
 
 ### BRCA
-RAV221 shows the highest validation score with a positive avgerage silhouette 
+RAV221 shows the highest validation score with the positive average silhouette 
 width. 
 ```{r}
 val_brca <- validate(datasets[["BRCA"]], RAVmodel)
 heatmapTable(val_brca)
 ```
 
-RAV868 didn't score top 5, so we checked a couple more top validated RAVs. 
-RAV868 is ranked 6th based on the score with negative average silhouette width.
+RAV868 doesn't ranked top 5, so we checked a couple more top validated RAVs. 
+RAV868 is scored 6th with the negative average silhouette width.
 ```{r}
 heatmapTable(val_brca, num.out = 7) 
 ```
@@ -120,58 +118,72 @@ RAV221 consists of three breast cancer studies (ERP016798, SRP023262, and
 SRP11343) and top 10 enriched pathways are associated with breast cancer. 
 ```{r}
 ind <- 221
-findStudiesInCluster(RAVmodel, ind)
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
+
 drawWordcloud(RAVmodel, ind)
 ```
 
 #### RAV868
 ```{r}
 ind <- 868
-findStudiesInCluster(RAVmodel, ind)
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
+
 drawWordcloud(RAVmodel, ind)
 ```
 
 ### COAD/READ-associated
+Heatmap table above shows that RAV832 is specifically associated with COAD and
+READ datasets. 
+
 #### RAV832
 ```{r}
 ind <- 832
-findStudiesInCluster(RAVmodel, ind)
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
+
 drawWordcloud(RAVmodel, ind)
 ```
 
 
 
-# Comparision Ver.2 (TCGA + others)
+# Comparison Ver.2 (TCGA + others)
 ## heatmapTable (all)
-Here, we added SLE-WB microarray dataset and 4 colon cancer microarray datasets
-to 5 TCGA dataset and `scoreCutoff` is set to 0.68 instead of the default 0.7.
+Here, we plot heatmap table of validation scores from five TCGA RNA sequencing, 
+SLE-WB microarray and four colon cancer microarray datasets. `scoreCutoff` is 
+set to 0.68 instead of the default 0.7. The below table includes RAVs that 
+validate any of the ten datasets with the validation score 0.68 or higher.
+
+Based on this multi-datasets validation table,       
+- RAV23 and RAV1551 are SLE-specific    
+- RAV188 is COAD-specific while RAV832 seems to be associated with both COAD 
+and READ 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 new_datasets <- lapply(datasets, assay)
 
 ## SLE-WB dataset
-fname <- "~/data2/GenomicSuperSignaturePaper/Results/SLE-WB/data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl"
+SLEWBdir <- "~/data2/GenomicSuperSignaturePaper/Results/SLE-WB/data"
+fname <- file.path(SLEWBdir, "SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl")
 exprs <- readr::read_tsv(fname) %>% as.data.frame
 rownames(exprs) <- exprs$GeneSymbol
 sle_wb <- as.matrix(exprs[,3:ncol(exprs)])
 new_datasets$SLE <- sle_wb
 
 ## CRC dataset
-load("~/data2/GenomicSuperSignaturePaper/Results/CRC/data/eSets_new/GSE14095_eset.RData")
-load("~/data2/GenomicSuperSignaturePaper/Results/CRC/data/eSets_new/GSE17536_eset.RData")
-load("~/data2/GenomicSuperSignaturePaper/Results/CRC/data/eSets_new/GSE2109_eset.RData")
-load("~/data2/GenomicSuperSignaturePaper/Results/CRC/data/eSets_new/GSE39582_eset.RData")
+CRCdir <- "~/data2/GenomicSuperSignaturePaper/Results/CRC/data/eSets_new/"
+load(file.path(CRCdir, "GSE14095_eset.RData"))
+load(file.path(CRCdir, "GSE17536_eset.RData"))
+load(file.path(CRCdir, "GSE2109_eset.RData"))
+load(file.path(CRCdir, "GSE39582_eset.RData"))
 new_datasets$GSE14095 <- log2(exprs(GSE14095_eset)+1)
 new_datasets$GSE17536 <- log2(exprs(GSE17536_eset)+1)
 new_datasets$GSE2109 <- log2(exprs(GSE2109_eset)+1)
 new_datasets$GSE39582 <- log2(exprs(GSE39582_eset)+1)
-```
-
-```{r}
-names(new_datasets)
 ```
 
 ```{r echo=FALSE, out.width="90%", out.height="90%"}
@@ -179,34 +191,36 @@ new_val_all <- validate(new_datasets, RAVmodel)
 heatmapTable(new_val_all, scoreCutoff = 0.68) 
 ```
 
-Based on this multi-datasets validation table,       
-- RAV23 and RAV1551 are SLE-specific    
-- RAV188 seems to be COAD-specific, different from RAV832 which is associated with both COAD and READ   
-
 
 ## MeSH terms and associated studies
 ### SLE-associated
 #### RAV23
 ```{r}
 ind <- 23
-findStudiesInCluster(RAVmodel, ind)
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
+
 drawWordcloud(RAVmodel, ind)
 ```
 
 #### RAV1551
 ```{r}
 ind <- 1551
-findStudiesInCluster(RAVmodel, ind)
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+
 subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
+
 drawWordcloud(RAVmodel, ind)
 ```
 
 ### COAD-specific
 ```{r}
 ind <- 188
-findStudiesInCluster(RAVmodel, ind)
-subsetEnrichedPathways(RAVmodel, ind, both=TRUE) %>% as.data.frame
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+
+subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
+
 drawWordcloud(RAVmodel, ind)
 ```
 
@@ -218,23 +232,28 @@ A RAVmodel provides a rich resource for understanding new or user-supplied datas
 
 <br>
 
-```{r manuscript_fig2, fig.width=11, fig.height=8, echo=FALSE, eval=FALSE}
+```{r save_Fig2, fig.width=11, fig.height=8, echo=FALSE, eval=FALSE}
 ## Draw Fig2A/2B heatmapTable 
 a <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_all)))
 b <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_brca)))
 
-## Save Fig.2C wordcloud
+## Save Fig2C wordcloud
 png("manuscript_Fig2C.png", width = 350, height = 350)
 drawWordcloud(RAVmodel, ind = 221)
 dev.off()
-c <- png::readPNG("manuscript_Fig2C.png") %>% grid::rasterGrob() %>% gridExtra::grid.arrange()
+
+## Import Fig2C in the way I can combine with others
+c <- png::readPNG("manuscript_Fig2C.png") %>% 
+  grid::rasterGrob() %>% 
+  gridExtra::grid.arrange()
 
 ## Make Fig2D/2E tables
 library(ggpubr)
 ind <- 221
-fig2d <- findStudiesInCluster(RAVmodel, ind)
+fig2d <- findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
 fig2e <- subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
 
+## Reformat Fig2D/2E for combining
 library(flextable)
 d <- flextable(fig2d) %>% width(., j = 2, width = 4) 
 d <- grid::rasterGrob(as_raster(d))
@@ -270,17 +289,17 @@ Fig2_all
 dev.off()
 ```
 
-```{r fig.width=11, fig.height=8, echo=FALSE}
+```{r out.width="100%", out.height="100%", echo=FALSE}
 library(EBImage)
 img <- readImage("manuscript_Fig2.png")
 display(img, method = "raster")
 ```
 
-```{r fig2_ver1, fig.width=12, fig.height=10, echo=FALSE, eval=FALSE}
+```{r Fig2_diff_ver, fig.width=12, fig.height=10, echo=FALSE, eval=FALSE}
 # ## Make the complete Figure 2
 # ab <- ggarrange(a, b, ncol = 2, labels = c("A", "B"), vjust = 9, hjust = -7,
 #                 widths = c(1, 0.8), font.label = list(size = 15))
-# cde <- ggarrange(ggarrange(c, labels = "C", vjust = 3, hjust = -7),  # 2C wordcloud
+# cde <- ggarrange(ggarrange(c, labels = "C", vjust = 3, hjust = -7),
 #                  ggarrange(d, e,  # 2D and 2E tables  
 #                            labels = c("D", "E"), vjust = 1, hjust = 0,
 #                            nrow = 2, align = "hv",
@@ -308,15 +327,17 @@ Studies contributing to RAV832. E) MSigDB C2 gene sets enriched in RAV832.
 
 <br>
 
-```{r manuscript_sup_fig4, fig.width=11, fig.height=8, echo=FALSE, eval=FALSE}
+```{r make_SupFig4, fig.width=11, fig.height=8, echo=FALSE, eval=FALSE}
 ## Draw Sup.Fig4A/4B heatmapTable 
 a <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_coad)))
 b <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_read)))
 
-## Save Sup.Fig.4C wordcloud
+## Save Sup.Fig4C wordcloud
 png("manuscript_Sup_Fig4C.png", width = 350, height = 350)
 drawWordcloud(RAVmodel, ind = 832)
 dev.off()
+
+## Import Sup.Fig4C in the way I can combine with others
 c <- png::readPNG("manuscript_Sup_Fig4C.png") %>% 
   grid::rasterGrob() %>% 
   gridExtra::grid.arrange()
@@ -327,6 +348,7 @@ ind <- 832
 fig2d <- findStudiesInCluster(RAVmodel, ind)
 fig2e <- subsetEnrichedPathways(RAVmodel, ind) %>% as.data.frame
 
+## Reformat Fig4D/4E for combining
 library(flextable)
 d <- flextable(fig2d) %>% width(., j = 2, width = 6) 
 d <- grid::rasterGrob(as_raster(d))
@@ -335,7 +357,7 @@ e <- flextable(fig2e) %>% width(., j = 1, width = 5.3)
 e <- grid::rasterGrob(as_raster(e))
 ```
 
-```{r sup_fig4_ver1, fig.width=9.5, fig.height=6.5, echo=FALSE, eval=FALSE}
+```{r save_SupFig4, fig.width=9.5, fig.height=6.5, echo=FALSE, eval=FALSE}
 ## Make the complete Sup.Figure 4
 abc <- ggarrange(a, b, c, 
                  nrow = 3, heights = c(0.7, 0.7, 1.4), 
@@ -357,35 +379,14 @@ Sup_Fig4_all
 # dev.off()
 ```
 
-```{r fig.width=9.5, fig.height=6.5, echo=FALSE}
+```{r out.width="100%", out.height="100%", echo=FALSE}
 library(EBImage)
 img <- readImage("manuscript_Sup_Fig4.png")
 display(img, method = "raster")
 ```
 
-```{r sup_fig4_ver2, fig.width=12, fig.height=10, echo=FALSE, eval=FALSE}
-## Make the complete Sup.Figure 4
-abc <- ggarrange(a, b, c, 
-                 ncol = 3, widths = c(1, 1, 1), 
-                 labels = c("A", "B", "C"), vjust = c(9,9,6), hjust = -1,
-                 font.label = list(size = 15))
-de <- ggarrange(d, e, 
-                nrow = 2, heights = c(0.8, 1.4),
-                labels = c("D", "E"), vjust = 1.5, hjust = -15,
-                align = "v",
-                font.label = list(size = 15))
-
-Sup_Fig4_all <- ggarrange(abc, de, nrow = 2)
-
-## Save the complete Sup.Figure 4
-png("manuscript_Sup_Fig4.png", width = 1200, height = 1000)
-Sup_Fig4_all
-dev.off()
-```
-
 
 # Session Info
-
 <details>
     ```{r}
 sessionInfo()

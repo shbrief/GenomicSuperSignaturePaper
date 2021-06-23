@@ -20,12 +20,11 @@ knitr::opts_chunk$set(
 ```
 
 # Setup
-We benchmarked the model validation measure, named as pathway separation, Figure 5 from the 
-previous [study](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub), 
-where authors expanded the [PLIER](https://www.nature.com/articles/s41592-019-0456-1) 
-method to the recount2 dataset. Briefly, pathway separation is defined as the 
-ability of the signature model to keep non-overlapping signatures that can 
-differentiate biologically similar pathways. 
+We benchmark one of the model validation measures, named as pathway separation,
+from the previous [study](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
+(Figure 5). Briefly, pathway separation is defined as the ability of the 
+signature model to keep non-overlapping signatures that can differentiate 
+biologically similar pathways. 
 
 ## Load packages
 ```{r}
@@ -37,11 +36,10 @@ suppressPackageStartupMessages({
 ```
 
 ## RAVmodel
-To directly compare with the results from multiPLIER paper, we used the RAVmodel
+To directly compare with the previous publication, we used the RAVmodel
 annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and 
 canonicalPathways.
 
-## RAVmodel
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 ## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
 data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
@@ -61,11 +59,10 @@ updateNote(RAVmodel)
 
 
 # Pathway Separation
-## Type I and type II interferon
-`cutoff_n` argument of `checkPathwaySeparation` function decides how many of the 
-top enriched pathways are used for comparison. We tried both top 5 and only the 
-top 1. 
+`cutoff_n` argument of `checkPathwaySeparation` function decides how many 
+enriched pathways are used for the comparison. We tried both top 5 and top 1. 
 
+## Type I and type II interferon
 ```{r}
 ifn.alpha.set <- c("REACTOME_INTERFERON_ALPHA_BETA_SIGNALING")
 ifn.gamma.set <- c("REACTOME_INTERFERON_GAMMA_SIGNALING")
@@ -77,6 +74,7 @@ checkPathwaySeparation(RAVmodel, ifn.alpha.set, ifn.gamma.set, cutoff_n = 1)
 
 
 ## Myeloid lineage
+Neutrophil vs. Monocyte
 
 ```{r}
 neutrophil.set <- c("DMAP_GRAN3", "IRIS_Neutrophil-Resting", "SVM Neutrophils")
@@ -92,8 +90,7 @@ checkPathwaySeparation(RAVmodel, neutrophil.set, monocyte.set, cutoff_n = 1)
 
 
 ## Proliferation
-Molecular processes we would associate with proliferating cells, namely the
-G1 and G2 phases of the cell cycle.
+G1 vs. G2 cell cycle phases
 
 ```{r}
 g1.set <- c("REACTOME_G1_S_TRANSITION", "REACTOME_M_G1_TRANSITION",
