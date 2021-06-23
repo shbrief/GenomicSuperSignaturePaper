@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Pathway Separation</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">June 09, 2021</h4>
+            <h4 class="date">June 23, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/others/repeat_Fig5_Pathway_Separation.Rmd"><code>vignettes/others/repeat_Fig5_Pathway_Separation.Rmd</code></a></small>
       <div class="hidden name"><code>repeat_Fig5_Pathway_Separation.Rmd</code></div>
@@ -142,7 +142,7 @@
 <div id="setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h1>
-<p>We benchmarked the model validation measure, named as pathway separation, Figure 5 from the previous <a href="https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub">study</a>, where authors expanded the <a href="https://www.nature.com/articles/s41592-019-0456-1">PLIER</a> method to the recount2 dataset. Briefly, pathway separation is defined as the ability of the signature model to keep non-overlapping signatures that can differentiate biologically similar pathways.</p>
+<p>We benchmark one of the model validation measures, named as pathway separation, from the previous <a href="https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub">study</a> (Figure 5). Briefly, pathway separation is defined as the ability of the signature model to keep non-overlapping signatures that can differentiate biologically similar pathways.</p>
 <div id="load-packages" class="section level2">
 <h2 class="hasAnchor">
 <a href="#load-packages" class="anchor"></a>Load packages</h2>
@@ -156,11 +156,7 @@
 <div id="ravmodel" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
-<p>To directly compare with the results from multiPLIER paper, we used the RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.</p>
-</div>
-<div id="ravmodel-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ravmodel-1" class="anchor"></a>RAVmodel</h2>
+<p>To directly compare with the previous publication, we used the RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/getModel.html">getModel</a></span><span class="op">(</span><span class="st">"PLIERpriors"</span>, load<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -183,10 +179,10 @@
 <div id="pathway-separation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#pathway-separation" class="anchor"></a>Pathway Separation</h1>
+<p><code>cutoff_n</code> argument of <code>checkPathwaySeparation</code> function decides how many enriched pathways are used for the comparison. We tried both top 5 and top 1.</p>
 <div id="type-i-and-type-ii-interferon" class="section level2">
 <h2 class="hasAnchor">
 <a href="#type-i-and-type-ii-interferon" class="anchor"></a>Type I and type II interferon</h2>
-<p><code>cutoff_n</code> argument of <code>checkPathwaySeparation</code> function decides how many of the top enriched pathways are used for comparison. We tried both top 5 and only the top 1.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ifn.alpha.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_INTERFERON_ALPHA_BETA_SIGNALING"</span><span class="op">)</span>
 <span class="va">ifn.gamma.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_INTERFERON_GAMMA_SIGNALING"</span><span class="op">)</span>
@@ -201,6 +197,7 @@
 <div id="myeloid-lineage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#myeloid-lineage" class="anchor"></a>Myeloid lineage</h2>
+<p>Neutrophil vs. Monocyte</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">neutrophil.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"DMAP_GRAN3"</span>, <span class="st">"IRIS_Neutrophil-Resting"</span>, <span class="st">"SVM Neutrophils"</span><span class="op">)</span>
 <span class="va">monocyte.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IRIS_Monocyte-Day0"</span>, <span class="st">"IRIS_Monocyte-Day1"</span>, 
@@ -218,7 +215,7 @@
 <div id="proliferation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#proliferation" class="anchor"></a>Proliferation</h2>
-<p>Molecular processes we would associate with proliferating cells, namely the G1 and G2 phases of the cell cycle.</p>
+<p>G1 vs. G2 cell cycle phases</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">g1.set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"REACTOME_G1_S_TRANSITION"</span>, <span class="st">"REACTOME_M_G1_TRANSITION"</span>,
             <span class="st">"REACTOME_APC_C_CDH1_MEDIATED_DEGRADATION_OF_CDC20_AND_OTHER_APC_C_CDH1_TARGETED_PROTEINS_IN_LATE_MITOSIS_EARLY_G1"</span>, 
@@ -263,7 +260,7 @@
 #&gt; [8] methods   base     
 #&gt; 
 #&gt; other attached packages:
-#&gt;  [1] dplyr_1.0.6                      GenomicSuperSignature_1.1.3     
+#&gt;  [1] dplyr_1.0.6                      GenomicSuperSignature_1.1.4     
 #&gt;  [3] SummarizedExperiment_1.22.0      Biobase_2.52.0                  
 #&gt;  [5] GenomicRanges_1.44.0             GenomeInfoDb_1.28.0             
 #&gt;  [7] IRanges_2.26.0                   S4Vectors_0.30.0                

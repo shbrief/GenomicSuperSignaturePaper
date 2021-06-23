@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Training datasets for RAVmodel building</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-06-09</h4>
+            <h4 class="date">2021-06-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/training_datasets/available_samples.Rmd"><code>vignettes/training_datasets/available_samples.Rmd</code></a></small>
       <div class="hidden name"><code>available_samples.Rmd</code></div>
@@ -139,11 +139,11 @@
 
     
     
-<div id="training-datasets" class="section level1">
+<div id="source" class="section level1">
 <h1 class="hasAnchor">
-<a href="#training-datasets" class="anchor"></a>Training datasets</h1>
+<a href="#source" class="anchor"></a>Source</h1>
 <p>We used human RNA sequencing datasets from RNA-seq Sample Compendia in <a href="https://www.refine.bio/">refine.bio</a>, which hosts uniformly processed gene expression data from EBI’s ArrayExpress, NCBI’s GEO and SRA. Data were downloaded on April 10th, 2020, and we selected studies based on the following criteria: 1) Exclude studies with more than 1,000 samples because they are more likely to be single-cell RNA sequencing datasets. 2) Exclude studies assigned with a Medical Subject Headings (MeSH) term, “Single-Cell Analysis”. 3) Exclude studies with less than or equal to 50 successfully downloaded and imported samples. After filtering, the complete compendium includes 536 studies (defined as a single SRA study) comprising 44,890 samples.</p>
-<p>The detail of training data is summarized in <code>studyMeta.tsv</code> table in <code>GenomicSuperSignature</code> package.</p>
+<p>The detail of training data is summarized in <code>studyMeta.tsv</code> table in <code>GenomicSuperSignature</code> package. This vignette explains how this summary table is built.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">extdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignature"</span><span class="op">)</span>
 <span class="va">studyMeta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">extdata</span>, <span class="st">"studyMeta.tsv.gz"</span><span class="op">)</span><span class="op">)</span>
@@ -169,9 +169,10 @@
 <span class="co">## 5                                                                                                      RNA sequencing of wild-type or mutant U2AF35 transduced HeLa Cells</span>
 <span class="co">## 6                                                                                                             Global transcriptional response against glucose deprivation</span>
 <span class="co">## 7                                                                  Human inactive X chromosome is compacted through a polycomb-independent SMCHD1-HBiX1 pathway [RNA-seq]</span></code></pre></div>
-<div id="availability-based-on-metadata" class="section level2">
-<h2 class="hasAnchor">
-<a href="#availability-based-on-metadata" class="anchor"></a>Availability based on metadata</h2>
+</div>
+<div id="availability-metadata" class="section level1">
+<h1 class="hasAnchor">
+<a href="#availability-metadata" class="anchor"></a>Availability: metadata</h1>
 <p><code>aggregated_metadata.json</code> is downloaded along with the training dataset. We collect the number of samples per study based on this metadata.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
@@ -187,9 +188,9 @@
 
 <span class="va">sampleNum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">studies</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="availability-based-on-downloadimport" class="section level2">
-<h2 class="hasAnchor">
-<a href="#availability-based-on-downloadimport" class="anchor"></a>Availability based on download/import</h2>
+<div id="availability-downloadimport" class="section level1">
+<h1 class="hasAnchor">
+<a href="#availability-downloadimport" class="anchor"></a>Availability: download/import</h1>
 <p>I summarized the number of samples based on <code>aggregated_metadata.json</code> under <code>metadata</code> column and the number of actually downloaded <code>_quant.sf</code> sample files under <code>downloaded</code> column in the <code>studyMeta</code> table.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># download.dir &lt;- "path/to/download/directory"</span>
@@ -217,10 +218,10 @@
   <span class="va">studyMeta</span><span class="op">$</span><span class="va">metadata</span><span class="op">[</span><span class="va">ind2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sampleNum</span><span class="op">[</span><span class="va">ind2</span><span class="op">]</span>
 <span class="op">}</span></code></pre></div>
 </div>
-<div id="imported-samples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#imported-samples" class="anchor"></a>Imported samples</h2>
-<p>1399 studies &gt; 20 samples were successfully imported by <code><a href="https://rdrr.io/pkg/tximport/man/tximport.html">tximport::tximport</a></code></p>
+<div id="imported-samples" class="section level1">
+<h1 class="hasAnchor">
+<a href="#imported-samples" class="anchor"></a>Imported samples</h1>
+<p>1399 studies with more than 20 samples were successfully imported by <code><a href="https://rdrr.io/pkg/tximport/man/tximport.html">tximport::tximport</a></code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">studyNames</span> <span class="op">&lt;-</span> <span class="va">studyMeta</span><span class="op">$</span><span class="va">studyName</span>
 <span class="va">importedFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span>
@@ -237,19 +238,16 @@
 <code class="sourceCode R"><span class="va">imported_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">studyMeta</span><span class="op">$</span><span class="va">studyName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">importedFiles</span><span class="op">)</span>
 <span class="va">studyMeta</span><span class="op">$</span><span class="va">imported</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
 <span class="va">studyMeta</span><span class="op">$</span><span class="va">imported</span><span class="op">[</span><span class="va">imported_ind</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span> </code></pre></div>
-</div>
-<div id="title-of-the-studies" class="section level2">
-<h2 class="hasAnchor">
-<a href="#title-of-the-studies" class="anchor"></a>Title of the studies</h2>
+<p>Study title is also added.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">experiments</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">title</span> <span class="op">&lt;-</span> <span class="va">experiments</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">title</span>
   <span class="va">studyMeta</span><span class="op">$</span><span class="va">title</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">title</span>
 <span class="op">}</span></code></pre></div>
 </div>
-<div id="summary-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summary-plot" class="anchor"></a>Summary plot</h2>
+<div id="summary-plot" class="section level1">
+<h1 class="hasAnchor">
+<a href="#summary-plot" class="anchor"></a>Summary plot</h1>
 <p>Metadata bar (light blue) shows the number of studies with the given ranges of study sizes based on the metadata. Downloaded bar (pink) represents the number of studies with the given ranges of study sizes that were successfully downloaded and imported through <code>tximport</code>. Based on metadata, there were studies with more than 100 samples, but at the time of snapshot, only up to 100 samples were available. Thus, the plot displays only up to 100 samples/study cases. Due to the unavailability of certain samples, more studies belong to 0-5 samples/study bracket than metadata suggests.</p>
 <p><img src="available_samples_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -263,10 +261,9 @@
 <span class="co">## [1] 0</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">studyMeta</span><span class="op">$</span><span class="va">metadata</span> <span class="op">&gt;</span> <span class="fl">100</span><span class="op">)</span>
 <span class="co">## [1] 426</span></code></pre></div>
-</div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div id="example" class="section level3">
+<h3 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h3>
 <p>Example study, <code>SRP152576</code>:<br>
 - 13,127 samples are available based on <code>aggregated_metadata.json</code>.<br>
 - No sample is available based on <a href="https://www.refine.bio/">refine.bio</a> webpage.<br>
@@ -338,9 +335,9 @@
 <p>These 536 studies meet the criteria, &gt; 50 (downloaded) and &lt;1000 (metadata) samples per study. Also, any study with “Single-Cell Analysis” MeSH term was removed.</p>
 </div>
 </div>
-<div id="training-datasets-multiplier-vs--ravmodel" class="section level1">
+<div id="multiplier-vs--ravmodel" class="section level1">
 <h1 class="hasAnchor">
-<a href="#training-datasets-multiplier-vs--ravmodel" class="anchor"></a>Training datasets: multiPLIER vs. RAVmodel</h1>
+<a href="#multiplier-vs--ravmodel" class="anchor"></a>MultiPLIER vs. RAVmodel</h1>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Training data used for GenomicSuperSignature</span>
 <span class="va">res_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"accessions.rds"</span><span class="op">)</span>

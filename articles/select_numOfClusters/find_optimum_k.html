@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Find the optimum number of clusters for hierarchical clustering</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-06-09</h4>
+            <h4 class="date">2021-06-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/select_numOfClusters/find_optimum_k.Rmd"><code>vignettes/select_numOfClusters/find_optimum_k.Rmd</code></a></small>
       <div class="hidden name"><code>find_optimum_k.Rmd</code></div>
@@ -145,19 +145,15 @@
 <div id="build-negative-controls" class="section level2">
 <h2 class="hasAnchor">
 <a href="#build-negative-controls" class="anchor"></a>Build negative controls</h2>
+<p>We used the negative-control dataset to explore the optimum number of clusters for hierarchical clustering. Negative-control dataset was built using the below script.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Do not run this script without checking it first!!</span>
 <span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"neg_controls.R"</span><span class="op">)</span></code></pre></div>
-<p>This script will execute the following processes:</p>
+<p>This script runs the following processes:</p>
 <ol style="list-style-type: decimal">
-<li>
-<p>Generate 50 synthetic datasets:</p>
-<ul>
-<li>Each dataset contains 50 random samples from 44,890 samples (with replacement).<br>
-</li>
-<li>Scramble genes in each dataset by random selection without replacement and add random value between -0.1 and 0.1</li>
-</ul>
-</li>
+<li><p>Generate 50 synthetic datasets:<br>
+–&gt; Each dataset contains 50 random samples from 44,890 samples (with replacement).<br>
+–&gt; Scramble genes in each dataset by random selection without replacement and add random value between -0.1 and 0.1</p></li>
 <li><p>Row-normalize synthetic datasets</p></li>
 <li><p>PCA on synthetic datasets<br>
 –&gt; saved as <code>bootstrap_PCs_rowNorm_Neg.rds</code></p></li>
@@ -172,36 +168,35 @@
 <div id="validate-negative-controls" class="section level2">
 <h2 class="hasAnchor">
 <a href="#validate-negative-controls" class="anchor"></a>Validate negative controls</h2>
-<p>Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 studies). We want to create a synthetic dataset as a negative control with the distance ranging median or higher.</p>
+<p>Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 studies).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res_dist</span><span class="op">)</span>
 <span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
 <span class="co">## 0.01688 0.98783 1.00000 0.99999 1.01217 1.97482</span></code></pre></div>
-<p>We tested the distance matrix with 50 ‘negative controls’, generated from the <code>neg_controls.R</code> script above. Distance ranges roughly between 1st quarter and 3rd quarter of training datasets’ distance distribution.</p>
+<p>We create a synthetic dataset whose distance ranges median or higher of the actual 536 training dataset. Below is the distance matrix of the 50 negative controls generated from the <code>neg_controls.R</code> script. Distance ranges roughly between 1st and 3rd quarters of training dataset’s distance distribution.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res.dist.neg</span><span class="op">)</span>
 <span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
 <span class="co">##  0.9680  0.9937  1.0000  0.9999  1.0054  1.0317</span></code></pre></div>
-<p>We plot the heatmap of distance matrix with different number of negative controls (PC1s from synthetic datasets) and confirmed that they can serve as a negative control.</p>
-<p><img src="../../Methods/select_numOfClusters/outputs/png/A.heatmap_neg50.png" width="200"></p>
+<p>We plot the heatmap of distance matrix using the different number of negative controls (PC1s from synthetic datasets). They are different within the range we want to separate.</p>
+<p><img src="../../Methods/select_numOfClusters/outputs/png/A.heatmap_neg50.png" width="120%" height="100%"></p>
 </div>
 </div>
-<div id="optimum-k-for-different-numbers-of-controls" class="section level1">
+<div id="optimum-number-of-clusters" class="section level1">
 <h1 class="hasAnchor">
-<a href="#optimum-k-for-different-numbers-of-controls" class="anchor"></a>Optimum k for different numbers of controls</h1>
-<p>Next we combined top 20 PCs of training datasets and PC1s from varying numbers of negative controls (10, 20, 30, 40, and 50) and performed hierarchical clustering with different numbers of clusters. Here, we plotted the proportion of separated negative controls against the number of clusters.</p>
-<p>Number of clusters for each combined datastes were rounds of the number of PCs divided by 9 different numbers (<strong>d</strong> = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).</p>
-<div id="proportion-of-the-separated-negative-controls" class="section level2">
-<h2 class="hasAnchor">
-<a href="#proportion-of-the-separated-negative-controls" class="anchor"></a>Proportion of the separated negative controls</h2>
-<p>This plot shows the proportion of the negative controls that are separated under different numbers of clusters. For all five different numbers of negative controls, more than 90% of them were separated when <strong>d = 4</strong> and 100% of them were separated when <strong>d = 2.25</strong>.</p>
-<p><img src="../../Methods/select_numOfClusters/outputs/png/B.separatedPortion.png" width="250"></p>
+<a href="#optimum-number-of-clusters" class="anchor"></a>Optimum number of clusters</h1>
+<p>Next we combined top 20 PCs of training datasets and PC1s from the varying numbers of negative controls (10, 20, 30, 40, and 50) and performed hierarchical clustering with the different numbers of clusters. Number of clusters was the rounds of the number of PCs divided by 9 different numbers (<strong>d</strong> = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).</p>
+<div id="proportion-of-the-separated" class="section level3">
+<h3 class="hasAnchor">
+<a href="#proportion-of-the-separated" class="anchor"></a>Proportion of the separated</h3>
+<p>This plot shows the proportion of the negative controls that are separated with the different numbers of clusters. For all five different numbers of negative controls, more than 90% of them were separated when <strong>d = 4</strong> and 100% of them were separated when <strong>d = 2.25</strong>.</p>
+<p><img src="../../Methods/select_numOfClusters/outputs/png/B.separatedPortion.png" width="100%" height="60%"></p>
 </div>
-<div id="number-of-the-non-separated-negative-controls" class="section level2">
-<h2 class="hasAnchor">
-<a href="#number-of-the-non-separated-negative-controls" class="anchor"></a>Number of the non-separated negative controls</h2>
-<p>This plot shows the actual number of negative controls that weren’t separated under different numbers of clusters.</p>
-<p><img src="../../Methods/select_numOfClusters/outputs/png/C.numUnseparated.png" width="250"></p>
+<div id="number-of-the-non-separated" class="section level3">
+<h3 class="hasAnchor">
+<a href="#number-of-the-non-separated" class="anchor"></a>Number of the non-separated</h3>
+<p>This plot shows the actual number of negative controls that weren’t separated with the different numbers of clusters.</p>
+<p><img src="../../Methods/select_numOfClusters/outputs/png/C.numUnseparated.png" width="100%" height="60%"></p>
 </div>
 </div>
 <div id="session-info" class="section level1">
