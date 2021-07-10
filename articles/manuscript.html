@@ -78,13 +78,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
+    </li>
+    <li>
       <a href="../articles/CRC/PCSS_vs_RAV.html">RAVs similar to PCSS1/2</a>
     </li>
     <li>
       <a href="../articles/CRC/metadata_based_search.html">Metadata based search</a>
-    </li>
-    <li>
-      <a href="../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
     </li>
     <li>
       <a href="../articles/CRC/CRC_ClinicalVar.html">CRC clinical variables</a>
@@ -110,7 +110,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -124,13 +124,13 @@
 
       
 
-      </header><script src="manuscript_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><script src="manuscript_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Figures and Tables for GenomicSuperSignature Paper</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">June 23, 2021</h4>
+            <h4 class="date">July 09, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/manuscript.Rmd"><code>vignettes/manuscript.Rmd</code></a></small>
       <div class="hidden name"><code>manuscript.Rmd</code></div>
@@ -170,7 +170,7 @@
 <p>Scatter plots showing how different signatures perform with CRC subtyping. These plots were created in <code>CRC/repeat_Fig4A.Rmd</code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span><span class="op">)</span>
-<span class="va">scatterplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html">grep</a></span><span class="op">(</span><span class="st">"scatter_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
+<span class="va">scatterplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"scatter_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">plot</span> <span class="kw">in</span> <span class="va">scatterplots</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span>, <span class="va">plot</span><span class="op">)</span><span class="op">)</span>
@@ -201,7 +201,7 @@
 <p>Bar plots comparing different models in differentiating CRC binary clinical variables. These plots were created in <code>CRC/repeat_Fig4C.Rmd</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span><span class="op">)</span>
-<span class="va">barplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html">grep</a></span><span class="op">(</span><span class="st">"boxplot_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
+<span class="va">barplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"boxplot_"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">plot</span> <span class="kw">in</span> <span class="va">barplots</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span>, <span class="va">plot</span><span class="op">)</span><span class="op">)</span>
@@ -255,26 +255,26 @@
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] BiocStyle_2.20.0</span>
+<span class="co">#&gt; [1] BiocStyle_2.20.2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
 <span class="co">#&gt;  [1] highr_0.9           bslib_0.2.5.1       compiler_4.1.0     </span>
-<span class="co">#&gt;  [4] pillar_1.6.1        BiocManager_1.30.15 jquerylib_0.1.4    </span>
+<span class="co">#&gt;  [4] pillar_1.6.1        BiocManager_1.30.16 jquerylib_0.1.4    </span>
 <span class="co">#&gt;  [7] tools_4.1.0         digest_0.6.27       jsonlite_1.7.2     </span>
 <span class="co">#&gt; [10] evaluate_0.14       memoise_2.0.0       lifecycle_1.0.0    </span>
 <span class="co">#&gt; [13] tibble_3.1.2        gtable_0.3.0        pkgconfig_2.0.3    </span>
 <span class="co">#&gt; [16] rlang_0.4.11        DBI_1.1.1           yaml_2.2.1         </span>
-<span class="co">#&gt; [19] pkgdown_1.6.1       xfun_0.23           fastmap_1.1.0      </span>
-<span class="co">#&gt; [22] withr_2.4.2         dplyr_1.0.6         stringr_1.4.0      </span>
+<span class="co">#&gt; [19] pkgdown_1.6.1       xfun_0.24           fastmap_1.1.0      </span>
+<span class="co">#&gt; [22] withr_2.4.2         dplyr_1.0.7         stringr_1.4.0      </span>
 <span class="co">#&gt; [25] knitr_1.33          generics_0.1.0      vctrs_0.3.8        </span>
 <span class="co">#&gt; [28] desc_1.3.0          fs_1.5.0            sass_0.4.0         </span>
 <span class="co">#&gt; [31] systemfonts_1.0.2   tidyselect_1.1.1    rprojroot_2.0.2    </span>
 <span class="co">#&gt; [34] grid_4.1.0          glue_1.4.2          R6_2.5.0           </span>
-<span class="co">#&gt; [37] textshaping_0.3.4   fansi_0.5.0         rmarkdown_2.8      </span>
+<span class="co">#&gt; [37] textshaping_0.3.5   fansi_0.5.0         rmarkdown_2.9      </span>
 <span class="co">#&gt; [40] bookdown_0.22       farver_2.1.0        purrr_0.3.4        </span>
-<span class="co">#&gt; [43] ggplot2_3.3.3       magrittr_2.0.1      scales_1.1.1       </span>
+<span class="co">#&gt; [43] ggplot2_3.3.5       magrittr_2.0.1      scales_1.1.1       </span>
 <span class="co">#&gt; [46] htmltools_0.5.1.1   ellipsis_0.3.2      assertthat_0.2.1   </span>
-<span class="co">#&gt; [49] colorspace_2.0-1    labeling_0.4.2      ragg_1.1.2         </span>
+<span class="co">#&gt; [49] colorspace_2.0-2    labeling_0.4.2      ragg_1.1.3         </span>
 <span class="co">#&gt; [52] utf8_1.2.1          stringi_1.6.2       munsell_0.5.0      </span>
 <span class="co">#&gt; [55] cachem_1.0.5        crayon_1.4.1</span></code></pre></div>
 </details>

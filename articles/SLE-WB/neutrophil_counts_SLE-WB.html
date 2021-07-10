@@ -78,13 +78,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
+    </li>
+    <li>
       <a href="../../articles/CRC/PCSS_vs_RAV.html">RAVs similar to PCSS1/2</a>
     </li>
     <li>
       <a href="../../articles/CRC/metadata_based_search.html">Metadata based search</a>
-    </li>
-    <li>
-      <a href="../../articles/CRC/CRC_Subtyping.html">CRC subtype scores</a>
     </li>
     <li>
       <a href="../../articles/CRC/CRC_ClinicalVar.html">CRC clinical variables</a>
@@ -110,7 +110,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -124,13 +124,13 @@
 
       
 
-      </header><script src="neutrophil_counts_SLE-WB_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><script src="neutrophil_counts_SLE-WB_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Analyze neutrophil counts of SLE-WB Compendium data</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">June 23, 2021</h4>
+            <h4 class="date">July 09, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/SLE-WB/neutrophil_counts_SLE-WB.Rmd"><code>vignettes/SLE-WB/neutrophil_counts_SLE-WB.Rmd</code></a></small>
       <div class="hidden name"><code>neutrophil_counts_SLE-WB.Rmd</code></div>
@@ -147,7 +147,7 @@
 <h2 class="hasAnchor">
 <a href="#load-packages" class="anchor"></a>Load packages</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="st">"GenomicSuperSignaturePaper"</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="st">"GenomicSuperSignaturePaper"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
     <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"shbrief/GenomicSuperSignaturePaper"</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
@@ -189,8 +189,8 @@
 <code class="sourceCode R"><span class="va">fname</span> <span class="op">&lt;-</span> <span class="st">"data/SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl"</span>
 <span class="va">exprs</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="va">fname</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">exprs</span><span class="op">$</span><span class="va">GeneSymbol</span>
-<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>  <span class="co"># 15,825 genes x 1,640 samples</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">exprs</span><span class="op">$</span><span class="va">GeneSymbol</span>
+<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">exprs</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>  <span class="co"># 15,825 genes x 1,640 samples</span>
 <span class="va">dataset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></code></pre></div>
 <pre><code>#&gt;      GSM955680_DNA10204-001.CEL GSM955681_DNA10204-003.CEL
 #&gt; NAT2                  0.2872200                  0.6788542
@@ -213,8 +213,8 @@
 <a href="#neutrophil-related-metadata" class="anchor"></a>Neutrophil-related metadata</h3>
 <p>There are four columns with neutrophil-related metadata.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html">grep</a></span><span class="op">(</span><span class="st">"neutrophil"</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">[</span><span class="va">ind</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"neutrophil"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">[</span><span class="va">ind</span><span class="op">]</span></code></pre></div>
 <pre><code>#&gt; [1] "Characteristics..neutrophil_count."  
 #&gt; [2] "Characteristics..neutrophil_percent."
 #&gt; [3] "FactorValue..neutrophil_count."      
@@ -224,17 +224,17 @@
 <code class="sourceCode R"><span class="va">neutrophilCount</span> <span class="op">&lt;-</span> <span class="va">meta</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Source.Name"</span>, <span class="st">"Characteristics..neutrophil_count."</span><span class="op">)</span><span class="op">]</span>
 
 <span class="co">## Clean the `Source.Name` column</span>
-<span class="va">cleaned_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">sapply</a></span><span class="op">(</span><span class="va">neutrophilCount</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, 
+<span class="va">cleaned_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">neutrophilCount</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, 
                        <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html">str_split</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">" "</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="va">neutrophilCount</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">cleaned_name</span>
 
 <span class="co">## 143 NAs introduced by coercion due to the missing data</span>
 <span class="va">neutrophilCount</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">neutrophilCount</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>
-<span class="va">na_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">neutrophilCount</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
+<span class="va">na_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">neutrophilCount</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
 
 <span class="co">## 853 samples with metadata after clean-up</span>
 <span class="va">neutrophilCount</span> <span class="op">&lt;-</span> <span class="va">neutrophilCount</span><span class="op">[</span><span class="op">-</span><span class="va">na_ind</span>,<span class="op">]</span>   
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">neutrophilCount</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Neutrophil.Count"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">neutrophilCount</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Neutrophil.Count"</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">neutrophilCount</span>, <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt;   Source.Name Neutrophil.Count
 #&gt; 1  GSM1595222            12.23
@@ -245,9 +245,9 @@
 <h3 class="hasAnchor">
 <a href="#subset-to-the-samples-with-metadata" class="anchor"></a>Subset to the samples with metadata</h3>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cleaned_colnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span>, 
+<code class="sourceCode R"><span class="va">cleaned_colnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span>, 
                            <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html">str_split</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"_"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
-<span class="va">withMeta_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/which.html">which</a></span><span class="op">(</span><span class="va">cleaned_colnames</span> <span class="op"><a href="https://rdrr.io/pkg/BiocGenerics/man/match.html">%in%</a></span> <span class="va">neutrophilCount</span><span class="op">$</span><span class="va">Source.Name</span><span class="op">)</span>
+<span class="va">withMeta_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">cleaned_colnames</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">neutrophilCount</span><span class="op">$</span><span class="va">Source.Name</span><span class="op">)</span>
 <span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">[</span>, <span class="va">withMeta_ind</span><span class="op">]</span>   <span class="co"># 15,825 genes x 853 samples</span></code></pre></div>
 </div>
 <div id="mcpcounter" class="section level3">
@@ -263,7 +263,7 @@
 <span class="va">neutrophil.df</span> <span class="op">&lt;-</span> <span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html">melt</a></span><span class="op">(</span><span class="va">mcp.results</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Var1</span> <span class="op">==</span> <span class="st">"Neutrophils"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">Var1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">neutrophil.df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="st">"Neutrophil_estimate"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">neutrophil.df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="st">"Neutrophil_estimate"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -341,17 +341,17 @@
 <a href="#neutrophil-count" class="anchor"></a>Neutrophil count</h3>
 <p>We computed r-squared score between the neutrophil count metadata and all RAVs and selected the top 10.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">sampleScore</span><span class="op">)</span>
-<span class="va">ss</span><span class="op">$</span><span class="va">Source.Name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">rownames</a></span><span class="op">(</span><span class="va">ss</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">sampleScore</span><span class="op">)</span>
+<span class="va">ss</span><span class="op">$</span><span class="va">Source.Name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">ss</span><span class="op">)</span>
 
 <span class="co">## Combine neutrophil count and sample scores</span>
 <span class="va">ss_count</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">neutrophilCount</span>, <span class="va">ss</span>, by <span class="op">=</span> <span class="st">"Source.Name"</span><span class="op">)</span>
 
 <span class="co">## Calculate r-squared value for all RAVs</span>
-<span class="va">rsq_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">ss_count</span><span class="op">)</span>, 
+<span class="va">rsq_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">ss_count</span><span class="op">)</span>, 
                     <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu">rsq</span><span class="op">(</span><span class="va">ss_count</span>, <span class="va">x</span>, y.var <span class="op">=</span> <span class="st">"Neutrophil.Count"</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">rsq_count</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">ss_count</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">ss_count</span><span class="op">)</span><span class="op">]</span>
-<span class="va">rsq_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html">sort</a></span><span class="op">(</span><span class="va">rsq_count</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">rsq_count</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">ss_count</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">ss_count</span><span class="op">)</span><span class="op">]</span>
+<span class="va">rsq_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">rsq_count</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co">## RAVs with top 10 r-squared value</span>
 <span class="va">topRAVs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">rsq_count</span>, <span class="fl">10</span><span class="op">)</span>
@@ -375,9 +375,9 @@
 <a href="#neutrophil-estimate" class="anchor"></a>Neutrophil estimate</h1>
 <p>Above, we identified RAV1551 in three different approaches. Here, RAV1551 shows the highest r-squared value among all RAVs when compared to neutrophil estimate. This confirms that RAV1551 best represent neutrophil feature.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sampleScore.df</span> <span class="op">&lt;-</span> <span class="va">sampleScore</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<code class="sourceCode R"><span class="va">sampleScore.df</span> <span class="op">&lt;-</span> <span class="va">sampleScore</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
   <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames_to_column</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">sampleScore.df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Sample"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">sampleScore.df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Sample"</span>
 
 <span class="co">## Join all the scores with neutrophil estimates</span>
 <span class="va">dat_n.estimate</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">neutrophil.df</span>, <span class="va">sampleScore.df</span>, by<span class="op">=</span><span class="st">"Sample"</span><span class="op">)</span>
@@ -392,9 +392,9 @@
 #&gt; 4 GSM1594273           0.3782767  0.3042759 -0.01665221</code></pre>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## RAVs  the high r-squared value with the neutrophil estimate</span>
-<span class="va">rsq_estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">dat_n.estimate</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu">rsq</span><span class="op">(</span><span class="va">dat_n.estimate</span>,<span class="va">x</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">rsq_estimate</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html">colnames</a></span><span class="op">(</span><span class="va">dat_n.estimate</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html">ncol</a></span><span class="op">(</span><span class="va">dat_n.estimate</span><span class="op">)</span><span class="op">]</span>
-<span class="va">rsq_estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html">sort</a></span><span class="op">(</span><span class="va">rsq_estimate</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">rsq_estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">dat_n.estimate</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu">rsq</span><span class="op">(</span><span class="va">dat_n.estimate</span>,<span class="va">x</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">rsq_estimate</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dat_n.estimate</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">dat_n.estimate</span><span class="op">)</span><span class="op">]</span>
+<span class="va">rsq_estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">rsq_estimate</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">rsq_estimate</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; RAV1551    RAV7 RAV1073 RAV2632   RAV23 RAV2671 
@@ -543,37 +543,37 @@
 #&gt; [8] methods   base     
 #&gt; 
 #&gt; other attached packages:
-#&gt;  [1] dplyr_1.0.6                      GenomicSuperSignaturePaper_1.0.0
+#&gt;  [1] dplyr_1.0.7                      GenomicSuperSignaturePaper_1.0.0
 #&gt;  [3] GenomicSuperSignature_1.1.4      SummarizedExperiment_1.22.0     
 #&gt;  [5] Biobase_2.52.0                   GenomicRanges_1.44.0            
-#&gt;  [7] GenomeInfoDb_1.28.0              IRanges_2.26.0                  
+#&gt;  [7] GenomeInfoDb_1.28.1              IRanges_2.26.0                  
 #&gt;  [9] S4Vectors_0.30.0                 BiocGenerics_0.38.0             
 #&gt; [11] MatrixGenerics_1.4.0             matrixStats_0.59.0              
-#&gt; [13] BiocStyle_2.20.0                
+#&gt; [13] BiocStyle_2.20.2                
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
-#&gt;   [1] colorspace_2.0-1       ggsignif_0.6.1         rjson_0.2.20          
-#&gt;   [4] ellipsis_0.3.2         rio_0.5.26             rprojroot_2.0.2       
-#&gt;   [7] circlize_0.4.12        XVector_0.32.0         GlobalOptions_0.1.2   
+#&gt;   [1] colorspace_2.0-2       ggsignif_0.6.2         rjson_0.2.20          
+#&gt;   [4] ellipsis_0.3.2         rio_0.5.27             rprojroot_2.0.2       
+#&gt;   [7] circlize_0.4.13        XVector_0.32.0         GlobalOptions_0.1.2   
 #&gt;  [10] fs_1.5.0               rstudioapi_0.13        clue_0.3-59           
 #&gt;  [13] farver_2.1.0           ggpubr_0.4.0           bit64_4.0.5           
 #&gt;  [16] fansi_0.5.0            splines_4.1.0          codetools_0.2-18      
 #&gt;  [19] doParallel_1.0.16      cachem_1.0.5           knitr_1.33            
-#&gt;  [22] jsonlite_1.7.2         Cairo_1.5-12.2         broom_0.7.6           
+#&gt;  [22] jsonlite_1.7.2         Cairo_1.5-12.2         broom_0.7.8           
 #&gt;  [25] cluster_2.1.2          dbplyr_2.1.1           png_0.1-7             
-#&gt;  [28] readr_1.4.0            BiocManager_1.30.15    compiler_4.1.0        
+#&gt;  [28] readr_1.4.0            BiocManager_1.30.16    compiler_4.1.0        
 #&gt;  [31] httr_1.4.2             backports_1.2.1        assertthat_0.2.1      
-#&gt;  [34] Matrix_1.3-4           fastmap_1.1.0          cli_2.5.0             
+#&gt;  [34] Matrix_1.3-4           fastmap_1.1.0          cli_3.0.0             
 #&gt;  [37] htmltools_0.5.1.1      tools_4.1.0            gtable_0.3.0          
 #&gt;  [40] glue_1.4.2             GenomeInfoDbData_1.2.6 reshape2_1.4.4        
-#&gt;  [43] rappdirs_0.3.3         Rcpp_1.0.6             carData_3.0-4         
+#&gt;  [43] rappdirs_0.3.3         Rcpp_1.0.7             carData_3.0-4         
 #&gt;  [46] cellranger_1.1.0       jquerylib_0.1.4        pkgdown_1.6.1         
 #&gt;  [49] vctrs_0.3.8            nlme_3.1-152           iterators_1.0.13      
-#&gt;  [52] xfun_0.23              stringr_1.4.0          openxlsx_4.2.3        
+#&gt;  [52] xfun_0.24              stringr_1.4.0          openxlsx_4.2.4        
 #&gt;  [55] lifecycle_1.0.0        rstatix_0.7.0          zlibbioc_1.38.0       
-#&gt;  [58] scales_1.1.1           ragg_1.1.2             hms_1.1.0             
+#&gt;  [58] scales_1.1.1           ragg_1.1.3             hms_1.1.0             
 #&gt;  [61] RColorBrewer_1.1-2     ComplexHeatmap_2.8.0   yaml_2.2.1            
-#&gt;  [64] curl_4.3.1             memoise_2.0.0          ggplot2_3.3.3         
+#&gt;  [64] curl_4.3.2             memoise_2.0.0          ggplot2_3.3.5         
 #&gt;  [67] sass_0.4.0             stringi_1.6.2          RSQLite_2.2.7         
 #&gt;  [70] highr_0.9              desc_1.3.0             foreach_1.5.1         
 #&gt;  [73] filelock_1.0.2         zip_2.2.0              shape_1.4.6           
@@ -585,12 +585,12 @@
 #&gt;  [91] generics_0.1.0         DelayedArray_0.18.0    DBI_1.1.1             
 #&gt;  [94] mgcv_1.8-36            pillar_1.6.1           haven_2.4.1           
 #&gt;  [97] foreign_0.8-81         abind_1.4-5            RCurl_1.98-1.3        
-#&gt; [100] tibble_3.1.2           crayon_1.4.1           car_3.0-10            
+#&gt; [100] tibble_3.1.2           crayon_1.4.1           car_3.0-11            
 #&gt; [103] wordcloud_2.6          utf8_1.2.1             BiocFileCache_2.0.0   
-#&gt; [106] rmarkdown_2.8          GetoptLong_1.0.5       grid_4.1.0            
+#&gt; [106] rmarkdown_2.9          GetoptLong_1.0.5       grid_4.1.0            
 #&gt; [109] readxl_1.3.1           data.table_1.14.0      blob_1.2.1            
 #&gt; [112] forcats_0.5.1          digest_0.6.27          MCPcounter_1.1.0      
-#&gt; [115] tidyr_1.1.3            textshaping_0.3.4      munsell_0.5.0         
+#&gt; [115] tidyr_1.1.3            textshaping_0.3.5      munsell_0.5.0         
 #&gt; [118] bslib_0.2.5.1</code></pre>
 </details>
 </div>
