@@ -21,12 +21,12 @@ navbar:
         href: articles/E-MTAB-2452/E-MTAB-2452.html
     - text: Subtyping
       menu:
+      - text: CRC subtype scores
+        href: articles/CRC/CRC_Subtyping.html
       - text: RAVs similar to PCSS1/2
         href: articles/CRC/PCSS_vs_RAV.html
       - text: Metadata based search
         href: articles/CRC/metadata_based_search.html
-      - text: CRC subtype scores
-        href: articles/CRC/CRC_Subtyping.html
       - text: CRC clinical variables
         href: articles/CRC/CRC_ClinicalVar.html
     - text: Transfer Learning
