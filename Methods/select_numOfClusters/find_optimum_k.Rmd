@@ -142,7 +142,7 @@ plot
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, out.width="120%", out.height="100%"}
+```{r echo=FALSE, eval=TRUE, out.width="60%", out.height="50%"}
 knitr::include_graphics("outputs/png/A.heatmap_neg50.png")
 ```
 
@@ -194,7 +194,7 @@ plot1
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, out.width="100%", out.height="60%"}
+```{r echo=FALSE, eval=TRUE, out.width="75%", out.height="45%"}
 knitr::include_graphics("outputs/png/B.separatedPortion.png")
 ```
 
@@ -218,7 +218,7 @@ plot2
 dev.off()
 ```
 
-```{r echo=FALSE, eval=TRUE, out.width="100%", out.height="60%"}
+```{r echo=FALSE, eval=TRUE, out.width="75%", out.height="45%"}
 knitr::include_graphics("outputs/png/C.numUnseparated.png")
 ```
 

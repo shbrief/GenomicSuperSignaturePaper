@@ -18,16 +18,17 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.align = "center",
                       out.width = "70%", fig.asp = 1)
 ```
 
+
+
 # Setup
-In this vignette, we are reproducing Figure 4A of the [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4)
-using GenomicSuperSignature.
+In this vignette, we perform colorectal cancer (CRC) subtyping analysis using
+GenomicSuperSignature and benchmark it against Figure 4A of the [CRC paper (Ma *et al.*)](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4).  
 
 ## Load packages
 ```{r message=FALSE, warning=FALSE}
 if (!"GenomicSuperSignaturePaper" %in% installed.packages())
     devtools::install_github("shbrief/GenomicSuperSignaturePaper")
 
-## Load packages
 suppressPackageStartupMessages({
   library(Biobase)
   library(tidyverse)
@@ -54,21 +55,13 @@ updateNote(RAVmodel)
 ```
 
 ## CRC validation datasets
+CRC paper used colorectal cancer datasets from [curatedCRCData](https://bioconductor.org/packages/release/data/experiment/html/curatedCRCData.html) package. 
+Eight of them are for training and ten are for validation.
+
 ```{r}
 load("data/eSets/setNames.RData")
-```
+setNames
 
-```{r echo=FALSE, eval=FALSE}
-## CRC paper actually used both training and validation datasets (total of 18) 
-## for Figure 4. So here, we are using all of them. However, if you want to use 
-## only 10 validation datasets, run the below chunk.
-
-# load("data/eSets/trainingSetNames.RData")
-# validationSetNames <- setdiff(setNames, trainingSetNames)
-# setNames <- validationSetNames
-```
-
-```{r}
 ## Load validation samples
 for (set in setNames) {
   load(paste0("data/eSets_new/", set, '.RData'))
@@ -78,84 +71,72 @@ for (set in setNames) {
 
 
 # CRC subtyping with PCSSs
-First, we simply reproduced the previous result using PCSS1 and PCSS2.
+CRC paper actually used both training and validation datasets (total of 18) 
+for Figure 4A. So here, we reproduce the same plot using all 18 datasets. 
+
+Briefly, this plot summarizes the sample scores assigned to 3,567 tumor samples 
+from 18 CRC studies. The samples in each of 18 datasets, assigned to either (i) 
+one of the 4 previously proposed CMS subtypes by CRC Subtyping Consortium or 
+(ii) not assigned to a CMS subtype (so 5 x 18 = 90 total groups), are 
+represented by the mean (point) and standard deviation (error bar) of the 
+sample scores. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-## dist’n of PCSS scores -------------------------------------------------------
-df.results <- setNames %>% lapply(function(set) {
-  eSet <- get(set)
-  pdata <- pData(eSet)
-  eSet_tmp <- eSet[, pdata$sample_type %in% "tumor"]
-  exprs_tmp <- exprs(eSet_tmp)
-  pdata_tmp <- pData(eSet_tmp)
-
-  pdata_tmp$study <- set
-  ind_rm <- grep("CRIS_", colnames(pdata_tmp))  # remove CIRS_* pData assigned to training datasets
-  if (length(ind_rm) != 0) {pdata_tmp <- pdata_tmp[,-ind_rm]}
-  return(pdata_tmp)
-  
-}) %>% Reduce('rbind', .)
-
-## Subset with 'cms_label_SSP'
-df.results <- df.results %>%
-  mutate(cms_label_SSP = cms_label_SSP %>%
-           recode("unlabeled" = "not labeled"))
-
-df.results <- df.results %>%
-  group_by(study, cms_label_SSP) %>%
-  dplyr::summarise(mean_PCSS1 = mean(PCSS1),
-                   mean_PCSS2 = mean(PCSS2),
-                   sd_PCSS1 = sd(PCSS1),
-                   sd_PCSS2 = sd(PCSS2))
-
-## Plot Figure 4A
-colors <- gg_color_hue(4)
-colors.toplot <- c(colors, 'grey')
-names(colors.toplot) <- c(paste0('CMS', 1:4), 'not labeled')
-
-pA <- ggplot(df.results,
-             aes(x = mean_PCSS1, y = mean_PCSS2, color = cms_label_SSP)) +
-  geom_point() +
-  geom_errorbar(aes(x = mean_PCSS1,
-                    ymin = mean_PCSS2 - sd_PCSS2,
-                    ymax = mean_PCSS2 + sd_PCSS2)) +
-  geom_errorbarh(aes(y = mean_PCSS2,
-                    xmin = mean_PCSS1 - sd_PCSS1,
-                    xmax = mean_PCSS1 + sd_PCSS1)) +
-  scale_color_manual(values = colors.toplot, name = "CMS Subtype") +
-  theme_bw() +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank()) +
-  geom_hline(yintercept = 0, linetype = 'dashed') +
-  geom_vline(xintercept = 0, linetype = 'dashed') +
-  xlab('PCSS1') + ylab('PCSS2') +
-  coord_cartesian(xlim = c(-2, 2.5)) +
-  theme(legend.direction = "horizontal", 
-        legend.justification=c(0,1), 
-        legend.position=c(0,1),
-        legend.background = element_rect(colour='black'))
-
-print(pA)
+source("R/Fig4A_PCSS.R")
 ```
 
 ```{r echo=FALSE, eval=FALSE}
 saveRDS(pA, "outputs/scatter_PCSS.rds")
 ```
 
+If we use only 10 validation datasets:
+```{r echo=FALSE}
+## CRC paper actually used both training and validation datasets (total of 18) 
+## for Figure 4. So here, we are using all of them. However, if you want to use 
+## only 10 validation datasets, run the below chunk.
+
+load("data/eSets/trainingSetNames.RData")
+validationSetNames <- setdiff(setNames, trainingSetNames)
+setNames <- validationSetNames
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+source("R/Fig4A_PCSS.R")
+```
+
 # CRC subtyping with RAVs
-To We tested three pairs of RAVs to 
+To evaluate the performance of RAVs compared to PCSSs, we searched for colon 
+cancer associated RAVs in three different ways.      
+
+1. We identified two RAVs, RAV1575 and RAV834, with the highest Pearson 
+correlation coefficients with PCSS1 and PCSS2, respectively (0.59 and 0.56).    
+
+2. We ran Kruskal-Wallis rank sum test between CMS subtypes and RAV-assigned 
+scores. Two RAVs with the highest chi-square, RAV834 and RAV833, were selected 
+for further testing.   
+
+3. We calculated validation scores for 18 colon cancer datasets used in CRC 
+paper and collected top 10 validated RAVs from each dataset. We summarized the 
+frequency of different RAVs validating each dataset without any additional 
+filtering criteria and selected the top 2 most frequently validated RAVs, 
+RAV188 and RAV832, which were captured 14 and 10 times, respectively.    
+
+In this section, we draw colon cancer subtype plot with these pairs of RAVs and
+look up MeSH terms, enriched pathways, and related studies associated with them.
+
+
+
 
 ## Most similar to PCSS1/PCSS2
-CRC paper actually used both training and validation datasets (total of 18) for 
-Figure 4. You can decided whether to use all 18 datasets or only 10 validation
-datasets by setting `val_only` variable before running `R/Fig4A_plotting.R` 
-script. Here, we are using only 10 validation datasets.
+For plotting with RAVs, you can decided whether to use all 18 datasets or only 
+10 validation datasets by setting `val_only` variable before running 
+`R/Fig4A_plotting.R` script. Here, we are using only 10 validation datasets.
 
 ```{r}
 val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
 ```
 
-RAV1575 and RAV834 are identified as the most similar RAVs with PCSS1/2 in this [vignette](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/PCSS_vs_RAV.html).
+RAV1575 and RAV834 are identified as the RAVs most similar to PCSS1/2 in this [vignette](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/PCSS_vs_RAV.html).
 
 ```{r message=FALSE, warning=FALSE}
 sampleScore1 <- 1575
@@ -168,16 +149,31 @@ x <- source("R/Fig4A_plotting.R")
 saveRDS(x, "outputs/scatter_1575_834.rds")
 ```
 
-### wordcloud
-```{r}
+### Wordcloud
+MeSH terms associated with `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
+```{r fig.width=9, fig.height=9}
 drawWordcloud(RAVmodel, sampleScore1)
 drawWordcloud(RAVmodel, sampleScore2)
 ```
 
 ### GSEA
+Enriched pathways for `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
 ```{r}
 annotateRAV(RAVmodel, sampleScore1)
 annotateRAV(RAVmodel, sampleScore2)
+```
+
+### Studies
+Studies associated with `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
+```{r}
+findStudiesInCluster(RAVmodel, sampleScore1, studyTitle = TRUE)
+findStudiesInCluster(RAVmodel, sampleScore2, studyTitle = TRUE)
 ```
 
 
@@ -237,16 +233,31 @@ sampleScore2 <- 833
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
-### wordcloud
-```{r}
+### Wordcloud
+MeSH terms associated with `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
+```{r fig.width=9, fig.height=9}
 drawWordcloud(RAVmodel, sampleScore1)
 drawWordcloud(RAVmodel, sampleScore2)
 ```
 
 ### GSEA
+Enriched pathways for `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
 ```{r}
 annotateRAV(RAVmodel, sampleScore1)
 annotateRAV(RAVmodel, sampleScore2)
+```
+
+### Studies
+Studies associated with `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
+```{r}
+findStudiesInCluster(RAVmodel, sampleScore1, studyTitle = TRUE)
+findStudiesInCluster(RAVmodel, sampleScore2, studyTitle = TRUE)
 ```
 
 
@@ -271,17 +282,35 @@ print(x)$visible
 dev.off()
 ```
 
-### wordcloud
-```{r}
+### Wordcloud
+MeSH terms associated with `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
+```{r fig.width=9, fig.height=9}
 drawWordcloud(RAVmodel, sampleScore1)
 drawWordcloud(RAVmodel, sampleScore2)
 ```
 
 ### GSEA
+Enriched pathways for `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
 ```{r}
 annotateRAV(RAVmodel, sampleScore1)
 annotateRAV(RAVmodel, sampleScore2)
 ```
+
+### Studies
+Studies associated with `r paste0("RAV", sampleScore1, " (sampleScore1)")` 
+and `r paste0("RAV", sampleScore2, " (sampleScore2)")`
+
+```{r}
+findStudiesInCluster(RAVmodel, sampleScore1, studyTitle = TRUE)
+findStudiesInCluster(RAVmodel, sampleScore2, studyTitle = TRUE)
+```
+
+
+
 
 # Manuscript Table
 ## Supplementary Table 5

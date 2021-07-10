@@ -116,7 +116,7 @@ RAV221 and RAV868 are specific to BRCA.
 #### RAV221
 RAV221 consists of three breast cancer studies (ERP016798, SRP023262, and 
 SRP11343) and top 10 enriched pathways are associated with breast cancer. 
-```{r}
+```{r fig.width=9, fig.height=9}
 ind <- 221
 findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
 
@@ -126,7 +126,7 @@ drawWordcloud(RAVmodel, ind)
 ```
 
 #### RAV868
-```{r}
+```{r fig.width=9, fig.height=9}
 ind <- 868
 findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
 
@@ -140,7 +140,7 @@ Heatmap table above shows that RAV832 is specifically associated with COAD and
 READ datasets. 
 
 #### RAV832
-```{r}
+```{r fig.width=9, fig.height=9}
 ind <- 832
 findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
 
@@ -195,7 +195,7 @@ heatmapTable(new_val_all, scoreCutoff = 0.68)
 ## MeSH terms and associated studies
 ### SLE-associated
 #### RAV23
-```{r}
+```{r fig.width=9, fig.height=9}
 ind <- 23
 findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
 
@@ -205,7 +205,7 @@ drawWordcloud(RAVmodel, ind)
 ```
 
 #### RAV1551
-```{r}
+```{r fig.width=9, fig.height=9}
 ind <- 1551
 findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
 
@@ -215,7 +215,7 @@ drawWordcloud(RAVmodel, ind)
 ```
 
 ### COAD-specific
-```{r}
+```{r fig.width=9, fig.height=9}
 ind <- 188
 findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
 
