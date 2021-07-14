@@ -20,14 +20,15 @@ output:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   comment = "#>", collapse = TRUE, message = FALSE, warning = FALSE,
-  out.width="60%", out.height="60%"
+  out.width="60%", out.height="60%", fig.align="center"
 )
 ```
 
 
 # Setup
-In this vignette, we are reproducing Figure 3D of the [multiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub)
-and expand the analysis using GenomicSuperSignature.
+In this vignette, we benchmarked Figure 3D of the [MultiPLIER paper](https://www.sciencedirect.com/science/article/pii/S240547121930119X?via%3Dihub): 
+Neutrophil count of NARES samples were estimated by MCPcounter and plotted 
+against RAV1551-assigned sample scores.
 
 ## Load packages
 ```{r message=FALSE, warning=FALSE}
@@ -44,9 +45,9 @@ suppressPackageStartupMessages({
 ```
 
 ## RAVmodel
-To directly compare with the results from multiPLIER paper, we used the 
-RAVmodel annotated with the same priors: bloodCellMarkersIRISDMAP, svmMarkers, 
-and canonicalPathways.
+To directly compare our new analysis with the results from MultiPLIER paper, we
+used the RAVmodel annotated with the same priors as MultiPLER: 
+bloodCellMarkersIRISDMAP, svmMarkers, and canonicalPathways.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 ## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
@@ -72,15 +73,15 @@ updateNote(RAVmodel)
 NARES ([Grayson et al., 2015](https://onlinelibrary.wiley.com/doi/full/10.1002/art.39153))
 is a nasal brushing microarray dataset that includes patients with 
 ANCA-associated vasculitis, patients with sarcoidosis and healthy controls 
-among other groups. In the multiPLIER paper, NARES data was projected into 
+among other groups. In the MultiPLIER paper, NARES data was projected into 
 the MultiPLIER latent space.    
 
 ```{r}
 exprs <- readr::read_tsv("data/NARES_SCANfast_ComBat_with_GeneSymbol.pcl") %>% 
   as.data.frame
-
 rownames(exprs) <- exprs$GeneSymbol
 dataset <- as.matrix(exprs[,3:ncol(exprs)])
+
 dataset[1:2, 1:4]
 ```
 
@@ -91,14 +92,14 @@ colnames(demo)
 ```
 
 ### MCPcounter
-NARES data doesn't have any information about the cell type composition of the 
-samples. So in the multiPLIER paper, the authors applied [MCPcounter](https://github.com/ebecht/MCPcounter/tree/a79614eee002c88c64725d69140c7653e7c379b4) 
-([Becht, et al. _Genome Biology_. 2016.](https://doi.org/10.1186/s13059-016-1070-5))
-, a method for estimating cell type abundance in solid tissues.
+NARES data doesn't have any information on the cell type composition of the 
+samples. So in the MultiPLIER paper, the authors applied 
+[MCPcounter](https://doi.org/10.1186/s13059-016-1070-5)) (Becht *et al.*, Genome Biology, 2016)
+, a method for estimating cell type abundance in solid tissues. As MultiPLIER 
+paper, we tested whether the *neutrophil-associated* RAV is well-correlated 
+with the neutrophil estimates of the NARES dataset.
 
-As multiPLIER paper, we tested whether the *neutrophil-associated* RAV is 
-well-correlated with the neutrophil estimates.
-
+</br>
 * Install MCPcounter
 ```{r eval=FALSE}
 devtools::install_github("ebecht/MCPcounter", 
@@ -131,17 +132,18 @@ mcp.melt <- read.table("data/NARES_ComBat_MCPCounter_results_tidy.tsv",
 
 # Transfer Learning
 ## Validation
-RAV1551, neutrophil-associated RAV based on SLE-WB dataset, is not found in the 
-top 5 validated RAVs of NARES dataset, implying that neutrophil count is not 
-the major feature of NARES dataset.
+RAV1551, a neutrophil-associated RAV based on SLE-WB dataset, is not found in 
+the top 5 validated RAVs of NARES dataset, implying that neutrophil count is 
+not the major feature of NARES dataset.
 
-```{r fig.width=4, fig.height=2}
+```{r}
 val_all <- validate(dataset, RAVmodel) 
 validated_ind <- validatedSignatures(val_all, num.out = 5, swCutoff = 0, indexOnly = TRUE)
 heatmapTable(val_all, num.out = 5, swCutoff = 0)
 ```
 
-```{r collapse = TRUE}
+RAV1551 is actually ranked as the top 14th RAV based on its validation score.
+```{r}
 ordered <- val_all[order(val_all$score, decreasing = TRUE),]
 rankInd <- which(rownames(ordered) == "RAV1551")
 rankInd
@@ -181,7 +183,7 @@ dat <- dplyr::filter(mcp.melt, Cell_type == "Neutrophils") %>%
 head(dat, 3)
 ```
 
-Here is the plot between RAV1551-assigned sample score vs. neutrophil estimate.
+We plot the neutrophil estimates against RAV1551-assigned sample scores.
 ```{r fig.asp=1.125}
 plot <- LVScatter(dat, "RAV1551", 
                   y.var = "MCP_estimate",

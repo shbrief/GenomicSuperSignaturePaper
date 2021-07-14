@@ -19,9 +19,26 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
 ```
 
 # Setup
+## Background
+Using training and validation data of the original [CRC study](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4), 
+we compared associations between different subtype models and RAVs with the same
+clinicopathological variables. Notably, these data were not part of RAV training
+and are microarray datasets whereas the RAVs were trained exclusively from 
+RNA-seq data. 
+
+As described previously in CRC study, we used the likelihood-ratio test (LRT) to
+compare the different subtype models for association with clinicopathological 
+variables. A p-value near 1 (-log10p-value near 0) means that no additional 
+information is provided by a full model composed of two subtype definitions 
+compared to a model with only one. 
+
+CMS-associated RAVs performed better than discrete CMS on all four phenotypes [(plot)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav834-833) and also outperformed PCSSs except on tumor location [(plot)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav834-833). Interestingly, PCSS-associated RAVs were still better than CMS but 
+slightly worse than PCSSs [(plot)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav1575-834), while CMS-associated RAVs were better than both CMS and PCSSs [(plot)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav1575-834), indicating that RAVs contain more comprehensive information. This performance improvement became more significant using only the 10 original validation datasets, excluding 8 datasets used to train the PCSS model. In conclusion, RAVs trained from heterogeneous datasets, not specific to CRC, captured biologically-relevant signatures for CRC as well or superior to focused efforts using CRC-specific databases, suggesting that RAVs are for general-use and can be applied to describe other diseases as well.
+
 ## Select training dataset
-* CRC paper actually used both training and validation datasets (total of 18)
-for Figure 4. ~~`Fig4C_CMSvs.R` and `Fig4C_contScores.R` scripts are using only 
+CRC paper actually used both training and validation datasets (total of 18)
+for [Figure 4](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4/figures/4). 
+~~`Fig4C_CMSvs.R` and `Fig4C_contScores.R` scripts are using only 
 10 validation datasets. If you want to use all 18 datasets, block the below 
 lines in those scripts.~~ The current version of vignette uses all 18 studies.   
 
@@ -41,9 +58,10 @@ be compared to CMS)
   - `m1_name`, `m1_1`, `m1_2` for one model   
   - `m2_name`, `m2_1`, `m2_2` for the other
 
-
-# Compare to CMS
 ## CMS vs. PCSS1/2
+Fisrt, we reproduce the previous result comparing the performance of PCSSs 
+(continuous score) against CMS (discrete score).
+
 ```{r eval=TRUE}
 m2_name <- "PCSS"
 m2_1 <- "PCSS1"
@@ -57,9 +75,10 @@ saveRDS(x, "outputs/boxplot_CMS_vs_PCSS.rds")
 ```
 
 
+# Compare to CMS
 ## CMS vs. RAV1575/834
-RAV1575/834 are the most similar PCclsuters to PCSS1/2, respectively, based 
-on Pearson correlation.
+RAV1575/834 are the most similar RAVs to PCSS1/2, respectively, based on 
+Pearson correlation.
 
 ```{r eval=TRUE}
 m2_name <- "RAV"
@@ -74,8 +93,8 @@ saveRDS(x, "outputs/boxplot_CMS_vs_1575_834.rds")
 ```
 
 ## CMS vs. RAV834/833
-RAV834/833 have the largest r-squared score when we compared the samples
-scores against the metadata, CMS.
+RAV834/833 have the highest r-squared score when we compared the sample scores
+against the metadata.
 
 ```{r eval=TRUE}
 m2_name <- "RAV"
@@ -114,8 +133,11 @@ dev.off()
 
 
 
-# Compare continuous scores
+# Compare to PCSS
 ## PCSS vs. RAV1575/834
+RAV1575/834 are the most similar RAVs to PCSS1/2, respectively, based on 
+Pearson correlation.
+
 ```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
@@ -133,6 +155,9 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_1575_834.rds")
 ```
 
 ## PCSS vs. RAV834/833
+RAV834/833 have the highest r-squared score when we compared the sample scores
+against the metadata.
+
 ```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"
@@ -154,6 +179,8 @@ dev.off()
 ```
 
 ## PCSS vs. RAV832/188
+RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.
+
 ```{r eval=TRUE}
 m1_name <- "PCSS"
 m1_1 <- "PCSS1"

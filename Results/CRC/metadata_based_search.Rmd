@@ -1,5 +1,5 @@
 ---
-title: "Find the signature using metadata"
+title: "Find the relavant RAVs using metadata"
 author: "Sehyun Oh"
 date: "`r Sys.Date()`"
 output:
@@ -14,7 +14,8 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE,
+                      out.height="70%", out.width="70%")
 ```
 
 # Setup
@@ -47,6 +48,7 @@ RAVmodel <- getModel("C2", load=TRUE)
 
 ```{r}
 RAVmodel
+
 updateNote(RAVmodel)
 ```
 
@@ -65,7 +67,7 @@ load("data/eSets/setNames.RData")
 ```
 
 ```{r echo=FALSE}
-val_only = FALSE   # use all 18 CRC datasets
+val_only = FALSE   # all 18 CRC datasets for `subtype_plot` chunk (line 208)
 ```
 
 `eSets_new` data is available upon request.
@@ -76,10 +78,7 @@ for (set in setNames) {
 }
 ```
 
-
-
-# Pre-processing
-## Get phenotype data
+### Get phenotype data
 Combine all the phenotype data from CRC validation datasets.
 
 ```{r}
@@ -96,9 +95,9 @@ pdata_df <- setNames %>% lapply(function(set) {
 }) %>% Reduce('rbind', .)
 ```
 
-## Get expression data
-Combine all expression profiles from CRC validation datasets and subset with 
-the common genes among them.
+### Get expression data
+Combine all the expression profiles from CRC validation datasets and subset 
+it with the common genes among them.
 
 ```{r}
 ## common genes between all validation datasets
@@ -121,7 +120,7 @@ exprs_df <- setNames %>% lapply(function(set) {
 }) %>% Reduce('cbind', .)   # 8219 genes x 3567 samples
 ```
 
-## Calculate sample score
+### Calculate sample scores
 Calculate sample scores and combine them with the phenotype data.
 ```{r}
 sampleScore <- calculateScore(exprs_df, RAVmodel)
@@ -137,10 +136,10 @@ data_all <- data_all[, -rm_ind]
 
 
 # Metadata-based search
-## Multivariable
-Here, I'm using the four CMS subtypes as an example of identifying significant 
-RAVs using discrete, multivariate metadata.
+In this section, we identified the desired RAVs using metadata. As an example 
+of discrete, multivariate metadata, we used four CMS subtypes.
 
+## Multivariable
 ### ANOVA
 ```{r ANOVA}
 f.stat.all <- sapply(seq_len(ncol(RAVmodel)), function(x) {
@@ -154,8 +153,9 @@ head(f.stat.all[order(f.stat.all, decreasing = TRUE)])
 ```
 
 ### Kruskal-Wallis Rank Sum Test
-Normality assumption is not met. Below example is a Q-Q plot from RAV834.
-```{r fig.width=4, fig.height=4}
+Based on the Q-Q plot below, the normality assumption is not met.
+
+```{r}
 res.aov <- aov(data_all[,"RAV834"] ~ data_all[,"cms_label_SSP"])
 plot(res.aov, 2)
 ```
@@ -163,7 +163,7 @@ plot(res.aov, 2)
 ```{r normality_test, echo=FALSE, eval=FALSE}
 ## Test normality using Shapiro.test :
 ## [Wikipedia] The null-hypothesis of this test is that the population is normally 
-## distributed. Thus, if the p value is less than the chosen alpha level, then the 
+## distributed. Thus, if the p-value is less than the chosen alpha level, then the 
 ## null hypothesis is rejected and there is evidence that the data tested are not 
 ## normally distributed. 
 
@@ -198,48 +198,14 @@ names(kw.chi.sqr) <- paste0("RAV", seq_len(ncol(RAVmodel)))
 head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
 ```
 
-# Subtyping with RAVs
-## CMS-associated RAVs
-Top two RAVs (834 and 833) are identified from both ANOVA and Kruskal-Wallis 
-Rank Sum Test.
-
-```{r message=FALSE, warning=FALSE, fig.width=6, fig.height=5.5}
-sampleScore1 <- 834
-sampleScore2 <- 833
-source("R/Fig4A_plotting.R", print.eval = TRUE)
-```
-
-## Mean comparing methods
-I further quantified how RAV834 differentiates four CMS subtypes using 
-different mean comparing methods.
-
-### t.test for a few pairs
-```{r collapse=FALSE, warning=FALSE, fig.width=5, fig.height=4}
-my_comparisons <- list(c("CMS1", "CMS2"),c("CMS1", "CMS3"),c("CMS1", "CMS4"))
-ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
-  stat_compare_means(comparisons = my_comparisons, 
-                     method = "t.test", aes(label = ..p.adj..))
-```
-
-### ANOVA
-```{r collapse=FALSE, warning=FALSE, fig.width=5, fig.height=4}
-ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
-  stat_compare_means(method = "anova", label.y = 7) # Add global p-value
-```
-
-### Kruskal-Wallis Rank Sum Test
-```{r collapse=FALSE, warning=FALSE, fig.width=5, fig.height=4}
-ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
-  stat_compare_means(method = 'kruskal.test', label.y = 7) # Add global p-value
-```
-
-
-
 
 
 ## Binary variables
-We ran `t.test` between the below clinical variables and all sample scores. 
-The test results were ordered based on p-value and top 6 of them are printed.
+We ran `t.test` between the four clinical variables and all sample scores. The 
+test results were ordered based on p-value and the top 6 of them are printed.
+Both MSI and tumor location are explained best with RAV834 while tumor grade
+and stage seem to be more closely associated with RAV596 and RAV3290, 
+respectively.
 
 ```{r echo=FALSE}
 vars <- c("msi", "summarylocation", "summarygrade", "summarystage")
@@ -247,7 +213,6 @@ vars <- c("msi", "summarylocation", "summarygrade", "summarystage")
 
 ### MSI
 Microsatellite instability
-
 ```{r echo=FALSE}
 # MSI
 var <- vars[1]
@@ -323,6 +288,49 @@ stage.t.test <- stage.t.test[order(stage.t.test)]
 # head(names(stage.t.test))
 head(stage.t.test)
 ```
+
+
+
+
+
+# Subtyping with RAVs
+## Score plot
+Top two RAVs, RAV834 and RAV833, are identified from both ANOVA and 
+Kruskal-Wallis Rank Sum Test. Below plot shows how these two RAVs are 
+differentiating 18 CRC datasets. More related analyses are done in [here](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_Subtyping.html). 
+
+```{r subtype_plot, message=FALSE, warning=FALSE}
+sampleScore1 <- 834
+sampleScore2 <- 833
+source("R/Fig4A_plotting.R", print.eval = TRUE)
+```
+
+## Mean comparing methods
+We further quantified how RAV834 separates four CMS subtypes using different 
+mean comparing methods.
+
+### t.test for a few pairs
+```{r collapse=FALSE, warning=FALSE, out.height="75%", out.width="60%"}
+my_comparisons <- list(c("CMS1", "CMS2"),c("CMS1", "CMS3"),c("CMS1", "CMS4"))
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
+  stat_compare_means(comparisons = my_comparisons, 
+                     method = "t.test", aes(label = ..p.adj..))
+```
+
+### ANOVA
+```{r collapse=FALSE, warning=FALSE, out.height="75%", out.width="60%"}
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
+  stat_compare_means(method = "anova", label.y = 7) # Add global p-value
+```
+
+### Kruskal-Wallis Rank Sum Test
+```{r collapse=FALSE, warning=FALSE, out.height="75%", out.width="60%"}
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV834", fill = "cms_label_SSP") +
+  stat_compare_means(method = 'kruskal.test', label.y = 7) # Add global p-value
+```
+
+
+
 
 
 # Session Info

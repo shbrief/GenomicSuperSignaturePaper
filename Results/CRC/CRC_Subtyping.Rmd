@@ -108,20 +108,20 @@ source("R/Fig4A_PCSS.R")
 To evaluate the performance of RAVs compared to PCSSs, we searched for colon 
 cancer associated RAVs in three different ways.      
 
-1. We identified two RAVs, RAV1575 and RAV834, with the highest Pearson 
-correlation coefficients with PCSS1 and PCSS2, respectively (0.59 and 0.56).    
+1. We identified two RAVs, RAV1575 and RAV834, that have the highest Pearson 
+correlation coefficients with PCSS1 and PCSS2, respectively (0.59 and 0.56). [(detail)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/PCSS_vs_RAV.html)    
 
 2. We ran Kruskal-Wallis rank sum test between CMS subtypes and RAV-assigned 
 scores. Two RAVs with the highest chi-square, RAV834 and RAV833, were selected 
-for further testing.   
+for further testing. [(detail)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/metadata_based_search.html)    
 
 3. We calculated validation scores for 18 colon cancer datasets used in CRC 
 paper and collected top 10 validated RAVs from each dataset. We summarized the 
 frequency of different RAVs validating each dataset without any additional 
 filtering criteria and selected the top 2 most frequently validated RAVs, 
-RAV188 and RAV832, which were captured 14 and 10 times, respectively.    
+RAV188 and RAV832, which were captured 14 and 10 times, respectively. [(detail)](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_Subtyping.html#highest-validation-score-1)   
 
-In this section, we draw colon cancer subtype plot with these pairs of RAVs and
+In this section, we draw colon cancer subtype plots with these pairs of RAVs and
 look up MeSH terms, enriched pathways, and related studies associated with them.
 
 
@@ -182,8 +182,9 @@ findStudiesInCluster(RAVmodel, sampleScore2, studyTitle = TRUE)
 ### Validation
 Before applying `validate` function, any NA or Inf values in CRC datasets were
 removed and the expression matrix was centered.
- 
+
 ```{r message=FALSE, warning=FALSE}
+load("data/eSets/setNames.RData")   # 18 CRC datasets
 validated_ind_all <- vector(mode = "list", length = length(setNames))
 names(validated_ind_all) <- setNames
 
@@ -203,7 +204,8 @@ with the common feature of CRC datasets.
 
 Top row is RAV number and the bottom row is the frequency of it making top 
 validation. Because there were 18 datasets, the maximum frequency of showing 
-up is 18.
+up is 18. RAV188 and RAV832 are captured 14 and 10 times, respectively, as top
+10 validated RAVs.
 
 ```{r}
 ## Top 10 validated
@@ -314,13 +316,15 @@ findStudiesInCluster(RAVmodel, sampleScore2, studyTitle = TRUE)
 
 # Manuscript Table
 ## Supplementary Table 5
+This table contains the top 10 validated RAVs for 18 CRC datasets.
+
 ```{r}
 CRC_validation_df <- data.frame(matrix(unlist(validated_ind_all), 
                                        nrow = length(validated_ind_all), 
                                        byrow = TRUE), 
                                 stringsAsFactors=FALSE)
 rownames(CRC_validation_df) <- names(validated_ind_all)
-colnames(CRC_validation_df) <- paste0("val_ind_", 1:10)
+colnames(CRC_validation_df) <- paste0("validated_RAV_", 1:10)
 
 CRC_validation_df[1:4, 1:4]
 ```

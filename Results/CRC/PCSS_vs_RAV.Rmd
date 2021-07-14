@@ -24,10 +24,10 @@ suppressPackageStartupMessages({
 
 ## PCSSs
 [Ma *et al.*](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4) 
-proposed a continuous scoring system (PCSS) based on an analysis of 8 colorectal
-cancer microarray datasets comprising 1,867 samples, and found it was more 
-closely correlated to microsatellite instability (MSI), grade, stage, and tumor 
-location. Below is the table of top 4 PCSSs.
+proposed a continuous scoring system (PCSS) based on the analysis of eight 
+colorectal cancer microarray datasets comprising 1,867 samples, and found that
+PCSSs are more closely correlated to microsatellite instability (MSI), grade, 
+stage, and tumor location. 
 
 ```{r}
 avgLoading <- read.table("data/avg_loadings.csv", 
@@ -74,14 +74,6 @@ loading_cor[1, max1, drop = FALSE]
 loading_cor[2, max2, drop = FALSE]
 ```
 
-## Enriched pathways
-Using `annotateRAV` function, we checked the MSigDB C2 genesets that are 
-enriched in RAV1575 and RAV834.
-
-```{r}
-annotateRAV(RAVmodel, 1575)
-annotateRAV(RAVmodel, 834)
-```
 
 # Session Info
 
