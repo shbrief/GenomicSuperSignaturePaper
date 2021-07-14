@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Figures and Tables for GenomicSuperSignature Paper</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">July 09, 2021</h4>
+            <h4 class="date">July 14, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/manuscript.Rmd"><code>vignettes/manuscript.Rmd</code></a></small>
       <div class="hidden name"><code>manuscript.Rmd</code></div>
@@ -149,20 +149,34 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"CRC/outputs/CRC_top10_validated_ind.tsv"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt;                       val_ind_1 val_ind_2 val_ind_3 val_ind_4 val_ind_5</span>
-<span class="co">#&gt; GSE12225.GPL3676_eset       312        21       468       684       119</span>
-<span class="co">#&gt; GSE12945_eset               312       981       832       684       758</span>
-<span class="co">#&gt; GSE13067_eset               188       833       324       220       192</span>
-<span class="co">#&gt; GSE17538.GPL570_eset       1575      1032         2       338       832</span>
-<span class="co">#&gt; GSE2109_eset                324       438       338      1165         2</span>
-<span class="co">#&gt; GSE21510_eset               312        21       468       833       324</span>
-<span class="co">#&gt;                       val_ind_6 val_ind_7 val_ind_8 val_ind_9 val_ind_10</span>
-<span class="co">#&gt; GSE12225.GPL3676_eset       758       504       153      1016         27</span>
-<span class="co">#&gt; GSE12945_eset               119       468        21       516        504</span>
-<span class="co">#&gt; GSE13067_eset              1575      1166       438       868       1467</span>
-<span class="co">#&gt; GSE17538.GPL570_eset        188      1467      1387       725        833</span>
-<span class="co">#&gt; GSE2109_eset                725      1032       832      1694       2506</span>
-<span class="co">#&gt; GSE21510_eset               119       188       684       832        595</span></code></pre></div>
+<span class="co">#&gt;                       validated_RAV_1 validated_RAV_2 validated_RAV_3</span>
+<span class="co">#&gt; GSE12225.GPL3676_eset             312              21             468</span>
+<span class="co">#&gt; GSE12945_eset                     312             981             832</span>
+<span class="co">#&gt; GSE13067_eset                     188             833             324</span>
+<span class="co">#&gt; GSE13294_eset                    1575             833             192</span>
+<span class="co">#&gt; GSE14095_eset                       2            1032             338</span>
+<span class="co">#&gt; GSE14333_eset                     832             188             834</span>
+<span class="co">#&gt;                       validated_RAV_4 validated_RAV_5 validated_RAV_6</span>
+<span class="co">#&gt; GSE12225.GPL3676_eset             684             119             758</span>
+<span class="co">#&gt; GSE12945_eset                     684             758             119</span>
+<span class="co">#&gt; GSE13067_eset                     220             192            1575</span>
+<span class="co">#&gt; GSE13294_eset                      58             188             187</span>
+<span class="co">#&gt; GSE14095_eset                    1387             725            1726</span>
+<span class="co">#&gt; GSE14333_eset                    1575             833             220</span>
+<span class="co">#&gt;                       validated_RAV_7 validated_RAV_8 validated_RAV_9</span>
+<span class="co">#&gt; GSE12225.GPL3676_eset             504             153            1016</span>
+<span class="co">#&gt; GSE12945_eset                     468              21             516</span>
+<span class="co">#&gt; GSE13067_eset                    1166             438             868</span>
+<span class="co">#&gt; GSE13294_eset                     832            1008            2538</span>
+<span class="co">#&gt; GSE14095_eset                     188            1843            1575</span>
+<span class="co">#&gt; GSE14333_eset                     192              61             579</span>
+<span class="co">#&gt;                       validated_RAV_10</span>
+<span class="co">#&gt; GSE12225.GPL3676_eset               27</span>
+<span class="co">#&gt; GSE12945_eset                      504</span>
+<span class="co">#&gt; GSE13067_eset                     1467</span>
+<span class="co">#&gt; GSE13294_eset                     1166</span>
+<span class="co">#&gt; GSE14095_eset                      189</span>
+<span class="co">#&gt; GSE14333_eset                      595</span></code></pre></div>
 </div>
 <div id="crc-subtyping" class="section level2">
 <h2 class="hasAnchor">

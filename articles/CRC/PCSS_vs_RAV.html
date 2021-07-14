@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Compare PCSS and RAVs</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-07-09</h4>
+            <h4 class="date">2021-07-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/PCSS_vs_RAV.Rmd"><code>vignettes/CRC/PCSS_vs_RAV.Rmd</code></a></small>
       <div class="hidden name"><code>PCSS_vs_RAV.Rmd</code></div>
@@ -153,7 +153,7 @@
 <div id="pcsss" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcsss" class="anchor"></a>PCSSs</h2>
-<p><a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">Ma <em>et al.</em></a> proposed a continuous scoring system (PCSS) based on an analysis of 8 colorectal cancer microarray datasets comprising 1,867 samples, and found it was more closely correlated to microsatellite instability (MSI), grade, stage, and tumor location. Below is the table of top 4 PCSSs.</p>
+<p><a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">Ma <em>et al.</em></a> proposed a continuous scoring system (PCSS) based on the analysis of eight colorectal cancer microarray datasets comprising 1,867 samples, and found that PCSSs are more closely correlated to microsatellite instability (MSI), grade, stage, and tumor location.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avgLoading</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"data/avg_loadings.csv"</span>, 
                          header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span>
@@ -213,37 +213,11 @@
 <span class="co">##          RAV834</span>
 <span class="co">## PCSS2 0.5624299</span></code></pre></div>
 </div>
-<div id="enriched-pathways" class="section level2">
-<h2 class="hasAnchor">
-<a href="#enriched-pathways" class="anchor"></a>Enriched pathways</h2>
-<p>Using <code>annotateRAV</code> function, we checked the MSigDB C2 genesets that are enriched in RAV1575 and RAV834.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotateRAV.html">annotateRAV</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1575</span><span class="op">)</span>
-<span class="co">##                                  Description      NES pvalue      qvalues</span>
-<span class="co">## 1   SCHUETZ_BREAST_CANCER_DUCTAL_INVASIVE_UP 2.794522  1e-10 1.733483e-09</span>
-<span class="co">## 2          SMID_BREAST_CANCER_NORMAL_LIKE_UP 2.681439  1e-10 1.733483e-09</span>
-<span class="co">## 3                       BOQUEST_STEM_CELL_UP 2.630321  1e-10 1.733483e-09</span>
-<span class="co">## 4 VECCHI_GASTRIC_CANCER_ADVANCED_VS_EARLY_UP 2.596083  1e-10 1.733483e-09</span>
-<span class="co">## 5                 MCLACHLAN_DENTAL_CARIES_UP 2.566848  1e-10 1.733483e-09</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/annotateRAV.html">annotateRAV</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">834</span><span class="op">)</span>
-<span class="co">##                                             Description      NES pvalue</span>
-<span class="co">## 1 ALTEMEIER_RESPONSE_TO_LPS_WITH_MECHANICAL_VENTILATION 2.868397  1e-10</span>
-<span class="co">## 2                            MCLACHLAN_DENTAL_CARIES_UP 2.627526  1e-10</span>
-<span class="co">## 3                           WIELAND_UP_BY_HBV_INFECTION 2.541545  1e-10</span>
-<span class="co">## 4            ZHANG_RESPONSE_TO_IKK_INHIBITOR_AND_TNF_UP 2.339746  1e-10</span>
-<span class="co">## 5                       POOLA_INVASIVE_BREAST_CANCER_UP 2.334263  1e-10</span>
-<span class="co">##        qvalues</span>
-<span class="co">## 1 4.683457e-08</span>
-<span class="co">## 2 4.683457e-08</span>
-<span class="co">## 3 4.683457e-08</span>
-<span class="co">## 4 4.683457e-08</span>
-<span class="co">## 5 4.683457e-08</span></code></pre></div>
-</div>
 </div>
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session Info</h1>
-<details><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<details><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## R version 4.1.0 (2021-05-18)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>

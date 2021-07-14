@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Find the signature using metadata • GenomicSuperSignaturePaper</title>
+<title>Find the relavant RAVs using metadata • GenomicSuperSignaturePaper</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../pkgdown.js"></script><meta property="og:title" content="Find the signature using metadata">
+<script src="../../pkgdown.js"></script><meta property="og:title" content="Find the relavant RAVs using metadata">
 <meta property="og:description" content="GenomicSuperSignaturePaper">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -127,10 +127,10 @@
       </header><script src="metadata_based_search_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Find the signature using metadata</h1>
+      <h1 data-toc-skip>Find the relavant RAVs using metadata</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-07-09</h4>
+            <h4 class="date">2021-07-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/metadata_based_search.Rmd"><code>vignettes/CRC/metadata_based_search.Rmd</code></a></small>
       <div class="hidden name"><code>metadata_based_search.Rmd</code></div>
@@ -176,6 +176,7 @@
 <span class="co">## colData names(4): RAV studies silhouetteWidth gsea</span>
 <span class="co">## trainingData(2): PCAsummary MeSH</span>
 <span class="co">## trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</span>
+
 <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">updateNote</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span>
 <span class="co">## [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with MSigDB C2"</span></code></pre></div>
 </div>
@@ -190,14 +191,9 @@
 <span class="kw">for</span> <span class="op">(</span><span class="va">set</span> <span class="kw">in</span> <span class="va">setNames</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/eSets_new/"</span>, <span class="va">set</span>, <span class="st">'.RData'</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-</div>
-</div>
-<div id="pre-processing" class="section level1">
-<h1 class="hasAnchor">
-<a href="#pre-processing" class="anchor"></a>Pre-processing</h1>
-<div id="get-phenotype-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#get-phenotype-data" class="anchor"></a>Get phenotype data</h2>
+<div id="get-phenotype-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#get-phenotype-data" class="anchor"></a>Get phenotype data</h3>
 <p>Combine all the phenotype data from CRC validation datasets.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## phenotype tables combined</span>
@@ -212,10 +208,10 @@
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">pdata_tmp</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">'rbind'</span>, <span class="va">.</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="get-expression-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#get-expression-data" class="anchor"></a>Get expression data</h2>
-<p>Combine all expression profiles from CRC validation datasets and subset with the common genes among them.</p>
+<div id="get-expression-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#get-expression-data" class="anchor"></a>Get expression data</h3>
+<p>Combine all the expression profiles from CRC validation datasets and subset it with the common genes among them.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## common genes between all validation datasets</span>
 <span class="va">all_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
@@ -236,22 +232,23 @@
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">exprs_tmp</span><span class="op">)</span>  
 <span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://rpkgs.datanovia.com/ggpubr/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">'cbind'</span>, <span class="va">.</span><span class="op">)</span>   <span class="co"># 8219 genes x 3567 samples</span></code></pre></div>
 </div>
-<div id="calculate-sample-score" class="section level2">
-<h2 class="hasAnchor">
-<a href="#calculate-sample-score" class="anchor"></a>Calculate sample score</h2>
+<div id="calculate-sample-scores" class="section level3">
+<h3 class="hasAnchor">
+<a href="#calculate-sample-scores" class="anchor"></a>Calculate sample scores</h3>
 <p>Calculate sample scores and combine them with the phenotype data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sampleScore</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/calculateScore.html">calculateScore</a></span><span class="op">(</span><span class="va">exprs_df</span>, <span class="va">RAVmodel</span><span class="op">)</span>
 <span class="va">data_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html">cbind</a></span><span class="op">(</span><span class="va">sampleScore</span>, <span class="va">pdata_df</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
+</div>
 <div id="metadata-based-search" class="section level1">
 <h1 class="hasAnchor">
 <a href="#metadata-based-search" class="anchor"></a>Metadata-based search</h1>
+<p>In this section, we identified the desired RAVs using metadata. As an example of discrete, multivariate metadata, we used four CMS subtypes.</p>
 <div id="multivariable" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multivariable" class="anchor"></a>Multivariable</h2>
-<p>Here, I’m using the four CMS subtypes as an example of identifying significant RAVs using discrete, multivariate metadata.</p>
 <div id="anova" class="section level3">
 <h3 class="hasAnchor">
 <a href="#anova" class="anchor"></a>ANOVA</h3>
@@ -270,11 +267,11 @@
 <div id="kruskal-wallis-rank-sum-test" class="section level3">
 <h3 class="hasAnchor">
 <a href="#kruskal-wallis-rank-sum-test" class="anchor"></a>Kruskal-Wallis Rank Sum Test</h3>
-<p>Normality assumption is not met. Below example is a Q-Q plot from RAV834.</p>
+<p>Based on the Q-Q plot below, the normality assumption is not met.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">data_all</span><span class="op">[</span>,<span class="st">"RAV834"</span><span class="op">]</span> <span class="op">~</span> <span class="va">data_all</span><span class="op">[</span>,<span class="st">"cms_label_SSP"</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">res.aov</span>, <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-12-1.png" width="384"></p>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-12-1.png" width="70%" height="70%"></p>
 <p><br></p>
 <p>Try Kruskal-Wallis Rank Sum Test</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -292,55 +289,10 @@
 <span class="co">## 2146.136 1831.683 1829.326 1775.702 1750.150 1693.344</span></code></pre></div>
 </div>
 </div>
-</div>
-<div id="subtyping-with-ravs" class="section level1">
-<h1 class="hasAnchor">
-<a href="#subtyping-with-ravs" class="anchor"></a>Subtyping with RAVs</h1>
-<div id="cms-associated-ravs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cms-associated-ravs" class="anchor"></a>CMS-associated RAVs</h2>
-<p>Top two RAVs (834 and 833) are identified from both ANOVA and Kruskal-Wallis Rank Sum Test.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sampleScore1</span> <span class="op">&lt;-</span> <span class="fl">834</span>
-<span class="va">sampleScore2</span> <span class="op">&lt;-</span> <span class="fl">833</span>
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4A_plotting.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
-</div>
-<div id="mean-comparing-methods" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mean-comparing-methods" class="anchor"></a>Mean comparing methods</h2>
-<p>I further quantified how RAV834 differentiates four CMS subtypes using different mean comparing methods.</p>
-<div id="t-test-for-a-few-pairs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#t-test-for-a-few-pairs" class="anchor"></a>t.test for a few pairs</h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_comparisons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS2"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS3"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS4"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">my_comparisons</span>, 
-                     method <span class="op">=</span> <span class="st">"t.test"</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">..p.adj..</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-14-1.png" width="480"></p>
-</div>
-<div id="anova-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#anova-1" class="anchor"></a>ANOVA</h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"anova"</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-15-1.png" width="480"></p>
-</div>
-<div id="kruskal-wallis-rank-sum-test-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#kruskal-wallis-rank-sum-test-1" class="anchor"></a>Kruskal-Wallis Rank Sum Test</h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'kruskal.test'</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
-<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-16-1.png" width="480"></p>
-</div>
-</div>
 <div id="binary-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#binary-variables" class="anchor"></a>Binary variables</h2>
-<p>We ran <code>t.test</code> between the below clinical variables and all sample scores. The test results were ordered based on p-value and top 6 of them are printed.</p>
+<p>We ran <code>t.test</code> between the four clinical variables and all sample scores. The test results were ordered based on p-value and the top 6 of them are printed. Both MSI and tumor location are explained best with RAV834 while tumor grade and stage seem to be more closely associated with RAV596 and RAV3290, respectively.</p>
 <div id="msi" class="section level3">
 <h3 class="hasAnchor">
 <a href="#msi" class="anchor"></a>MSI</h3>
@@ -366,6 +318,51 @@
 <a href="#stage" class="anchor"></a>Stage</h3>
 <pre><code>##      RAV3290      RAV2528       RAV234      RAV3264       RAV911       RAV766 
 ## 6.804255e-15 1.424937e-14 2.557679e-12 4.903492e-12 6.276130e-12 6.996570e-12</code></pre>
+</div>
+</div>
+</div>
+<div id="subtyping-with-ravs" class="section level1">
+<h1 class="hasAnchor">
+<a href="#subtyping-with-ravs" class="anchor"></a>Subtyping with RAVs</h1>
+<div id="score-plot" class="section level2">
+<h2 class="hasAnchor">
+<a href="#score-plot" class="anchor"></a>Score plot</h2>
+<p>Top two RAVs, RAV834 and RAV833, are identified from both ANOVA and Kruskal-Wallis Rank Sum Test. Below plot shows how these two RAVs are differentiating 18 CRC datasets. More related analyses are done in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_Subtyping.html">here</a>.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sampleScore1</span> <span class="op">&lt;-</span> <span class="fl">834</span>
+<span class="va">sampleScore2</span> <span class="op">&lt;-</span> <span class="fl">833</span>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4A_plotting.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="metadata_based_search_files/figure-html/subtype_plot-1.png" width="70%" height="70%"></p>
+</div>
+<div id="mean-comparing-methods" class="section level2">
+<h2 class="hasAnchor">
+<a href="#mean-comparing-methods" class="anchor"></a>Mean comparing methods</h2>
+<p>We further quantified how RAV834 separates four CMS subtypes using different mean comparing methods.</p>
+<div id="t-test-for-a-few-pairs" class="section level3">
+<h3 class="hasAnchor">
+<a href="#t-test-for-a-few-pairs" class="anchor"></a>t.test for a few pairs</h3>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_comparisons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS2"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS3"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CMS1"</span>, <span class="st">"CMS4"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>comparisons <span class="op">=</span> <span class="va">my_comparisons</span>, 
+                     method <span class="op">=</span> <span class="st">"t.test"</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">..p.adj..</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-18-1.png" width="60%" height="75%"></p>
+</div>
+<div id="anova-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#anova-1" class="anchor"></a>ANOVA</h3>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"anova"</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-19-1.png" width="60%" height="75%"></p>
+</div>
+<div id="kruskal-wallis-rank-sum-test-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#kruskal-wallis-rank-sum-test-1" class="anchor"></a>Kruskal-Wallis Rank Sum Test</h3>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">data_all</span>, x <span class="op">=</span> <span class="st">"cms_label_SSP"</span>, y <span class="op">=</span> <span class="st">"RAV834"</span>, fill <span class="op">=</span> <span class="st">"cms_label_SSP"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html">stat_compare_means</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'kruskal.test'</span>, label.y <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="co"># Add global p-value</span></code></pre></div>
+<p><img src="metadata_based_search_files/figure-html/unnamed-chunk-20-1.png" width="60%" height="75%"></p>
 </div>
 </div>
 </div>
@@ -396,7 +393,7 @@
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
 <span class="co">##  [1] dplyr_1.0.7                      ggpubr_0.4.0                    </span>
-<span class="co">##  [3] ggplot2_3.3.5                    GenomicSuperSignaturePaper_1.0.0</span>
+<span class="co">##  [3] ggplot2_3.3.5                    GenomicSuperSignaturePaper_1.0.1</span>
 <span class="co">##  [5] GenomicSuperSignature_1.1.4      SummarizedExperiment_1.22.0     </span>
 <span class="co">##  [7] Biobase_2.52.0                   GenomicRanges_1.44.0            </span>
 <span class="co">##  [9] GenomeInfoDb_1.28.1              IRanges_2.26.0                  </span>

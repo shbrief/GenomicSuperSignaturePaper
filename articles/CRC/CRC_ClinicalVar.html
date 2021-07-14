@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@
       <h1 data-toc-skip>Explain CRC clinical variables using RAVs</h1>
                         <h4 class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-07-09</h4>
+            <h4 class="date">2021-07-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/CRC_ClinicalVar.Rmd"><code>vignettes/CRC/CRC_ClinicalVar.Rmd</code></a></small>
       <div class="hidden name"><code>CRC_ClinicalVar.Rmd</code></div>
@@ -142,12 +142,17 @@
 <div id="setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h1>
+<div id="background" class="section level2">
+<h2 class="hasAnchor">
+<a href="#background" class="anchor"></a>Background</h2>
+<p>Using training and validation data of the original <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">CRC study</a>, we compared associations between different subtype models and RAVs with the same clinicopathological variables. Notably, these data were not part of RAV training and are microarray datasets whereas the RAVs were trained exclusively from RNA-seq data.</p>
+<p>As described previously in CRC study, we used the likelihood-ratio test (LRT) to compare the different subtype models for association with clinicopathological variables. A p-value near 1 (-log10p-value near 0) means that no additional information is provided by a full model composed of two subtype definitions compared to a model with only one.</p>
+<p>CMS-associated RAVs performed better than discrete CMS on all four phenotypes <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav834-833">(plot)</a> and also outperformed PCSSs except on tumor location <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav834-833">(plot)</a>. Interestingly, PCSS-associated RAVs were still better than CMS but slightly worse than PCSSs <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav1575-834">(plot)</a>, while CMS-associated RAVs were better than both CMS and PCSSs <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav1575-834">(plot)</a>, indicating that RAVs contain more comprehensive information. This performance improvement became more significant using only the 10 original validation datasets, excluding 8 datasets used to train the PCSS model. In conclusion, RAVs trained from heterogeneous datasets, not specific to CRC, captured biologically-relevant signatures for CRC as well or superior to focused efforts using CRC-specific databases, suggesting that RAVs are for general-use and can be applied to describe other diseases as well.</p>
+</div>
 <div id="select-training-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#select-training-dataset" class="anchor"></a>Select training dataset</h2>
-<ul>
-<li>CRC paper actually used both training and validation datasets (total of 18) for Figure 4. <del><code>Fig4C_CMSvs.R</code> and <code>Fig4C_contScores.R</code> scripts are using only 10 validation datasets. If you want to use all 18 datasets, block the below lines in those scripts.</del> The current version of vignette uses all 18 studies.</li>
-</ul>
+<p>CRC paper actually used both training and validation datasets (total of 18) for <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4/figures/4">Figure 4</a>. <del><code>Fig4C_CMSvs.R</code> and <code>Fig4C_contScores.R</code> scripts are using only 10 validation datasets. If you want to use all 18 datasets, block the below lines in those scripts.</del> The current version of vignette uses all 18 studies.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load("data/eSets/trainingSetNames.RData")</span>
 <span class="co"># validationSetNames &lt;- setdiff(setNames, trainingSetNames)</span>
@@ -177,13 +182,10 @@
 </li>
 </ul>
 </div>
-</div>
-<div id="compare-to-cms" class="section level1">
-<h1 class="hasAnchor">
-<a href="#compare-to-cms" class="anchor"></a>Compare to CMS</h1>
 <div id="cms-vs--pcss12" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cms-vs--pcss12" class="anchor"></a>CMS vs. PCSS1/2</h2>
+<p>Fisrt, we reproduce the previous result comparing the performance of PCSSs (continuous score) against CMS (discrete score).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
@@ -193,10 +195,14 @@
 <span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-2-1.png" width="480"></p>
 </div>
+</div>
+<div id="compare-to-cms" class="section level1">
+<h1 class="hasAnchor">
+<a href="#compare-to-cms" class="anchor"></a>Compare to CMS</h1>
 <div id="cms-vs--rav1575834" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cms-vs--rav1575834" class="anchor"></a>CMS vs. RAV1575/834</h2>
-<p>RAV1575/834 are the most similar PCclsuters to PCSS1/2, respectively, based on Pearson correlation.</p>
+<p>RAV1575/834 are the most similar RAVs to PCSS1/2, respectively, based on Pearson correlation.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV1575"</span>
@@ -209,7 +215,7 @@
 <div id="cms-vs--rav834833" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cms-vs--rav834833" class="anchor"></a>CMS vs. RAV834/833</h2>
-<p>RAV834/833 have the largest r-squared score when we compared the samples scores against the metadata, CMS.</p>
+<p>RAV834/833 have the highest r-squared score when we compared the sample scores against the metadata.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
@@ -233,12 +239,13 @@
 <p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-8-1.png" width="480"></p>
 </div>
 </div>
-<div id="compare-continuous-scores" class="section level1">
+<div id="compare-to-pcss" class="section level1">
 <h1 class="hasAnchor">
-<a href="#compare-continuous-scores" class="anchor"></a>Compare continuous scores</h1>
+<a href="#compare-to-pcss" class="anchor"></a>Compare to PCSS</h1>
 <div id="pcss-vs--rav1575834" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcss-vs--rav1575834" class="anchor"></a>PCSS vs. RAV1575/834</h2>
+<p>RAV1575/834 are the most similar RAVs to PCSS1/2, respectively, based on Pearson correlation.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
@@ -255,6 +262,7 @@
 <div id="pcss-vs--rav834833" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcss-vs--rav834833" class="anchor"></a>PCSS vs. RAV834/833</h2>
+<p>RAV834/833 have the highest r-squared score when we compared the sample scores against the metadata.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
@@ -271,6 +279,7 @@
 <div id="pcss-vs--rav832188" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pcss-vs--rav832188" class="anchor"></a>PCSS vs. RAV832/188</h2>
+<p>RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
