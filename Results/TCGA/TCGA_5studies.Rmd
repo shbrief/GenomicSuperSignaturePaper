@@ -167,7 +167,8 @@ and READ
 new_datasets <- lapply(datasets, assay)
 
 ## SLE-WB dataset
-SLEWBdir <- "~/data2/GenomicSuperSignaturePaper/Results/SLE-WB/data"
+project_dir <- here::here()
+SLEWBdir <- file.path(project_dir, "Results/SLE-WB/data")
 fname <- file.path(SLEWBdir, "SLE_WB_all_microarray_QN_zto_before_with_GeneSymbol.pcl")
 exprs <- readr::read_tsv(fname) %>% as.data.frame
 rownames(exprs) <- exprs$GeneSymbol
@@ -175,7 +176,7 @@ sle_wb <- as.matrix(exprs[,3:ncol(exprs)])
 new_datasets$SLE <- sle_wb
 
 ## CRC dataset
-CRCdir <- "~/data2/GenomicSuperSignaturePaper/Results/CRC/data/eSets_new/"
+CRCdir <- file.path(project_dir, "Results/CRC/data/eSets_new/")
 load(file.path(CRCdir, "GSE14095_eset.RData"))
 load(file.path(CRCdir, "GSE17536_eset.RData"))
 load(file.path(CRCdir, "GSE2109_eset.RData"))
