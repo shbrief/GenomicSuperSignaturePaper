@@ -154,6 +154,16 @@ To confirm that the weak correlation is not a limitation intrinsic to PLIER
 models or the MultiPLIER approach, the authors used [MCPcounter](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-1070-5) 
 to estimate cell type abundance in solid tissues and we also took this approach.
 
+* Install MCPcounter
+```{r message=FALSE}
+if (!"MCPcounter" %in% installed.packages())
+    devtools::install_github("ebecht/MCPcounter", 
+                         ref = "a79614eee002c88c64725d69140c7653e7c379b4",
+                         subdir = "Source",
+                         dependencies = TRUE)
+```
+
+* Run MCPcounter
 ```{r}
 ## Get cell type estimates with MCPcounter
 mcp.results <- MCPcounter::MCPcounter.estimate(expression = dataset,

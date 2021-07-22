@@ -29,7 +29,6 @@ One of the widely used exploratory data analysis methods is PCA and a PCA plot c
 suppressPackageStartupMessages({
   library(dplyr)
   library(GenomicSuperSignature)
-  library(ggplot2)
   library(EBImage)
 })
 ```
