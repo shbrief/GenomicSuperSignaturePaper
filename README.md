@@ -25,8 +25,4 @@ through GenomicSuperSignaturePaper package.
 ```
 ## Install GenomicSuperSignaturePaper
 devtools::document("shbrief/GenomicSuperSignaturePaper")
-
-## If you want to browse all the codes locally
-git clone https://github.com/shbrief/GenomicSuperSignaturePaper.git
-cd GenomicSuperSignaturePaper
 ```
