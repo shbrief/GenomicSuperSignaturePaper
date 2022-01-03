@@ -1,7 +1,8 @@
 ##### Required environmental variables #########################################
-# This script requires three environmental variables set before running:
+# This script requires four environmental variables before running:
 # - `m2_name` (column name for the model to be compared to CMS),
 # - `m2_1` and `m2_2` (names of the two model variables that form the group to be compared to CMS)
+# - `num_dat` (the number of CRC datasets for validation, 18 or 10)
 ################################################################################
 
 ## BioC or CRAN packages
@@ -17,10 +18,14 @@ library(metafor)
 library(logistf)
 
 ## Decide whether to use all 18 datasets (what CRC paper did) or only 10 validation datasets
-load(file.path("data/eSets/setNames.RData"))
-# load(file.path("data/eSets/trainingSetNames.RData"))
-# validationSetNames <- setdiff(setNames, trainingSetNames)
-# setNames <- validationSetNames
+if (num_dat == 18) {
+    load(file.path("data/eSets/setNames.RData"))
+} else if (num_dat == 10) {
+    load(file.path("data/eSets/setNames.RData"))
+    load(file.path("data/eSets/trainingSetNames.RData"))
+    validationSetNames <- setdiff(setNames, trainingSetNames)
+    setNames <- validationSetNames
+}
 
 ## Load validation samples
 for (set in setNames) {
@@ -39,7 +44,8 @@ vars.contrasts <- c("MSI", "r", "high", "late")
 names(vars.contrasts) <- vars
 
 ## CMS subtypes ----------------------------------------------------------------
-output.dir <- file.path("data/results/model_comparison/CMS/")
+output.dir.name <- paste(m2_1, m2_2, num_dat, "valData", sep = "_")
+output.dir <- file.path("data/results/model_comparison/CMS", output.dir.name)
 dir.create(output.dir, showWarnings = FALSE, recursive = TRUE)
 
 ## Binary outcomes
@@ -77,7 +83,7 @@ for (var in vars) {
       }
     }
   }
-  write.csv(results.table, file = paste0(output.dir, var, ".csv"))
+  write.csv(results.table, file = file.path(output.dir, paste0(var, ".csv")))
 }
 
 
@@ -88,7 +94,9 @@ for (var in vars) {
 # values. A good model is the one that has minimum AIC among all the other models.
 
 df.toplot <- lapply(vars, function(var) {
-  df.results <- read.csv(paste0("data/results/model_comparison/CMS/", var, ".csv"))
+  df.results <- read.csv(file.path("data/results/model_comparison/CMS",
+                                   output.dir.name,
+                                   paste0(var, ".csv")))
   # df.results <- df.results[df.results$PCSS1.sd < 100, ]
   return(data.frame(df.results, Variable = var))
 }) %>% Reduce('rbind', .) %>%
