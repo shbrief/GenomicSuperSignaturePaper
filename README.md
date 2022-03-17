@@ -6,8 +6,7 @@ package and the accompanying [manuscript](https://www.biorxiv.org/content/10.110
 
 To run analyses under `Results` and `Methods`, you need to download the 
 RAVmodel from Google bucket (it's free, FYI). Currently, two different 
-RAVmodels are available, annotated with different prior gene sets. Version
-history of the RAVmodels can be found [HERE]().
+RAVmodels are available, annotated with different prior gene sets. 
 
 ```
 ## Download the latest RAVmodel with wget
@@ -26,4 +25,9 @@ through GenomicSuperSignaturePaper package.
 ```
 ## Install GenomicSuperSignaturePaper
 devtools::document("shbrief/GenomicSuperSignaturePaper")
+```
+
+You can check the available RAVmodels through this function:
+```
+GenomicSuperSignature::availableRAVmodel()
 ```
