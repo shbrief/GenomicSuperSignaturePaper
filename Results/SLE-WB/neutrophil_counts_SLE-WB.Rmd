@@ -68,7 +68,7 @@ RAVmodel <- getModel("PLIERpriors", load=TRUE)
 ```{r}
 RAVmodel
 
-updateNote(RAVmodel)
+version(RAVmodel)
 ```
 
 

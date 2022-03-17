@@ -207,7 +207,7 @@ source_name_annotated <- read.csv(fname, sep = "\t")
 ```
 
 ### Cancer
-```{r echo=FALSE}
+```{r echo=FALSE, eval=TRUE}
 source_cancer <- source_name_annotated$cancer
 source_cancer <- tidyr::replace_na(source_cancer, "NA")
 
@@ -221,7 +221,7 @@ pie(slices, labels = lbls, main = "Cancer Studies in Training Data")
 ```
 
 ### Blood
-```{r echo=FALSE}
+```{r echo=FALSE, eval=TRUE}
 source_blood <- source_name_annotated$blood
 source_blood <- tidyr::replace_na(source_blood, "NA")
 
@@ -235,7 +235,7 @@ pie(slices, labels = lbls, main = "Blood Studies in Training Data")
 ```
 
 ### Cell Line
-```{r echo=FALSE}
+```{r echo=FALSE, eval=TRUE}
 source_cellLine <- source_name_annotated$cell_line
 source_cellLine <- tidyr::replace_na(source_cellLine, "NA")
 

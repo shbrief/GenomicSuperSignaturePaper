@@ -53,7 +53,7 @@ RAVmodel <- getModel("C2", load=TRUE)
 ```{r}
 RAVmodel
 
-updateNote(RAVmodel)
+version(RAVmodel)
 ```
 
 # RAVs vs. PCSSs
