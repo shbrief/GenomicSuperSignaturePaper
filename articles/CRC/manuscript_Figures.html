@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,14 +33,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     RAVmodel
      
     <span class="caret"></span>
@@ -56,7 +58,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     EDA
      
     <span class="caret"></span>
@@ -71,7 +73,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Subtyping
      
     <span class="caret"></span>
@@ -92,7 +94,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Transfer Learning
      
     <span class="caret"></span>
@@ -109,7 +111,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -124,138 +126,108 @@
 
       
 
-      </header><script src="manuscript_Figures_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Fig 3. Sample scores for disease subtyping and metadata characterization</h1>
-                        <h4 class="author">Sehyun Oh</h4>
+                        <h4 data-toc-skip class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-07-14</h4>
+            <h4 data-toc-skip class="date">2022-03-11</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/manuscript_Figures.Rmd"><code>vignettes/CRC/manuscript_Figures.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/HEAD/vignettes/CRC/manuscript_Figures.Rmd" class="external-link"><code>vignettes/CRC/manuscript_Figures.Rmd</code></a></small>
       <div class="hidden name"><code>manuscript_Figures.Rmd</code></div>
 
     </div>
 
     
     
-<div id="figure-3" class="section level1">
-<h1 class="hasAnchor">
-<a href="#figure-3" class="anchor"></a>Figure 3</h1>
+<div class="section level2">
+<h2 id="figure-3">Figure 3<a class="anchor" aria-label="anchor" href="#figure-3"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/scatter_834_833.rds"</span><span class="op">)</span>
-<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_CMS_vs_834_833.rds"</span><span class="op">)</span>
-<span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_PCSS_vs_834_833.rds"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/scatter_834_833.rds"</span><span class="op">)</span>
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_CMS_vs_834_833.rds"</span><span class="op">)</span>
+<span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_PCSS_vs_834_833.rds"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">abc</span> <span class="op">&lt;-</span> <span class="fu">ggarrange</span><span class="op">(</span><span class="fu">ggarrange</span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">value</span>, labels <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>,
                  <span class="fu">ggarrange</span><span class="op">(</span><span class="va">b</span><span class="op">$</span><span class="va">value</span>, <span class="va">c</span><span class="op">$</span><span class="va">value</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>,
                            nrow <span class="op">=</span> <span class="fl">2</span>, align <span class="op">=</span> <span class="st">"hv"</span>,
-                           heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
+                           heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
                  ncol <span class="op">=</span> <span class="fl">2</span>,
-                 widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.4</span>, <span class="fl">1</span><span class="op">)</span>,
-                 font.label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,
+                 widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.4</span>, <span class="fl">1</span><span class="op">)</span>,
+                 font.label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,
                  align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span>
-<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span>
-<span class="co">## Warning: Removed 82 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 82 rows containing missing values (geom_point).</span>
-<span class="va">abc</span></code></pre></div>
-<p><img src="manuscript_Figures_files/figure-html/Fig3-1.png" width="960"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">## Save Supplementary Figure 3</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">"manuscript_Fig3.png"</span>, width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">550</span><span class="op">)</span>
 <span class="va">abc</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## agg_png </span>
-<span class="co">##       2</span>
+
+<span class="co">## Save Supplementary Figure 3</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"manuscript_Fig3.png"</span>, width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">550</span><span class="op">)</span>
+<span class="va">abc</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co">## Clean-up</span>
-<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="va">c</span>,<span class="va">abc</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="va">c</span>,<span class="va">abc</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="supplementary-figure-5" class="section level1">
-<h1 class="hasAnchor">
-<a href="#supplementary-figure-5" class="anchor"></a>Supplementary Figure 5</h1>
+<div class="section level2">
+<h2 id="supplementary-figure-5">Supplementary Figure 5<a class="anchor" aria-label="anchor" href="#supplementary-figure-5"></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/scatter_1575_834.rds"</span><span class="op">)</span>
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_CMS_vs_1575_834.rds"</span><span class="op">)</span>
+<span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_PCSS_vs_1575_834.rds"</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/scatter_832_188.rds"</span><span class="op">)</span>
+<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_CMS_vs_832_188.rds"</span><span class="op">)</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_PCSS_vs_832_188.rds"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/scatter_1575_834.rds"</span><span class="op">)</span>
-<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_CMS_vs_1575_834.rds"</span><span class="op">)</span>
-<span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_PCSS_vs_1575_834.rds"</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/scatter_832_188.rds"</span><span class="op">)</span>
-<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_CMS_vs_832_188.rds"</span><span class="op">)</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/boxplot_PCSS_vs_832_188.rds"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu">ggarrange</span><span class="op">(</span><span class="fu">ggarrange</span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">value</span>, <span class="va">d</span><span class="op">$</span><span class="va">value</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"D"</span><span class="op">)</span>, 
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"D"</span><span class="op">)</span>, 
                            nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
                  <span class="fu">ggarrange</span><span class="op">(</span><span class="va">b</span><span class="op">$</span><span class="va">value</span>, <span class="va">c</span><span class="op">$</span><span class="va">value</span>, <span class="va">e</span><span class="op">$</span><span class="va">value</span>, <span class="va">f</span><span class="op">$</span><span class="va">value</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"E"</span>, <span class="st">"F"</span><span class="op">)</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"E"</span>, <span class="st">"F"</span><span class="op">)</span>,
                            nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,
                  ncol <span class="op">=</span> <span class="fl">2</span>,
-                 widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.4</span>, <span class="fl">1</span><span class="op">)</span>,
-                 font.label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,
+                 widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.4</span>, <span class="fl">1</span><span class="op">)</span>,
+                 font.label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,
                  align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span>
-<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span>
-<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span>
-<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span>
-<span class="co">## Warning: Removed 84 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 84 rows containing missing values (geom_point).</span>
-<span class="va">all</span></code></pre></div>
-<p><img src="manuscript_Figures_files/figure-html/Sup_Fig5-1.png" width="960"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">## Save Supplementary Figure 3</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">"manuscript_Sup_Fig5.png"</span>, width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">1100</span><span class="op">)</span>
 <span class="va">all</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## agg_png </span>
-<span class="co">##       2</span>
+
+<span class="co">## Save Supplementary Figure 3</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"manuscript_Sup_Fig5.png"</span>, width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">1100</span><span class="op">)</span>
+<span class="va">all</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co">## Clean-up</span>
-<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="va">c</span>,<span class="va">d</span>,<span class="va">e</span>,<span class="va">f</span>,<span class="va">all</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="va">c</span>,<span class="va">d</span>,<span class="va">e</span>,<span class="va">f</span>,<span class="va">all</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="supplementary-figure-6" class="section level1">
-<h1 class="hasAnchor">
-<a href="#supplementary-figure-6" class="anchor"></a>Supplementary Figure 6</h1>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/scatter_PCSS.rds"</span><span class="op">)</span>
-<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/scatter_834_833.rds"</span><span class="op">)</span>
-<span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/boxplot_CMS_vs_PCSS.rds"</span><span class="op">)</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/boxplot_CMS_vs_834_833.rds"</span><span class="op">)</span>
-<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/boxplot_PCSS_vs_834_833.rds"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="section level2">
+<h2 id="supplementary-figure-6">Supplementary Figure 6<a class="anchor" aria-label="anchor" href="#supplementary-figure-6"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/scatter_PCSS.rds"</span><span class="op">)</span>
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/scatter_834_833.rds"</span><span class="op">)</span>
+<span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/boxplot_CMS_vs_PCSS.rds"</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/boxplot_CMS_vs_834_833.rds"</span><span class="op">)</span>
+<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"outputs/10_CRC_datasets/boxplot_PCSS_vs_834_833.rds"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu">ggarrange</span><span class="op">(</span><span class="fu">ggarrange</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">$</span><span class="va">value</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, 
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, 
                            nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
                  <span class="fu">ggarrange</span><span class="op">(</span><span class="va">c</span><span class="op">$</span><span class="va">value</span>, <span class="va">d</span><span class="op">$</span><span class="va">value</span>, <span class="va">e</span><span class="op">$</span><span class="va">value</span>,
-                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span><span class="op">)</span>,
+                           labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span><span class="op">)</span>,
                            nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
                  ncol <span class="op">=</span> <span class="fl">2</span>,
-                 widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.4</span>, <span class="fl">1</span><span class="op">)</span>,
-                 font.label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,
+                 widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.4</span>, <span class="fl">1</span><span class="op">)</span>,
+                 font.label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,
                  align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span>
-<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span>
-<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span>
-<span class="co">## Warning: Removed 44 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 44 rows containing missing values (geom_point).</span>
-<span class="va">all</span></code></pre></div>
-<p><img src="manuscript_Figures_files/figure-html/Sup_Fig6-1.png" width="931.2"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">## Save Supplementary Figure 3</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">"manuscript_Sup_Fig6.png"</span>, width <span class="op">=</span> <span class="fl">700</span>, height <span class="op">=</span> <span class="fl">770</span><span class="op">)</span>
 <span class="va">all</span>
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## agg_png </span>
-<span class="co">##       2</span>
+
+<span class="co">## Save Supplementary Figure 3</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"manuscript_Sup_Fig6.png"</span>, width <span class="op">=</span> <span class="fl">700</span>, height <span class="op">=</span> <span class="fl">770</span><span class="op">)</span>
+<span class="va">all</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co">## Clean-up</span>
-<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="va">c</span>,<span class="va">d</span>,<span class="va">e</span>,<span class="va">all</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="va">c</span>,<span class="va">d</span>,<span class="va">e</span>,<span class="va">all</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
@@ -270,11 +242,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sehyun Oh.</p>
+  <p></p>
+<p>Developed by Sehyun Oh.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -282,6 +256,8 @@
 
   
 
+
+  
 
   </body>
 </html>

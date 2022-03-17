@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,14 +33,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     RAVmodel
      
     <span class="caret"></span>
@@ -56,7 +58,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     EDA
      
     <span class="caret"></span>
@@ -71,7 +73,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Subtyping
      
     <span class="caret"></span>
@@ -92,7 +94,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Transfer Learning
      
     <span class="caret"></span>
@@ -109,7 +111,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -126,24 +128,24 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="genomicsupersignaturepaper" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#genomicsupersignaturepaper" class="anchor"></a>GenomicSuperSignaturePaper</h1></div>
-<p>Here, we presents the usecases and benchmarking examples of <a href="http://www.bioconductor.org/packages/release/bioc/html/GenomicSuperSignature.html">GenomicSuperSignature</a> R/Bioconductor package. More description on these examples can be found in the <a href="https://www.biorxiv.org/content/10.1101/2021.05.26.445900v1">manuscript</a>.</p>
-<div id="disease-subtyping" class="section level2">
-<h2 class="hasAnchor">
-<a href="#disease-subtyping" class="anchor"></a>Disease Subtyping</h2>
-<p>To compare the utility of GenomicSuperSignature relative to the focused use of data from a single disease, we compared RAVs to <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">the previous study</a> (referred as <em>CRC paper</em> below) that employed colorectal cancer (CRC) gene expression databases to identify CRC molecular subtypes.</p>
-<div id="continuous-subtype-score" class="section level4">
-<h4 class="hasAnchor">
-<a href="#continuous-subtype-score" class="anchor"></a>Continuous Subtype Score</h4>
+<div class="section level1">
+<div class="page-header"><h1 id="genomicsupersignaturepaper">GenomicSuperSignaturePaper<a class="anchor" aria-label="anchor" href="#genomicsupersignaturepaper"></a>
+</h1></div>
+<p>Here, we presents the usecases and benchmarking examples of <a href="http://www.bioconductor.org/packages/release/bioc/html/GenomicSuperSignature.html" class="external-link">GenomicSuperSignature</a> R/Bioconductor package. More description on these examples can be found in the <a href="https://www.biorxiv.org/content/10.1101/2021.05.26.445900v1" class="external-link">manuscript</a>.</p>
+<div class="section level2">
+<h2 id="disease-subtyping">Disease Subtyping<a class="anchor" aria-label="anchor" href="#disease-subtyping"></a>
+</h2>
+<p>To compare the utility of GenomicSuperSignature relative to the focused use of data from a single disease, we compared RAVs to <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4" class="external-link">the previous study</a> (referred as <em>CRC paper</em> below) that employed colorectal cancer (CRC) gene expression databases to identify CRC molecular subtypes.</p>
+<div class="section level4">
+<h4 id="continuous-subtype-score">Continuous Subtype Score<a class="anchor" aria-label="anchor" href="#continuous-subtype-score"></a>
+</h4>
 <p>The left panel is Figure 4A from CRC paper and the right panel is the CRC subtype separation by GenomicSuperSignature. CRC paper built the continuous score model based on the 8 colorectal cancer specific, microarray datasets with graph-based clustering method. GenomicSuperSignature was generated from 536 heterogeneous, RNA sequencing datasets and used hierarchical clustering. Despite of these major differences in model building process, GenomicSuperSignature and CRC paper’s model show comparable performance.</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/CRC_Fig4A.png" width="300" height="300"><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/scatter_834_833.png" width="300" height="300"></p>
-<p>Details on these plots are described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_Subtyping.html">Subtyping/CRC subtype scores</a>.</p>
+<p>Details on these plots are described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_Subtyping.html" class="external-link">Subtyping/CRC subtype scores</a>.</p>
 </div>
-<div id="clinical-variables" class="section level4">
-<h4 class="hasAnchor">
-<a href="#clinical-variables" class="anchor"></a>Clinical Variables</h4>
+<div class="section level4">
+<h4 id="clinical-variables">Clinical Variables<a class="anchor" aria-label="anchor" href="#clinical-variables"></a>
+</h4>
 <p>Below is Figure 4 from CRC paper. LRT (likelihood-ratio test) between the reference full model versus either the continuous scores only model or the discrete subtypes only model are plotted here. A p-value near 1 (−log10p-value near 0) suggests that no additional information is provided by the full model.</p>
 <p>This results shows that PCSS1/2 (the second column, <em>score</em>) provide additional information in characterizing molecular/histological/clinical correlates than CMS (the first column, <em>subtype</em>).</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/CRC_Fig4C.png" width="500" height="300"></p>
@@ -154,22 +156,22 @@
 <p>We directly compared the performance between PCSSs and RAVs. Except the tumor location (the last panel), RAV834/833-based model out-performed PCSS1/2-based model relative to the combined model.</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/CRC/outputs/png/boxplot_PCSS_vs_834_833.png" width="500" height="300"></p>
 <p></p>
-<p>Details on the above plots are described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html">Subtyping/CRC clinical variables</a>.</p>
+<p>Details on the above plots are described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html" class="external-link">Subtyping/CRC clinical variables</a>.</p>
 </div>
 </div>
-<div id="transfer-learning" class="section level2">
-<h2 class="hasAnchor">
-<a href="#transfer-learning" class="anchor"></a>Transfer Learning</h2>
-<p>For practical and technical reasons, biological datasets often contain missing information or signals buried in noise. GenomicSuperSignature can fill out those gaps by uncovering weak or indirectly measured biological attributes of a new dataset by leveraging the existing databases. To evaluate this ‘transfer learning’ aspect of the GenomicSuperSignature, we compared the neutrophil count estimation by RAVs across two different datasets, systemic lupus erythematosus whole blood (<a href="https://www.cell.com/cell/pdfExtended/S0092-8674(16)30264-1">SLE-WB</a>) and nasal brushing (<a href="https://onlinelibrary.wiley.com/doi/full/10.1002/art.39185">NARES</a>) datasets as described in <a href="https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30119-X?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121930119X%3Fshowall%3Dtrue">the previous study</a>(referred as <em>MultiPLIER paper</em> below).</p>
-<div id="neutrophil-countsestimates" class="section level4">
-<h4 class="hasAnchor">
-<a href="#neutrophil-countsestimates" class="anchor"></a>Neutrophil Counts/Estimates</h4>
-<p>The top panel is Figure 3 from MultiPLIER paper and the bottom panel is the result from GenomicSuperSignature. In MultiPLIER paper, latent variables (LVs) were built from recount2 datasets using <a href="https://www.nature.com/articles/s41592-019-0456-1">Pathway-level information extractor (PLIER)</a> method. Despite of the major differences in model building process, GenomicSuperSignature and MultiPLIER paper’s results show comparable performance.</p>
+<div class="section level2">
+<h2 id="transfer-learning">Transfer Learning<a class="anchor" aria-label="anchor" href="#transfer-learning"></a>
+</h2>
+<p>For practical and technical reasons, biological datasets often contain missing information or signals buried in noise. GenomicSuperSignature can fill out those gaps by uncovering weak or indirectly measured biological attributes of a new dataset by leveraging the existing databases. To evaluate this ‘transfer learning’ aspect of the GenomicSuperSignature, we compared the neutrophil count estimation by RAVs across two different datasets, systemic lupus erythematosus whole blood (<a href="https://www.cell.com/cell/pdfExtended/S0092-8674(16)30264-1" class="external-link">SLE-WB</a>) and nasal brushing (<a href="https://onlinelibrary.wiley.com/doi/full/10.1002/art.39185" class="external-link">NARES</a>) datasets as described in <a href="https://www.cell.com/cell-systems/fulltext/S2405-4712(19)30119-X?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121930119X%3Fshowall%3Dtrue" class="external-link">the previous study</a>(referred as <em>MultiPLIER paper</em> below).</p>
+<div class="section level4">
+<h4 id="neutrophil-countsestimates">Neutrophil Counts/Estimates<a class="anchor" aria-label="anchor" href="#neutrophil-countsestimates"></a>
+</h4>
+<p>The top panel is Figure 3 from MultiPLIER paper and the bottom panel is the result from GenomicSuperSignature. In MultiPLIER paper, latent variables (LVs) were built from recount2 datasets using <a href="https://www.nature.com/articles/s41592-019-0456-1" class="external-link">Pathway-level information extractor (PLIER)</a> method. Despite of the major differences in model building process, GenomicSuperSignature and MultiPLIER paper’s results show comparable performance.</p>
 <p>Neutrophil-associated LV, LV603, from MultiPLIER model shows the positive correlation with neutrophil counts/estimates of two different datasets, SLE-WB and NARES.</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/inst/images/multiPLIER_Fig3.png" width="600" height="200"></p>
 <p> We used SLE-WB dataset to identify the neutrophil-associated RAV, RAV1551, and applied it to NARES dataset.</p>
 <p><img src="https://raw.githubusercontent.com/shbrief/GenomicSuperSignaturePaper/master/Results/multiPLIER_Fig3.png" width="600" height="200"></p>
-<p>Details on the analysis process are described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/SLE-WB/neutrophil_counts_SLE-WB.html">Transfer Learning/Neutrophil (SLE-WB)</a> and <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/NARES/neutrophil_counts_NARES.html">Transfer Learning/Neutrophil (NARES)</a>.</p>
+<p>Details on the analysis process are described in <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/SLE-WB/neutrophil_counts_SLE-WB.html" class="external-link">Transfer Learning/Neutrophil (SLE-WB)</a> and <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/NARES/neutrophil_counts_NARES.html" class="external-link">Transfer Learning/Neutrophil (NARES)</a>.</p>
 </div>
 </div>
 </div>
@@ -177,37 +179,49 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/shbrief/GenomicSuperSignaturePaper/">https://​github.com/​shbrief/​GenomicSuperSignaturePaper/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/shbrief/GenomicSuperSignaturePaper/issues">https://​github.com/​shbrief/​GenomicSuperSignaturePaper/​issues</a>
-</li>
+<li><a href="https://github.com/shbrief/GenomicSuperSignaturePaper/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/shbrief/GenomicSuperSignaturePaper/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a></li>
+<li><a href="https://www.r-project.org/Licenses/Artistic-2.0" class="external-link">Artistic-2.0</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing GenomicSuperSignaturePaper</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Sehyun Oh <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Sehyun Oh.</p>
+  <p></p>
+<p>Developed by Sehyun Oh.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -215,6 +229,8 @@
 
   
 
+
+  
 
   </body>
 </html>

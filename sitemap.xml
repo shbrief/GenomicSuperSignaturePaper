@@ -1,18 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://shbrief.github.io/PCAGenomicSignaturesPaper//index.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://shbrief.github.io/PCAGenomicSignaturesPaper//reference/LVScatter.html</loc>
+    <loc>/articles/5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl.html</loc>
   </url>
   <url>
-    <loc>https://shbrief.github.io/PCAGenomicSignaturesPaper//reference/checkPathwaySeparation.html</loc>
+    <loc>/articles/CRC/CRC_ClinicalVar.html</loc>
   </url>
   <url>
-    <loc>https://shbrief.github.io/PCAGenomicSignaturesPaper//reference/getAssociatedPCclusters.html</loc>
+    <loc>/articles/CRC/CRC_Subtyping.html</loc>
   </url>
   <url>
-    <loc>https://shbrief.github.io/PCAGenomicSignaturesPaper//reference/gg_color_hue.html</loc>
+    <loc>/articles/CRC/CRC_Subtyping_Grant.html</loc>
+  </url>
+  <url>
+    <loc>/articles/CRC/PCSS_vs_RAV.html</loc>
+  </url>
+  <url>
+    <loc>/articles/CRC/data/SummaryForFig4.html</loc>
+  </url>
+  <url>
+    <loc>/articles/CRC/manuscript_Figures.html</loc>
+  </url>
+  <url>
+    <loc>/articles/CRC/metadata_based_search.html</loc>
+  </url>
+  <url>
+    <loc>/articles/E-MTAB-2452/E-MTAB-2452.html</loc>
+  </url>
+  <url>
+    <loc>/articles/NARES/neutrophil_counts_NARES.html</loc>
+  </url>
+  <url>
+    <loc>/articles/SLE-WB/neutrophil_counts_SLE-WB.html</loc>
+  </url>
+  <url>
+    <loc>/articles/TCGA/TCGA_5studies.html</loc>
+  </url>
+  <url>
+    <loc>/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>/articles/manuscript.html</loc>
+  </url>
+  <url>
+    <loc>/articles/model/PCs_In_Clusters.html</loc>
+  </url>
+  <url>
+    <loc>/articles/multiPLIER_Fig3.html</loc>
+  </url>
+  <url>
+    <loc>/articles/others/repeat_Fig5_Pathway_Separation.html</loc>
+  </url>
+  <url>
+    <loc>/articles/prepare_Inputs/preprocess_on_score.html</loc>
+  </url>
+  <url>
+    <loc>/articles/prepare_Inputs/preprocess_on_validation.html</loc>
+  </url>
+  <url>
+    <loc>/articles/select_numOfClusters/find_optimum_k.html</loc>
+  </url>
+  <url>
+    <loc>/articles/training_datasets/available_samples.html</loc>
+  </url>
+  <url>
+    <loc>/authors.html</loc>
+  </url>
+  <url>
+    <loc>/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/LVScatter.html</loc>
+  </url>
+  <url>
+    <loc>/reference/checkPathwaySeparation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/commonGene.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getAssociatedRAVs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gg_color_hue.html</loc>
+  </url>
+  <url>
+    <loc>/reference/index.html</loc>
   </url>
 </urlset>

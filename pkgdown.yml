@@ -1,10 +1,11 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1
+pandoc: 2.14.0.3
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
-  prepare_Inputs/preprocess_on_score: preprocess_on_score.html
-  prepare_Inputs/preprocess_on_validation: preprocess_on_validation.html
-  select_numOfClusters/find_optimum_k: find_optimum_k.html
-  training_datasets/available_samples: available_samples.html
-last_built: 2021-07-14T14:58Z
+  5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl: 5_Hierarchical_Clustering_with_SpikeInTCGA_moreNegControl.html
+  preprocess_on_score: prepare_Inputs/preprocess_on_score.html
+  preprocess_on_validation: prepare_Inputs/preprocess_on_validation.html
+  find_optimum_k: select_numOfClusters/find_optimum_k.html
+  available_samples: training_datasets/available_samples.html
+last_built: 2022-03-17T17:52Z
 

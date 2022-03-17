@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,14 +33,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     RAVmodel
      
     <span class="caret"></span>
@@ -56,7 +58,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     EDA
      
     <span class="caret"></span>
@@ -71,7 +73,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Subtyping
      
     <span class="caret"></span>
@@ -92,7 +94,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Transfer Learning
      
     <span class="caret"></span>
@@ -109,7 +111,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -124,43 +126,43 @@
 
       
 
-      </header><script src="CRC_ClinicalVar_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Explain CRC clinical variables using RAVs</h1>
-                        <h4 class="author">Sehyun Oh</h4>
+                        <h4 data-toc-skip class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-07-14</h4>
+            <h4 data-toc-skip class="date">2022-03-16</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/CRC/CRC_ClinicalVar.Rmd"><code>vignettes/CRC/CRC_ClinicalVar.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/HEAD/vignettes/CRC/CRC_ClinicalVar.Rmd" class="external-link"><code>vignettes/CRC/CRC_ClinicalVar.Rmd</code></a></small>
       <div class="hidden name"><code>CRC_ClinicalVar.Rmd</code></div>
 
     </div>
 
     
+        <div class="abstract">
+      <p class="abstract">Abstract</p>
+      <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/CRC/CRC_ClinicalVar.Rmd" class="external-link"><strong>Source Code</strong></a>
+    </div>
     
-<div id="setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h1>
-<div id="background" class="section level2">
-<h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
-<p>Using training and validation data of the original <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4">CRC study</a>, we compared associations between different subtype models and RAVs with the same clinicopathological variables. Notably, these data were not part of RAV training and are microarray datasets whereas the RAVs were trained exclusively from RNA-seq data.</p>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
+<div class="section level3">
+<h3 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h3>
+<p>Using training and validation data of the original <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4" class="external-link">CRC study</a>, we compared associations between different subtype models and RAVs with the same clinicopathological variables. Notably, these data were not part of RAV training and are microarray datasets whereas the RAVs were trained exclusively from RNA-seq data.</p>
 <p>As described previously in CRC study, we used the likelihood-ratio test (LRT) to compare the different subtype models for association with clinicopathological variables. A p-value near 1 (-log10p-value near 0) means that no additional information is provided by a full model composed of two subtype definitions compared to a model with only one.</p>
-<p>CMS-associated RAVs performed better than discrete CMS on all four phenotypes <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav834-833">(plot)</a> and also outperformed PCSSs except on tumor location <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav834-833">(plot)</a>. Interestingly, PCSS-associated RAVs were still better than CMS but slightly worse than PCSSs <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav1575-834">(plot)</a>, while CMS-associated RAVs were better than both CMS and PCSSs <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav1575-834">(plot)</a>, indicating that RAVs contain more comprehensive information. This performance improvement became more significant using only the 10 original validation datasets, excluding 8 datasets used to train the PCSS model. In conclusion, RAVs trained from heterogeneous datasets, not specific to CRC, captured biologically-relevant signatures for CRC as well or superior to focused efforts using CRC-specific databases, suggesting that RAVs are for general-use and can be applied to describe other diseases as well.</p>
+<p>CMS-associated RAVs performed better than discrete CMS on all four phenotypes <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav834-833" class="external-link">(plot)</a> and also outperformed PCSSs except on tumor location <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav834-833" class="external-link">(plot)</a>. Interestingly, PCSS-associated RAVs were still better than CMS but slightly worse than PCSSs <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#cms-vs-rav1575-834" class="external-link">(plot)</a>, while CMS-associated RAVs were better than both CMS and PCSSs <a href="https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_ClinicalVar.html#pcss-vs-rav1575-834" class="external-link">(plot)</a>, indicating that RAVs contain more comprehensive information. This performance improvement became more significant using only the 10 original validation datasets, excluding 8 datasets used to train the PCSS model. In conclusion, RAVs trained from heterogeneous datasets, not specific to CRC, captured biologically-relevant signatures for CRC as well or superior to focused efforts using CRC-specific databases, suggesting that RAVs are for general-use and can be applied to describe other diseases as well.</p>
 </div>
-<div id="select-training-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#select-training-dataset" class="anchor"></a>Select training dataset</h2>
-<p>CRC paper actually used both training and validation datasets (total of 18) for <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4/figures/4">Figure 4</a>. <del><code>Fig4C_CMSvs.R</code> and <code>Fig4C_contScores.R</code> scripts are using only 10 validation datasets. If you want to use all 18 datasets, block the below lines in those scripts.</del> The current version of vignette uses all 18 studies.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load("data/eSets/trainingSetNames.RData")</span>
-<span class="co"># validationSetNames &lt;- setdiff(setNames, trainingSetNames)</span>
-<span class="co"># setNames &lt;- validationSetNames</span></code></pre></div>
+<div class="section level3">
+<h3 id="select-training-dataset">Select training dataset<a class="anchor" aria-label="anchor" href="#select-training-dataset"></a>
+</h3>
+<p>CRC paper actually used both training and validation datasets (total of 18) for <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4/figures/4" class="external-link">Figure 4</a>. If you want to use all 18 datasets, assign the variable <code>num_dat = 18</code>. If you want only 10 CRC datasets excluding 8 datasets used to build PCSSs, assign <code>num_dat = 10</code>.</p>
 </div>
-<div id="required-inputs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#required-inputs" class="anchor"></a>Required inputs</h2>
+<div class="section level3">
+<h3 id="required-inputs">Required inputs<a class="anchor" aria-label="anchor" href="#required-inputs"></a>
+</h3>
 <ul>
 <li>3 environmental variables for <code>Fig4C_CMSvs.R</code>:
 <ul>
@@ -168,7 +170,10 @@
 <code>m2_name</code> (column name for the model to be compared to CMS)<br>
 </li>
 <li>
-<code>m2_1</code> and <code>m2_2</code> (names of the two model variables that form the group to be compared to CMS)</li>
+<code>m2_1</code> and <code>m2_2</code> (names of the two model variables that form the group to be compared to CMS)<br>
+</li>
+<li>
+<code>num_dat</code> for the number of CRC datasets for testing (18 or 10)</li>
 </ul>
 </li>
 <li>6 environmental variables for <code>Fig4C_contScores.R</code>:
@@ -178,168 +183,292 @@
 </li>
 <li>
 <code>m2_name</code>, <code>m2_1</code>, <code>m2_2</code> for the other</li>
+<li>
+<code>num_dat</code> for the number of CRC datasets for testing (18 or 10)</li>
 </ul>
 </li>
 </ul>
 </div>
-<div id="cms-vs--pcss12" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cms-vs--pcss12" class="anchor"></a>CMS vs. PCSS1/2</h2>
-<p>Fisrt, we reproduce the previous result comparing the performance of PCSSs (continuous score) against CMS (discrete score).</p>
+<div class="section level3">
+<h3 id="cms-vs--pcss12">CMS vs. PCSS1/2<a class="anchor" aria-label="anchor" href="#cms-vs--pcss12"></a>
+</h3>
+<p>First, we reproduce the previous result comparing the performance of PCSSs (continuous score) against CMS (discrete score).</p>
+<div class="section level4">
+<h4 id="crc-validation-datasets">18 CRC validation datasets<a class="anchor" aria-label="anchor" href="#crc-validation-datasets"></a>
+</h4>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
+<span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">18</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
+<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-1-1.png" width="480"></p>
+</div>
+<div class="section level4">
+<h4 id="crc-validation-datasets-1">10 CRC validation datasets<a class="anchor" aria-label="anchor" href="#crc-validation-datasets-1"></a>
+</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-2-1.png" width="480"></p>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">10</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></code></pre></div>
+<p><img src="CRC_ClinicalVar_files/figure-html/Sup6C-1.png" width="480"></p>
 </div>
 </div>
-<div id="compare-to-cms" class="section level1">
-<h1 class="hasAnchor">
-<a href="#compare-to-cms" class="anchor"></a>Compare to CMS</h1>
-<div id="cms-vs--rav1575834" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cms-vs--rav1575834" class="anchor"></a>CMS vs. RAV1575/834</h2>
+<div class="section level3">
+<h3 id="figures-in-the-paper">Figures in the paper<a class="anchor" aria-label="anchor" href="#figures-in-the-paper"></a>
+</h3>
+<p>Here is the summary of boxplots in our paper.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Figures</th>
+<th>Models</th>
+<th># validation data</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Fig.3B</td>
+<td>CMS vs. RAV834/833</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td>Fig.3C</td>
+<td>PCSS1/2 vs. RAV834/833</td>
+<td>18</td>
+</tr>
+<tr class="odd">
+<td>Sup.Fig.5B</td>
+<td>CMS vs. RAV1575/834</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td>Sup.Fig.5C</td>
+<td>PCSS1/2 vs. RAV1575/834</td>
+<td>18</td>
+</tr>
+<tr class="odd">
+<td>Sup.Fig.5E</td>
+<td>CMS vs. RAV832/188</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td>Sup.Fig.5F</td>
+<td>PCSS1/2 vs. RAV832/188</td>
+<td>18</td>
+</tr>
+<tr class="odd">
+<td>Fig.6C</td>
+<td>CMS vs. PCSS1/2</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Fig.6D</td>
+<td>CMS vs. RAV834/833</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Fig.6E</td>
+<td>PCSS1/2 vs. RAV834/833</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level2">
+<h2 id="compare-to-cms">Compare to CMS<a class="anchor" aria-label="anchor" href="#compare-to-cms"></a>
+</h2>
+<div class="section level3">
+<h3 id="cms-vs--rav1575834">CMS vs. RAV1575/834<a class="anchor" aria-label="anchor" href="#cms-vs--rav1575834"></a>
+</h3>
 <p>RAV1575/834 are the most similar RAVs to PCSS1/2, respectively, based on Pearson correlation.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV1575"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">18</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
 <span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
+<p><img src="CRC_ClinicalVar_files/figure-html/Sup5B-1.png" width="480"></p>
 </div>
-<div id="cms-vs--rav834833" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cms-vs--rav834833" class="anchor"></a>CMS vs. RAV834/833</h2>
+<div class="section level3">
+<h3 id="cms-vs--rav834833">CMS vs. RAV834/833<a class="anchor" aria-label="anchor" href="#cms-vs--rav834833"></a>
+</h3>
 <p>RAV834/833 have the highest r-squared score when we compared the sample scores against the metadata.</p>
+<div class="section level4">
+<h4 id="crc-validation-datasets-2">18 CRC validation datasets<a class="anchor" aria-label="anchor" href="#crc-validation-datasets-2"></a>
+</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV833"</span>
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">18</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
 <span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-6-1.png" width="480"></p>
+<p><img src="CRC_ClinicalVar_files/figure-html/3B-1.png" width="480"></p>
 </div>
-<div id="cms-vs--rav832188" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cms-vs--rav832188" class="anchor"></a>CMS vs. RAV832/188</h2>
-<p>RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.</p>
+<div class="section level4">
+<h4 id="crc-validation-datasets-3">10 CRC validation datasets<a class="anchor" aria-label="anchor" href="#crc-validation-datasets-3"></a>
+</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
+<span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
+<span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV833"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">10</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></code></pre></div>
+<p><img src="CRC_ClinicalVar_files/figure-html/Sup6D-1.png" width="480"></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="cms-vs--rav832188">CMS vs. RAV832/188<a class="anchor" aria-label="anchor" href="#cms-vs--rav832188"></a>
+</h3>
+<p>RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV832"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV188"</span>
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">18</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_CMSvs.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
 <span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-8-1.png" width="480"></p>
+<p><img src="CRC_ClinicalVar_files/figure-html/Sup5E-1.png" width="480"></p>
 </div>
 </div>
-<div id="compare-to-pcss" class="section level1">
-<h1 class="hasAnchor">
-<a href="#compare-to-pcss" class="anchor"></a>Compare to PCSS</h1>
-<div id="pcss-vs--rav1575834" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pcss-vs--rav1575834" class="anchor"></a>PCSS vs. RAV1575/834</h2>
+<div class="section level2">
+<h2 id="compare-to-pcss">Compare to PCSS<a class="anchor" aria-label="anchor" href="#compare-to-pcss"></a>
+</h2>
+<div class="section level3">
+<h3 id="pcss-vs--rav1575834">PCSS vs. RAV1575/834<a class="anchor" aria-label="anchor" href="#pcss-vs--rav1575834"></a>
+</h3>
 <p>RAV1575/834 are the most similar RAVs to PCSS1/2, respectively, based on Pearson correlation.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV1575"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">18</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
 <span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-10-1.png" width="480"></p>
+<p><img src="CRC_ClinicalVar_files/figure-html/Sup5C-1.png" width="480"></p>
 </div>
-<div id="pcss-vs--rav834833" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pcss-vs--rav834833" class="anchor"></a>PCSS vs. RAV834/833</h2>
+<div class="section level3">
+<h3 id="pcss-vs--rav834833">PCSS vs. RAV834/833<a class="anchor" aria-label="anchor" href="#pcss-vs--rav834833"></a>
+</h3>
 <p>RAV834/833 have the highest r-squared score when we compared the sample scores against the metadata.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="crc-validation-datasets-4">18 CRC validation datasets<a class="anchor" aria-label="anchor" href="#crc-validation-datasets-4"></a>
+</h4>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV833"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">18</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## Warning: Removed 82 rows containing non-finite values (stat_boxplot).</span>
 <span class="co">## Warning: Removed 82 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-12-1.png" width="480"></p>
+<p><img src="CRC_ClinicalVar_files/figure-html/3C-1.png" width="480"></p>
 </div>
-<div id="pcss-vs--rav832188" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pcss-vs--rav832188" class="anchor"></a>PCSS vs. RAV832/188</h2>
-<p>RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
-<span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
-<span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
-<span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
-<span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV832"</span>
-<span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV188"</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 84 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 84 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-14-1.png" width="480"></p>
-</div>
-<div id="pcss-vs--rav8343290" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pcss-vs--rav8343290" class="anchor"></a>PCSS vs. RAV834/3290</h2>
-<p>RAV3290 is associated with “stage” metadata of CRC datasets.</p>
+<div class="section level4">
+<h4 id="crc-validation-datasets-5">10 CRC validation datasets<a class="anchor" aria-label="anchor" href="#crc-validation-datasets-5"></a>
+</h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
-<span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV3290"</span>
+<span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV833"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 86 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 86 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-16-1.png" width="480"></p>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">## Warning: Removed 44 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 44 rows containing missing values (geom_point).</span></code></pre></div>
+<p><img src="CRC_ClinicalVar_files/figure-html/Sup6E-1.png" width="480"></p>
 </div>
-<div id="pcss-vs--rav834596" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pcss-vs--rav834596" class="anchor"></a>PCSS vs. RAV834/596</h2>
-<p>RAV596 is associated with “grade” metadata of CRC datasets.</p>
+</div>
+<div class="section level3">
+<h3 id="pcss-vs--rav832188">PCSS vs. RAV832/188<a class="anchor" aria-label="anchor" href="#pcss-vs--rav832188"></a>
+</h3>
+<p>RAV832/188 are the most frequently validated RAVs for 18 CRC datasets.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
+<span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
+<span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
+<span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV832"</span>
+<span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV188"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">18</span>
+
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">## Warning: Removed 84 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 84 rows containing missing values (geom_point).</span></code></pre></div>
+<p><img src="CRC_ClinicalVar_files/figure-html/Sup5F-1.png" width="480"></p>
+</div>
+<div class="section level3">
+<h3 id="pcss-vs--rav8343290">PCSS vs. RAV834/3290<a class="anchor" aria-label="anchor" href="#pcss-vs--rav8343290"></a>
+</h3>
+<p>RAV3290 is associated with “stage” metadata of CRC datasets.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
+<span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
+<span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
+<span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
+<span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
+<span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV3290"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">10</span>
+
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">## Warning: Removed 46 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 46 rows containing missing values (geom_point).</span></code></pre></div>
+<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-12-1.png" width="480"></p>
+</div>
+<div class="section level3">
+<h3 id="pcss-vs--rav834596">PCSS vs. RAV834/596<a class="anchor" aria-label="anchor" href="#pcss-vs--rav834596"></a>
+</h3>
+<p>RAV596 is associated with “grade” metadata of CRC datasets.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m1_name</span> <span class="op">&lt;-</span> <span class="st">"PCSS"</span>
 <span class="va">m1_1</span> <span class="op">&lt;-</span> <span class="st">"PCSS1"</span>
 <span class="va">m1_2</span> <span class="op">&lt;-</span> <span class="st">"PCSS2"</span>
 <span class="va">m2_name</span> <span class="op">&lt;-</span> <span class="st">"RAV"</span>
 <span class="va">m2_1</span> <span class="op">&lt;-</span> <span class="st">"RAV834"</span>
 <span class="va">m2_2</span> <span class="op">&lt;-</span> <span class="st">"RAV596"</span>
+<span class="va">num_dat</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Warning: Removed 84 rows containing non-finite values (stat_boxplot).</span>
-<span class="co">## Warning: Removed 84 rows containing missing values (geom_point).</span></code></pre></div>
-<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-18-1.png" width="480"></p>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"R/Fig4C_contScores.R"</span>, print.eval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">## Warning: Removed 44 rows containing non-finite values (stat_boxplot).</span>
+<span class="co">## Warning: Removed 44 rows containing missing values (geom_point).</span></code></pre></div>
+<p><img src="CRC_ClinicalVar_files/figure-html/unnamed-chunk-14-1.png" width="480"></p>
 </div>
 </div>
-<div id="session-info" class="section level1">
-<h1 class="hasAnchor">
-<a href="#session-info" class="anchor"></a>Session Info</h1>
-<details><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## R version 4.1.0 (2021-05-18)</span>
+<div class="section level2">
+<h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
+<details><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">## R version 4.1.2 (2021-11-01)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">## Running under: Ubuntu 18.04.5 LTS</span>
+<span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
 <span class="co">## Matrix products: default</span>
-<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3</span>
-<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so</span>
+<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
 <span class="co">## </span>
 <span class="co">## locale:</span>
 <span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
@@ -350,43 +479,43 @@
 <span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
 <span class="co">## </span>
 <span class="co">## attached base packages:</span>
-<span class="co">## [1] parallel  stats     graphics  grDevices utils     datasets  methods  </span>
-<span class="co">## [8] base     </span>
+<span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">##  [1] logistf_1.24        metafor_3.0-2       Matrix_1.3-4       </span>
-<span class="co">##  [4] survival_3.2-11     forcats_0.5.1       stringr_1.4.0      </span>
-<span class="co">##  [7] dplyr_1.0.7         purrr_0.3.4         readr_1.4.0        </span>
-<span class="co">## [10] tidyr_1.1.3         tibble_3.1.2        ggplot2_3.3.5      </span>
-<span class="co">## [13] tidyverse_1.3.1     Biobase_2.52.0      BiocGenerics_0.38.0</span>
-<span class="co">## [16] BiocStyle_2.20.2   </span>
+<span class="co">##  [1] logistf_1.24.1      metafor_3.0-2       Matrix_1.4-0       </span>
+<span class="co">##  [4] survival_3.2-13     forcats_0.5.1       stringr_1.4.0      </span>
+<span class="co">##  [7] dplyr_1.0.8         purrr_0.3.4         readr_2.1.2        </span>
+<span class="co">## [10] tidyr_1.2.0         tibble_3.1.6        ggplot2_3.3.5      </span>
+<span class="co">## [13] tidyverse_1.3.1     Biobase_2.54.0      BiocGenerics_0.40.0</span>
+<span class="co">## [16] BiocStyle_2.22.0   </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] nlme_3.1-152         fs_1.5.0             lubridate_1.7.10    </span>
-<span class="co">##  [4] httr_1.4.2           rprojroot_2.0.2      tools_4.1.0         </span>
-<span class="co">##  [7] backports_1.2.1      bslib_0.2.5.1        utf8_1.2.1          </span>
-<span class="co">## [10] R6_2.5.0             DBI_1.1.1            mgcv_1.8-36         </span>
-<span class="co">## [13] colorspace_2.0-2     withr_2.4.2          tidyselect_1.1.1    </span>
-<span class="co">## [16] compiler_4.1.0       textshaping_0.3.5    cli_3.0.0           </span>
-<span class="co">## [19] rvest_1.0.0          mice_3.13.0          xml2_1.3.2          </span>
-<span class="co">## [22] desc_1.3.0           labeling_0.4.2       bookdown_0.22       </span>
-<span class="co">## [25] sass_0.4.0           scales_1.1.1         pkgdown_1.6.1       </span>
-<span class="co">## [28] systemfonts_1.0.2    digest_0.6.27        rmarkdown_2.9       </span>
-<span class="co">## [31] pkgconfig_2.0.3      htmltools_0.5.1.1    dbplyr_2.1.1        </span>
-<span class="co">## [34] fastmap_1.1.0        highr_0.9            rlang_0.4.11        </span>
+<span class="co">##  [1] nlme_3.1-155         fs_1.5.2             lubridate_1.8.0     </span>
+<span class="co">##  [4] httr_1.4.2           rprojroot_2.0.2      tools_4.1.2         </span>
+<span class="co">##  [7] backports_1.4.1      bslib_0.3.1          utf8_1.2.2          </span>
+<span class="co">## [10] R6_2.5.1             DBI_1.1.2            mgcv_1.8-38         </span>
+<span class="co">## [13] colorspace_2.0-3     withr_2.5.0          tidyselect_1.1.2    </span>
+<span class="co">## [16] compiler_4.1.2       textshaping_0.3.6    cli_3.2.0           </span>
+<span class="co">## [19] rvest_1.0.2          mice_3.14.0          xml2_1.3.3          </span>
+<span class="co">## [22] desc_1.4.1           labeling_0.4.2       bookdown_0.25       </span>
+<span class="co">## [25] sass_0.4.0           scales_1.1.1         pkgdown_2.0.2       </span>
+<span class="co">## [28] systemfonts_1.0.4    digest_0.6.29        rmarkdown_2.13      </span>
+<span class="co">## [31] pkgconfig_2.0.3      htmltools_0.5.2      highr_0.9           </span>
+<span class="co">## [34] dbplyr_2.1.1         fastmap_1.1.0        rlang_1.0.2         </span>
 <span class="co">## [37] readxl_1.3.1         rstudioapi_0.13      jquerylib_0.1.4     </span>
-<span class="co">## [40] generics_0.1.0       farver_2.1.0         jsonlite_1.7.2      </span>
-<span class="co">## [43] magrittr_2.0.1       Rcpp_1.0.7           munsell_0.5.0       </span>
-<span class="co">## [46] fansi_0.5.0          lifecycle_1.0.0      stringi_1.6.2       </span>
-<span class="co">## [49] yaml_2.2.1           mathjaxr_1.4-0       grid_4.1.0          </span>
-<span class="co">## [52] formula.tools_1.7.1  crayon_1.4.1         lattice_0.20-44     </span>
-<span class="co">## [55] haven_2.4.1          splines_4.1.0        hms_1.1.0           </span>
-<span class="co">## [58] knitr_1.33           pillar_1.6.1         reprex_2.0.0        </span>
-<span class="co">## [61] glue_1.4.2           evaluate_0.14        BiocManager_1.30.16 </span>
+<span class="co">## [40] generics_0.1.2       farver_2.1.0         jsonlite_1.8.0      </span>
+<span class="co">## [43] magrittr_2.0.2       Rcpp_1.0.8.2         munsell_0.5.0       </span>
+<span class="co">## [46] fansi_1.0.2          lifecycle_1.0.1      stringi_1.7.6       </span>
+<span class="co">## [49] yaml_2.3.5           mathjaxr_1.6-0       grid_4.1.2          </span>
+<span class="co">## [52] formula.tools_1.7.1  crayon_1.5.0         lattice_0.20-45     </span>
+<span class="co">## [55] haven_2.4.3          splines_4.1.2        hms_1.1.1           </span>
+<span class="co">## [58] knitr_1.37           pillar_1.7.0         reprex_2.0.1        </span>
+<span class="co">## [61] glue_1.6.2           evaluate_0.15        BiocManager_1.30.16 </span>
 <span class="co">## [64] modelr_0.1.8         operator.tools_1.6.3 vctrs_0.3.8         </span>
-<span class="co">## [67] cellranger_1.1.0     gtable_0.3.0         assertthat_0.2.1    </span>
-<span class="co">## [70] cachem_1.0.5         xfun_0.24            broom_0.7.8         </span>
-<span class="co">## [73] ragg_1.1.3           memoise_2.0.0        ellipsis_0.3.2</span></code></pre></div>
+<span class="co">## [67] tzdb_0.2.0           cellranger_1.1.0     gtable_0.3.0        </span>
+<span class="co">## [70] assertthat_0.2.1     cachem_1.0.6         xfun_0.30           </span>
+<span class="co">## [73] broom_0.7.12         ragg_1.2.2           memoise_2.0.1       </span>
+<span class="co">## [76] ellipsis_0.3.2</span></code></pre></div>
 </details>
 </div>
   </div>
@@ -402,11 +531,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sehyun Oh.</p>
+  <p></p>
+<p>Developed by Sehyun Oh.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -414,6 +545,8 @@
 
   
 
+
+  
 
   </body>
 </html>

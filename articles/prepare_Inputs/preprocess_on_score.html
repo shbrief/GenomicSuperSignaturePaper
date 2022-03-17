@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,14 +33,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     RAVmodel
      
     <span class="caret"></span>
@@ -56,7 +58,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     EDA
      
     <span class="caret"></span>
@@ -71,7 +73,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Subtyping
      
     <span class="caret"></span>
@@ -92,7 +94,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Transfer Learning
      
     <span class="caret"></span>
@@ -109,7 +111,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -124,156 +126,226 @@
 
       
 
-      </header><script src="preprocess_on_score_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>How preprocessing affects scores from GenomicSuperSignature</h1>
-                        <h4 class="author">Sehyun Oh</h4>
+                        <h4 data-toc-skip class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-07-14</h4>
+            <h4 data-toc-skip class="date">2022-03-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/prepare_Inputs/preprocess_on_score.Rmd"><code>vignettes/prepare_Inputs/preprocess_on_score.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/HEAD/vignettes/prepare_Inputs/preprocess_on_score.Rmd" class="external-link"><code>vignettes/prepare_Inputs/preprocess_on_score.Rmd</code></a></small>
       <div class="hidden name"><code>preprocess_on_score.Rmd</code></div>
 
     </div>
 
     
     
-<div id="setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h1>
-<div id="load-packages" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-packages" class="anchor"></a>Load packages</h2>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
+<div class="section level3">
+<h3 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shbrief/GenomicSuperSignature">GenomicSuperSignature</a></span><span class="op">)</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shbrief/GenomicSuperSignature" class="external-link">GenomicSuperSignature</a></span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="ravmodel" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ravmodel" class="anchor"></a>RAVmodel</h2>
+<div class="section level3">
+<h3 id="ravmodel">RAVmodel<a class="anchor" aria-label="anchor" href="#ravmodel"></a>
+</h3>
 <p>This RAVmodel is built using top 20 PCs of 536 studies. The number of cluster was decided by <code>d=2.25</code> and MSigDB C2 gene sets are used for GSEA-based annotation.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
-<span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"RAVmodel_C2.rds"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">data.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GenomicSuperSignaturePaper"</span><span class="op">)</span>
+<span class="va">RAVmodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data.dir</span>, <span class="st">"RAVmodel_C2.rds"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">RAVmodel</span></code></pre></div>
-<pre><code>## class: PCAGenomicSignatures 
-## dim: 13934 4764 
-## metadata(7): cluster size ... updateNote version
-## assays(1): RAVindex
-## rownames(13934): CASKIN1 DDX3Y ... CTC-457E21.9 AC007966.1
-## rowData names(0):
-## colnames(4764): RAV1 RAV2 ... RAV4763 RAV4764
-## colData names(4): RAV studies silhouetteWidth gsea
-## trainingData(2): PCAsummary MeSH
-## trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</code></pre>
+<pre><code><span class="co">## class: PCAGenomicSignatures </span>
+<span class="co">## dim: 13934 4764 </span>
+<span class="co">## metadata(8): cluster size ... version geneSets</span>
+<span class="co">## assays(1): RAVindex</span>
+<span class="co">## rownames(13934): CASKIN1 DDX3Y ... CTC-457E21.9 AC007966.1</span>
+<span class="co">## rowData names(0):</span>
+<span class="co">## colnames(4764): RAV1 RAV2 ... RAV4763 RAV4764</span>
+<span class="co">## colData names(4): RAV studies silhouetteWidth gsea</span>
+<span class="co">## trainingData(2): PCAsummary MeSH</span>
+<span class="co">## trainingData names(536): DRP000987 SRP059172 ... SRP164913 SRP188526</span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/GenomicSignatures-methods.html">updateNote</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "536 refine.bio studies/ top 90% varying genes/ GSEA with MSigDB C2"</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Version.html" class="external-link">version</a></span><span class="op">(</span><span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] "1.1.1"</span></code></pre>
 </div>
 </div>
-<div id="example-data-e-mtab-2452" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example-data-e-mtab-2452" class="anchor"></a>Example data: E-MTAB-2452</h1>
-<div id="normalized" class="section level2">
-<h2 class="hasAnchor">
-<a href="#normalized" class="anchor"></a>Normalized</h2>
+<div class="section level2">
+<h2 id="example-data-e-mtab-2452">Example data: E-MTAB-2452<a class="anchor" aria-label="anchor" href="#example-data-e-mtab-2452"></a>
+</h2>
+<div class="section level3">
+<h3 id="normalized">Normalized<a class="anchor" aria-label="anchor" href="#normalized"></a>
+</h3>
 <p>The isolated immune cell data (ArrayExpress: E-MTAB-2452) is normalized using Single Channel Array Normalization (SCANfast implementation) and Brainarray v22.0.0.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat_dir</span> <span class="op">&lt;-</span> <span class="st">"~/data2/[archive]Genomic_Super_Signature/multiPLIER/data"</span>
-<span class="va">annot.dat</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">dat_dir</span>, <span class="st">"E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
+<code class="sourceCode R"><span class="va">dat_dir</span> <span class="op">&lt;-</span> <span class="st">"~/Data/multi-plier/data/expression_data/"</span>
+<span class="va">annot.dat</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dat_dir</span>, <span class="st">"E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.data.frame</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>
 
-<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">$</span><span class="va">GeneSymbol</span>
+<span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">[</span>, <span class="fl">3</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">annot.dat</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annot.dat</span><span class="op">$</span><span class="va">GeneSymbol</span>
 <span class="va">dataset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></code></pre></div>
-<pre><code>##      CD14_triad0058_1.CEL CD14_triad0058_2.CEL CD14_triad0058_3.CEL
-## A1BG         1.154439e-01           0.17987252           0.17031624
-## NAT2        -7.464545e-06          -0.09915562          -0.02097987
-##      CD14_triad0058_4.CEL
-## A1BG            0.1767473
-## NAT2           -0.1269907</code></pre>
+<pre><code><span class="co">##      CD14_triad0058_1.CEL CD14_triad0058_2.CEL CD14_triad0058_3.CEL</span>
+<span class="co">## A1BG         1.154439e-01           0.17987252           0.17031624</span>
+<span class="co">## NAT2        -7.464545e-06          -0.09915562          -0.02097987</span>
+<span class="co">##      CD14_triad0058_4.CEL</span>
+<span class="co">## A1BG            0.1767473</span>
+<span class="co">## NAT2           -0.1269907</span></code></pre>
 <p><strong>Normalization</strong> usually means to scale a variable to have a values between 0 and 1, while <strong>standardization</strong> transforms data to have a mean of zero and a standard deviation of 1.</p>
-<div id="distribution-in-histogram" class="section level3">
-<h3 class="hasAnchor">
-<a href="#distribution-in-histogram" class="anchor"></a>Distribution in histogram</h3>
+<div class="section level4">
+<h4 id="distribution-in-histogram">Distribution in histogram<a class="anchor" aria-label="anchor" href="#distribution-in-histogram"></a>
+</h4>
 <p><img src="preprocess_on_score_files/figure-html/unnamed-chunk-4-1.png" width="384"></p>
 </div>
-<div id="validation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#validation" class="anchor"></a>Validation</h3>
+<div class="section level4">
+<h4 id="validation">Validation<a class="anchor" aria-label="anchor" href="#validation"></a>
+</h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">val_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/validate.html">validate</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/heatmapTable.html">heatmapTable</a></span><span class="op">(</span><span class="va">val_all</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">val_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/validate.html" class="external-link">validate</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/heatmapTable.html" class="external-link">heatmapTable</a></span><span class="op">(</span><span class="va">val_all</span>, <span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
 <p><img src="preprocess_on_score_files/figure-html/unnamed-chunk-5-1.png" width="336"></p>
 </div>
-<div id="score" class="section level3">
-<h3 class="hasAnchor">
-<a href="#score" class="anchor"></a>Score</h3>
+<div class="section level4">
+<h4 id="score">Score<a class="anchor" aria-label="anchor" href="#score"></a>
+</h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">scoreHM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/calculateScore.html">calculateScore</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">scoreHM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/calculateScore.html" class="external-link">calculateScore</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
 <p><img src="preprocess_on_score_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p><img src="preprocess_on_score_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">keywords</span> <span class="op">&lt;-</span> <span class="st">"CD4|monocyte|neutrophil"</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/findSignature.html">findSignature</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">keywords</span><span class="op">)</span></code></pre></div>
-<pre><code>##   # of keyword-containing pathways Freq
-## 1                                0 4721
-## 2                                1   40
-## 3                                2    3</code></pre>
+<span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/findSignature.html" class="external-link">findSignature</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">keywords</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   # of keyword-containing pathways Freq</span>
+<span class="co">## 1                                0 4721</span>
+<span class="co">## 2                                1   41</span>
+<span class="co">## 3                                2    2</span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/findSignature.html">findSignature</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">keywords</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1]    7 1551 3297</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/findSignature.html" class="external-link">findSignature</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="va">keywords</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1]    7 1551</span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/subsetEnrichedPathways.html">subsetEnrichedPathways</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1551</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 5 rows and 1 column
-##                     RAV1551
-##                 &lt;character&gt;
-## Up_1 REACTOME_NEUTROPHIL_..
-## Up_2 THEILGAARD_NEUTROPHI..
-## Up_3 ALTEMEIER_RESPONSE_T..
-## Up_4 VERHAAK_AML_WITH_NPM..
-## Up_5 VERHAAK_GLIOBLASTOMA..</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/subsetEnrichedPathways.html" class="external-link">subsetEnrichedPathways</a></span><span class="op">(</span><span class="va">RAVmodel</span>, <span class="fl">1551</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## DataFrame with 5 rows and 1 column</span>
+<span class="co">##         RAV1551.Description</span>
+<span class="co">##                 &lt;character&gt;</span>
+<span class="co">## Up_1 THEILGAARD_NEUTROPHI..</span>
+<span class="co">## Up_2 REACTOME_NEUTROPHIL_..</span>
+<span class="co">## Up_3 ALTEMEIER_RESPONSE_T..</span>
+<span class="co">## Up_4 VERHAAK_AML_WITH_NPM..</span>
+<span class="co">## Up_5 VERHAAK_GLIOBLASTOMA..</span></code></pre>
 </div>
 </div>
-<div id="centered" class="section level2">
-<h2 class="hasAnchor">
-<a href="#centered" class="anchor"></a>Centered</h2>
-<div id="distribution-in-histogram-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#distribution-in-histogram-1" class="anchor"></a>Distribution in histogram</h3>
+<div class="section level3">
+<h3 id="centered">Centered<a class="anchor" aria-label="anchor" href="#centered"></a>
+</h3>
+<div class="section level4">
+<h4 id="distribution-in-histogram-1">Distribution in histogram<a class="anchor" aria-label="anchor" href="#distribution-in-histogram-1"></a>
+</h4>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dataset_centered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">t</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">dataset_centered</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dataset_centered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">t</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">dataset_centered</span><span class="op">)</span></code></pre></div>
 <p><img src="preprocess_on_score_files/figure-html/unnamed-chunk-12-1.png" width="384"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## centering doesn't affect validation result</span>
-<span class="va">validated_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/validatedSignatures.html">validatedSignatures</a></span><span class="op">(</span><span class="va">val_all</span>, num.out <span class="op">=</span> <span class="fl">5</span>, indexOnly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">scoreHM_centered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/calculateScore.html">calculateScore</a></span><span class="op">(</span><span class="va">dataset_centered</span>, <span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
+<span class="va">validated_ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/validatedSignatures.html" class="external-link">validatedSignatures</a></span><span class="op">(</span><span class="va">val_all</span>, <span class="va">RAVmodel</span>, 
+                                     num.out <span class="op">=</span> <span class="fl">5</span>, indexOnly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">scoreHM_centered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicSuperSignature/man/calculateScore.html" class="external-link">calculateScore</a></span><span class="op">(</span><span class="va">dataset_centered</span>, <span class="va">RAVmodel</span><span class="op">)</span></code></pre></div>
 <p>Centering doesn’t affect scores.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">scoreHM</span><span class="op">[</span>,<span class="va">validated_ind</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<pre><code>##                            RAV23      RAV1551  RAV1552   RAV1992       RAV776
-## CD14_triad0058_1.CEL  0.15014619 -0.131418860 1.237262 0.6737490  0.079363215
-## CD14_triad0058_2.CEL -0.02134346  0.009105929 1.048683 0.6975598 -0.023896647
-## CD14_triad0058_3.CEL  0.06870722 -0.061326057 1.145391 0.6780799  0.007445651
-## CD14_triad0058_4.CEL  0.05940305 -0.089278201 1.123546 0.6369002  0.101138469
-## CD14_triad0058_5.CEL  0.10600594 -0.066649244 1.235938 0.7209257  0.022297764
-## CD14_triad0058_6.CEL  0.08358457 -0.092049167 1.224873 0.6921574  0.137148534</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">scoreHM</span><span class="op">[</span>,<span class="va">validated_ind</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##                            RAV23      RAV1551  RAV1552   RAV1992      RAV776</span>
+<span class="co">## CD14_triad0058_1.CEL  0.15504879 -0.135331301 1.234195 0.6756024  0.08509252</span>
+<span class="co">## CD14_triad0058_2.CEL -0.01821836  0.005269965 1.045079 0.7003539 -0.01945834</span>
+<span class="co">## CD14_triad0058_3.CEL  0.07334810 -0.066034721 1.142592 0.6801110  0.01219311</span>
+<span class="co">## CD14_triad0058_4.CEL  0.06182560 -0.092842743 1.119110 0.6404748  0.10487606</span>
+<span class="co">## CD14_triad0058_5.CEL  0.11062364 -0.070532328 1.232928 0.7232169  0.02734139</span>
+<span class="co">## CD14_triad0058_6.CEL  0.08741377 -0.096142926 1.221164 0.6949307  0.14194980</span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">scoreHM_centered</span><span class="op">[</span>,<span class="va">validated_ind</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<pre><code>##                            RAV23      RAV1551  RAV1552   RAV1992       RAV776
-## CD14_triad0058_1.CEL  0.15014619 -0.131418860 1.237262 0.6737490  0.079363215
-## CD14_triad0058_2.CEL -0.02134346  0.009105929 1.048683 0.6975598 -0.023896647
-## CD14_triad0058_3.CEL  0.06870722 -0.061326057 1.145391 0.6780799  0.007445651
-## CD14_triad0058_4.CEL  0.05940305 -0.089278201 1.123546 0.6369002  0.101138469
-## CD14_triad0058_5.CEL  0.10600594 -0.066649244 1.235938 0.7209257  0.022297764
-## CD14_triad0058_6.CEL  0.08358457 -0.092049167 1.224873 0.6921574  0.137148534</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">scoreHM_centered</span><span class="op">[</span>,<span class="va">validated_ind</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##                            RAV23      RAV1551  RAV1552   RAV1992      RAV776</span>
+<span class="co">## CD14_triad0058_1.CEL  0.15504879 -0.135331301 1.234195 0.6756024  0.08509252</span>
+<span class="co">## CD14_triad0058_2.CEL -0.01821836  0.005269965 1.045079 0.7003539 -0.01945834</span>
+<span class="co">## CD14_triad0058_3.CEL  0.07334810 -0.066034721 1.142592 0.6801110  0.01219311</span>
+<span class="co">## CD14_triad0058_4.CEL  0.06182560 -0.092842743 1.119110 0.6404748  0.10487606</span>
+<span class="co">## CD14_triad0058_5.CEL  0.11062364 -0.070532328 1.232928 0.7232169  0.02734139</span>
+<span class="co">## CD14_triad0058_6.CEL  0.08741377 -0.096142926 1.221164 0.6949307  0.14194980</span></code></pre>
 </div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
+<details><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## R version 4.1.2 (2021-11-01)</span>
+<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
+<span class="co">## </span>
+<span class="co">## Matrix products: default</span>
+<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
+<span class="co">## </span>
+<span class="co">## locale:</span>
+<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
+<span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
+<span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">## </span>
+<span class="co">## attached base packages:</span>
+<span class="co">## [1] grid      stats4    stats     graphics  grDevices utils     datasets </span>
+<span class="co">## [8] methods   base     </span>
+<span class="co">## </span>
+<span class="co">## other attached packages:</span>
+<span class="co">##  [1] ComplexHeatmap_2.10.0       RColorBrewer_1.1-2         </span>
+<span class="co">##  [3] dplyr_1.0.8                 GenomicSuperSignature_1.3.4</span>
+<span class="co">##  [5] SummarizedExperiment_1.24.0 Biobase_2.54.0             </span>
+<span class="co">##  [7] GenomicRanges_1.46.1        GenomeInfoDb_1.30.1        </span>
+<span class="co">##  [9] IRanges_2.28.0              S4Vectors_0.32.3           </span>
+<span class="co">## [11] BiocGenerics_0.40.0         MatrixGenerics_1.6.0       </span>
+<span class="co">## [13] matrixStats_0.61.0          BiocStyle_2.22.0           </span>
+<span class="co">## </span>
+<span class="co">## loaded via a namespace (and not attached):</span>
+<span class="co">##  [1] bitops_1.0-7           fs_1.5.2               bit64_4.0.5           </span>
+<span class="co">##  [4] filelock_1.0.2         httr_1.4.2             doParallel_1.0.17     </span>
+<span class="co">##  [7] rprojroot_2.0.2        tools_4.1.2            backports_1.4.1       </span>
+<span class="co">## [10] bslib_0.3.1            utf8_1.2.2             R6_2.5.1              </span>
+<span class="co">## [13] DBI_1.1.2              colorspace_2.0-3       GetoptLong_1.0.5      </span>
+<span class="co">## [16] tidyselect_1.1.2       curl_4.3.2             bit_4.0.4             </span>
+<span class="co">## [19] compiler_4.1.2         textshaping_0.3.6      cli_3.2.0             </span>
+<span class="co">## [22] desc_1.4.1             DelayedArray_0.20.0    bookdown_0.25         </span>
+<span class="co">## [25] sass_0.4.0             scales_1.1.1           readr_2.1.2           </span>
+<span class="co">## [28] rappdirs_0.3.3         pkgdown_2.0.2          systemfonts_1.0.4     </span>
+<span class="co">## [31] stringr_1.4.0          digest_0.6.29          rmarkdown_2.13        </span>
+<span class="co">## [34] XVector_0.34.0         pkgconfig_2.0.3        htmltools_0.5.2       </span>
+<span class="co">## [37] highr_0.9              dbplyr_2.1.1           fastmap_1.1.0         </span>
+<span class="co">## [40] rlang_1.0.2            GlobalOptions_0.1.2    RSQLite_2.2.10        </span>
+<span class="co">## [43] shape_1.4.6            jquerylib_0.1.4        generics_0.1.2        </span>
+<span class="co">## [46] jsonlite_1.8.0         vroom_1.5.7            car_3.0-12            </span>
+<span class="co">## [49] RCurl_1.98-1.6         magrittr_2.0.2         GenomeInfoDbData_1.2.7</span>
+<span class="co">## [52] Matrix_1.4-0           Rcpp_1.0.8.2           munsell_0.5.0         </span>
+<span class="co">## [55] fansi_1.0.2            abind_1.4-5            lifecycle_1.0.1       </span>
+<span class="co">## [58] stringi_1.7.6          yaml_2.3.5             carData_3.0-5         </span>
+<span class="co">## [61] zlibbioc_1.40.0        BiocFileCache_2.2.1    blob_1.2.2            </span>
+<span class="co">## [64] parallel_4.1.2         crayon_1.5.0           lattice_0.20-45       </span>
+<span class="co">## [67] hms_1.1.1              circlize_0.4.14        magick_2.7.3          </span>
+<span class="co">## [70] knitr_1.37             pillar_1.7.0           ggpubr_0.4.0          </span>
+<span class="co">## [73] rjson_0.2.21           ggsignif_0.6.3         codetools_0.2-18      </span>
+<span class="co">## [76] glue_1.6.2             evaluate_0.15          BiocManager_1.30.16   </span>
+<span class="co">## [79] tzdb_0.2.0             png_0.1-7              vctrs_0.3.8           </span>
+<span class="co">## [82] foreach_1.5.2          gtable_0.3.0           purrr_0.3.4           </span>
+<span class="co">## [85] tidyr_1.2.0            clue_0.3-60            assertthat_0.2.1      </span>
+<span class="co">## [88] cachem_1.0.6           ggplot2_3.3.5          xfun_0.30             </span>
+<span class="co">## [91] broom_0.7.12           rstatix_0.7.0          ragg_1.2.2            </span>
+<span class="co">## [94] tibble_3.1.6           iterators_1.0.14       memoise_2.0.1         </span>
+<span class="co">## [97] cluster_2.1.2          ellipsis_0.3.2</span></code></pre>
+</details>
 </div>
   </div>
 
@@ -288,11 +360,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sehyun Oh.</p>
+  <p></p>
+<p>Developed by Sehyun Oh.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -300,6 +374,8 @@
 
   
 
+
+  
 
   </body>
 </html>

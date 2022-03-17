@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,14 +33,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     RAVmodel
      
     <span class="caret"></span>
@@ -56,7 +58,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     EDA
      
     <span class="caret"></span>
@@ -71,7 +73,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Subtyping
      
     <span class="caret"></span>
@@ -92,7 +94,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Transfer Learning
      
     <span class="caret"></span>
@@ -109,7 +111,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper">
+  <a href="https://github.com/shbrief/GenomicSuperSignaturePaper" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -124,31 +126,35 @@
 
       
 
-      </header><script src="find_optimum_k_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Find the optimum number of clusters for hierarchical clustering</h1>
-                        <h4 class="author">Sehyun Oh</h4>
+                        <h4 data-toc-skip class="author">Sehyun Oh</h4>
             
-            <h4 class="date">2021-07-14</h4>
+            <h4 data-toc-skip class="date">2022-03-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/vignettes/select_numOfClusters/find_optimum_k.Rmd"><code>vignettes/select_numOfClusters/find_optimum_k.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/HEAD/vignettes/select_numOfClusters/find_optimum_k.Rmd" class="external-link"><code>vignettes/select_numOfClusters/find_optimum_k.Rmd</code></a></small>
       <div class="hidden name"><code>find_optimum_k.Rmd</code></div>
 
     </div>
 
     
+        <div class="abstract">
+      <p class="abstract">Abstract</p>
+      <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Methods/select_numOfClusters/find_optimum_k.Rmd" class="external-link"><strong>Source Code</strong></a>
+    </div>
     
-<div id="preparae-negative-controls" class="section level1">
-<h1 class="hasAnchor">
-<a href="#preparae-negative-controls" class="anchor"></a>Preparae negative controls</h1>
-<div id="build-negative-controls" class="section level2">
-<h2 class="hasAnchor">
-<a href="#build-negative-controls" class="anchor"></a>Build negative controls</h2>
+<div class="section level2">
+<h2 id="preparae-negative-controls">Preparae negative controls<a class="anchor" aria-label="anchor" href="#preparae-negative-controls"></a>
+</h2>
+<div class="section level3">
+<h3 id="build-negative-controls">Build negative controls<a class="anchor" aria-label="anchor" href="#build-negative-controls"></a>
+</h3>
 <p>We used the negative-control dataset to explore the optimum number of clusters for hierarchical clustering. Negative-control dataset was built using the below script.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Do not run this script without checking it first!!</span>
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"neg_controls.R"</span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"neg_controls.R"</span><span class="op">)</span></code></pre></div>
 <p>This script runs the following processes:</p>
 <ol style="list-style-type: decimal">
 <li><p>Generate 50 synthetic datasets:<br>
@@ -165,45 +171,103 @@
 –&gt; saved as <code>evals_{#neg}.rds</code> and <code>eval_summary_{#neg}.rds</code></p></li>
 </ol>
 </div>
-<div id="validate-negative-controls" class="section level2">
-<h2 class="hasAnchor">
-<a href="#validate-negative-controls" class="anchor"></a>Validate negative controls</h2>
+<div class="section level3">
+<h3 id="validate-negative-controls">Validate negative controls<a class="anchor" aria-label="anchor" href="#validate-negative-controls"></a>
+</h3>
 <p>Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 studies).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res_dist</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_dist</span><span class="op">)</span>
 <span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
 <span class="co">## 0.01688 0.98783 1.00000 0.99999 1.01217 1.97482</span></code></pre></div>
 <p>We create a synthetic dataset whose distance ranges median or higher of the actual 536 training dataset. Below is the distance matrix of the 50 negative controls generated from the <code>neg_controls.R</code> script. Distance ranges roughly between 1st and 3rd quarters of training dataset’s distance distribution.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res.dist.neg</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res.dist.neg</span><span class="op">)</span>
 <span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
 <span class="co">##  0.9680  0.9937  1.0000  0.9999  1.0054  1.0317</span></code></pre></div>
 <p>We plot the heatmap of distance matrix using the different number of negative controls (PC1s from synthetic datasets). They are different within the range we want to separate.</p>
+<p><img src="find_optimum_k_files/figure-html/unnamed-chunk-8-1.png" width="700"><img src="find_optimum_k_files/figure-html/unnamed-chunk-8-2.png" width="700"><img src="find_optimum_k_files/figure-html/unnamed-chunk-8-3.png" width="700"><img src="find_optimum_k_files/figure-html/unnamed-chunk-8-4.png" width="700"><img src="find_optimum_k_files/figure-html/unnamed-chunk-8-5.png" width="700"></p>
+<pre><code><span class="co">## agg_png </span>
+<span class="co">##       2</span></code></pre>
 <p><img src="../../Methods/select_numOfClusters/outputs/png/A.heatmap_neg50.png" width="60%" height="50%"></p>
 </div>
 </div>
-<div id="optimum-number-of-clusters" class="section level1">
-<h1 class="hasAnchor">
-<a href="#optimum-number-of-clusters" class="anchor"></a>Optimum number of clusters</h1>
+<div class="section level2">
+<h2 id="optimum-number-of-clusters">Optimum number of clusters<a class="anchor" aria-label="anchor" href="#optimum-number-of-clusters"></a>
+</h2>
 <p>Next we combined top 20 PCs of training datasets and PC1s from the varying numbers of negative controls (10, 20, 30, 40, and 50) and performed hierarchical clustering with the different numbers of clusters. Number of clusters was the rounds of the number of PCs divided by 9 different numbers (<strong>d</strong> = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).</p>
-<div id="proportion-of-the-separated" class="section level3">
-<h3 class="hasAnchor">
-<a href="#proportion-of-the-separated" class="anchor"></a>Proportion of the separated</h3>
+<div class="section level4">
+<h4 id="proportion-of-the-separated">Proportion of the separated<a class="anchor" aria-label="anchor" href="#proportion-of-the-separated"></a>
+</h4>
 <p>This plot shows the proportion of the negative controls that are separated with the different numbers of clusters. For all five different numbers of negative controls, more than 90% of them were separated when <strong>d = 4</strong> and 100% of them were separated when <strong>d = 2.25</strong>.</p>
+<p><img src="find_optimum_k_files/figure-html/plot1-1.png" width="700"></p>
+<pre><code><span class="co">## agg_png </span>
+<span class="co">##       2</span></code></pre>
 <p><img src="../../Methods/select_numOfClusters/outputs/png/B.separatedPortion.png" width="75%" height="45%"></p>
 </div>
-<div id="number-of-the-non-separated" class="section level3">
-<h3 class="hasAnchor">
-<a href="#number-of-the-non-separated" class="anchor"></a>Number of the non-separated</h3>
+<div class="section level4">
+<h4 id="number-of-the-non-separated">Number of the non-separated<a class="anchor" aria-label="anchor" href="#number-of-the-non-separated"></a>
+</h4>
 <p>This plot shows the actual number of negative controls that weren’t separated with the different numbers of clusters.</p>
+<p><img src="find_optimum_k_files/figure-html/plot2-1.png" width="700"></p>
+<pre><code><span class="co">## agg_png </span>
+<span class="co">##       2</span></code></pre>
 <p><img src="../../Methods/select_numOfClusters/outputs/png/C.numUnseparated.png" width="75%" height="45%"></p>
 </div>
 </div>
-<div id="session-info" class="section level1">
-<h1 class="hasAnchor">
-<a href="#session-info" class="anchor"></a>Session Info</h1>
-<details><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="section level2">
+<h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
+<details><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">## R version 4.1.2 (2021-11-01)</span>
+<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
+<span class="co">## </span>
+<span class="co">## Matrix products: default</span>
+<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
+<span class="co">## </span>
+<span class="co">## locale:</span>
+<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
+<span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
+<span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">## </span>
+<span class="co">## attached base packages:</span>
+<span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span class="co">## </span>
+<span class="co">## other attached packages:</span>
+<span class="co">## [1] ggplot2_3.3.5    dplyr_1.0.8      BiocStyle_2.22.0</span>
+<span class="co">## </span>
+<span class="co">## loaded via a namespace (and not attached):</span>
+<span class="co">##  [1] ggrepel_0.9.1         Rcpp_1.0.8.2          circlize_0.4.14      </span>
+<span class="co">##  [4] png_0.1-7             assertthat_0.2.1      rprojroot_2.0.2      </span>
+<span class="co">##  [7] digest_0.6.29         foreach_1.5.2         utf8_1.2.2           </span>
+<span class="co">## [10] R6_2.5.1              stats4_4.1.2          evaluate_0.15        </span>
+<span class="co">## [13] highr_0.9             pillar_1.7.0          GlobalOptions_0.1.2  </span>
+<span class="co">## [16] rlang_1.0.2           jquerylib_0.1.4       magick_2.7.3         </span>
+<span class="co">## [19] S4Vectors_0.32.3      GetoptLong_1.0.5      rmarkdown_2.13       </span>
+<span class="co">## [22] pkgdown_2.0.2         labeling_0.4.2        textshaping_0.3.6    </span>
+<span class="co">## [25] desc_1.4.1            stringr_1.4.0         munsell_0.5.0        </span>
+<span class="co">## [28] compiler_4.1.2        xfun_0.30             pkgconfig_2.0.3      </span>
+<span class="co">## [31] systemfonts_1.0.4     BiocGenerics_0.40.0   shape_1.4.6          </span>
+<span class="co">## [34] htmltools_0.5.2       tidyselect_1.1.2      tibble_3.1.6         </span>
+<span class="co">## [37] bookdown_0.25         IRanges_2.28.0        codetools_0.2-18     </span>
+<span class="co">## [40] matrixStats_0.61.0    fansi_1.0.2           crayon_1.5.0         </span>
+<span class="co">## [43] withr_2.5.0           grid_4.1.2            jsonlite_1.8.0       </span>
+<span class="co">## [46] gtable_0.3.0          lifecycle_1.0.1       factoextra_1.0.7     </span>
+<span class="co">## [49] DBI_1.1.2             magrittr_2.0.2        scales_1.1.1         </span>
+<span class="co">## [52] cli_3.2.0             stringi_1.7.6         cachem_1.0.6         </span>
+<span class="co">## [55] farver_2.1.0          fs_1.5.2              doParallel_1.0.17    </span>
+<span class="co">## [58] bslib_0.3.1           ellipsis_0.3.2        ragg_1.2.2           </span>
+<span class="co">## [61] generics_0.1.2        vctrs_0.3.8           RColorBrewer_1.1-2   </span>
+<span class="co">## [64] rjson_0.2.21          iterators_1.0.14      tools_4.1.2          </span>
+<span class="co">## [67] glue_1.6.2            purrr_0.3.4           parallel_4.1.2       </span>
+<span class="co">## [70] fastmap_1.1.0         yaml_2.3.5            clue_0.3-60          </span>
+<span class="co">## [73] colorspace_2.0-3      cluster_2.1.2         BiocManager_1.30.16  </span>
+<span class="co">## [76] ComplexHeatmap_2.10.0 memoise_2.0.1         knitr_1.37           </span>
+<span class="co">## [79] sass_0.4.0</span></code></pre></div>
 </details>
 </div>
   </div>
@@ -219,11 +283,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sehyun Oh.</p>
+  <p></p>
+<p>Developed by Sehyun Oh.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -231,6 +297,8 @@
 
   
 
+
+  
 
   </body>
 </html>
