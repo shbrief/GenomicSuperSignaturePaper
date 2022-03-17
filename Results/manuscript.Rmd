@@ -56,7 +56,7 @@ These plots were created in `CRC/repeat_Fig4A.Rmd`
 
 ```{r fig.width=6, fig.height=5.5}
 all <- list.files("CRC/outputs")
-scatterplots <- all[grep("scatter_", all)]
+scatterplots <- all[grep("scatter_.*rds", all)]
 
 for (plot in scatterplots) {
   x <- readRDS(file.path("CRC/outputs", plot))
@@ -70,7 +70,7 @@ These plots were created in `CRC/repeat_Fig4C.Rmd`
 
 ```{r fig.width=5, fig.height=3.5}
 all <- list.files("CRC/outputs")
-barplots <- all[grep("boxplot_", all)]
+barplots <- all[grep("boxplot_.*rds", all)]
 
 for (plot in barplots) {
   x <- readRDS(file.path("CRC/outputs", plot))

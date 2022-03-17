@@ -11,13 +11,14 @@ output:
     toc: true
     toc_float: false
     toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/CRC/CRC_Subtyping.Rmd) <br/> Benchmarking [CRC paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4)'s Figure4A"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, fig.align = "center",
-                      out.width = "70%", fig.asp = 1)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, 
+                      warning = FALSE, message = FALSE,
+                      fig.align = "center", out.width = "70%", fig.asp = 1)
 ```
-
 
 
 # Setup
@@ -51,7 +52,7 @@ RAVmodel <- getModel("C2", load=TRUE)
 ```{r}
 RAVmodel
 
-updateNote(RAVmodel)
+version(RAVmodel)
 ```
 
 ## CRC validation datasets
@@ -128,12 +129,17 @@ look up MeSH terms, enriched pathways, and related studies associated with them.
 
 
 ## Most similar to PCSS1/PCSS2
-For plotting with RAVs, you can decided whether to use all 18 datasets or only 
+For plotting with RAVs, you can decide whether to use all 18 datasets or only 
 10 validation datasets by setting `val_only` variable before running 
 `R/Fig4A_plotting.R` script. Here, we are using only 10 validation datasets.
 
 ```{r}
 val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
+```
+
+We also provide the 'metadata + sample score' table for `R/Fig4A_plotting.R` script.
+```{r}
+df.results <- readRDS("data/SummaryForFig4.rds")
 ```
 
 RAV1575 and RAV834 are identified as the RAVs most similar to PCSS1/2 in this [vignette](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/PCSS_vs_RAV.html).
@@ -190,10 +196,11 @@ names(validated_ind_all) <- setNames
 
 for (set in setNames) {
   eSet <- get(set)
-  exprs <- exprs(eSet) %>% rmNaInf
+  exprs <- Biobase::exprs(eSet) %>% rmNaInf
   exprs <- apply(exprs, 1, function(x) x - mean(x)) %>% t
   val_all <- validate(exprs, RAVmodel)
-  validated_ind_all[[set]] <- validatedSignatures(val_all, num.out = 10, 
+  validated_ind_all[[set]] <- validatedSignatures(val_all, RAVmodel,
+                                                  num.out = 10, 
                                                   indexOnly = TRUE)
 }
 ```

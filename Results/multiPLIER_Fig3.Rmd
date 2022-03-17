@@ -60,6 +60,17 @@ plot_all
 dev.off()
 ```
 
+```{r fig_for_grant, echo=FALSE, eval=FALSE}
+plot_all <- ggpubr::ggarrange(plot2, plot3, 
+                              labels = c("A", "B"), 
+                              font.label = list(size = 20),
+                              ncol = 2)
+
+png("neutrophil.png", width = 735, height = 380)
+plot_all
+dev.off()
+```
+
 # Session Info
 
 <details>

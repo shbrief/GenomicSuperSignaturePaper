@@ -11,6 +11,7 @@ vignette: >
   %\VignetteIndexEntry{Clinical Variables}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/CRC/CRC_ClinicalVar.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
@@ -361,7 +362,7 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_834_596.rds")
 ```
 
 ```{r save_stats_summary, echo=FALSE, eval=FALSE}
-write.table(boxplot_summary, "outputs/boxplot_summary.tsv")
+write.csv(boxplot_summary, "outputs/boxplot_summary.csv", row.names = FALSE)
 ```
 
 # Session Info

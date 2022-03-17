@@ -1,10 +1,10 @@
 ## dist’n of PCSS scores -------------------------------------------------------
 df.results <- setNames %>% lapply(function(set) {
     eSet <- get(set)
-    pdata <- pData(eSet)
+    pdata <- Biobase::pData(eSet)
     eSet_tmp <- eSet[, pdata$sample_type %in% "tumor"]
-    exprs_tmp <- exprs(eSet_tmp)
-    pdata_tmp <- pData(eSet_tmp)
+    exprs_tmp <- Biobase::exprs(eSet_tmp)
+    pdata_tmp <- Biobase::pData(eSet_tmp)
 
     pdata_tmp$study <- set
     ind_rm <- grep("CRIS_", colnames(pdata_tmp))  # remove CIRS_* pData assigned to training datasets
@@ -16,10 +16,10 @@ df.results <- setNames %>% lapply(function(set) {
 ## Subset with 'cms_label_SSP'
 df.results <- df.results %>%
     mutate(cms_label_SSP = cms_label_SSP %>%
-               recode("unlabeled" = "not labeled"))
+               dplyr::recode(.,"unlabeled" = "not labeled"))
 
 df.results <- df.results %>%
-    group_by(study, cms_label_SSP) %>%
+    dplyr::group_by(study, cms_label_SSP) %>%
     dplyr::summarise(mean_PCSS1 = mean(PCSS1),
                      mean_PCSS2 = mean(PCSS2),
                      sd_PCSS1 = sd(PCSS1),

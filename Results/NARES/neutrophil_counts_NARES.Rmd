@@ -15,6 +15,7 @@ output:
     toc: true
     toc_float: false
     toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/NARES/neutrophil_counts_NARES.Rmd)"
 ---
 
 ```{r setup, include = FALSE}
@@ -62,7 +63,7 @@ RAVmodel <- getModel("PLIERpriors", load=TRUE)
 ```{r}
 RAVmodel
 
-updateNote(RAVmodel)
+version(RAVmodel)
 ```
 
 ## NARES Nasal Brushings
@@ -138,8 +139,10 @@ not the major feature of NARES dataset.
 
 ```{r}
 val_all <- validate(dataset, RAVmodel) 
-validated_ind <- validatedSignatures(val_all, num.out = 5, swCutoff = 0, indexOnly = TRUE)
-heatmapTable(val_all, num.out = 5, swCutoff = 0)
+validated_ind <- validatedSignatures(val_all, RAVmodel,
+                                     num.out = 5, swCutoff = 0, 
+                                     indexOnly = TRUE)
+heatmapTable(val_all, RAVmodel, num.out = 5, swCutoff = 0)
 ```
 
 RAV1551 is actually ranked as the top 14th RAV based on its validation score.

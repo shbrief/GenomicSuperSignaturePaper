@@ -7,10 +7,11 @@ output:
     toc: true
     toc_float: false
     toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Methods/select_numOfClusters/find_optimum_k.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
 ```{r echo=FALSE, eval=TRUE}
@@ -58,8 +59,12 @@ This script runs the following processes:
 Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 
 536 studies). 
 
+```{r echo=FALSE}
+dat_dir <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
+```
+
 ```{r collapse=FALSE, echo=FALSE, eval=TRUE}
-wd <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/PCAmodel_536"
+wd <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536"
 res_dist <- readRDS(file.path(wd, "res_dist.rds"))
 # summary(res_dist)
 #    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
@@ -76,7 +81,6 @@ controls generated from the `neg_controls.R` script. Distance ranges roughly
 between 1st and 3rd quarters of training dataset's distance distribution.
 
 ```{r collapse=FALSE, echo=FALSE, eval=TRUE}
-dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
 neg <- readRDS(file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 data <- lapply(neg, function(x) x$rotation) %>% Reduce(cbind,.) %>% t
 
@@ -99,7 +103,6 @@ controls (PC1s from synthetic datasets). They are different within the range we
 want to separate.
 
 ```{r echo=FALSE}
-dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
 neg <- readRDS(file.path(dat_dir, "bootstrap_PCs_rowNorm_Neg.rds"))
 data <- lapply(neg, function(x) x$rotation) %>% Reduce(cbind,.) %>% t
 
@@ -155,7 +158,6 @@ clusters was the rounds of the number of PCs divided by 9 different numbers
 (**d** = 7, 6, 5, 4, 3, 2.75, 2.5, 2.25, and 2).
 
 ```{r echo=FALSE}
-dat_dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/Neg_Controls"
 numOfDatasets <- c(10, 20, 30, 40, 50)
 
 ## Load all eval_summary

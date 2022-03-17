@@ -15,6 +15,7 @@ output:
     toc: true
     toc_float: false
     toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/SLE-WB/neutrophil_counts_SLE-WB.Rmd)"
 ---
 
 ```{r setup, include = FALSE}
@@ -195,14 +196,14 @@ Here, RAV1551 has the highest score with the positive average silhouette width.
 
 ```{r}
 val_all <- validate(dataset, RAVmodel) 
-validated_ind <- validatedSignatures(val_all, num.out = 10, 
+validated_ind <- validatedSignatures(val_all, num.out = 10, RAVmodel,
                                      swCutoff = 0, indexOnly = TRUE)
 
 validated_ind
 ```
 
 ```{r}
-heatmapTable(val_all, num.out = 10, swCutoff = 0)
+heatmapTable(val_all, RAVmodel, num.out = 10, swCutoff = 0)
 ```
 
 ## Keyword search
@@ -365,7 +366,7 @@ estimate_plot <- LVScatter(dat_n.estimate, paste0("RAV", 1551),
 estimate_plot
 ```
 
-```{r echo=FALSE, eval=FALSE}
+```{r echo=FALSE}
 saveRDS(estimate_plot, "outputs/neutrophil_estimate.rds")
 png("outputs/png/neutrophil_estimate.png", width = 400, height = 400)
 estimate_plot
@@ -375,7 +376,7 @@ dev.off()
 ## Other EDA
 ### Validation
 ```{r}
-heatmapTable(val_all, 1551)
+heatmapTable(val_all, RAVmodel, 1551)
 ```
 
 ### MeSH terms

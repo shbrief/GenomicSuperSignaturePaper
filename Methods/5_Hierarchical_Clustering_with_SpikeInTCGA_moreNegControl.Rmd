@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
 ```
 
 ```{r}
@@ -20,7 +20,7 @@ suppressPackageStartupMessages({
   library(rsvd)
   library(grid)
   library(SummarizedExperiment)
-  library(GenomicSignatures)
+  library(GenomicSuperSignature)
 })
 
 source('~/data2/Genomic_Super_Signature/refinebio/methods/4_Hierarchical_Clustering_func.R')

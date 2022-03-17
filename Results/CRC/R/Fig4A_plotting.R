@@ -1,11 +1,11 @@
 ##### Required environmental variables #########################################
-# This script requires two environmental variables set before running:
-# `sampleScore1` and `sampleScore2`
-# Also, a logical variable, `val_only`, is required. If it's `TRUE`, only 10 CRC
-# datasets will be used instead of 18 datasets.
+# Required inputs:
+# 1. `sampleScore1` and `sampleScore2`
+# 2. `df.results` : A data frame containing study metadata and sample scores assigned
+#   by RAVs. It should include `study` column.
+# 3. `val_only` : A logical. If it's `TRUE`, only 10 CRC datasets will be used instead of 18 datasets.
 ################################################################################
 
-df.results <- readRDS("data/SummaryForFig4.rds")
 if (isTRUE(val_only)) {
   load("data/eSets/setNames.RData")
   load("data/eSets/trainingSetNames.RData")
@@ -13,20 +13,20 @@ if (isTRUE(val_only)) {
   setNames <- validationSetNames
 
   validation_data_row <- which(df.results$study %in% setNames)
-  df.results <- df.results[validation_data_row,]
-}
+  df.results.new <- df.results[validation_data_row,]
+} else {df.results.new <- df.results}
 
-ind1 <- which(colnames(df.results) == paste0("RAV", sampleScore1))
-ind2 <- which(colnames(df.results) == paste0("RAV", sampleScore2))
-colnames(df.results)[ind1] <- "sampleScore1"
-colnames(df.results)[ind2] <- "sampleScore2"
+ind1 <- which(colnames(df.results.new) == paste0("RAV", sampleScore1))
+ind2 <- which(colnames(df.results.new) == paste0("RAV", sampleScore2))
+colnames(df.results.new)[ind1] <- "sampleScore1"
+colnames(df.results.new)[ind2] <- "sampleScore2"
 
 # Subset with 'cms_label_SSP'
-df.results <- df.results %>%
+df.results.new <- df.results.new %>%
   mutate(cms_label_SSP = cms_label_SSP %>%
-           recode("unlabeled" = "not labeled"))
+           dplyr::recode("unlabeled" = "not labeled"))
 
-df.results <- df.results %>%
+df.results.new <- df.results.new %>%
   group_by(study, cms_label_SSP) %>%
   dplyr::summarise(mean_sampleScore1 = mean(sampleScore1),
                    mean_sampleScore2 = mean(sampleScore2),
@@ -38,7 +38,7 @@ colors <- gg_color_hue(4)
 colors.toplot <- c(colors, 'grey')
 names(colors.toplot) <- c(paste0('CMS', 1:4), 'not labeled')
 
-pA <- ggplot(df.results,
+pA <- ggplot(df.results.new,
              aes(x = mean_sampleScore1, y = mean_sampleScore2, color = cms_label_SSP)) +
   geom_point() +
   geom_errorbar(aes(x = mean_sampleScore1,
@@ -61,7 +61,7 @@ pA <- ggplot(df.results,
 print(pA)
 
 # # Separated
-# ordered.df.results <- df.results[order(df.results$mean_sampleScore1),]
-# plot(ordered.df.results$mean_sampleScore1,
-#      col = ordered.df.results$cms_label_SSP,
+# ordered.df.results.new <- df.results.new[order(df.results.new$mean_sampleScore1),]
+# plot(ordered.df.results.new$mean_sampleScore1,
+#      col = ordered.df.results.new$cms_label_SSP,
 #      xlab = "", ylab = paste0("Score from RAV", sampleScore1))

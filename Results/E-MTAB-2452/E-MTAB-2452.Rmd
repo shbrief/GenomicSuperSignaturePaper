@@ -11,6 +11,7 @@ vignette: >
   %\VignetteIndexEntry{PCA E-MTAB-2452}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/E-MTAB-2452/E-MTAB-2452.Rmd)"
 ---
 
 ```{r setup, include = FALSE}
@@ -76,7 +77,7 @@ RAVmodel <- getModel("PLIERpriors", load=TRUE)
 ```{r}
 RAVmodel
 
-updateNote(RAVmodel)
+version(RAVmodel)
 ```
 
 # Annotate top PCs
@@ -176,7 +177,7 @@ Among the RAVs associated with the top four PCs of E-MTAB-2452 data, two are
 validated with high score: RAV23 and RAV1552.
 
 ```{r}
-heatmapTable(val_all)
+heatmapTable(val_all, RAVmodel)
 ```
 
 ## Associated MeSH terms

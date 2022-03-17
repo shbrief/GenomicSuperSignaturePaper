@@ -11,6 +11,7 @@ output:
     toc: true
     toc_float: false
     toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/CRC/metadata_based_search.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
@@ -49,7 +50,7 @@ RAVmodel <- getModel("C2", load=TRUE)
 ```{r}
 RAVmodel
 
-updateNote(RAVmodel)
+version(RAVmodel)
 ```
 
 
@@ -91,6 +92,8 @@ pdata_df <- setNames %>% lapply(function(set) {
   
   ind_rm <- grep("CRIS_", colnames(pdata_tmp))
   if (length(ind_rm) != 0) {pdata_tmp <- pdata_tmp[,-ind_rm]}
+  pdata_tmp$study <- set  # add 'study' column
+  
   return(pdata_tmp)
 }) %>% Reduce('rbind', .)
 ```
@@ -302,6 +305,7 @@ differentiating 18 CRC datasets. More related analyses are done in [here](https:
 ```{r subtype_plot, message=FALSE, warning=FALSE}
 sampleScore1 <- 834
 sampleScore2 <- 833
+df.results <- data_all
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 
