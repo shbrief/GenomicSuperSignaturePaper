@@ -11,6 +11,7 @@ output:
     toc: true
     toc_float: false
     toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Methods/training_datasets/available_samples.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
@@ -45,7 +46,7 @@ studyMeta <- read.table(file.path(extdata, "studyMeta.tsv.gz"))
 head(studyMeta)
 ```
 
-# Availability: metadata
+## Availability: metadata
 `aggregated_metadata.json` is downloaded along with the training dataset. We 
 collect the number of samples per study based on this metadata.
 
@@ -65,14 +66,14 @@ sampleNum <- sapply(studies, function(x) length(x))
 ```
 
 
-# Availability: download/import
+## Availability: download/import
 I summarized the number of samples based on `aggregated_metadata.json` under 
 `metadata` column and the number of actually downloaded `_quant.sf` sample 
 files under `downloaded` column in the `studyMeta` table.  
 
 ```{r echo=FALSE, eval=TRUE}
 ## Directory where refine.bio human samples were downloaded
-download.dir <- "/nobackup/16tb_b/refinebio/rna_seq"
+download.dir <- "~/Data/refinebio_download/rna_seq"
 ```
 
 ```{r}
@@ -102,12 +103,12 @@ for (i in seq_along(dirNames)) {
 }
 ```
 
-# Imported samples
+## Imported samples
 1399 studies with more than 20 samples were successfully imported 
 by `tximport::tximport` 
 
 ```{r echo=FALSE}
-download.dir2 <- "/nobackup/16tb_b/GenomicSignatures/refinebio/rna_seq_v2"
+download.dir2 <- "~/Data/refinebio_processed/rna_seq_v2"
 ```
 
 ```{r}
@@ -138,7 +139,30 @@ for (i in seq_along(experiments)) {
 }
 ```
 
+### Example
+Example study, `SRP152576`:   
+- 13,127 samples are available based on `aggregated_metadata.json`.     
+- No sample is available based on [refine.bio](https://www.refine.bio/) webpage.      
+- 100 samples are actually downloaded.    
+- 3,927 samples are available based on `metadata_SRP152576.csv`.     
+
+```{r eval=TRUE}
+ind <- which.max(studyMeta$metadata)  
+studyMeta[ind,]
+```
+
+```{r eval=TRUE}
+file_dir <- file.path(download.dir, studyMeta$studyName[ind])
+fname <- paste0("metadata_", studyMeta$studyName[ind], ".tsv")
+sampleMeta <- read.table(file.path(file_dir, fname), header = TRUE, sep = "\t")
+dim(sampleMeta)
+
+head(sampleMeta, 3)
+```
+
+
 # Summary plot
+## Availability
 Metadata bar (light blue) shows the number of studies with the given ranges of 
 study sizes based on the metadata. Downloaded bar (pink) represents the number 
 of studies with the given ranges of study sizes that were successfully 
@@ -176,27 +200,53 @@ sum(studyMeta$downloaded > 100)
 sum(studyMeta$metadata > 100)
 ```
 
-### Example
-Example study, `SRP152576`:   
-- 13,127 samples are available based on `aggregated_metadata.json`.     
-- No sample is available based on [refine.bio](https://www.refine.bio/) webpage.      
-- 100 samples are actually downloaded.    
-- 3,927 samples are available based on `metadata_SRP152576.csv`.     
-
-```{r eval=TRUE}
-ind <- which.max(studyMeta$metadata)  
-studyMeta[ind,]
+## Types of data
+```{r}
+fname <- file.path(data.dir, "source_name_annotated.tsv")
+source_name_annotated <- read.csv(fname, sep = "\t")
 ```
 
-```{r eval=TRUE}
-file_dir <- file.path(download.dir, studyMeta$studyName[ind])
-fname <- paste0("metadata_", studyMeta$studyName[ind], ".tsv")
-sampleMeta <- read.table(file.path(file_dir, fname), header = TRUE, sep = "\t")
-dim(sampleMeta)
+### Cancer
+```{r echo=FALSE}
+source_cancer <- source_name_annotated$cancer
+source_cancer <- tidyr::replace_na(source_cancer, "NA")
 
-head(sampleMeta, 3)
+slices <- table(source_cancer)
+lbls <- c("Not Cancer", "Cancer", "NA")
+pct <- round(slices/sum(slices)*100)
+lbls <- paste(lbls, pct)   # add percents to labels
+lbls <- paste(lbls, "%", sep="")   # ad % to labels
+
+pie(slices, labels = lbls, main = "Cancer Studies in Training Data")
 ```
 
+### Blood
+```{r echo=FALSE}
+source_blood <- source_name_annotated$blood
+source_blood <- tidyr::replace_na(source_blood, "NA")
+
+slices <- table(source_blood)
+lbls <- c("Not Blood", "Blood", "NA")
+pct <- round(slices/sum(slices)*100)
+lbls <- paste(lbls, pct)   # add percents to labels
+lbls <- paste(lbls, "%", sep="")   # ad % to labels
+
+pie(slices, labels = lbls, main = "Blood Studies in Training Data")
+```
+
+### Cell Line
+```{r echo=FALSE}
+source_cellLine <- source_name_annotated$cell_line
+source_cellLine <- tidyr::replace_na(source_cellLine, "NA")
+
+slices <- table(source_cellLine)
+lbls <- c("Not Cell Line", "Cell Line", "NA")
+pct <- round(slices/sum(slices)*100)
+lbls <- paste(lbls, pct)   # add percents to labels
+lbls <- paste(lbls, "%", sep="")   # ad % to labels
+
+pie(slices, labels = lbls, main = "Cell Line in Training Data")
+```
 
 
 
@@ -289,7 +339,7 @@ res$source <- NA
 colnames(res) <- c("run_accession", "study_accession", "source")
 
 ## RNAseq datasets downloaded from refine.bio
-json_file <- "/nobackup/16tb_b/refinebio/rna_seq/aggregated_metadata.json"
+json_file <- "~/data2/refinebio_download/rna_seq/aggregated_metadata.json"
 refinebio_meta <- rjson::fromJSON(paste(readLines(json_file), collapse=""))
 sample_meta <- refinebio_meta$samples
 
