@@ -24,3 +24,8 @@
 ^Results/TCGA/data/*\.rda$
 ^inst/extdata/sra_to_mesh-000000000000\.json$
 ^Results/E-MTAB-2452/data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol\.pcl$
+
+^Results/CRC/CRC_Subtyping_Grant\.Rmd$
+^Results/CRC/outputs/png_Grant$
+^Revisions$
+^Results/model/listOfRAVmodels\.R$

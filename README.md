@@ -5,11 +5,12 @@ for [GenomicSuperSignature](https://github.com/shbrief/GenomicSuperSignature)
 package and the accompanying [manuscript](https://www.biorxiv.org/content/10.1101/2021.05.26.445900v1).
 
 To run analyses under `Results` and `Methods`, you need to download the 
-RAVmodel from Google bucket (it's free, FYI). Currently, two versions of 
-RAVmodels are available, annotated with different prior gene sets. 
+RAVmodel from Google bucket (it's free, FYI). Currently, two different 
+RAVmodels are available, annotated with different prior gene sets. Version
+history of the RAVmodels can be found [HERE]().
 
 ```
-## Download RAVmodel with wget
+## Download the latest RAVmodel with wget
 wget https://storage.googleapis.com/genomic_super_signature/RAVmodel_C2.rds
 wget https://storage.googleapis.com/genomic_super_signature/RAVmodel_PLIERpriors.rds
 

@@ -61,3 +61,6 @@ docs
 Results/TCGA/data/*
 Results/E-MTAB-2452/data/*
 inst/extdata/sra_to_mesh-000000000000.json
+
+Results/CRC/CRC_Subtyping_Grant.Rmd
+Results/CRC/outputs/png_Grant/
