@@ -11,7 +11,7 @@ vignette: >
   %\VignetteIndexEntry{Responds to the reviewers comment on LINC}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-abstract: "[**Source Code**]()"
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Comment_1_LINC.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
