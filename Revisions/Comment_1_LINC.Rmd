@@ -1,0 +1,315 @@
+---
+title: "Revision - LINC"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Responds to the reviewers comment on LINC}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**]()"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
+                      out.height="75%", out.width="75%")
+```
+
+# Setup
+```{r warning=FALSE, message=FALSE}
+library(webr)
+library(ggplot2)
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel_PLIERpriors <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("C2", load=TRUE)
+```
+
+```{r}
+RAVmodel
+
+geneSets(RAVmodel)
+version(RAVmodel)
+```
+
+# Non-coding RNA
+We first checked how LINC RNA are ranked in each RAV and found that they tend
+to rank high.
+
+```{r}
+# Sort the average absolute value of genes' loading
+x <- rev(sort(rowMeans(abs(RAVindex(RAVmodel)))))
+
+# Ranks of LINC (long intergenic non-coding) RNAs
+y <- grep("LINC", names(x))
+hist(y, 
+     main = "Distribution of LINC Genes \n (average absolute value)",
+     xlab = "Rank in RAV (out of 13,934)",
+     ylab = "Frequency",
+     ylim = c(0, 120))
+```
+
+When we check the existance of LINC in gene sets and RAVindex, we found:   
+```{r echo=FALSE}
+## LINC in gene sets
+# non-coding genes in C2 gene sets
+dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+term2gene <- clusterProfiler::read.gmt(file.path(dir, "c2.all.v7.1.symbols.gmt"))
+colnames(term2gene) <- c("gs_name", "entrez_gene")
+
+linc_in_C2 <- term2gene[grep("LINC", term2gene$entrez_gene),]
+length(unique(term2gene$entrez_gene)) # the number of unique genes in C2
+length(unique(linc_in_C2$entrez_gene)) # the number of unique LINC genes in C2
+
+## LINC in RAVindex
+linc_in_rav <- unique(names(x)[y]) # name of LINC genes
+
+length(linc_in_rav) # non-coding genes in RAVindex
+length(intersect(linc_in_C2$entrez_gene, linc_in_rav)) # overlapping b/w C2 and RAVindex
+```
+
+- MSigDB C2 is composed of `r length(unique(term2gene$entrez_gene))` unique 
+genes, which includes `r length(unique(linc_in_C2$entrez_gene))` LINC genes.   
+
+- Among `r length(linc_in_rav)` non-coding genes in RAVindex, there are 
+`r length(intersect(linc_in_C2$entrez_gene, linc_in_rav))` overlapping genes.
+
+
+
+# GSEA without LINC
+Using [this script](https://github.com/shbrief/model_building/blob/main/07_Final_Model.R) 
+and the modified version of [this script](https://github.com/shbrief/model_building/blob/main/R/build_gsea_DB.R), 
+we annotate the RAVindex without LINC and build new RAVmodels. The script is 
+available [HERE](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Comment_1_LINC.R).
+
+We compared the MSigDB C2 and PLIERpriors annotations of RAVindex with or
+without LINC genes. These two gene sets have different number of terms: 
+5,529 terms in MSigDB C2 and 628 terms in PLIER priors gene sets.
+
+```{r}
+# 5,529 terms in MSigDB C2 gene sets
+length(unique(term2gene$term))
+
+# 628 terms in PLIERpriors gene sets
+library(PLIER)
+data(canonicalPathways)
+data(bloodCellMarkersIRISDMAP)
+data(svmMarkers)
+allPaths <- combinePaths(canonicalPathways, bloodCellMarkersIRISDMAP, svmMarkers)
+length(colnames(allPaths))
+```
+
+### MSigDB C2 with LINC
+The number of enriched pathways per cluster
+```{r}
+gsea1 <- gsea(RAVmodel)
+num_enriched_gs <- sapply(gsea1, nrow) 
+summary(num_enriched_gs)
+head(table(num_enriched_gs))
+num_enriched_gs[which.max(num_enriched_gs)]
+```
+
+`r paste0("RAV", which.max(num_enriched_gs))` has the maximum of 
+`r num_enriched_gs[which.max(num_enriched_gs)]` enriched pathways.   
+
+```{r echo=FALSE, eval=FALSE}
+# We plotted the number of clusters with the different number of enriched 
+# pathways. Here, we removed the top 10% of the clusters with the most enriched
+# pathways, which are 476 clusters with more than 34 enriched pathways.
+
+## Top 10% of enriched pathways (476 clusters with >= 35 enriched pathways)
+# sum(tail(table(num_enriched_gs), 204))
+
+barplot(table(num_enriched_gs), 
+        ylim = c(0, 2000),
+        xlim = c(0, 34),
+        main = "MSigDB C2 GSEA",
+        sub = " (only the bottom 90%)",
+        xlab = "Number of enriched pathways",
+        ylab = "Number of clusters")
+```
+
+```{r}
+source("pathwayCoverage.R")
+coverage_C2_with_LINC <- pathwayCoverage(RAVmodel, "C2")
+coverage_C2_with_LINC
+```
+
+Pathway coverage for MSigDB C2 is `r paste0(coverage_C2_with_LINC, "%")`.
+
+
+### MSigDB C2 without LINC
+```{r}
+dir <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536_noLINC"
+RAVmodel_lnc <- readRDS(file.path(dir, "refinebioRseq_RAVmodel_C2_20211216.rds"))
+
+gsea2 <- gsea(RAVmodel_lnc)
+num_enriched_gs2 <- sapply(gsea2, nrow) 
+summary(num_enriched_gs2)
+head(table(num_enriched_gs2))
+
+num_enriched_gs2[which.max(num_enriched_gs2)]
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Top ~10% (9.8%) of enriched pathways (468 clusters with >= 35 enriched pathways)
+# sum(tail(table(num_enriched_gs2), 191))
+
+barplot(table(num_enriched_gs2), 
+        ylim = c(0, 2000),
+        xlim = c(0, 34),
+        main = "MSigDB C2 GSEA without LINC",
+        sub = " (only the bottom 90%)",
+        xlab = "Number of enriched pathways",
+        ylab = "Number of clusters")
+```
+
+```{r echo=FALSE}
+coverage_C2_wo_LINC <- pathwayCoverage(RAVmodel_lnc, "C2")
+```
+
+Pathway coverage for MSigDB C2 without LINC is `r paste0(coverage_C2_wo_LINC, "%")`.
+
+
+### PLIER priors with LINC
+```{r}
+gsea3 <- gsea(RAVmodel_PLIERpriors)
+num_enriched_gs3 <- sapply(gsea3, nrow) 
+summary(num_enriched_gs3)
+head(table(num_enriched_gs3))
+
+num_enriched_gs3[which.max(num_enriched_gs3)]
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Top ~5% (5.1%) of enriched pathways (241 clusters with >= 14 enriched pathways)
+# sum(tail(table(num_enriched_gs3), 65))
+
+barplot(table(num_enriched_gs3), 
+        ylim = c(0, 2500),
+        xlim = c(0, 14),
+        main = "PLIER priors GSEA",
+        sub = " (only the bottom 95%)",
+        xlab = "Number of enriched pathways",
+        ylab = "Number of clusters")
+```
+
+```{r echo=FALSE}
+coverage_PLIERpriors_with_LINC <- pathwayCoverage(RAVmodel_PLIERpriors, "PLIERpriors")
+```
+
+Pathway coverage for PLIERpriors with LINC is 
+`r paste0(coverage_PLIERpriors_with_LINC, "%")`.
+
+
+### PLIER priors without LINC
+```{r}
+dir <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536_noLINC"
+RAVmodel_PLIERpriors_lnc <- readRDS(file.path(dir, "refinebioRseq_RAVmodel_PLIERpriors_20211219.rds"))
+
+gsea4 <- gsea(RAVmodel_PLIERpriors_lnc)
+num_enriched_gs4 <- sapply(gsea4, nrow) 
+summary(num_enriched_gs4)
+head(table(num_enriched_gs4))
+
+num_enriched_gs4[which.max(num_enriched_gs4)]
+```
+
+```{r echo=FALSE, eval=FALSE}
+## Top ~5% (5.16%) of enriched pathways (246 clusters with >= 13 enriched pathways)
+# sum(tail(table(num_enriched_gs4), 59))
+
+barplot(table(num_enriched_gs4), 
+        ylim = c(0, 2500),
+        xlim = c(0, 12),
+        main = "PLIER priors GSEA",
+        sub = " (only the bottom 95%)",
+        xlab = "Number of enriched pathways",
+        ylab = "Number of clusters")
+```
+
+```{r echo=FALSE}
+coverage_PLIERpriors_with_LINC <- pathwayCoverage(RAVmodel_PLIERpriors_lnc, "PLIERpriors")
+```
+
+Pathway coverage for PLIERpriors with LINC is 
+`r paste0(coverage_PLIERpriors_with_LINC, "%")`.
+
+
+
+# Compare enriched pathways
+We compared the enriched pathways between RAVmodel with or without LINC and 
+found that over 72% of RAVs are annotated with the identical gene sets.
+
+```{r jaccard_fun, echo=FALSE}
+jaccard <- function(a, b) {
+    intersection = length(intersect(a, b))
+    union = length(a) + length(b) - intersection
+    return (intersection/union)
+}
+```
+
+```{r echo=FALSE, echo=FALSE}
+jaccard_summary <- vector(mode = "list", length = length(gsea1))
+names(jaccard_summary) <- names(gsea1)
+for (i in seq_along(gsea1)) {
+    a <- gsea1[[i]]$Description
+    b <- gsea2[[i]]$Description
+    res <- jaccard(a, b)
+    jaccard_summary[[i]] <- res
+    
+    ## No enriched pathways
+    if (length(a) == 0 & length(b) == 0) {jaccard_summary[[i]] <- 1}
+}
+
+## Jaccard Index Pie Plot
+tbl <- stack(unlist(jaccard_summary))
+tbl$Jaccard <- round(tbl$values, digit = 1)
+webr::PieDonut(tbl, aes(pies = Jaccard),
+               pieLabelSize = 3,
+               r0 = getOption("PieDonut.r0", 0.4),
+               r1 = getOption("PieDonut.r1", 1))
+
+## Jaccard Index Table
+tbl2 <- stack(table(tbl$Jaccard))
+tbl2$percentile <- tbl2$values/(sum(tbl2$values))*100
+```
+
+```{r echo=FALSE}
+sum(unlist(jaccard_summary) >= 0.8, na.rm = TRUE)
+sum(unlist(jaccard_summary) == 1, na.rm = TRUE) # identical RAVs
+sum(unlist(jaccard_summary) == 0, na.rm = TRUE) # completely different RAVs
+diff_ind <- which(unlist(jaccard_summary) == 0) # 129 RAVs with completely different enriched pathways
+```
+
+This table summarize the number of 129 clusters/RAVs from RAVmodel with 
+completely different enriched pathways compared to the RAVmodel_no_LINC.
+
+```{r}
+table(num_enriched_gs[diff_ind])
+```
+
+It seems like majority of them have no or one enriched pathways. 
+```{r}
+barplot(table(num_enriched_gs[diff_ind]))  # From RAVmodel with LINC
+barplot(table(num_enriched_gs2[diff_ind]))  # From RAVmodel_no_LINC
+```
+
+
+# Session Info
+<details>
+```{r}
+sessionInfo()
+```
+</details>
