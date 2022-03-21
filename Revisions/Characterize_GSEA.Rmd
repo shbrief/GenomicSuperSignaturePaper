@@ -1,0 +1,377 @@
+---
+title: "Compare GSEA annotation between RAVmodel_C2 and _PLIERpriors"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{RAVmodel_C2 vs. RAVmodel_PLIERpriors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**]()"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
+                      out.height="70%", out.width="70%")
+```
+
+```{r echo=FALSE}
+library(GenomicSuperSignature)
+library(dplyr)
+library(ggplot2)
+```
+
+
+# RAVmodel_C2
+```{r message=FALSE, warning=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- RAVmodel_C2 <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel
+
+version(RAVmodel)
+annot <- "C2"
+```
+
+## Cluster size and GSEA
+We check the sizes of clusters that do not have any enriched gene sets and 
+overlay them on the plot with all the RAVs. 
+
+```{r}
+gs <- gsea(RAVmodel)
+num_enriched_gs <- sapply(gs, nrow) 
+summary(num_enriched_gs)
+
+## RAV with the maximum number of enriched pathways
+num_enriched_gs[which.max(num_enriched_gs)]
+
+## RAV without any enriched pathway
+no_gs_ind <- which(num_enriched_gs == 0)
+```
+
+```{r echo=FALSE}
+## Plot only the RAVs without enriched pathway
+# barplot(table(metadata(RAVmodel)$size[no_gs_ind]),
+#         xlab = "Cluster Size",
+#         ylim = c(0, 1200),
+#         main = paste("Clusters without", annot, "enriched gene sets"))
+
+## Overlay RAVs without enriched pathway on all RAVs
+x <- metadata(RAVmodel)$size
+a <- stack(table(metadata(RAVmodel)$size[no_gs_ind]))
+b <- stack(table(x))
+c <- dplyr::full_join(a, b, by = "ind")
+c[is.na(c)] <- 0
+d <- matrix(nrow = 2, ncol = 21)
+colnames(d) <- c[,2]
+d[1,] <- c[,1] # no enriched gene sets
+d[2,] <- c[,3] - c[,1] # have enriched gene sets
+
+tbl <- stack(d[c(2,1),]) %>% as.data.frame # flip the order to make no-GSEA in the bottom
+tbl$row <- as.factor(tbl$row)
+
+p_c2 <- ggplot(data = tbl, aes(x = col, y = value, fill = row, order = row)) +
+    geom_bar(stat = "identity") +
+    labs(title = paste("RAVmodel with", annot, "annotation"),
+         x = "RAV Size (# of PCs in cluster)", y = "# of RAVs") +
+    # scale_fill_manual(name = "Enriched Pathways", 
+    #                   values = c('grey', 'yellow'),
+    #                   labels = c("Yes", "No")) +
+    scale_fill_discrete(name = "Enriched Pathways", labels = c("Yes", "No")) +
+    theme(legend.position = c(0.85, 0.8),
+          panel.background = element_rect(fill = NA, 
+                                          linetype = "solid",
+                                          colour = "grey50"),
+          panel.grid = element_line(color = "light grey",
+                                    linetype = "dotted")) 
+p_c2
+```
+
+```{r echo=FALSE, eval=FALSE}
+# Statistical significance with multiple hypothesis correction by BH. 
+# We remove RAVs without enriched pathways.
+
+# 20738 is the number of unique genes in C2 -> why?
+sub_num_enriched_gs <- num_enriched_gs[num_enriched_gs != 0]
+sub_num_enriched_gs <- sub_num_enriched_gs/20738*100 # percent significant set
+boxplot(sub_num_enriched_gs, 
+        ylim = c(0, 100),
+        ylab = paste("% significant", annot, "gene sets"),
+        xlab = "p-adjust by BH")
+```
+
+
+## Number of enriched gene sets
+RAVs with too many enriched pathways, which we defined as 5% of input gene 
+sets, are plotted based on their cluster sizes.
+
+```{r echo=FALSE}
+cutoff <- 0.05
+
+if (annot == "C2") {
+    dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+    term2gene <- clusterProfiler::read.gmt(file.path(dir, "c2.all.v7.1.symbols.gmt"))
+    uniqueGS <- length(unique(term2gene$term))
+} else if (annot == "PLIERpriors") {
+    library(PLIER)
+    data(canonicalPathways) # 545 pathways 
+    data(bloodCellMarkersIRISDMAP)
+    data(svmMarkers)
+    allPaths <- combinePaths(canonicalPathways, bloodCellMarkersIRISDMAP, svmMarkers)
+    source('~/GSS/GenomicSuperSignature/inst/scripts/gmtToMatrix.R')
+    term2gene <- matrixToTERM2GENE(allPaths)
+    uniqueGS <- length(unique(term2gene$gs_name))
+}
+
+cut <- round(uniqueGS * 0.05)
+```
+
+`r cut` is `r paste0(cutoff*100, "%")` of the input gene sets.
+
+```{r}
+too_many_gs_ind <- which(num_enriched_gs > cut)
+barplot(table(metadata(RAVmodel)$size[too_many_gs_ind]),
+        xlab = "Cluster Size",
+        main = paste("Clusters with", paste0(">", cutoff*100, "%"), 
+                     annot, "enriched gene sets"))
+```
+
+## Effect on the examples in our paper
+We check how the above RAV-filtering condition will affect the analyses done
+in our paper. 
+
+```{r RAVs_in_examples}
+## index mentioned in the manuscript figures
+ind1 <- c(119, 221, 312, 468, 504, 683, 832, 868) # Fig2A
+ind2 <- c(221, 504, 468, 312, 683) # Fig2B
+ind3 <- c(834, 833, 1551) # Fig3&4
+ind4 <- c(312, 832, 188, 468, 21, 119, 684) # Sup.Fig4
+ind5 <- c(1575, 834, 833) # Sup.Fig5
+ind6 <- c(23, 1552, 1387, 684) # Sup.Fig8
+
+ind_all <- unique(c(ind1, ind2, ind3, ind4, ind5, ind6)) 
+
+intersect(ind_all, no_gs_ind)
+intersect(ind_all, too_many_gs_ind)
+
+gsea_filtered_ind <- c(no_gs_ind, too_many_gs_ind)
+length(gsea_filtered_ind)
+```
+
+The number of RAVs that have too few (= 0) or too many (`r cut`) enriched 
+gene sets. If we remove these, there will be `r 4764-length(gsea_filtered_ind)` 
+RAVs left. Their distribution based on the number of enriched pathways is 
+plotted below.
+
+```{r echo=FALSE}
+barplot(table(num_enriched_gs[-gsea_filtered_ind]),
+        xlab = "The number of enriched pathways")
+```
+
+
+
+
+
+
+
+
+
+# RAVmodel_PLIERpriors
+```{r message=FALSE, warning=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- RAVmodel_PLIERpriors <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+RAVmodel
+
+version(RAVmodel)
+annot <- "PLIERpriors"
+```
+
+## Cluster size and GSEA
+We check the sizes of clusters that do not have any enriched gene sets and 
+overlay them on the plot with all the RAVs. 
+
+```{r}
+gs <- gsea(RAVmodel)
+num_enriched_gs <- sapply(gs, nrow) 
+summary(num_enriched_gs)
+
+## RAV with the maximum number of enriched pathways
+num_enriched_gs[which.max(num_enriched_gs)]
+
+## RAV without any enriched pathway
+no_gs_ind <- which(num_enriched_gs == 0)
+```
+
+```{r echo=FALSE}
+## Plot only the RAVs without enriched pathway
+# barplot(table(metadata(RAVmodel)$size[no_gs_ind]),
+#         xlab = "Cluster Size",
+#         ylim = c(0, 1200),
+#         main = paste("Clusters without", annot, "enriched gene sets"))
+
+## Overlay RAVs without enriched pathway on all RAVs
+x <- metadata(RAVmodel)$size
+a <- stack(table(metadata(RAVmodel)$size[no_gs_ind]))
+b <- stack(table(x))
+c <- dplyr::full_join(a, b, by = "ind")
+c[is.na(c)] <- 0
+d <- matrix(nrow = 2, ncol = 21)
+colnames(d) <- c[,2]
+d[1,] <- c[,1] # no enriched gene sets
+d[2,] <- c[,3] - c[,1] # have enriched gene sets
+
+tbl <- stack(d[c(2,1),]) %>% as.data.frame # flip the order to make no-GSEA in the bottom
+tbl$row <- as.factor(tbl$row)
+
+p_plier <- ggplot(data = tbl, aes(x = col, y = value, fill = row, order = row)) +
+    geom_bar(stat = "identity") +
+    labs(title = paste("RAVmodel with", annot, "annotation"),
+         x = "RAV Size (# of PCs in cluster)", y = "# of RAVs") +
+    # scale_fill_manual(name = "Enriched Pathways", 
+    #                   values = c('grey', 'yellow'),
+    #                   labels = c("Yes", "No")) +
+    scale_fill_discrete(name = "Enriched Pathways", labels = c("Yes", "No")) +
+    theme(legend.position = c(0.85, 0.8),
+          panel.background = element_rect(fill = NA, 
+                                          linetype = "solid",
+                                          colour = "grey50"),
+          panel.grid = element_line(color = "light grey",
+                                    linetype = "dotted")) 
+p_plier
+```
+
+```{r echo=FALSE, eval=FALSE}
+# Statistical significance with multiple hypothesis correction by BH. 
+# We remove RAVs without enriched pathways.
+
+# 20738 is the number of unique genes in C2 -> why?
+sub_num_enriched_gs <- num_enriched_gs[num_enriched_gs != 0]
+sub_num_enriched_gs <- sub_num_enriched_gs/20738*100 # percent significant set
+boxplot(sub_num_enriched_gs, 
+        ylim = c(0, 100),
+        ylab = paste("% significant", annot, "gene sets"),
+        xlab = "p-adjust by BH")
+```
+
+
+## Number of enriched gene sets
+RAVs with too many enriched pathways, which we defined as 5% of input gene 
+sets, are plotted based on their cluster sizes.
+
+```{r echo=FALSE}
+cutoff <- 0.05
+
+if (annot == "C2") {
+    dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+    term2gene <- clusterProfiler::read.gmt(file.path(dir, "c2.all.v7.1.symbols.gmt"))
+    uniqueGS <- length(unique(term2gene$term))
+} else if (annot == "PLIERpriors") {
+    library(PLIER)
+    data(canonicalPathways) # 545 pathways 
+    data(bloodCellMarkersIRISDMAP)
+    data(svmMarkers)
+    allPaths <- combinePaths(canonicalPathways, bloodCellMarkersIRISDMAP, svmMarkers)
+    source('~/GSS/GenomicSuperSignature/inst/scripts/gmtToMatrix.R')
+    term2gene <- matrixToTERM2GENE(allPaths)
+    uniqueGS <- length(unique(term2gene$gs_name))
+}
+
+cut <- round(uniqueGS * 0.05)
+```
+
+`r cut` is `r paste0(cutoff*100, "%")` of the input gene sets.
+
+```{r}
+too_many_gs_ind <- which(num_enriched_gs > cut)
+barplot(table(metadata(RAVmodel)$size[too_many_gs_ind]),
+        xlab = "Cluster Size",
+        main = paste("Clusters with", paste0(">", cutoff*100, "%"), 
+                     annot, "enriched gene sets"))
+```
+
+## Effect on the examples in our paper
+We check how the above RAV-filtering condition will affect the analyses done
+in our paper. 
+
+```{r}
+intersect(ind_all, no_gs_ind)
+intersect(ind_all, too_many_gs_ind)
+
+gsea_filtered_ind <- c(no_gs_ind, too_many_gs_ind)
+length(gsea_filtered_ind)
+```
+
+The number of RAVs that have too few (= 0) or too many (`r cut`) enriched 
+gene sets. If we remove these, there will be `r 4764-length(gsea_filtered_ind)` 
+RAVs left. Their distribution based on the number of enriched pathways is 
+plotted below.
+
+```{r echo=FALSE}
+barplot(table(num_enriched_gs[-gsea_filtered_ind]),
+        xlab = "The number of enriched pathways")
+```
+
+
+
+
+
+
+
+
+
+
+# Different between RAVmodel_C2 and _PLIERpriors
+Majority of single-element RAVs does not have enriched pathways. However, 
+the actual subset of them are different depending on the gene sets used for 
+GSEA. We think this means single-element RAVs still have potentially 
+meaningful biolgocial signal and worth to keep them all. 
+
+```{r}
+noGSEA.RAVs <- function(RAVmodel, clsize = 1) {
+    gs <- gsea(RAVmodel)
+    num_enriched_gs <- sapply(gs, nrow) 
+    s_ind <- which(metadata(RAVmodel)$size == clsize) # single-element RAVs
+    no_gs_ind <- which(num_enriched_gs == 0) # no-enriched-geneset RAVs
+    res <- setdiff(s_ind, no_gs_ind) # single-element + enriched pathways
+    return(res)
+} 
+
+# single-element RAVs with enriched gene sets
+noGSEA_C2 <- noGSEA.RAVs(RAVmodel_C2)
+noGSEA_PLIERpriors <- noGSEA.RAVs(RAVmodel_PLIERpriors)
+
+length(noGSEA_C2)
+length(noGSEA_PLIERpriors)
+length(intersect(noGSEA_C2, noGSEA_PLIERpriors))
+```
+
+# Manuscript Figures
+## Supplementary Figure 11
+```{r fig.width=13, fig.height=4.5, out.height="120%", out.width="120%"}
+plot_all <- ggpubr::ggarrange(p_c2, p_plier, 
+                              labels = c("A", "B"), 
+                              font.label = list(size = 20),
+                              ncol = 2)
+plot_all
+```
+
+```{r eval=FALSE, echo=FALSE}
+## Save the complete Figure 2
+png("manuscript_SupFig11.png", width = 910, height = 315)
+plot_all
+dev.off()
+```
+
+
+
+# Session Info
+<details>
+```{r}
+sessionInfo()
+```
+</details>
