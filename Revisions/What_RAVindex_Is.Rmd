@@ -1,0 +1,431 @@
+---
+title: "What is RAVindex?"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Global description of RAVindex}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**]()"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
+                      out.height="80%", out.width="80%")
+```
+
+# Setup
+```{r}
+suppressPackageStartupMessages({
+  library(GenomicSuperSignature)
+  library(dplyr)
+  library(ggplot2)
+})
+```
+
+```{r message=FALSE, warning=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel_PLIERpriors <- readRDS(file.path(data.dir, "RAVmodel_PLIERpriors.rds"))
+```
+
+```{r}
+RAVmodel
+
+geneSets(RAVmodel)
+version(RAVmodel)
+```
+
+# RAVmodel characterization
+RAVmodel is composed of RAVindex, model’s metadata, and annotation modules linked through RAVs. RAVindex has 4,764 RAVs and 1,378 out of them are ‘single-element’ clusters. By definition a single-element cluster is not a ‘repetitive’ signal, leaving only 3,386 actual RAVs. This means we compressed the information from 44,890 samples into 3,386 RAVs, which is less than 1/10 of the initial number of samples. Also, 417 out of 536 training datasets have 40,746 genes and the other 119 training datasets have 41,255 genes, while the RAVindex uses only 13,934 common genes among the top 90% varying genes of all samples. Thus, our method achieves an efficient data compression, maintaining significant information in ~3% of the initial volume of the training data. 
+
+## Cluster sizes
+Cluster sizes, which is the number of PCs in RAVs, are strongly skewed to the right. When we exclude single-element clusters, about 65% of RAVs (2,212 out of 3,386) have two PCs and the mean cluster size is 2.759 PCs per RAV with the largest cluster containing 24 PCs. Interestingly, the distribution of PCs in RAVs changes with the cluster sizes: the majority of PCs in one- and two- element clusters are lower PCs, but once clusters have more than two elements, PC distribution starts to skew to the right. This suggests that RAVs from small clusters tend to represent weak and less common signals. Though, we still keep the ‘single-element’ RAVs for two reasons: 1) If any new data is validated by those ‘single-element’ RAVs, they become ‘repetitive’ signals and thus, could lead to new hypotheses and 2) by keeping all RAVs, we include all potential PCs in the RAVmodel and support different use cases. Since metadata associated with all RAVs are readily accessible, end users can filter downstream results based on cluster sizes or other properties.    
+
+```{r}
+## Bar plot of the cluster sizes. It ranges from 1 to 24, strongly right-skewed.
+x <- metadata(RAVmodel)$size
+table(x)
+
+summary(x)
+```
+
+```{r echo=FALSE}
+tbl <- stack(table(x))
+p <- ggplot(tbl, aes(x = ind, y = values)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    geom_text(aes(label = values), vjust = -0.3, size = 3) +
+    labs(title = "RAV Size Distribution",
+         x = "RAV Size (# of PCs in cluster)", y = "# of RAVs") +
+    theme_minimal()
+p
+
+# ggplot(data = tbl, aes(x = ind, y = values)) +
+#     geom_bar(stat = "identity", fill = "steelblue") +
+#     geom_text(aes(label = values), vjust = -0.3, size = 3) +
+#     labs(title = "RAV Size Distribution",
+#          x = "RAV Size (# of PCs in cluster)", y = "# of RAVs") +
+#     theme(panel.background = element_rect(fill = NA, 
+#                                           linetype = "solid",
+#                                           colour = "grey50"),
+#           panel.grid = element_line(color = "light grey",
+#                                     linetype = "dotted")) 
+```
+
+## PC compositions in clusters
+We check the composition of PCs in different clusters and display the results 
+as bar plots for each cluster size.
+([**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/model/PCs_In_Clusters.pdf))
+
+We tested whether the top PCs tend to be grouped together forming large 
+clusters. We considered PC numbers as a numeric data points and plotted 
+the mean and standard deviation of PC numbers per cluster. 
+
+```{r}
+summary <- as.data.frame(matrix(nrow = ncol(RAVmodel), ncol = 4))
+colnames(summary) <- c("RAV", "size", "mean", "sd")
+summary$RAV <- paste0("RAV", 1:ncol(RAVmodel))
+summary$size <- metadata(RAVmodel)$size
+
+for (i in seq_len(ncol(RAVmodel))) {
+    cl <- which(metadata(RAVmodel)$cluster == i)
+    cl_pcs <- metadata(RAVmodel)$cluster[cl]
+    PCs <- lapply(names(cl_pcs), function(x) {
+        strsplit(x, "\\.PC") %>% unlist %>% .[2] %>% as.character
+    }) %>% unlist %>% as.numeric
+    summary[i,"mean"] <- mean(PCs)
+    summary[i,"sd"] <- sd(PCs)
+}
+
+head(summary)
+```
+
+Larger clusters tend to have higher proportions of top PCs. 
+```{r echo=FALSE}
+summary_sub <- summary[-which(summary$size == 1),]
+summary_sub <- summary_sub[order(summary_sub$size),]
+
+library(ggplot2)
+qplot(summary_sub$size, summary_sub$mean) +
+    geom_errorbar(aes(x = summary_sub$size, 
+                      ymin = summary_sub$mean - summary_sub$sd,
+                      ymax = summary_sub$mean + summary_sub$sd, 
+                      width = 0.25)) +
+    labs(x = "Cluster Size",
+         y = "Mean of PCs in Clusters",
+         title = "Distribution of PCs in Clusters")
+```
+
+If we take the mean and standard deviation of the above plot:
+```{r echo=FALSE}
+## Summary boxplot
+ggplot(summary_sub, aes(x = size, y = mean, group = size)) +
+    geom_boxplot() +
+    # geom_jitter(shape = 16, 
+    #             size = 0.5,
+    #             position = position_jitter(0.3)) +
+    labs(x = "Cluster size",
+         y = "Average PC number within the cluster",
+         title = "Summary of PC distribution in clusters")
+
+```
+
+Overall, we observed the tendency of larger clusters formed with higher
+proportions of top PCs. 
+```{r}
+## Summary table
+summaryOfsummary <- dplyr::group_by(summary_sub, size) %>% 
+    summarize(mean_mean = mean(mean), mean_sd = mean(sd))
+summaryOfsummary
+```
+
+
+
+## Silhouette Width
+Red bar represents the RAVs with the average silhouette width above 0.
+```{r echo=FALSE}
+## 4764 x 3 data frame with RAV, cluster size, and silhouette width
+sw_df <- data.frame(RAV = paste0("RAV", seq_len(ncol(RAVmodel))),
+                    size = metadata(RAVmodel)$size,
+                    sw = silhouetteWidth(RAVmodel))
+
+## the number of clusters with silhouette width > 0 per different-sized cluster
+s_ind <- which(metadata(RAVmodel)$size == 1)
+sub <- sw_df[-s_ind,]
+sw_df2 <- sub %>% 
+    group_by(size) %>%
+    summarise(above_0 = sum(sw >0))
+
+## Formatting for plot
+a <- data.frame(above_0 = sw_df2$above_0, ind = as.factor(sw_df2$size))
+x <- metadata(RAVmodel)$size
+b <- stack(table(x))
+c <- dplyr::full_join(a, b, by = "ind")
+c[is.na(c)] <- 0
+
+d <- matrix(nrow = 2, ncol = 21)
+colnames(d) <- c[,2]
+d[1,] <- c[,1] # silhouette width > 0
+d[2,] <- c[,3] - c[,1] # silhouette width <= 0
+d <- d[, -21] # remove single-element clusters
+
+barplot(d, main = "Clusters with Silhouette Width > 0",
+        xlab = "Cluster Size",
+        ylab = "# of RAVs", ylim = c(0, 2500),
+        col = c("red", "grey"))
+```
+
+Zoom in cluster size between 5 and 24:
+```{r echo=FALSE}
+## part of the above plot, "Clusters with Silhouette Width > 0"
+barplot(d[,5:20],
+        ylab = "# of RAVs", ylim = c(0, 70),
+        col = c("red", "grey"))
+```
+
+
+## GSEA
+### Clsuter sizes and GSEA
+We assess the number of enriched gene sets for each RAV. About 40% of RAVs in RAVmodel_C2 and 50% of RAVs in RAVmodel_PLIERpriors do not have any enriched pathway and the majority of them are one- or two- element clusters ([Supplementary Fig. 11](Characterize_GSEA.Rmd)), suggesting that the smaller clusters are less likely to represent biological features. Because there are RAVs annotated with only one input annotation, MSigDB C2 or PLIERpriors, we include all the RAVs to make our model cover diverse annotation databases. We further evaluate the scope of biological features represented by RAVmodel through two model validation measures, pathway coverage and pathway separation, adopted from the previous study. Pathway coverage is defined as the proportion of pathways annotating RAVs out of all the gene set terms provided. Pathway coverage of RAVmodel_C2 is 0.32. The recount2_MultiPLIER has the pathway coverage of 0.42 while the RAVmodel_PLIERpriors which uses the same gene set as recount2_MultiPLIER has 0.64 pathway coverage. Pathway separation is defined as the ability of the signature model to keep non-overlapping signatures that can differentiate biologically similar pathways. Three biological subjects were tested on RAVmodel_PLIERpriors - type I versus type II interferon, neutrophil versus monocyte, and G1 versus G2 cell cycle phases. RAVmodel can successfully separate them either with top one or top five enriched pathways. Detailed analysis is available [**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Characterize_GSEA.Rmd)
+
+### GSEA without LINC genes
+We investigated the effect of long intergenic non-coding (LINC) RNA in our 
+model on GSEA annotation. Details of this analysis is available [**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Comment_1_LINC.Rmd), 
+which also includes pathway coverage analysis.
+
+
+## Variance explained
+```{r}
+pcaSummary <- trainingData(RAVmodel)$PCAsummary
+avg_var_explained <- as.data.frame(matrix(ncol = 2, nrow = ncol(RAVmodel)))
+colnames(avg_var_explained) <- c("RAV", "AvgVar")
+
+for (i in seq_len(ncol(RAVmodel))) {
+    ## PCs in each cluster
+    cl_pcs <- which(metadata(RAVmodel)$cluster == i)
+    
+    ## Studies in the given RAV
+    Projs <- lapply(names(cl_pcs), function(x) {
+        strsplit(x, "\\.") %>% unlist %>% .[1] %>% as.character
+    }) %>% unlist
+    
+    data <- pcaSummary[Projs]
+    
+    for (k in seq_along(data)) {
+        j <- strsplit(names(cl_pcs), "\\.PC") %>% unlist %>% .[2] %>% as.numeric
+        var <- data[[k]]["Variance",j]
+        avg_var_explained[i, 1] <- paste0("RAV", i)
+        avg_var_explained[i, 2] <- round(mean(var)*100, digits = 2)
+    }
+}
+```
+
+```{r}
+summary(avg_var_explained$AvgVar)
+
+barplot(table(avg_var_explained$AvgVar),
+        xlab = "Average Variance Explained")
+```
+
+
+## Redundancy
+Redundancy within the cluster is defined as the cluster containing more than one PCs from the same study. The majority of RAVs (78%, 2,628 out of 3,386 non-single-element RAVs) consist of PCs from unique studies. 622 non-single-element RAVs are composed of only one study and 80% of them have no or only one MSigDB C2 pathway enriched.    
+
+First, we summarize RAVs with multiple PCs from one study and save it in `dup` object.
+
+```{r}
+dup <- as.data.frame(matrix(ncol = 4, nrow = ncol(RAVmodel)))
+colnames(dup) <- c("RAV", "Dupicated", "Num_duplicated", "Studies_duplicated")
+for (i in seq_len(ncol(RAVmodel))) {
+    ## PCs in each cluster
+    cl_pcs <- which(metadata(RAVmodel)$cluster == i)
+    
+    ## Studies in the given RAV
+    Projs <- lapply(names(cl_pcs), function(x) {
+        strsplit(x, "\\.") %>% unlist %>% .[1] %>% as.character
+    }) %>% unlist
+    
+    dup[i, 1] <- paste0("RAV", i)
+    dup[i, 2] <- any(duplicated(Projs))
+    dup[i, 3] <- sum(duplicated(Projs))
+    dup[i, 4] <- length(unique(Projs[duplicated(Projs)]))
+}
+
+table(dup$Dupicated) # 758 RAVs have PCs from the same study --> remove them?
+table(dup$Num_duplicated) # how many PCs from the same study
+table(dup$Studies_duplicated) # how many studies are multiplicated in one RAV
+```
+
+We subset `dup` to the RAVs with multiple PCs from the same study and saved it 
+in `multiPCs`. If the number of duplicates PCs and the number of duplicated 
+studies are equal, then there are two PCs from multiple studies. We checked 
+RAVs that have more than two PCs from the same study.
+
+```{r eval=FALSE}
+## Check RAVs with more than one PC from a study
+multiPCs_ind <- which(dup$Num_duplicated != 0 & dup$Num_duplicated != 1)
+multiPCs <- dup[multiPCs_ind,]
+
+## The number of RAVs with more than 2 PCs from a study
+multiPCs_ind <- which(dup[,"Num_duplicated"] > dup[,"Studies_duplicated"]) # 77 RAVs
+
+## `dup_RAVs` contains studies contributing an RAV with more than 2 PCs   
+dup_RAVs_studies <- vector(mode = "list", length = length(multiPCs_ind))
+dup_RAVs_PCs <- vector(mode = "list", length = length(multiPCs_ind))
+dup_RAVs_gsea <- vector(mode = "list", length = length(multiPCs_ind))
+dup_RAVs_clsize <- vector(mode = "list", length = length(multiPCs_ind))
+names(dup_RAVs_studies) <- names(dup_RAVs_PCs) <- names(dup_RAVs_gsea) <- names(dup_RAVs_clsize) <- paste0("RAV", multiPCs_ind)
+for (i in seq_along(multiPCs_ind)) {
+    res <- getRAVInfo(RAVmodel, multiPCs_ind[i])
+    dup_RAVs_studies[[i]] <- res$members$studyName
+    dup_RAVs_PCs[[i]] <- res$members$PC
+    dup_RAVs_gsea[[i]] <- res$enrichedPathways
+    dup_RAVs_clsize[[i]] <- res$clusterSize
+}
+```
+
+Characteristics of those 77 dup_RAVs are:
+```{r eval=FALSE}
+length(unlist(dup_RAVs_studies)) # 249 PCs 
+length(unique(unlist(dup_RAVs_studies))) # only 45 studies
+
+table(unlist(dup_RAVs_gsea)) # 42 RAVs with no enriched pathways
+table(unlist(dup_RAVs_clsize)) # 64 are 3-element clusters
+```
+
+We summarized the duplication detail.
+```{r eval=FALSE}
+dup_RAVs_studies_tbl <- as.data.frame(matrix(nrow = length(dup_RAVs_studies),
+                                             ncol = 3))
+colnames(dup_RAVs_studies_tbl) <- c("RAV", "Study", "# duplicated")
+
+for (i in seq_along(dup_RAVs_studies)) {
+    res <- table(dup_RAVs_studies[[i]])
+    dup_RAVs_studies_tbl[i,1] <- names(dup_RAVs_studies)[i] # RAV
+    dup_RAVs_studies_tbl[i,2] <- names(res) # Study
+    dup_RAVs_studies_tbl[i,3] <- res # duplicated number
+}
+
+dup_RAVs_studies_tbl$gsea <- unlist(dup_RAVs_gsea)
+head(dup_RAVs_studies_tbl)
+```
+
+We checked any RAV with both PC1 and PC2 from the same study.
+```{r}
+all_dup_RAVs <- which(dup$Dupicated == TRUE)
+
+topPCs_RAVs <- vector(mode = "list", length = length(all_dup_RAVs))
+names(topPCs_RAVs) <- paste0("RAV", all_dup_RAVs)
+
+for (i in seq_along(all_dup_RAVs)) {
+    x <- getRAVInfo(RAVmodel, all_dup_RAVs[i])$members
+    dup_study <- x$studyName[duplicated(x$studyName)]
+    res <- all(filter(x, studyName %in% dup_study)$PC %in% c(1,2,3))
+    topPCs_RAVs[[i]] <- res
+}
+```
+
+There are 37 RAVs which have both PC1 and PC2 from the same study.
+```{r}
+sum(unlist(topPCs_RAVs)) # 37
+which(topPCs_RAVs == TRUE)
+```
+```{r echo=FALSE, eval=FALSE}
+## Subset of the membership table with the studies where PC1/2 came from
+ind <- gsub("RAV", "", names(which(topPCs_RAVs == TRUE))) %>% as.numeric
+topPCs_RAVs_sub <- vector(mode = "list", length = length(ind))
+names(topPCs_RAVs_sub) <- paste0("RAV", ind)
+
+for (i in seq_along(ind)) {
+    x <- getRAVInfo(RAVmodel, ind[i])$members
+    y <- x$studyName[duplicated(x$studyName)]
+    res <- filter(x, studyName %in% y)
+    res$RAV <- i
+    topPCs_RAVs_sub[[i]] <- res
+}
+
+resAll <- dplyr::bind_rows(topPCs_RAVs_sub)
+write.table(resAll, "RAVs_with_topPCs.tsv", row.names = FALSE)
+```
+
+We checked non-single-element clusters containing PCs from only one study.
+```{r}
+ns_ind <- which(metadata(RAVmodel)$size != 1)
+s_study <- which(sapply(studies(RAVmodel), length) == 1)
+
+single_study_ind <- intersect(ns_ind, s_study)
+length(single_study_ind)
+```
+
+We checked the number of enriched pathways for 622 RAVs consist of only one 
+study. 80% of them for RAVmodel_C2 and 82% of RAVmodel_PLIERpriors among 622
+RAVs have no or one enriched pathway.
+
+```{r}
+## C2
+x <- gsea(RAVmodel)[filterList[[4]]]
+x_count <- sapply(x, nrow)
+table(x_count)
+
+## PLIERpriors
+x <- gsea(RAVmodel_PLIERpriors)[filterList[[4]]]
+x_count <- sapply(x, nrow)
+table(x_count)
+```
+
+
+## Effect on the existing use cases
+Overlap with the RAVs mentioned in the manuscript (`ind_all`).
+
+```{r RAVs_in_examples,echo=FALSE}
+# RAVs used in the manuscript
+ind1 <- c(119, 221, 312, 468, 504, 683, 832, 868) # Fig2A
+ind2 <- c(221, 504, 468, 312, 683) # Fig2B
+ind3 <- c(834, 833, 1551) # Fig3&4
+ind4 <- c(312, 832, 188, 468, 21, 119, 684) # Sup.Fig4
+ind5 <- c(1575, 834, 833) # Sup.Fig5
+ind6 <- c(23, 1552, 1387, 684) # Sup.Fig8
+ind_all <- unique(c(ind1, ind2, ind3, ind4, ind5, ind6)) 
+
+num_enriched_gs <- sapply(gsea(RAVmodel), nrow) 
+no_gs_ind <- which(num_enriched_gs == 0)
+cut <- 276   # 5% of all the genes in MSigDB C2 gene sets
+too_many_gs_ind <- which(num_enriched_gs > cut)   # 38 RAVs with > 276 enriched pathways
+gsea_filtered_ind <- unique(c(no_gs_ind, too_many_gs_ind))
+```
+
+```{r}
+dup_ind <- which(dup$Dupicated)
+commonRAVs <-intersect(ind_all, dup_ind)
+
+for (rav in commonRAVs) {
+    res <- getRAVInfo(RAVmodel, rav)
+    print(paste(paste0("RAV", rav), "contains", 
+                res$clusterSize, "PCs from", 
+                length(unique(res$members$studyName)), "unique studies"))
+}
+```
+
+To guide the interpretation, GenomicSuperSignature gives a message when the output included any of the following RAVs: 1) single-element RAVs, 2) RAVs with no or too many enriched pathways, where ‘too-many’ is defined as 5% of input gene sets (276 and 31 for MSigDB C2 and PLIERpriors, respectively), 3) non-single-element RAVs constructed from a single study. These criteria together include 2,557 RAVs. This message is for guidance only and not for definitive interpretation. 
+
+```{r message=TRUE, fig.width=5, fig.height=2, out.height="65%", out.width="65%"}
+library(bcellViper)
+data(bcellViper)
+val_all <- validate(dset, RAVmodel)
+heatmapTable(val_all, RAVmodel)
+```
+
+
+
+# Session Info
+<details>
+```{r}
+sessionInfo()
+```
+</details>
