@@ -11,7 +11,7 @@ vignette: >
   %\VignetteIndexEntry{RAVmodel_C2 vs. RAVmodel_PLIERpriors}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-abstract: "[**Source Code**]()"
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Characterize_GSEA.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
