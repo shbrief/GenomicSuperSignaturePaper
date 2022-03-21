@@ -11,7 +11,7 @@ vignette: >
   %\VignetteIndexEntry{Global description of RAVindex}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-abstract: "[**Source Code**]()"
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/What_RAVindex_Is.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
