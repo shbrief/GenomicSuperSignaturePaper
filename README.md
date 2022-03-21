@@ -27,7 +27,12 @@ through GenomicSuperSignaturePaper package.
 devtools::document("shbrief/GenomicSuperSignaturePaper")
 ```
 
-You can check the available RAVmodels through this function:
+You can check the available RAVmodels through `availableRAVmodel` function:
 ```
-GenomicSuperSignature::availableRAVmodel()
+> GenomicSuperSignature::availableRAVmodel()
+        prior version   update pkg_version
+1          C2    beta 20201101       1.1.0
+3          C2  latest 20220115       1.3.0
+4 PLIERpriors    beta 20201101       1.1.0
+6 PLIERpriors  latest 20220115       1.3.0
 ```
