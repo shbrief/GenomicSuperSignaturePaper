@@ -11,7 +11,7 @@ vignette: >
   %\VignetteIndexEntry{Simulate RAV}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-abstract: "[**Source Code**]()"
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Simulate_PCSSs.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
