@@ -1,0 +1,154 @@
+---
+title: "How likely to randomly get a PCSS-like RAV?"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Simulate RAV}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**]()"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
+                      out.height = "70%", out.width = "70%")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(GenomicSuperSignature)
+```
+
+
+# Background
+One of the reviewer's comment is :   
+*The example of classifying colorectal cancer samples using pairs of RAVs the proposed method identifies RAVs that are most associated with CMS subtypes. Given the total number of 4764 RAVs there are more than 10 million possible combinations. Given the number of possible feature combinations, it doesn't seem too surprising that the RAVs perform as well as CRC. The same approach would most likely work just as well on the gene level selecting two genes and as features.*
+
+To assess whether multiple testing can explain the similarities we observed between RAVs and CMS subtypes, we simulated 4,764 RAVs that follow the distribution patterns of RAVs in our model and evaluate how likely we will get PCSS-like RAVs.
+
+Regarding the number of genes in RAVmodel, because our training datasets are heterogenous in their underlying biology, the overlap between highly variable genes across them is small. Also, we aim to build a RAVmodel which is robust across large datasets with different underlying biology but using too few genes will sacrifice this cross-dataset robustness of our method. For example, the continuous CRC subtype scores (PCSSs) are composed of 9,241 genes and showed that Pearson correlations exceeded 0.9 when they compared the sample scores assigned by PCSSs and “pseudo”-PCSSs that contain only the top ~200 varying genes2. However, only 30 genes are shared between the top 200 varying genes for PCSS1 and PCSS2. If we use fewer genes for RAVmodel, the common genes between RAVmodel and PCSSs will be too few, so we will not be able to use RAVmodel to analyze CRC data. Below table shows how the gene-level data compression will affect RAVmodel’s ability to explain CRC data. 
+
+For 536 training datasets, 417 studies use 40,746 genes and 119 studies have 41,255 genes. The common genes among the top 90% varying genes are 13,934 genes, which shares 131 and 115 genes from the top 200 varying genes for PCSS1 and PCSS2, respectively (row 1).  The common genes among the top 80% varying genes are 2,395 genes (row 2), among the top 75% varying genes are 661 genes (row 3), among the top 70% varying genes are only 166 genes. 661 genes from the top 75% varying genes share only 11 and 14 genes with top 200 varying genes from PCSS1/2.
+
+| % top varying genes | # of genes in RAVindex | # of common genes with top 200 PCSS1 genes | # of common genes with top 200 PCSS2 genes |
+|----|-------|-----|-----|
+| 90 | 13934 | 131 | 115 |
+| 80 | 2395  | 46  | 39  |
+| 75 | 661   | 11  | 14  |
+
+
+# Load data
+## RAVmodel
+```{r message=FALSE, warning=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel
+
+geneSets(RAVmodel)
+version(RAVmodel)
+```
+
+We calculate the mean and standard deviation of each RAV in our model.
+```{r}
+ravindex <- RAVindex(RAVmodel)
+ravDistribution <- as.data.frame(matrix(nrow = ncol(RAVmodel), ncol = 2))
+colnames(ravDistribution) <- c("mean", "sd")
+rownames(ravDistribution) <- paste0("RAV", seq_len(ncol(RAVmodel)))
+
+for (i in seq_len(ncol(RAVmodel))) {
+    m <- mean(ravindex[,i])
+    sd <- sd(ravindex[,i])
+    ravDistribution[i, "mean"] <- m
+    ravDistribution[i, "sd"] <- sd
+}
+```
+
+RAVs show a normal distribution with the mean ~ 0 and the standard deviation ~ 0.0065.
+```{r}
+summary(ravDistribution$mean)
+summary(ravDistribution$sd)
+
+hist(RAVindex(RAVmodel)[,100]) # random example RAV
+```
+
+## PCSSs
+```{r}
+avgLoading <- read.csv("~/GSS/GenomicSuperSignaturePaper/Results/CRC/data/avg_loadings.csv")
+rownames(avgLoading) <- avgLoading[,1]
+avgLoading <- avgLoading[,-1]
+```
+
+# PCSSs vs. RAVs
+```{r}
+## Common genes between RAVmodel and PCSSs
+cg <- intersect(rownames(RAVmodel), rownames(avgLoading)) # 5,344 common genes
+
+## Calculate Pearson coefficients between PCSS1-4 and all 4,764 RAVs
+loading_cor <- abs(stats::cor(avgLoading[cg,], RAVindex(RAVmodel)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
+
+## Maximum Pearson coefficients between PCSS1/2 and all 4,764 RAVs
+max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
+max2 <- which.max(loading_cor[2,])  # max. correlation with PCSS2
+
+## Pearson coefficients between PCSS1 and all 4,764 RAVs
+hist(loading_cor[1,], 
+     xlab = "Pearson Correlation Coefficient",
+     main = "PCSS1 vs. 4,764 RAVs")
+```
+
+RAV1575 is most similar to PCSS1 (Pearson coefficient = 0.59) and RAV834 is 
+most similar to PCSS2 (Pearson coefficient = -0.56).
+
+```{r}
+ravs <- RAVindex(RAVmodel)[cg, c(max1, max2)] # two most similar RAVs
+pcss <- avgLoading[cg, 1:2] # PCSS1/2
+
+stats::cor(pcss, ravs, use = "pairwise.complete.obs", method = "pearson")
+```
+
+
+# PCSSs vs. simulated RAV
+We simulate RAVs that follow the distribution of our RAVs: mean = 0 and 
+standard deviation ~ 0.0065. We create 4,764 of simulated RAVs (`res_all`) 
+and calculate the absolute Pearson coefficient between them and PCSS1. The 
+maximum value from this simulation-comparison is 0.056, which is ~10 fold 
+lower than our RAVs.    
+
+So, RAVs performing as well as PCSS is not by chance. Additionally, RAVmodel 
+includes RAV that perform better than PCSS-like RAV in explaining the 
+clinicopathological characteristics of colon cancer.
+
+```{r}
+## Simulate 4,764 RAVs
+set.seed(1)
+n <- 4764
+res_all <- vector(length = n)
+
+for (i in seq_len(n)) {
+    simulateRAVs <- rnorm(length(cg), mean = 0, sd = mean(ravDistribution$sd))
+    res <- abs(stats::cor(avgLoading[cg, 1], simulateRAVs, method = "pearson"))
+    res_all[i] <- res
+}
+
+max(res_all)
+
+## Pearson coefficients between PCSS1 and 4,764 simulated RAVs
+hist(res_all, 
+     xlab = "Pearson Correlation Coefficient",
+     main = "PCSS1 vs. 4,764 simulated RAVs")
+```
+
+
+
+# Session Info
+<details>
+```{r}
+sessionInfo()
+```
+</details>
