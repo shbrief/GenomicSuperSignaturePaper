@@ -1,0 +1,163 @@
+---
+title: "Distribution of PCs in clusters"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Plot the composition of PCs for different cluster sizes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "_**[Source]()**_"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, 
+                      message = FALSE, eval = FALSE, 
+                      out.height="75%", out.width="75%")
+```
+
+# Setup
+```{r}
+suppressPackageStartupMessages({
+    library(dplyr)
+    library(GenomicSuperSignature)
+})
+```
+
+```{r}
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+sizes <- sort(unique(metadata(RAVmodel)$size))
+```
+
+## PCnumInCluster function
+```{r}
+#' @param RAVmodel RAVmodel
+#' @param x The cluster size (1 to 24) of the RAVmodel
+#' @param plotting Under the default (\code{TRUE}), this function will output
+#' the plot. If it is set to \code{FALSE}, the summary table of PC numbers in
+#' a given cluster size (defined through \code{x} argument of this function)
+#' will return.
+#' 
+#' @return The output is a bar plot showing the distribution of PCs for the
+#' given cluster size.
+
+library(ggplot2)
+
+PCnumInCluster <- function(RAVmodel, x, plotting = TRUE) {
+    ind <- which(metadata(RAVmodel)$size == x)
+    cl <- which(metadata(RAVmodel)$cluster %in% ind)
+    cl_pcs <- metadata(RAVmodel)$cluster[cl]
+
+    PCs <- lapply(names(cl_pcs), function(x) {
+        strsplit(x, "\\.PC") %>% unlist %>% .[2] %>% as.character
+    }) %>% unlist
+
+    data <- stack(table(PCs)) # summarize PC numbers
+    blank <- data.frame(0, 1:20) # blank table for 20 PCs
+    colnames(blank) <- c("values", "ind")
+    blank$ind <- factor(blank$ind, levels = c(1:20)) # convert PC numbers as integer for rbind
+
+    ol <- which(blank$ind %in% data$ind) # select PC numbers not in the clusters
+    blank_merge <- blank[!blank$ind %in% ol,] # remove place holders
+    data <- rbind(data, blank_merge) # add non-existing PC numbers
+
+    ## Set PC number (`ind`) as a factor for plotting
+    data$ind <- factor(data$ind, levels = c(1:20))
+    data <- data[order(data$ind),]
+    
+    ## Return the table instead of plot
+    if (!plotting) {return(data); stop()}
+
+    ## ggplot
+    fontAbove <- max(data$values)*0.04
+    gp <- ggplot(data, aes(x = ind, y = values)) +
+        geom_col() +
+        geom_text(aes(label = values), vjust = -0.2, size = 2,
+                  position = position_dodge(0.9)) +
+        ylim(0,round(max(data$values)*1.1)) +
+        labs(
+            title = paste0("PC distibution in ", x,"-element RAVs"),
+            x = "PC number",
+            y = "Frequency"
+        ) +
+        theme(text = element_text(size = 8)) +
+        theme_minimal(base_size = 8)
+
+    return(gp)
+}
+```
+
+# Save the plot
+```{r save_the_plot, echo=FALSE, eval=FALSE}
+pdf("PCs_In_Clusters.pdf")
+library(ggpubr)
+
+i = 0
+ggarrange(PCnumInCluster(RAVmodel, sizes[i*4+1]),
+          PCnumInCluster(RAVmodel, sizes[i*4+2]),
+          PCnumInCluster(RAVmodel, sizes[i*4+3]),
+          PCnumInCluster(RAVmodel, sizes[i*4+4]),
+          ncol = 2, nrow = 2)
+
+i = 1
+ggarrange(PCnumInCluster(RAVmodel, sizes[i*4+1]),
+          PCnumInCluster(RAVmodel, sizes[i*4+2]),
+          PCnumInCluster(RAVmodel, sizes[i*4+3]),
+          PCnumInCluster(RAVmodel, sizes[i*4+4]),
+          ncol = 2, nrow = 2)
+
+i = 2
+ggarrange(PCnumInCluster(RAVmodel, sizes[i*4+1]),
+          PCnumInCluster(RAVmodel, sizes[i*4+2]),
+          PCnumInCluster(RAVmodel, sizes[i*4+3]),
+          PCnumInCluster(RAVmodel, sizes[i*4+4]),
+          ncol = 2, nrow = 2)
+
+i = 3
+ggarrange(PCnumInCluster(RAVmodel, sizes[i*4+1]),
+          PCnumInCluster(RAVmodel, sizes[i*4+2]),
+          PCnumInCluster(RAVmodel, sizes[i*4+3]),
+          PCnumInCluster(RAVmodel, sizes[i*4+4]),
+          ncol = 2, nrow = 2)
+
+i = 4
+ggarrange(PCnumInCluster(RAVmodel, sizes[i*4+1]),
+          PCnumInCluster(RAVmodel, sizes[i*4+2]),
+          PCnumInCluster(RAVmodel, sizes[i*4+3]),
+          PCnumInCluster(RAVmodel, sizes[i*4+4]),
+          ncol = 2, nrow = 2)
+
+## There are 21 different cluster sizes and the largest one is 24-elements cluster
+ggarrange(PCnumInCluster(RAVmodel, 24), ncol = 2, nrow = 2)
+dev.off()
+```
+
+
+We summarized the proportion of `lowerPCs` (defined as PC11-20) for different
+sizes of clusters. 
+
+```{r}
+clSizes <- unique(metadata(RAVmodel)$size) %>% sort
+res <- vector(mode = "list", length = length(clSizes))
+tbl <- data.frame(clusterSize = clSizes, totalPCs = NA, lowerPCs = NA)
+
+for (i in seq_along(clSizes)) {
+    x <- PCnumInCluster(RAVmodel, clSizes[i], plotting = FALSE)
+    tbl[i, "clusterSize"] <- clSizes[i]
+    tbl[i, "totalPCs"] <- sum(x$values)
+    tbl[i, "lowerPCs"] <- sum(x$values[11:20])
+    res[[i]] <- x
+}
+
+tbl
+```
+
+```{r eval=FALSE, echo=FALSE}
+write.csv(tbl, "lowerPCsInClusters.csv", row.names = FALSE)
+```
+
