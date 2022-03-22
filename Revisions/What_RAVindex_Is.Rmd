@@ -421,6 +421,18 @@ val_all <- validate(dset, RAVmodel)
 heatmapTable(val_all, RAVmodel)
 ```
 
+# Manuscript Figures
+## Supplementary Figure 9
+```{r}
+p
+```
+
+```{r eval=FALSE, echo=FALSE}
+## Save the complete Figure 2
+png("manuscript_SupFig9.png", width = 600, height = 400)
+p
+dev.off()
+```
 
 
 # Session Info
