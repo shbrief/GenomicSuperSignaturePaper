@@ -1,7 +1,7 @@
-# RAVmodels
+# Contents
 
 ### PCs_In_Clusters.Rmd
-Plot _**Supplementary Figure 9**_, which is saved as `PCs_In_Clusters.pdf`.
+Plot _**Supplementary Figure 10**_, which is saved as `PCs_In_Clusters.pdf`.
 
 ### lowerPCsInClsuters.csv
 A table summarize the frequency of lower PCs (PC11-20) in the different sized
