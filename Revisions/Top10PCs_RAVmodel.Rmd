@@ -1,0 +1,291 @@
+---
+title: "Compare RAVmodel with top 10 PCs"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Compare RAVmodel from top 10 PCs vs. top 20 PCs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**]() <br/> Sensitivity test comparing RAVmodels constructed with top 10 PCs versus top 20 PCs. The result of this analysis rationalize our choice of top 20 PCs for RAVmodel building"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
+                      out.height="75%", out.width="75%")
+```
+
+# Background
+This vignette includes a part of the explanation on how we choose the top 20
+PCs for RAVmodel building.   
+
+1. A threshold of 20 PCs is adequate for stability of the RAV model, particularly for larger clusters of 3+ PCs. This table 
+([**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/model/lowerPCsInClusters.csv)) summarizes the frequency of “lower” PCs, defined as PC11-20, compared to the total number of PCs including all 1-20, in RAVs of different cluster sizes, where most of the lower PCs (PC11-20) are in single-element (22%) or two-element (53%) clusters. We expect further relaxing the cutoff would contribute even less to clusters of 2+ size, which we validate using two RAVmodels consisting of 1) top 10 PCs (`RAVmodel_10`) or 2) top 20 PCs (`RAVmodel_20`) from each dataset. _**Figure 1. Pearson Coefficient between RAVs**_ shows the summary of Pearson coefficient from a most similar pair of RAVs from `RAVmodel_10` and `RAVmodel_20`. 79% of RAVs in `RAVmodel_10` have a similar or identical RAVs in `RAVmodel_20` with the Pearson coefficient above 0.7 and the average Pearson coefficient for the RAVs with more than 2 elements is 0.86, suggesting that the model is robust to cutoffs of >= 10 PCs, and that the added computational cost of a cutoff larger than 20 would provide little or no benefit.     
+
+2. Twenty is large enough to represent a majority of the variability in most studies (median percentage of total variability represented 63%). After the 8th PC, less than 5% of total variance was explained by a single PC for all 536 training datasets.    
+
+3. We tested an alternative approach of the “elbow” method to find the number of ‘significant’ PCs to collect, using the `num.pc` function implemented in the PLIER package with the following modification. The `PLIER::num.pc` function applies z-score normalization, but because our method does normalization at the all sample level, we removed this internal normalization from `PLIER::num.pc` and provided the pre-normalized input data instead. The number for significant PCs from this modified `PLIER::num.pc` function ranged from 5 to 45, with a median of 20. The “elbow” of the scree plots was not usually clear when we tried manual verification.     
+
+3. One of the main works we benchmarked against was [*Ma et al.*](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4), where the authors selected top 20 PCs for their model building to extract colon cancer specific signatures. 
+
+
+# Setup
+```{r}
+suppressPackageStartupMessages({
+  library(GenomicSuperSignature)
+  library(dplyr)
+  library(ggplot2)
+})
+```
+
+## RAVmodel
+```{r}
+# From top 20 PCs
+dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel_20 <- readRDS(file.path(dir, "RAVmodel_C2.rds"))
+RAVmodel_20
+geneSets(RAVmodel_20)
+version(RAVmodel_20)
+
+# From top 10 PCs
+dir2 <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536_10PCs"
+RAVmodel_10 <- readRDS(file.path(dir2, "refinebioRseq_RAVmodel_10PCs_C2_20220114.rds"))
+RAVmodel_10
+geneSets(RAVmodel_10)
+version(RAVmodel_10)
+```
+
+# Compare RAVs
+`cor_all` is a matrix containing Pearson correlation coefficient between
+2,382 RAVs from `RAVmodel_10` and 4,764 RAVs from `RAVmodel_20`.
+
+```{r eval=FALSE}
+cor_all <- stats::cor(RAVindex(RAVmodel_10), RAVindex(RAVmodel_20), 
+                      use = "pairwise.complete.obs", 
+                      method = "pearson")
+```
+
+```{r echo=FALSE}
+cor_all <- data.table::fread("Top10PCs_RAVmodel.csv", 
+                             sep = ",", header = TRUE) %>% as.matrix
+```
+
+2,382 RAVs from `RAVmodel_20` that are most similar to RAVs in `RAVmodel_10`. 
+
+```{r}
+most_similar_ind <- apply(cor_all, 1, which.max)
+length(unique(most_similar_ind)) # 2,123 unique RAVs from RAVmodel_20 is matched
+```
+
+Pearson Correlation Coefficient for the most similar pairs are summarized in
+`most_similar_value`. Its index is same as RAV number of `RAVmodel_10`, the 
+name of each element is RAV number of `RAVmodel_20`, and the value is Pearson 
+coefficient.
+
+```{r}
+most_similar_value <- vector(mode = "list", length = length(most_similar_ind))
+names(most_similar_value) <- most_similar_ind
+
+for (i in seq_along(most_similar_ind)) {
+    res <- cor_all[i, most_similar_ind[i]]
+    most_similar_value[[i]] <- res
+}
+
+sum(most_similar_value == 1) # 805 RAVs are identical
+```
+
+```{r functions, echo=FALSE}
+jaccard <- function(a, b) {
+    intersection = length(intersect(a, b))
+    union = length(a) + length(b) - intersection
+    return (intersection/union)
+}
+
+overlap <- function(a, b) {
+    intersection = length(intersect(a, b))
+    return (intersection/min(length(a), length(b)))
+}
+```
+
+We checked the studies overlapping between the correlated pair of RAVs through
+Jaccard index and saved it under `Jaccard_studies` column of the `summary_tbl` table.
+
+* `summary_tbl` has six columns: 
+  + `RAVfrom10`, the RAV index from the model built with top 10 PCs
+  + `RAVfrom20`, the RAV index from the model built with top 20 PCs
+  + `Jaccard_studies`, the Jaccard index of studies contributing the most similar RAV pairs
+  + `Pearson`, Pearson coefficient between `RAVfrom10` and `RAVfrom20`
+  + `clSize10`, cluster size of `RAVfrom10`
+  + `clSize20`, cluster size of `RAVfrom20`
+
+```{r make_summary_tbl, echo=FALSE}
+x <- gsea(RAVmodel_10)
+y <- gsea(RAVmodel_20)
+test <- vector(length = 2382)
+for(i in 1:2382) {
+    z <- jaccard(x[[i]]$Description, y[[i]]$Description)
+    test[i] <- z
+}
+
+a <- studies(RAVmodel_10)
+b <- studies(RAVmodel_20)
+c <- gsea(RAVmodel_10)
+d <- gsea(RAVmodel_20)
+summary_tbl <- as.data.frame(matrix(nrow = length(most_similar_ind), ncol = 6))
+colnames(summary_tbl) <- c("RAVfrom10", "RAVfrom20", 
+                           "Jaccard_studies", "Jaccard_gsea",
+                           "overlap_studies", "overlap_gsea")
+
+for (i in seq_along(most_similar_ind)) {
+    j <- most_similar_ind[i]
+    res <- jaccard(a[[i]], b[[j]])
+    res2 <- jaccard(c[[i]]$Description, d[[j]]$Description)
+    res3 <- overlap(a[[i]], b[[j]])
+    res4 <- overlap(c[[i]]$Description, d[[j]]$Description)
+    
+    summary_tbl[i, "RAVfrom10"] <- i
+    summary_tbl[i, "RAVfrom20"] <- j
+    summary_tbl[i, "Jaccard_studies"] <- res
+    summary_tbl[i, "Jaccard_gsea"] <- res2
+    summary_tbl[i, "overlap_studies"] <- res3
+    summary_tbl[i, "overlap_gsea"] <- res4
+}
+
+summary_tbl$Pearson <- as.numeric(most_similar_value)
+summary_tbl$clSize10 <- metadata(RAVmodel_10)$size
+summary_tbl$clSize20 <- metadata(RAVmodel_20)$size[summary_tbl$RAVfrom20]
+```
+
+```{r}
+head(summary_tbl)
+```
+
+```{r echo=FALSE}
+## Similarity comparison from RAVmodel_topPC20
+# boxplot(Pearson~clSize20, data = summary_tbl)
+# boxplot(Jaccard_studies~clSize20, data = summary_tbl)
+```
+
+### Figure 1. Pearson Coefficient between RAVs
+```{r collapse=FALSE}
+boxplot(Pearson~clSize10, data = summary_tbl, 
+        xlab = "Cluster size (RAVmodel 10 PCs)",
+        main = "Figure 1. Pearson Coefficient between RAVs")
+```
+
+### Other Jaccard Plots
+```{r}
+boxplot(Jaccard_studies~clSize10, data = summary_tbl,
+        xlab = "Cluster size (RAVmodel 10 PCs)",
+        main = "Figure 2. Jaccard Index between Studies")
+boxplot(Jaccard_gsea~clSize10, data = summary_tbl,
+        xlab = "Cluster size (RAVmodel 10 PCs)",
+        main = "Figure 3. Jaccard Index between enriched gene sets")
+```
+
+### Overlap Plots
+When the cluster sizes are different between two comparing groups, Jaccard
+index can mislead the significance of overlap due to the large denominator. 
+So we also plotted the overlaps for studies and enriched gene sets. 
+
+```{r collapse=FALSE}
+boxplot(overlap_studies~clSize10, data = summary_tbl,
+        xlab = "Cluster size (RAVmodel 10 PCs)", 
+        main = "Figure 4. Overlap between Studies")
+boxplot(overlap_gsea~clSize10, data = summary_tbl,
+        xlab = "Cluster size (RAVmodel 10 PCs)",
+        main = "Figure 5. Overlap between enriched gene sets")
+```
+
+
+### Other Plots
+```{r collapse=FALSE}
+hist(summary_tbl[, "Pearson"],
+     xlab = "Pearson Coefficient",
+     main = "Pearson coefficient between similar RAV pairs")
+hist(summary_tbl[, "Jaccard_studies"],
+     xlab = "Jaccard Index", 
+     main = "Studies contributing similar RAV pairs")
+hist(summary_tbl[, "Jaccard_gsea"],
+     xlab = "Jaccard Index", 
+     main = "Enriched gene sets annotate similar RAV pairs")
+hist(summary_tbl[, "overlap_studies"],
+     xlab = "Overlapping proportion", 
+     main = "Studies contributing similar RAV pairs")
+hist(summary_tbl[, "overlap_gsea"],
+     xlab = "Overlapping proportion", 
+     main = "Enriched gene sets annotate similar RAV pairs")
+plot(summary_tbl[,"Pearson"], summary_tbl[,"Jaccard_studies"],
+     xlab = "Pearson", ylab = "Jaccard")
+```
+
+Check why there is a peak between 0.7 ~ 0.75 Pearson coefficient. --> It seems
+like the lower PCs (PC11-20) are included in those. 
+
+```{r}
+ind <- which(summary_tbl$Pearson > 0.7 & summary_tbl$Pearson <= 0.75)
+head(summary_tbl[ind,])
+```
+
+292 RAV pairs with 'Jaccard index == 1' but 'Pearson coefficient != 1' have 
+different number of PCs in their clusters.
+
+```{r}
+ind <- which(summary_tbl[,"Jaccard_studies"] == 1 & summary_tbl[,"Pearson"] != 1)
+length(ind)
+
+sub <- summary_tbl[ind,]
+head(sub)
+```
+
+
+```{r echo=FALSE, eval=FALSE}
+# Any additional PC in the `clSize20` in the above table are from the same study
+table(sub$clSize20-sub$clSize10)
+```
+
+```{r echo=FALSE, eval=FALSE}
+# Is RAV number matching?
+names(most_similar_ind) <- 1:2382
+tbl <- stack(most_similar_ind)
+colnames(tbl) <- c("20PCs", "10PCs")
+tbl[,2] <- as.numeric(tbl[,2])
+plot(x = tbl[,2], y = tbl[,1])
+```
+
+
+
+# Cluster size
+```{r}
+table(metadata(RAVmodel_20)$size)
+table(metadata(RAVmodel_10)$size)
+```
+
+```{r echo=FALSE}
+a <- stack(table(metadata(RAVmodel_20)$size)) 
+b <- stack(table(metadata(RAVmodel_10)$size))
+colnames(a) <- c("numOfRAVs", "clSize")
+colnames(b) <- c("numOfRAVs", "clSize")
+a$RAVmodel <- "RAVmodel_20"
+b$RAVmodel <- "RAVmodel_10"
+c <- bind_rows(a, b)
+c$clSize <- as.numeric(c$clSize)
+```
+
+```{r out.height="90%", out.width="90%"}
+ggplot(c, aes(x = clSize, y = numOfRAVs, fill = RAVmodel)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  ggtitle("Compare the size of RAVs")
+```
+
+
+# Session Info
+<details>
+```{r}
+sessionInfo()
+```
+</details>
