@@ -1,0 +1,304 @@
+---
+title: "Choose the number of PCs for clustering"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{The number of PCs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
+                      out.height="50%", out.width="50%")
+```
+
+```{r echo=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+
+# RAVmodel
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("C2", load=TRUE)
+```
+
+```{r}
+RAVmodel
+
+updateNote(RAVmodel)
+```
+
+
+# PCA summary
+```{r}
+pcaSummary <- trainingData(RAVmodel)$PCAsummary   # PCA summary 
+```
+
+## Cumulative variance explained
+```{r}
+pcaSummary_cumulative <- as.data.frame(matrix(nrow=20, ncol=length(pcaSummary)))
+rownames(pcaSummary_cumulative) <- paste0("PC", 1:20)
+colnames(pcaSummary_cumulative) <- names(pcaSummary)
+
+for (i in seq_along(pcaSummary)) {
+    x <- pcaSummary[[i]]["Cumulative",]
+    pcaSummary_cumulative[,i] <- x
+}
+```
+
+Accumulated variance explained at n-th PC
+```{r}
+n <- 20
+    
+hist(as.numeric(pcaSummary_cumulative[n,]),
+     xlim = c(0.2, 1), ylim = c(0, 80), 
+     xlab = "Cumulative Variance Explained",
+     main = paste0("Cumulative Variance Explained at PC", n))
+```
+
+```{r echo=FALSE, eval=FALSE}
+for (n in 5:20) {
+    hist(as.numeric(pcaSummary_cumulative[n,]),
+     xlim = c(0.2, 1), ylim = c(0, 200), 
+     xlab = "Cumulative Variance Explained",
+     main = paste0("Cumulative Variance Explained at PC", n))
+}
+```
+
+`accVar_90` is the number of PCs for each study that achieves above 90% 
+cumulative variance explained. Out of 536 studies, 519 studies couldn't 
+explain 90% of the variance with top 20 PCs. 
+
+```{r}
+accVar_90 <- apply(pcaSummary_cumulative, 2, function(x) {sum(x <= 0.90)})
+table(accVar_90)
+```
+
+There are two studies whose PC1 explains more than 90% of the variance (*accVar_90 == 0*).
+
+```{r}
+sum(accVar_90 == 0)
+```
+
+
+```{r}
+accVar_95 <- apply(pcaSummary_cumulative, 2, function(x) {sum(x <= 0.95)})
+table(accVar_95)
+```
+
+```{r echo=FALSE, eval=FALSE}
+cutoff <- 0.7
+var <- apply(pcaSummary_cumulative, 2, function(x) {sum(x <= cutoff)})
+table(var)
+# hist(var)
+```
+
+## Variance explained
+```{r}
+pcaSummary_variance <- as.data.frame(matrix(nrow=20, ncol=length(pcaSummary)))
+rownames(pcaSummary_variance) <- paste0("PC", 1:20)
+colnames(pcaSummary_variance) <- names(pcaSummary)
+
+for (i in seq_along(pcaSummary)) {
+    x <- pcaSummary[[i]]["Variance",]
+    pcaSummary_variance[,i] <- x
+}
+```
+
+Plot variance explained by PCs from 536 studies used in RAVmodel building.
+
+```{r}
+plot(pcaSummary_variance[,1],
+     xlab = "PC number", 
+     ylab = "Variance explained by PC",
+     ylim = c(0, 0.5))
+
+for (i in 2:ncol(pcaSummary_variance)) {
+    lines(pcaSummary_variance[,i])
+}
+
+abline(h = 0.05, col = "red")
+abline(v = 8, col = "red")
+```
+
+```{r}
+## Variance explained by PC20
+as.numeric(pcaSummary_variance[20,]) %>% summary
+
+## Cumulative variance explained up to PC20
+as.numeric(pcaSummary_cumulative[20,]) %>% summary
+```
+
+The number of PCs that explains more than 5% of variance within each study. 
+For example, none of the PCs from 11 studies explain more than 5% of variance
+and two studies contain 7 PCs that explain more than 5% of variance. 
+
+```{r}
+var <- apply(pcaSummary_variance, 2, function(x) {sum(x >= 0.05)})
+table(var)
+```
+
+
+
+# Elbow method
+Modify `PLIER::num.pc` to match with our data processing steps: `PLIER::num.pc`
+function does z-score normalization but our training datasets are z-score
+normalized as a combined datasets (standard deviation and mean are calculated 
+from all samples combined). So we removed the internal z-score from the `num.pc`
+function and used already-normalized data. This function is named as `gss.num.pc`.
+
+```{r gss.num.pc_function, eval=FALSE}
+gss.num.pc <- function(data) {
+    n <- ncol(data)
+    m <- nrow(data)
+    if (n < 500) {k = n} else {k = max(200, n/4)}
+    if (k == n) {uu <- svd(data)} else {uu <- rsvd(data, k, q = 3)}
+    
+    x = smooth(xraw <- abs(diff(diff(uu$d))), twiceit = TRUE)
+    nsv = which(x <= quantile(x, 0.5))[1] + 1
+    return(nsv)
+}
+```
+
+```{r model_building_05_PCA, echo=FALSE}
+## Input parameters for RAVmodel_536
+cg <- readRDS("~/data2/model_building/data/topGenes_13934.rds")
+trainingDatasets <- "refinebioRseq" 
+
+## Working directories
+in.dir <- "~/data2/refinebio_processed/rna_seq_v2"
+
+## Load the training dataset information
+dir <- system.file("extdata", package = "GenomicSuperSignature")
+studyMeta <- read.table(file.path(dir, "studyMeta.tsv.gz"))
+ind <- which(studyMeta$RAVmodel_536 == TRUE)
+allStudies <- studyMeta$studyName[ind]
+
+## Standard deviation and mean
+wd_data <- file.path("~/data2/GenomicSuperSignatureLibrary", trainingDatasets) 
+wd <- file.path(wd_data, "RAVmodel_536")
+fname <- paste0(trainingDatasets, "_536study")
+
+sdmean <- readRDS(file.path(wd, paste0(fname, "_SdMean.rds")))
+s <- sdmean$sd
+m <- sdmean$mean
+non_exp <- which(s == 0) %>% names
+```
+
+For our 536 training datasets, we calculate the significant number of PCs 
+through the elbow method and save the result in `pcNumAll` object.
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+pcNum <- vector(mode = "list", length = length(allStudies))
+names(pcNum) <- allStudies
+
+for (study in allStudies) {
+    # Load the count matrix
+    dir.path <- file.path(in.dir, study)
+    x <- data.table::fread(file.path(dir.path, paste0(study, "_count.csv")), 
+                           showProgress = FALSE)
+    x <- data.frame(x[,-1], row.names = x$V1) %>% as.matrix
+    x <- x[cg,,drop=FALSE]
+  
+    # Remove non-expressing genes in all samples (m == 0)
+    x <- x[!rownames(x) %in% non_exp,]
+
+    # Normalization
+    x <- sweep(x, 1, m)
+    x <- sweep(x, 1, s, "/")
+
+    # Estimate the number of 'significant' PCs
+    res <- gss.num.pc(x)
+    pcNum[[study]] <- res
+}
+
+pcNumAll <- stack(pcNum)
+colnames(pcNumAll) <- c("pcNum", "Studies")
+write.table(pcNumAll, "pcNumAll.tsv", row.names = FALSE)
+```
+
+```{r echo=FALSE}
+pcNumAll <- read.table("~/data2/GenomicSuperSignaturePaper/Revisions/pcNumAll.tsv", 
+                       header = TRUE)
+
+barplot(table(pcNumAll$pcNum),
+        xlab = "the number of PCs",
+        xlim = c(0, 45),
+        main = "# of significant PCs for 536 studies")
+
+summary(pcNumAll$pcNum)
+```
+
+```{r}
+pcNum.max <- which.max(pcNumAll$pcNum)
+pcNum.min <- which.min(pcNumAll$pcNum)
+pcNumAll[c(pcNum.max, pcNum.min),]
+```
+
+Scree plot of the studies with maximum and minimum recommended number of PCs
+```{r echo=FALSE}
+studies <- pcNumAll$Studies[c(pcNum.max, pcNum.min)]
+n <- 50   # number of PCs to display in the screeplot (= x-axis range)
+```
+
+```{r echo=FALSE}
+for (study in studies) {
+    
+    # Load the count matrix
+    dir.path <- file.path(in.dir, study)
+    x <- data.table::fread(file.path(dir.path, paste0(study, "_count.csv")), 
+                           showProgress = FALSE)
+    x <- data.frame(x[,-1], row.names = x$V1) %>% as.matrix
+    x <- x[cg,,drop=FALSE]
+  
+    # Remove non-expressing genes in all samples (m == 0)
+    x <- x[!rownames(x) %in% non_exp,]
+
+    # Normalization
+    x <- sweep(x, 1, m)
+    x <- sweep(x, 1, s, "/")
+    
+    # PCA
+    pca_res <- prcomp(t(x))
+    # screeplot(pca_res, npcs = 10, main = study, type = "lines")
+    
+    # Plotting
+    #calculate total variance explained by each principal component
+    var_explained = pca_res$sdev^2 / sum(pca_res$sdev^2)
+
+    # create scree plot
+    idealPcNum <- pcNumAll$pcNum[which(pcNumAll$Studies == study)]
+    title <- paste0(study, " (recommended # of PCs is ",idealPcNum, ")")
+    pl <- qplot(1:n, var_explained[1:n]) + 
+        geom_line() + 
+        xlab("Principal Component") + 
+        ylab("Variance Explained") +
+        ggtitle(title) +
+        ylim(0, 1)
+    print(pl)
+}
+```
+
+
+
+
+# RAVmodel from 10 PCs
+```{r}
+refinebioRseq_PCAmodel_c2 <- readRDS("~/data2/GenomicSuperSignatureLibrary/refinebioRseq/PCAmodel_536_10PCs/refinebioRseq_PCAmodel_c2.rds")
+
+
+```
+

@@ -336,6 +336,7 @@ There are 37 RAVs which have both PC1 and PC2 from the same study.
 sum(unlist(topPCs_RAVs)) # 37
 which(topPCs_RAVs == TRUE)
 ```
+
 ```{r echo=FALSE, eval=FALSE}
 ## Subset of the membership table with the studies where PC1/2 came from
 ind <- gsub("RAV", "", names(which(topPCs_RAVs == TRUE))) %>% as.numeric

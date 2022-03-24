@@ -67,6 +67,7 @@ version(RAVmodel_10)
 cor_all <- stats::cor(RAVindex(RAVmodel_10), RAVindex(RAVmodel_20), 
                       use = "pairwise.complete.obs", 
                       method = "pearson")
+write.csv(cor_all, file = gzfile("Top10PCs_RAVmodel.csv.gz"))
 ```
 
 ```{r echo=FALSE}
@@ -74,11 +75,12 @@ cor_all <- data.table::fread("Top10PCs_RAVmodel.csv",
                              sep = ",", header = TRUE) %>% as.matrix
 ```
 
-2,382 RAVs from `RAVmodel_20` that are most similar to RAVs in `RAVmodel_10`. 
-
 ```{r}
+## 2,382 RAVs from `RAVmodel_20` that are most similar to RAVs in `RAVmodel_10`. 
 most_similar_ind <- apply(cor_all, 1, which.max)
-length(unique(most_similar_ind)) # 2,123 unique RAVs from RAVmodel_20 is matched
+
+## 2,123 unique RAVs from RAVmodel_20 is matched
+length(unique(most_similar_ind)) 
 ```
 
 Pearson Correlation Coefficient for the most similar pairs are summarized in
@@ -112,15 +114,16 @@ overlap <- function(a, b) {
 ```
 
 We checked the studies overlapping between the correlated pair of RAVs through
-Jaccard index and saved it under `Jaccard_studies` column of the `summary_tbl` table.
+Jaccard index and saved it under `Jaccard_studies` column of the `summary_tbl` 
+table.
 
 * `summary_tbl` has six columns: 
-  + `RAVfrom10`, the RAV index from the model built with top 10 PCs
-  + `RAVfrom20`, the RAV index from the model built with top 20 PCs
-  + `Jaccard_studies`, the Jaccard index of studies contributing the most similar RAV pairs
-  + `Pearson`, Pearson coefficient between `RAVfrom10` and `RAVfrom20`
-  + `clSize10`, cluster size of `RAVfrom10`
-  + `clSize20`, cluster size of `RAVfrom20`
+  + `RAVfrom10`: the RAV index from the model built with top 10 PCs
+  + `RAVfrom20`: the RAV index from the model built with top 20 PCs
+  + `Jaccard_studies`: the Jaccard index of studies contributing the most similar RAV pairs
+  + `Pearson`: Pearson coefficient between `RAVfrom10` and `RAVfrom20`
+  + `clSize10`: cluster size of `RAVfrom10`
+  + `clSize20`: cluster size of `RAVfrom20`
 
 ```{r make_summary_tbl, echo=FALSE}
 x <- gsea(RAVmodel_10)
@@ -259,7 +262,7 @@ plot(x = tbl[,2], y = tbl[,1])
 
 
 
-# Cluster size
+# Compare cluster size
 ```{r}
 table(metadata(RAVmodel_20)$size)
 table(metadata(RAVmodel_10)$size)
