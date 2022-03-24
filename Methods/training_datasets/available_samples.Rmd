@@ -15,7 +15,7 @@ abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePap
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
 ```{r echo=FALSE, eval=TRUE}
@@ -202,6 +202,7 @@ sum(studyMeta$metadata > 100)
 
 ## Types of data
 ```{r}
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
 fname <- file.path(data.dir, "source_name_annotated.tsv")
 source_name_annotated <- read.csv(fname, sep = "\t")
 ```
@@ -209,7 +210,7 @@ source_name_annotated <- read.csv(fname, sep = "\t")
 ### Cancer
 ```{r echo=FALSE, eval=TRUE}
 source_cancer <- source_name_annotated$cancer
-source_cancer <- tidyr::replace_na(source_cancer, "NA")
+source_cancer <- tidyr::replace_na(source_cancer, 2)
 
 slices <- table(source_cancer)
 lbls <- c("Not Cancer", "Cancer", "NA")
@@ -223,7 +224,7 @@ pie(slices, labels = lbls, main = "Cancer Studies in Training Data")
 ### Blood
 ```{r echo=FALSE, eval=TRUE}
 source_blood <- source_name_annotated$blood
-source_blood <- tidyr::replace_na(source_blood, "NA")
+source_blood <- tidyr::replace_na(source_blood, 2)
 
 slices <- table(source_blood)
 lbls <- c("Not Blood", "Blood", "NA")
@@ -237,7 +238,7 @@ pie(slices, labels = lbls, main = "Blood Studies in Training Data")
 ### Cell Line
 ```{r echo=FALSE, eval=TRUE}
 source_cellLine <- source_name_annotated$cell_line
-source_cellLine <- tidyr::replace_na(source_cellLine, "NA")
+source_cellLine <- tidyr::replace_na(source_cellLine, 2)
 
 slices <- table(source_cellLine)
 lbls <- c("Not Cell Line", "Cell Line", "NA")
@@ -258,8 +259,8 @@ downloaded/imported when I tried to use studies > 50 samples based on the
 metadata. You can find more documentation on this under `Methods/model_building`.
 
 ```{r echo=FALSE}
-gsig.dir <- "/nobackup/16tb_b/GenomicSignatures/refinebio"
-lib.dir <- "~/data2/PCAGenomicSignatureLibrary/refinebioRseq/canonicalPathways"
+gsig.dir <- "~/Data/refinebio_processed"
+lib.dir <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq/canonicalPathways"
 ```
 
 ```{r echo=FALSE, eval=FALSE}
@@ -294,9 +295,9 @@ samples per study. Also, any study with “Single-Cell Analysis” MeSH term was
 removed.
 
 ```{r echo=FALSE, eval=FALSE}
-mesh <- readRDS(file.path(extdata, "MeSH_terms_1399refinebio.rds"))
-sc <- which(mesh$name %in% "Single-Cell Analysis")
-sc_studies <- mesh$identifier[sc]   # single-cell associated studies to exclude
+load(file.path(data.dir, "MeSH_terms_1399refinebio.rda")) # load `mesh_table`
+sc <- which(mesh_table$name %in% "Single-Cell Analysis")
+sc_studies <- mesh_table$identifier[sc]   # single-cell associated studies to exclude
 
 sc_ind <- which(studyMeta$studyName %in% sc_studies)
 sn_ind <- which(studyMeta$downloaded > 50 & 
@@ -314,14 +315,14 @@ studyMeta$RAVmodel_536[ind_536] <- TRUE
 ```{r accession, echo=FALSE, eval=FALSE}
 ## Table with sample and run information
 dir <- system.file("extdata", package = "GenomicSuperSignature")
-studyMeta <- read.table(file.path(dir, "studyMeta.tsv"), header = TRUE)
+studyMeta <- read.table(file.path(dir, "studyMeta.tsv.gz"), header = TRUE)
 
 ind <- which(studyMeta$RAVmodel_536 == "TRUE")
 studies <- vector(mode = "list", length = 536)
 names(studies) <- studyMeta$studyName[ind]
 
-## Samples actually downloaded and used for the current model buildling
-download.dir2 <- "/nobackup/16tb_b/GenomicSignatures/refinebio/rna_seq_v2"
+## Samples actually downloaded and used for the current model building
+download.dir2 <- "~/Data/refinebio_processed/rna_seq_v2"
 for (i in seq_along(studies)) {
   study_name <- names(studies)[i]
   dir_path <- file.path(download.dir2, study_name, 
@@ -334,12 +335,13 @@ for (i in seq_along(studies)) {
   studies[[study_name]] <- sample_name
 }
 
+## `res` data.frame with 9029 rows + 3 columns
 res <- stack(studies)
 res$source <- NA
 colnames(res) <- c("run_accession", "study_accession", "source")
 
 ## RNAseq datasets downloaded from refine.bio
-json_file <- "~/data2/refinebio_download/rna_seq/aggregated_metadata.json"
+json_file <- "~/Data/refinebio_download/rna_seq/aggregated_metadata.json"
 refinebio_meta <- rjson::fromJSON(paste(readLines(json_file), collapse=""))
 sample_meta <- refinebio_meta$samples
 
@@ -351,10 +353,12 @@ for (i in 1:nrow(res)) {
 }
 
 ## All accessions from `GenomicSuperSignaturePaper/Results_temp/Training_Datasets.Rmd`
-x <- readRDS("~/data2/GenomicSuperSignaturePaper/Results_temp/trainingData_accessions.rds")
+x <- readRDS("~/Data/GenomicSuperSignaturePaper/Results_temp/trainingData_accessions.rds")
 res_all <- dplyr::inner_join(res[,c("run_accession", "source")],
                               x, by = "run_accession")
+```
 
+```{r eval=FALSE}
 ## Table with study and run accessions
 saveRDS(res_all, "accessions.rds")  
 ```
@@ -406,7 +410,7 @@ sessionInfo()
 ```{r manuscript_fig, fig.width=6, fig.height=4.5, echo=FALSE, eval=FALSE}
 ## Save summary table
 write.table(studyMeta, 
-            "~/data2/GenomicSuperSignature/inst/extdata/studyMeta.tsv")
+            "~/data2/GenomicSuperSignature/inst/extdata/studyMeta.tsv.gz")
 
 ## Save histogram comparing metadata vs. downloaded data
 ## `available_samples.png` is moved to `Results/others` 

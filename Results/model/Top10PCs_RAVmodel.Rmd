@@ -71,7 +71,7 @@ write.csv(cor_all, file = gzfile("Top10PCs_RAVmodel.csv.gz"))
 ```
 
 ```{r echo=FALSE}
-cor_all <- data.table::fread("Top10PCs_RAVmodel.csv", 
+cor_all <- data.table::fread("Top10PCs_RAVmodel.csv.gz", 
                              sep = ",", header = TRUE) %>% as.matrix
 ```
 

@@ -14,7 +14,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, eval=FALSE,
                       out.height="50%", out.width="50%")
 ```
 
@@ -175,11 +175,11 @@ gss.num.pc <- function(data) {
 
 ```{r model_building_05_PCA, echo=FALSE}
 ## Input parameters for RAVmodel_536
-cg <- readRDS("~/data2/model_building/data/topGenes_13934.rds")
+cg <- readRDS("~/GSS/model_building/data/topGenes_13934.rds")
 trainingDatasets <- "refinebioRseq" 
 
 ## Working directories
-in.dir <- "~/data2/refinebio_processed/rna_seq_v2"
+in.dir <- "~/Data/refinebio_processed/rna_seq_v2"
 
 ## Load the training dataset information
 dir <- system.file("extdata", package = "GenomicSuperSignature")
@@ -188,7 +188,7 @@ ind <- which(studyMeta$RAVmodel_536 == TRUE)
 allStudies <- studyMeta$studyName[ind]
 
 ## Standard deviation and mean
-wd_data <- file.path("~/data2/GenomicSuperSignatureLibrary", trainingDatasets) 
+wd_data <- file.path("~/GSS/GenomicSuperSignatureLibrary", trainingDatasets) 
 wd <- file.path(wd_data, "RAVmodel_536")
 fname <- paste0(trainingDatasets, "_536study")
 
@@ -231,7 +231,7 @@ write.table(pcNumAll, "pcNumAll.tsv", row.names = FALSE)
 ```
 
 ```{r echo=FALSE}
-pcNumAll <- read.table("~/data2/GenomicSuperSignaturePaper/Revisions/pcNumAll.tsv", 
+pcNumAll <- read.table("~/GSS/GenomicSuperSignaturePaper/Results/model/pcNumAll.tsv", 
                        header = TRUE)
 
 barplot(table(pcNumAll$pcNum),
@@ -291,14 +291,3 @@ for (study in studies) {
     print(pl)
 }
 ```
-
-
-
-
-# RAVmodel from 10 PCs
-```{r}
-refinebioRseq_PCAmodel_c2 <- readRDS("~/data2/GenomicSuperSignatureLibrary/refinebioRseq/PCAmodel_536_10PCs/refinebioRseq_PCAmodel_c2.rds")
-
-
-```
-
