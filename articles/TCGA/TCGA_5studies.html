@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -51,6 +51,9 @@
     </li>
     <li>
       <a href="../../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
+    </li>
+    <li>
+      <a href="../../articles/model/What_RAVmodel_Is.html">RAVmodel Characterization</a>
     </li>
     <li>
       <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
@@ -132,7 +135,7 @@
       <h1 data-toc-skip>Analyze TCGA data using RAVmodel</h1>
                         <h4 data-toc-skip class="author">Sehyun Oh</h4>
             
-            <h4 data-toc-skip class="date">2022-03-16</h4>
+            <h4 data-toc-skip class="date">2022-03-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/HEAD/vignettes/TCGA/TCGA_5studies.Rmd" class="external-link"><code>vignettes/TCGA/TCGA_5studies.Rmd</code></a></small>
       <div class="hidden name"><code>TCGA_5studies.Rmd</code></div>
@@ -158,7 +161,8 @@
   <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/" class="external-link">magick</a></span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<span class="op">}</span><span class="op">)</span>
+<span class="co">## Warning: package 'GenomicSuperSignature' was built under R version 4.1.3</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="tcga-datasets">TCGA datasets<a class="anchor" aria-label="anchor" href="#tcga-datasets"></a>
@@ -565,7 +569,7 @@
 <span class="co">## other attached packages:</span>
 <span class="co">##  [1] EBImage_4.36.0              magick_2.7.3               </span>
 <span class="co">##  [3] ggplot2_3.3.5               dplyr_1.0.8                </span>
-<span class="co">##  [5] GenomicSuperSignature_1.3.4 SummarizedExperiment_1.24.0</span>
+<span class="co">##  [5] GenomicSuperSignature_1.3.6 SummarizedExperiment_1.24.0</span>
 <span class="co">##  [7] Biobase_2.54.0              GenomicRanges_1.46.1       </span>
 <span class="co">##  [9] GenomeInfoDb_1.30.1         IRanges_2.28.0             </span>
 <span class="co">## [11] S4Vectors_0.32.3            BiocGenerics_0.40.0        </span>
@@ -585,7 +589,7 @@
 <span class="co">##  [28] backports_1.4.1        assertthat_0.2.1       Matrix_1.4-0          </span>
 <span class="co">##  [31] fastmap_1.1.0          cli_3.2.0              htmltools_0.5.2       </span>
 <span class="co">##  [34] tools_4.1.2            gtable_0.3.0           glue_1.6.2            </span>
-<span class="co">##  [37] GenomeInfoDbData_1.2.7 rappdirs_0.3.3         Rcpp_1.0.8.2          </span>
+<span class="co">##  [37] GenomeInfoDbData_1.2.7 rappdirs_0.3.3         Rcpp_1.0.8.3          </span>
 <span class="co">##  [40] carData_3.0-5          jquerylib_0.1.4        pkgdown_2.0.2         </span>
 <span class="co">##  [43] vctrs_0.3.8            iterators_1.0.14       xfun_0.30             </span>
 <span class="co">##  [46] stringr_1.4.0          lifecycle_1.0.1        rstatix_0.7.0         </span>

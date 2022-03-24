@@ -46,7 +46,25 @@
     <loc>/articles/manuscript.html</loc>
   </url>
   <url>
+    <loc>/articles/model/Characterize_GSEA.html</loc>
+  </url>
+  <url>
+    <loc>/articles/model/LINC.html</loc>
+  </url>
+  <url>
+    <loc>/articles/model/PC_selection.html</loc>
+  </url>
+  <url>
     <loc>/articles/model/PCs_In_Clusters.html</loc>
+  </url>
+  <url>
+    <loc>/articles/model/Simulate_PCSSs.html</loc>
+  </url>
+  <url>
+    <loc>/articles/model/Top10PCs_RAVmodel.html</loc>
+  </url>
+  <url>
+    <loc>/articles/model/What_RAVmodel_Is.html</loc>
   </url>
   <url>
     <loc>/articles/multiPLIER_Fig3.html</loc>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -51,6 +51,9 @@
     </li>
     <li>
       <a href="../../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
+    </li>
+    <li>
+      <a href="../../articles/model/What_RAVmodel_Is.html">RAVmodel Characterization</a>
     </li>
     <li>
       <a href="../../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
@@ -132,7 +135,7 @@
       <h1 data-toc-skip>Find the optimum number of clusters for hierarchical clustering</h1>
                         <h4 data-toc-skip class="author">Sehyun Oh</h4>
             
-            <h4 data-toc-skip class="date">2022-03-17</h4>
+            <h4 data-toc-skip class="date">2022-03-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/HEAD/vignettes/select_numOfClusters/find_optimum_k.Rmd" class="external-link"><code>vignettes/select_numOfClusters/find_optimum_k.Rmd</code></a></small>
       <div class="hidden name"><code>find_optimum_k.Rmd</code></div>
@@ -176,12 +179,12 @@
 </h3>
 <p>Below is the summary of the distance matrix of 10,720 PCs (top 20 PCs from 536 studies).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_dist</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/DOSE/man/summary-methods.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_dist</span><span class="op">)</span>
 <span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
 <span class="co">## 0.01688 0.98783 1.00000 0.99999 1.01217 1.97482</span></code></pre></div>
 <p>We create a synthetic dataset whose distance ranges median or higher of the actual 536 training dataset. Below is the distance matrix of the 50 negative controls generated from the <code>neg_controls.R</code> script. Distance ranges roughly between 1st and 3rd quarters of training dataset’s distance distribution.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res.dist.neg</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/DOSE/man/summary-methods.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res.dist.neg</span><span class="op">)</span>
 <span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
 <span class="co">##  0.9680  0.9937  1.0000  0.9999  1.0054  1.0317</span></code></pre></div>
 <p>We plot the heatmap of distance matrix using the different number of negative controls (PC1s from synthetic datasets). They are different within the range we want to separate.</p>
@@ -241,7 +244,7 @@
 <span class="co">## [1] ggplot2_3.3.5    dplyr_1.0.8      BiocStyle_2.22.0</span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] ggrepel_0.9.1         Rcpp_1.0.8.2          circlize_0.4.14      </span>
+<span class="co">##  [1] ggrepel_0.9.1         Rcpp_1.0.8.3          circlize_0.4.14      </span>
 <span class="co">##  [4] png_0.1-7             assertthat_0.2.1      rprojroot_2.0.2      </span>
 <span class="co">##  [7] digest_0.6.29         foreach_1.5.2         utf8_1.2.2           </span>
 <span class="co">## [10] R6_2.5.1              stats4_4.1.2          evaluate_0.15        </span>

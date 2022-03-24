@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GenomicSuperSignaturePaper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -51,6 +51,9 @@
     </li>
     <li>
       <a href="../articles/select_numOfClusters/find_optimum_k.html">Number of clusters</a>
+    </li>
+    <li>
+      <a href="../articles/model/What_RAVmodel_Is.html">RAVmodel Characterization</a>
     </li>
     <li>
       <a href="../articles/others/repeat_Fig5_Pathway_Separation.html">Pathway separation</a>
@@ -132,7 +135,7 @@
       <h1 data-toc-skip>Figures and Tables for GenomicSuperSignature Paper</h1>
                         <h4 data-toc-skip class="author">Sehyun Oh</h4>
             
-            <h4 data-toc-skip class="date">March 16, 2022</h4>
+            <h4 data-toc-skip class="date">March 24, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/shbrief/GenomicSuperSignaturePaper/blob/HEAD/vignettes/manuscript.Rmd" class="external-link"><code>vignettes/manuscript.Rmd</code></a></small>
       <div class="hidden name"><code>manuscript.Rmd</code></div>
@@ -186,7 +189,7 @@
 <p>Scatter plots showing how different signatures perform with CRC subtyping. These plots were created in <code>CRC/repeat_Fig4A.Rmd</code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span><span class="op">)</span>
-<span class="va">scatterplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"scatter_.*rds"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
+<span class="va">scatterplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"scatter_.*rds"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">plot</span> <span class="kw">in</span> <span class="va">scatterplots</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span>, <span class="va">plot</span><span class="op">)</span><span class="op">)</span>
@@ -217,7 +220,7 @@
 <p>Bar plots comparing different models in differentiating CRC binary clinical variables. These plots were created in <code>CRC/repeat_Fig4C.Rmd</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span><span class="op">)</span>
-<span class="va">barplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"boxplot_.*rds"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
+<span class="va">barplots</span> <span class="op">&lt;-</span> <span class="va">all</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"boxplot_.*rds"</span>, <span class="va">all</span><span class="op">)</span><span class="op">]</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">plot</span> <span class="kw">in</span> <span class="va">barplots</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"CRC/outputs"</span>, <span class="va">plot</span><span class="op">)</span><span class="op">)</span>
