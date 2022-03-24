@@ -1,5 +1,5 @@
 ---
-title: "What is RAVindex?"
+title: "What is RAVmodel?"
 author: "Sehyun Oh"
 date: "`r Sys.Date()`"
 output:
@@ -8,10 +8,10 @@ output:
     toc_float: false
     toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Global description of RAVindex}
+  %\VignetteIndexEntry{Global description of RAVmodel}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/What_RAVindex_Is.Rmd)"
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/model/What_RAVindex_Is.Rmd)"
 ---
 
 ```{r setup, include=FALSE}
@@ -81,7 +81,7 @@ p
 ## PC compositions in clusters
 We check the composition of PCs in different clusters and display the results 
 as bar plots for each cluster size.
-([**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/model/PCs_In_Clusters.pdf))
+([**Supplementary Figure 10**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/model/PCs_In_Clusters.pdf))
 
 We tested whether the top PCs tend to be grouped together forming large 
 clusters. We considered PC numbers as a numeric data points and plotted 
@@ -147,9 +147,11 @@ summaryOfsummary
 
 
 
-## Silhouette Width
-Red bar represents the RAVs with the average silhouette width above 0.
-```{r echo=FALSE}
+
+```{r silhouette_width, eval=FALSE, echo=FALSE}
+##### Silhouette Width
+##### Red bar represents the RAVs with the average silhouette width above 0.
+
 ## 4764 x 3 data frame with RAV, cluster size, and silhouette width
 sw_df <- data.frame(RAV = paste0("RAV", seq_len(ncol(RAVmodel))),
                     size = metadata(RAVmodel)$size,
@@ -179,10 +181,8 @@ barplot(d, main = "Clusters with Silhouette Width > 0",
         xlab = "Cluster Size",
         ylab = "# of RAVs", ylim = c(0, 2500),
         col = c("red", "grey"))
-```
 
-Zoom in cluster size between 5 and 24:
-```{r echo=FALSE}
+##### Zoom in cluster size between 5 and 24: 
 ## part of the above plot, "Clusters with Silhouette Width > 0"
 barplot(d[,5:20],
         ylab = "# of RAVs", ylim = c(0, 70),
@@ -192,16 +192,16 @@ barplot(d[,5:20],
 
 ## GSEA
 ### Clsuter sizes and GSEA
-We assess the number of enriched gene sets for each RAV. About 40% of RAVs in RAVmodel_C2 and 50% of RAVs in RAVmodel_PLIERpriors do not have any enriched pathway and the majority of them are one- or two- element clusters, suggesting that the smaller clusters are less likely to represent biological features. Because there are RAVs annotated with only one input annotation, MSigDB C2 or PLIERpriors, we include all the RAVs to make our model cover diverse annotation databases. We further evaluate the scope of biological features represented by RAVmodel through two model validation measures, pathway coverage and pathway separation, adopted from the previous study. Pathway coverage is defined as the proportion of pathways annotating RAVs out of all the gene set terms provided. Pathway coverage of RAVmodel_C2 is 0.32. The recount2_MultiPLIER has the pathway coverage of 0.42 while the RAVmodel_PLIERpriors which uses the same gene set as recount2_MultiPLIER has 0.64 pathway coverage. Pathway separation is defined as the ability of the signature model to keep non-overlapping signatures that can differentiate biologically similar pathways. Three biological subjects were tested on RAVmodel_PLIERpriors - type I versus type II interferon, neutrophil versus monocyte, and G1 versus G2 cell cycle phases. RAVmodel can successfully separate them either with top one or top five enriched pathways. Detailed analysis is available [**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Characterize_GSEA.Rmd)
+We assess the number of enriched gene sets for each RAV. About 40% of RAVs in RAVmodel_C2 and 50% of RAVs in RAVmodel_PLIERpriors do not have any enriched pathway and the majority of them are one- or two- element clusters ([_**Supplementary Figure 11**_](https://superstudio.ngrok.io/files/GSS/GenomicSuperSignaturePaper/Results/model/manuscript_SupFig11.png)), suggesting that the smaller clusters are less likely to represent biological features. Because there are RAVs annotated with only one input annotation, MSigDB C2 or PLIERpriors, we include all the RAVs to make our model cover diverse annotation databases. We further evaluate the scope of biological features represented by RAVmodel through two model validation measures, pathway coverage and pathway separation, adopted from the previous study. Pathway coverage is defined as the proportion of pathways annotating RAVs out of all the gene set terms provided. Pathway coverage of RAVmodel_C2 is 0.32. The recount2_MultiPLIER has the pathway coverage of 0.42 while the RAVmodel_PLIERpriors which uses the same gene set as recount2_MultiPLIER has 0.64 pathway coverage. Pathway separation is defined as the ability of the signature model to keep non-overlapping signatures that can differentiate biologically similar pathways. Three biological subjects were tested on RAVmodel_PLIERpriors - type I versus type II interferon, neutrophil versus monocyte, and G1 versus G2 cell cycle phases. RAVmodel can successfully separate them either with top one or top five enriched pathways. Detailed analysis is available [**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/model/Characterize_GSEA.Rmd)
 
 ### GSEA without LINC genes
 We investigated the effect of long intergenic non-coding (LINC) RNA in our 
-model on GSEA annotation. Details of this analysis is available [**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Revisions/Comment_1_LINC.Rmd), 
+model on GSEA annotation. Details of this analysis is available [**HERE**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/model/Comment_1_LINC.Rmd), 
 which also includes pathway coverage analysis.
 
 
-## Variance explained
-```{r}
+
+```{r variance_explained, echo=FALSE, eval=FALSE}
 pcaSummary <- trainingData(RAVmodel)$PCAsummary
 avg_var_explained <- as.data.frame(matrix(ncol = 2, nrow = ncol(RAVmodel)))
 colnames(avg_var_explained) <- c("RAV", "AvgVar")
@@ -224,11 +224,8 @@ for (i in seq_len(ncol(RAVmodel))) {
         avg_var_explained[i, 2] <- round(mean(var)*100, digits = 2)
     }
 }
-```
 
-```{r}
 summary(avg_var_explained$AvgVar)
-
 barplot(table(avg_var_explained$AvgVar),
         xlab = "Average Variance Explained")
 ```
@@ -413,18 +410,31 @@ for (rav in commonRAVs) {
 }
 ```
 
-To guide the interpretation, GenomicSuperSignature gives a message when the output included any of the following RAVs: 1) single-element RAVs, 2) RAVs with no or too many enriched pathways, where ‘too-many’ is defined as 5% of input gene sets (276 and 31 for MSigDB C2 and PLIERpriors, respectively), 3) non-single-element RAVs constructed from a single study. These criteria together include 2,557 RAVs. This message is for guidance only and not for definitive interpretation. 
+To guide the interpretation, GenomicSuperSignature gives a message when the output included any of the following RAVs:    
+
+1) single-element RAVs,    
+2) RAVs with no or too many enriched pathways, where ‘too-many’ is defined as 5% of input gene sets (276 and 31 for MSigDB C2 and PLIERpriors, respectively),    
+3) non-single-element RAVs constructed from a single study. These criteria together include 2,557 RAVs.    
+
+This message is for guidance only and not for definitive interpretation. 
 
 ```{r message=TRUE, fig.width=5, fig.height=2, out.height="65%", out.width="65%"}
+## Message example
 library(bcellViper)
 data(bcellViper)
 val_all <- validate(dset, RAVmodel)
 heatmapTable(val_all, RAVmodel)
 ```
 
+
+
 # Manuscript Figures
 ## Supplementary Figure 9
-```{r}
+RAVs are constructed from different numbers of PCs, ranging from 1 to 24. Here,
+we plotted the number RAVs (y-axis) against the cluster sizes (x-axis) to show 
+the distribution of RAV sizes.
+
+```{r echo=FALSE}
 p
 ```
 
@@ -433,6 +443,19 @@ p
 png("manuscript_SupFig9.png", width = 600, height = 400)
 p
 dev.off()
+```
+
+## Supplementary Figure 11
+We summarized the gene set annotation status of RAVs based on the RAV sizes. 
+We tested two RAVmodels A) RAVmodel annotated with MSigDB C2 and B) RAVmodel 
+annotated with three gene sets provided through the PLIER package. RAVs 
+without enriched pathways are labeled with teal and RAVs with one or more 
+enriched pathways are in red.
+
+```{r echo=FALSE, out.height="120%", out.width="120%"}
+library(EBImage)
+img <- readImage("manuscript_SupFig11.png")
+display(img, method = "raster")
 ```
 
 
