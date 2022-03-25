@@ -51,10 +51,14 @@ git reset HEAD Results/SLE-WB/data/*
 git reset HEAD Results/TCGA/data/*
 git reset HEAD Results/E-MTAB-2452/data/*
 git reset HEAD SRAmetadb.sqlite.gz
+git reset HEAD Results/model/Top10PCs_RAVmodel.csv.gz
+git reset HEAD Revisions/Top10PCs_RAVmodel.csv
+git reset HEAD Revisions/topGenesInTrainingData_536_2020-08-07.rds
 
 ## Reset temporary works
 git reset HEAD Methods/prepare_Inputs
 git reset HEAD Ongoing/*
+git reset HEAD GSE119352/*
 
 git commit -m "update GitHub pages"
 git push origin gh-pages
