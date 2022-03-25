@@ -11,6 +11,8 @@ navbar:
         href: articles/training_datasets/available_samples.html
       - text: Number of clusters
         href: articles/select_numOfClusters/find_optimum_k.html
+      - text: RAVmodel Characterization
+        href: articles/model/What_RAVmodel_Is.html
       - text: Pathway separation
         href: articles/others/repeat_Fig5_Pathway_Separation.html
     - text: EDA
