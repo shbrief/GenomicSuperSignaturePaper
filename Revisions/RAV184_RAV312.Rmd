@@ -1,0 +1,49 @@
+---
+title: "RAV184 and RAV312"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = FALSE, message = FALSE, 
+                      out.height="70%", out.width="70%")
+```
+
+```{r echo=FALSE}
+library(GenomicSuperSignature)
+library(dplyr)
+
+dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536"
+RAVmodel_C2 <- readRDS(file.path(dir, "refinebioRseq_RAVmodel_C2_20220115.rds"))
+RAVmodel_PLIERpriors <- readRDS(file.path(dir, "refinebioRseq_RAVmodel_PLIERpriors_20220117.rds"))
+```
+
+# RAV184
+```{r fig.width=9, fig.height=9}
+ind <- 184
+getRAVInfo(RAVmodel_C2, ind)
+findStudiesInCluster(RAVmodel_C2, ind, studyTitle = TRUE)
+
+subsetEnrichedPathways(RAVmodel_C2, ind, n = 20, both = TRUE, include_nes = TRUE) %>% as.data.frame
+subsetEnrichedPathways(RAVmodel_PLIERpriors, ind, n = 20, both = TRUE, include_nes = TRUE) %>% as.data.frame
+
+drawWordcloud(RAVmodel_C2, ind)
+```
+
+
+# RAV312
+```{r fig.width=9, fig.height=9}
+ind <- 312
+getRAVInfo(RAVmodel_C2, ind)
+findStudiesInCluster(RAVmodel_C2, ind, studyTitle = TRUE)
+
+subsetEnrichedPathways(RAVmodel_C2, ind, n = 20, both = TRUE, include_nes = TRUE) %>% as.data.frame
+subsetEnrichedPathways(RAVmodel_PLIERpriors, ind, n = 20, both = TRUE, include_nes = TRUE) %>% as.data.frame
+
+drawWordcloud(RAVmodel_C2, ind)
+```

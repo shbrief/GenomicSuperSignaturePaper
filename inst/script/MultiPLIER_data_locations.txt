@@ -1,0 +1,92 @@
+########## Download Data #######################################################
+# https://github.com/greenelab/rheum-plier-data/tree/4be547553f24fecac9e2f5c2b469a17f9df253f0/recount2
+sehyun@wallabe4:~/Documents$ wget https://ndownloader.figshare.com/files/10881866
+sehyun@wallabe4:~/Documents$ unzip 10881866
+Archive:  10881866
+   creating: recount2_PLIER_data/
+  inflating: recount2_PLIER_data/recount_data_prep_PLIER.RDS  
+  inflating: recount2_PLIER_data/recount_experiments_rse-gene.tar.gz  
+  inflating: recount2_PLIER_data/recount_PLIER_model.RDS  
+  inflating: recount2_PLIER_data/recount_rpkm.RDS
+sehyun@wallabe4:~/Documents$ cd recount2_PLIER_data
+sehyun@wallabe4:~/Documents/recount2_PLIER_data$ ls -lht
+total 17G
+-rw-r--r-- 1 sehyun sehyun 2.1G Mar 23  2018 recount_PLIER_model.RDS
+-rw-r--r-- 1 sehyun sehyun 1.8G Mar 22  2018 recount_data_prep_PLIER.RDS
+-rw-r--r-- 1 sehyun sehyun 7.5G Mar 22  2018 recount_rpkm.RDS
+-rw-rw-r-- 1 sehyun sehyun 5.4G Mar 21  2018 recount_experiments_rse-gene.tar.gz
+
+
+
+
+
+
+########## recount_rpkm.RDS (7.5GB) ############################################
+1. Get all sample from recount database
+2. Remove samples without description
+3. Get RPKM value for each gene
+
+> rpkm = readRDS("recount_rpkm.RDS")
+> class(rpkm)
+[1] "data.frame"
+> dim(rpkm)
+[1] 58037 37033
+> rpkm[1:4, 1:4]
+                ENSG SRP000599.SRR013549 SRP000599.SRR013550
+1 ENSG00000000003.14                   0                   0
+2  ENSG00000000005.5                   0                   0
+3 ENSG00000000419.12                   0                   0
+4 ENSG00000000457.13                   0                   0
+  SRP000599.SRR013551
+1                   0
+2                   0
+3                   0
+4                   0
+> length(unique(gsub("\\..*", "", names(rpkm))))   # 37032 samples from 1466 datasets (first column is 'ENSG')
+[1] 1467
+
+
+
+
+########## recount_data_prep_PLIER.RDS (1.8GB) #################################
+1. Transform ENSEMBL ID to Gene Symbol
+2. Remove genes without a gene symbol
+3. Combine PLIER prior information --> Filter to common genes
+4. Row-normalization (z-score)
+5. Determine number of significant PCs
+
+> recount_data_prep_PLIER = readRDS("recount_data_prep_PLIER.RDS")
+> class(recount_data_prep_PLIER)
+[1] "list"
+> length(recount_data_prep_PLIER)
+[1] 3
+> names(recount_data_prep_PLIER)
+[1] "rpkm.cm"      "all.paths.cm" "k" 
+> recount_data_prep_PLIER$rpkm.cm[1:4, 1:3]
+         SRP000599.SRR013549 SRP000599.SRR013550 SRP000599.SRR013551
+GAS6              -0.3125000          -0.3129307          -0.3129307
+MMP14             -0.3282790          -0.3282790          -0.3282790
+DSP               -0.2863187          -0.2868586          -0.2868586
+MARCKSL1          -0.5366464          -0.5366464          -0.5366464
+> length(unique(gsub("\\..*", "", names(recount_data_prep_PLIER$rpkm.cm))))
+[1] 1466
+
+
+
+
+########## recount_PLIER_model.RDS (2.1GB) #####################################
+# plier.data.list = readRDS("recount_data_prep_PLIER.RDS")
+# PLIER::PLIER(data = as.matrix(plier.data.list$rpkm.cm), 
+#              priorMat = plier.data.list$all.paths.cm,
+#              k = round((num.pc + num.pc * 0.3), 0), 
+#              trace = TRUE)
+                            
+> recount_PLIER_model = readRDS("recount_PLIER_model.RDS")
+> class(recount_PLIER_model)
+[1] "list"
+> length(recount_PLIER_model)
+[1] 14
+> names(recount_PLIER_model)
+ [1] "residual"     "B"            "Z"            "U"            "C"           
+ [6] "numActPath"   "L1"           "L2"           "L3"           "heldOutGenes"
+[11] "withPrior"    "Uauc"         "Up"           "summary"

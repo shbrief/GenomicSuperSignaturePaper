@@ -1,0 +1,130 @@
+---
+title: "Revision - Specificity"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Likelihood of finding CRC signatures in RAVindex}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
+                      out.height="75%", out.width="75%")
+```
+
+# RAVmodel
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("C2", load=TRUE)
+```
+
+```{r}
+RAVmodel
+
+updateNote(RAVmodel)
+```
+
+## Compare to PCSSs
+Find the similarity of RAVindex and PCSSs
+```{r PCSSs}
+avgLoading <- read.table("~/data2/GenomicSuperSignaturePaper/Results/CRC/data/avg_loadings.csv", 
+                         header = TRUE, sep = ",")
+avgLoading <- tibble::column_to_rownames(avgLoading, var="X")
+colnames(avgLoading) <- paste0("PCSS", 1:4)
+```
+
+Subset PCSSs and RAVindex with their 5,344 common genes and compare the 
+similarity between PCSS1/2 and 4,764 RAVs through Pearson correlation. We
+plot the Pearson coefficient in the dot plot below.  
+
+```{r echo=FALSE}
+cg <- intersect(rownames(avgLoading), rownames(RAVmodel))  # 5,344 genes
+loading_cor <- abs(stats::cor(avgLoading[cg,], RAVindex(RAVmodel)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
+
+max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
+max2 <- which.max(loading_cor[2,])  # max. correlation with PCSS2
+
+# ## Violin plot
+# pcss1 <- loading_cor[1,]
+# pcss2 <- loading_cor[2,]
+# vioplot::vioplot(pcss1, pcss2, names = c("PCSS1", "PCSS2"))
+
+df <- t(loading_cor)
+df_pcss1 <- data.frame(loading = df[,1], PCSS = "PCSS1")
+df_pcss2 <- data.frame(loading = df[,2], PCSS = "PCSS2")
+df_all <- rbind(df_pcss1, df_pcss2)
+
+ggplot(df_all, aes(x = PCSS, y = loading)) +
+    # geom_violin(alpha = 0.5) +
+    geom_point(position = position_jitter(seed = 1, width = 0.3), size = 0.5) +
+    theme(legend.position = "none") +
+    labs(x = "", y = "Pearson Coefficient", 
+         title = "Compare PCSSs vs. RAVs")
+```
+
+CRC paper showed that actually top 200 varying genes can exceed 0.9 Pearson
+correlation with PCSS1 and PCSS2.
+(`~/data/crc-subtyping-paper/src/manuscript/suppFig_ScorApprox.R`)
+```{r}
+x <- avgLoading$PCSS1
+names(x) <- rownames(avgLoading)
+top200pcss1 <- sort(abs(x), decreasing = TRUE)[1:200]
+
+x <- avgLoading$PCSS2
+names(x) <- rownames(avgLoading)
+top200pcss2 <- sort(abs(x), decreasing = TRUE)[1:200]
+
+length(intersect(names(top200pcss1), names(top200pcss2)))  # only 30 common genes
+```
+
+Overlap between top varying genes of 536 training datasets and top 200 genes
+from PCSSs.
+```{r}
+topGenesInTrainingData <- readRDS("topGenesInTrainingData_536_2020-08-07.rds")
+```
+
+```{r}
+cutoff <- 0.90  # Adjust this if you want different cutoff
+topGenes <- c()
+
+k <- length(topGenesInTrainingData[[1]])
+k <- round(k*cutoff)
+topGenes <- names(topGenesInTrainingData[[1]])[1:k]
+
+for (i in 2:length(topGenesInTrainingData)) {
+  l <- length(topGenesInTrainingData[[i]])
+  l <- round(l*cutoff)
+  ls <- list(topGenes, names(topGenesInTrainingData[[i]])[1:l])
+  topGenes <- Reduce(intersect, ls)
+}
+
+length(intersect(topGenes, names(top200pcss1)))
+length(intersect(topGenes, names(top200pcss2)))
+```
+
+
+
+
+
+# Null hypothesis
+
+
+# Simulation 
+## Permutation test
+`~/data/crc-subtyping-paper/src/manuscript/suppFig_PCVali.R`
+```{r}
+
+```
+

@@ -1,0 +1,152 @@
+---
+title: "Manual Curation of RAVs"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Closer look on several distinct RAVs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE,
+                      out.height="75%", out.width="75%")
+```
+
+```{r}
+library(GenomicSuperSignature)
+library(dplyr)
+```
+
+RAV manual characterization includes,   
+1. Literatures                   
+2. GSEA       
+3. MeSH terms        
+4. Others
+
+# RAVmodel
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+RAVmodel <- readRDS("~/data2/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536/refinebioRseq_RAVmodel_C2_20220115.rds")
+
+RAVmodel_PLIERpriors <- readRDS("~/data2/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536/refinebioRseq_RAVmodel_PLIERpriors_20220117.rds")
+```
+
+```{r}
+RAVmodel
+
+version(RAVmodel)
+updateNote(RAVmodel)
+```
+
+# The largest cluster, RAV312
+```{r fig.width=8, fig.height=8}
+ind <- 312
+getRAVInfo(RAVmodel, ind)
+## Literatures
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+## GSEA
+subsetEnrichedPathways(RAVmodel, ind, include_nes = TRUE, 
+                       both = TRUE, n = 5) %>% as.data.frame
+## MeSH terms
+drawWordcloud(RAVmodel, ind)
+```
+
+
+
+# Most PC1s, RAV2285
+17 PCs in this RAV where 15 of them are PC1s
+```{r fig.width=8, fig.height=8}
+ind <- 2285
+## Literatures
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+## GSEA
+subsetEnrichedPathways(RAVmodel, ind, include_nes = TRUE, 
+                       both = TRUE, n = 5) %>% as.data.frame
+## MeSH terms
+drawWordcloud(RAVmodel, ind)
+```
+
+
+# Most PC1s, RAV184
+22 PCs in this RAV where 21 of them are PC1s
+```{r fig.width=8, fig.height=8}
+ind <- 184
+
+## Literatures
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+## GSEA
+subsetEnrichedPathways(RAVmodel, ind, include_nes = TRUE, 
+                       both = TRUE, n = 5) %>% as.data.frame
+## MeSH terms
+drawWordcloud(RAVmodel, ind)
+```
+
+
+
+# One-PC1 cluster, RAV3133
+RAV3133 is the only single-element RAV composed of PC1 from SRP100652. 
+```{r}
+single_ind <- which(metadata(RAVmodel)$size == 1)
+single_cl <- which(metadata(RAVmodel)$cluster %in% single_ind)
+single_cl_pcs <- metadata(RAVmodel)$cluster[single_cl]
+
+Projs <- lapply(names(single_cl_pcs), function(x) {
+    strsplit(x, "\\.") %>% unlist %>% .[1] %>% as.character
+}) %>% unlist
+PCs <- lapply(names(single_cl_pcs), function(x) {
+    strsplit(x, "\\.PC") %>% unlist %>% .[2] %>% as.character
+}) %>% unlist
+
+# Single-element RAV3133 with PC1 from SRP100652
+a <- which(PCs == "1")
+single_cl_pcs[a]
+```
+
+```{r}
+ind <- single_cl_pcs[a] ## 3133
+
+## Literatures
+findStudiesInCluster(RAVmodel, ind, studyTitle = TRUE)
+
+## GSEA
+subsetEnrichedPathways(RAVmodel, ind, include_nes = TRUE) %>% as.data.frame
+```
+
+It seems like PC1 of SRP100652 represents a batch effect. Check the other PCs.
+
+```{r}
+n <- names(metadata(RAVmodel)$cluster)
+ind_all <- which(gsub(".PC.*", "", n) == "SRP100652")
+ravs <- metadata(RAVmodel)$cluster[ind_all] # all the RAVs from SRP100652
+num_gs <- sapply(gsea(RAVmodel), nrow) # number of enriched pathways
+
+tbl <- data.frame(pcs = names(ravs), 
+                  ravs = ravs,
+                  clsize = metadata(RAVmodel)$size[ravs],
+                  gs = num_gs[ravs],
+                  row.names = NULL)
+
+length(unique(ravs)) # 11 RAVs that 20 PCs for this study contributes to
+tbl
+```
+
+We check the study SRP100652 and found out that it has excessive 0. (99.9%)
+```{r}
+x <- data.table::fread("~/data2/refinebio_processed/rna_seq_v2/SRP100652/SRP100652_count.csv")
+x <- data.frame(x[,-1], row.names = x$V1) %>% as.matrix
+
+sum(x == 0)/(nrow(x)*ncol(x))*100
+val_all <- validate(x, RAVmodel)
+```
+
+```{r}
+## MeSH terms
+meshTable(RAVmodel, ind, rm.noise = 0, weighted = FALSE)
+drawWordcloud(RAVmodel, ind)
+```
+

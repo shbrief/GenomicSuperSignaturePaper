@@ -1,0 +1,82 @@
+---
+title: "Speed test : vst vs. log"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{transformation speed test}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**]()"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
+                      out.height = "70%", out.width = "70%")
+```
+
+RAVmodel
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+RAVmodel
+
+version(RAVmodel)
+```
+
+```{r}
+dir <- system.file("extdata", package = "GenomicSuperSignature")
+studyMeta <- utils::read.table(file.path(dir, "studyMeta.tsv.gz"))
+
+ind <- which(studyMeta$RAVmodel_536 == TRUE)
+summary(studyMeta$downloaded[ind])
+```
+
+
+Make a random matrix with the dimension of 13934 x 84 (mean)
+```{r}
+set.seed(1)
+n <- 10
+
+vst_summary <- as.data.frame(matrix(ncol = 5))
+colnames(vst_summary) <- c("user.self", "sys.self", "elapsed", 
+                           "user.child", "sys.child")
+for (i in seq_len(n)) {
+    x <- matrix(sample(1:10000, 13934*84, replace = TRUE), 
+                nrow = 13934, ncol = 84)
+    res <- system.time(DESeq2::vst(x))
+    vst_summary <- rbind(vst_summary, res)
+}
+
+log_summary <- as.data.frame(matrix(ncol = 5))
+colnames(log_summary) <- c("user.self", "sys.self", "elapsed", 
+                           "user.child", "sys.child")
+for (i in seq_len(n)) {
+    x <- matrix(sample(1:10000, 13934*84, replace = TRUE), 
+                nrow = 13934, ncol = 84)
+    res <- system.time(log2(x+1))
+    log_summary <- rbind(log_summary, res)
+}
+
+vst_summary <- vst_summary[-1,]
+log_summary <- log_summary[-1,]
+```
+
+```{r}
+a <- mean(vst_summary$user.self)
+b <- mean(log_summary$user.self)
+a
+b
+a/b
+
+c <- mean(vst_summary$elapsed)
+d <- mean(log_summary$elapsed)
+c
+d
+c/d
+```

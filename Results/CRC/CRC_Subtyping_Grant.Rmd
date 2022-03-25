@@ -1,0 +1,198 @@
+---
+title: "CRC Subtyping using Sample Scores by RAVs"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+abstract: "Figure for GenomicSuperSignature Grant Application"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE,  
+                      eval = FALSE,
+                      fig.align = "center", out.width = "70%", fig.asp = 1)
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+if (!"GenomicSuperSignaturePaper" %in% installed.packages())
+    devtools::install_github("shbrief/GenomicSuperSignaturePaper")
+
+suppressPackageStartupMessages({
+  library(Biobase)
+  library(tidyverse)
+  library(GenomicSuperSignature)
+  library(GenomicSuperSignaturePaper)
+})
+
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+
+## CRC validation datasets
+load("data/eSets/setNames.RData")
+setNames
+
+## Load validation samples
+for (set in setNames) {
+  load(paste0("data/eSets_new/", set, '.RData'))
+}
+```
+
+```{r}
+change_font <- theme(legend.text = element_text(size = 12),
+                     legend.title = element_text(size = 12)) +
+    theme(axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 15),  
+          axis.title.x = element_text(size = 20),
+          axis.title.y = element_text(size = 20))
+```
+
+
+
+```{r 10_validation_datasets, echo=FALSE}
+## CRC paper actually used both training and validation datasets (total of 18) 
+## for Figure 4. So here, we are using all of them. However, if you want to use 
+## only 10 validation datasets, run the below chunk.
+
+load("data/eSets/trainingSetNames.RData")
+validationSetNames <- setdiff(setNames, trainingSetNames)
+setNames <- validationSetNames
+
+## source("R/Fig4A_PCSS.R")
+## dist’n of PCSS scores -------------------------------------------------------
+df.results <- setNames %>% lapply(function(set) {
+    eSet <- get(set)
+    pdata <- Biobase::pData(eSet)
+    eSet_tmp <- eSet[, pdata$sample_type %in% "tumor"]
+    exprs_tmp <- Biobase::exprs(eSet_tmp)
+    pdata_tmp <- Biobase::pData(eSet_tmp)
+
+    pdata_tmp$study <- set
+    ind_rm <- grep("CRIS_", colnames(pdata_tmp))  # remove CIRS_* pData assigned to training datasets
+    if (length(ind_rm) != 0) {pdata_tmp <- pdata_tmp[,-ind_rm]}
+    return(pdata_tmp)
+
+}) %>% Reduce('rbind', .)
+
+## Subset with 'cms_label_SSP'
+df.results <- df.results %>%
+    mutate(cms_label_SSP = cms_label_SSP %>%
+               dplyr::recode(.,"unlabeled" = "not labeled"))
+
+df.results <- df.results %>%
+    dplyr::group_by(study, cms_label_SSP) %>%
+    dplyr::summarise(mean_PCSS1 = mean(PCSS1),
+                     mean_PCSS2 = mean(PCSS2),
+                     sd_PCSS1 = sd(PCSS1),
+                     sd_PCSS2 = sd(PCSS2))
+
+## Plot Figure 4A
+colors <- gg_color_hue(4)
+colors.toplot <- c(colors, 'grey')
+names(colors.toplot) <- c(paste0('CMS', 1:4), 'not labeled')
+
+pA <- ggplot(df.results,
+             aes(x = mean_PCSS1, y = mean_PCSS2, color = cms_label_SSP)) +
+    geom_point() +
+    geom_errorbar(aes(x = mean_PCSS1,
+                      ymin = mean_PCSS2 - sd_PCSS2,
+                      ymax = mean_PCSS2 + sd_PCSS2)) +
+    geom_errorbarh(aes(y = mean_PCSS2,
+                       xmin = mean_PCSS1 - sd_PCSS1,
+                       xmax = mean_PCSS1 + sd_PCSS1)) +
+    scale_color_manual(values = colors.toplot, name = "CMS Subtype") +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank()) +
+    geom_hline(yintercept = 0, linetype = 'dashed') +
+    geom_vline(xintercept = 0, linetype = 'dashed') +
+    xlab('PCSS1') + ylab('PCSS2') +
+    coord_cartesian(xlim = c(-2, 2.5)) +
+    theme(legend.direction = "horizontal",
+          legend.justification=c(0,1),
+          legend.position=c(0,1),
+          legend.background = element_rect(colour='black')) +
+    change_font
+
+# print(pA)
+
+png("outputs/[Grant]png/scatter_PCSS.png", width = 500, height = 500)
+print(pA)$visible
+dev.off()
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
+
+sampleScore1 <- 834
+sampleScore2 <- 833
+
+## source("R/Fig4A_plotting.R", print.eval = TRUE)
+df.results <- readRDS("data/SummaryForFig4.rds")
+if (isTRUE(val_only)) {
+  load("data/eSets/setNames.RData")
+  load("data/eSets/trainingSetNames.RData")
+  validationSetNames <- setdiff(setNames, trainingSetNames)
+  setNames <- validationSetNames
+
+  validation_data_row <- which(df.results$study %in% setNames)
+  df.results <- df.results[validation_data_row,]
+}
+
+ind1 <- which(colnames(df.results) == paste0("RAV", sampleScore1))
+ind2 <- which(colnames(df.results) == paste0("RAV", sampleScore2))
+colnames(df.results)[ind1] <- "sampleScore1"
+colnames(df.results)[ind2] <- "sampleScore2"
+
+# Subset with 'cms_label_SSP'
+df.results <- df.results %>%
+  mutate(cms_label_SSP = cms_label_SSP %>%
+           dplyr::recode("unlabeled" = "not labeled"))
+
+df.results <- df.results %>%
+  group_by(study, cms_label_SSP) %>%
+  dplyr::summarise(mean_sampleScore1 = mean(sampleScore1),
+                   mean_sampleScore2 = mean(sampleScore2),
+                   sd_sampleScore1 = sd(sampleScore1),
+                   sd_sampleScore2 = sd(sampleScore2))
+
+# Plot Figure 4A
+colors <- gg_color_hue(4)
+colors.toplot <- c(colors, 'grey')
+names(colors.toplot) <- c(paste0('CMS', 1:4), 'not labeled')
+
+pA <- ggplot(df.results,
+             aes(x = mean_sampleScore1, y = mean_sampleScore2, color = cms_label_SSP)) +
+  geom_point() +
+  geom_errorbar(aes(x = mean_sampleScore1,
+                    ymin = mean_sampleScore2 - sd_sampleScore2,
+                    ymax = mean_sampleScore2 + sd_sampleScore2)) +
+  geom_errorbarh(aes( y = mean_sampleScore2,
+                      xmin = mean_sampleScore1 - sd_sampleScore1,
+                      xmax = mean_sampleScore1 + sd_sampleScore1)) +
+  scale_color_manual(values = colors.toplot, name = "CMS Subtype") +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()) +
+  geom_hline(yintercept = 0, linetype = 'dashed') +
+  geom_vline(xintercept = 0, linetype = 'dashed') +
+  xlab(paste0("RAV", sampleScore1)) + ylab(paste0("RAV", sampleScore2)) +
+  coord_cartesian(xlim = c(-2, 2.5)) +
+  theme(legend.direction = "horizontal", legend.justification=c(0,1), legend.position=c(0,1),
+        legend.background = element_rect(colour='black')) +
+  change_font
+
+# print(pA)
+
+png("outputs/[Grant]png/scatter_834_833.png", width = 500, height = 500)
+print(pA)$visible
+dev.off()
+```
+

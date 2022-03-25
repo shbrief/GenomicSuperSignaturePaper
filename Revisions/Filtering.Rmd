@@ -1,0 +1,118 @@
+---
+title: "Filter 'low-quality' RAVs"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{RAV filtering}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+abstract: "[**Source Code**]()"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
+                      out.height = "70%", out.width = "70%")
+```
+
+# Load RAV filtering list
+From the RAV characterization, we made a list of 'low-quality' RAVs. Index of 
+these subset is saved as `filterList` data in the GenomicSuperSignature package. 
+
+```{r}
+library(GenomicSuperSignature)
+data("filterList")
+```
+
+```{r}
+dir <- "~/data2/GenomicSuperSignatureLibrary/refinebioRseq/RAVmodel_536"
+RAVmodel <- readRDS(file.path(dir, "refinebioRseq_RAVmodel_C2_20220115.rds"))
+# RAVmodel <- readRDS(file.path(dir, "refinebioRseq_RAVmodel_PLIERpriors_20220117.rds"))
+```
+
+
+# RAV filtering options
+If we remove    
+1) single-element clusters (`size_filter`)    
+2) RAVs with no or too-many enriched gene sets (`gsea_c2_filter`)   
+3) RAVs from only one study (`redundancey_filter`)    
+
+```{r}
+a <- filterList[["size_filter"]]
+b <- filterList[["gsea_c2_filter"]]
+c <- filterList[["redundancey_filter"]]
+
+library(venneuler)
+res <- venneuler(c("single-element" = length(a), 
+                   "gsea" = length(b), 
+                   "single-study" = length(c),
+                   "single-element&gsea" = length(intersect(a, b)), 
+                   "gsea&single-study" = length(intersect(b, c)), 
+                   "single-element&single-study" = length(intersect(a, c)), 
+                   "single-element&gsea&single-study" = length(intersect(a, intersect(b,c)))),
+                 labels = TRUE)
+plot(res)
+```
+
+If we plot the filtered-out RAVs based on their cluster sizes:
+```{r}
+## Filtering by cluster size and gsea result
+filter_ind <- unique(unlist(filterList[c(1,2,4)]))
+all_filtered <- metadata(RAVmodel)$size[-filter_ind]
+
+barplot(table(all_filtered), ylim = c(0,1600),
+        xlab = "Clsuter Size", ylab = "The number of RAVs")
+```
+
+If we remove    
+1) single-element clusters (`size_filter`)    
+2) RAVs with no or too-many enriched gene sets (`gsea_c2_filter`)   
+3) RAVs from only one study (`redundancey_filter`)    
+4) RAVs with silhouette width <= 0 (`sw_filter`)
+
+```{r}
+sw_filter <- which(silhouetteWidth(RAVmodel) <= 0)
+filter_ind2 <- unique(c(filter_ind, sw_filter))
+all_filtered2 <- metadata(RAVmodel)$size[-filter_ind2]
+
+barplot(table(all_filtered2), ylim = c(0,300),
+        xlab = "Clsuter Size", ylab = "The number of RAVs",
+        main = "RAVs after filtering")
+```
+
+# Effect on the existing use cases
+We check how many 'low-quality' RAVs overlap with the ones mentioned in 
+the manuscript (`ind_all`).
+
+```{r RAVs_in_examples, echo=FALSE}
+# RAVs used in the manuscript
+ind1 <- c(119, 221, 312, 468, 504, 683, 832, 868) # Fig2A
+ind2 <- c(221, 504, 468, 312, 683) # Fig2B
+ind3 <- c(834, 833, 1551) # Fig3&4
+ind4 <- c(312, 832, 188, 468, 21, 119, 684) # Sup.Fig4
+ind5 <- c(1575, 834, 833) # Sup.Fig5
+ind6 <- c(23, 1552, 1387, 684) # Sup.Fig8
+ind_all <- unique(c(ind1, ind2, ind3, ind4, ind5, ind6)) 
+```
+
+Filtering for single-element, gsea, and redundancy:
+```{r}
+ind <- intersect(ind_all, filter_ind) # 'low-quality' RAV mentioned in the paper
+ind # RAV1387
+
+# RAV1387 is considered 'low-quality' based on its gsea annotation 
+vapply(filterList, function(x) {ind %in% x}, logical(1))
+```
+
+Filtering for single-element, gsea, redundancy, and silhouette width:
+```{r}
+ind <- intersect(ind_all, filter_ind2)
+ind
+```
+
+Silhouette width appears to be a too harsh filtering condition at this point.
+Maybe I can use it to select re-clustering targets?
