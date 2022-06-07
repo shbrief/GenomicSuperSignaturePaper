@@ -26,10 +26,23 @@ b <- readRDS("outputs/boxplot_CMS_vs_834_833.rds")
 c <- readRDS("outputs/boxplot_PCSS_vs_834_833.rds")
 ```
 
+```{r bitmapped_files_for_manuscript, eval=FALSE, echo=FALSE}
+png("Figures/manuscript_Fig3a.png", res = 500, width = 5, height = 5, units = "in")
+a
+dev.off()
+png("Figures/manuscript_Fig3b.png", res = 500, width = 5, height = 3, units = "in")
+b
+dev.off()
+png("Figures/manuscript_Fig3c.png", res = 500, width = 5, height = 3, units = "in")
+c
+dev.off()
+```
+
+
 ```{r Fig3, fig.width=10, fig.height=5.5}
-abc <- ggarrange(ggarrange(a$value, labels = "A"),
+abc <- ggarrange(ggarrange(a$value, labels = "a"),
                  ggarrange(b$value, c$value,
-                           labels = c("B", "C"),
+                           labels = c("b", "c"),
                            nrow = 2, align = "hv",
                            heights = c(1, 1)),
                  ncol = 2,
@@ -39,7 +52,7 @@ abc <- ggarrange(ggarrange(a$value, labels = "A"),
 abc
 
 ## Save Supplementary Figure 3
-png("manuscript_Fig3.png", width = 1000, height = 550)
+png("Figures/manuscript_Fig3.png", width = 1000, height = 550)
 abc
 dev.off()
 
@@ -60,10 +73,10 @@ f <- readRDS("outputs/boxplot_PCSS_vs_832_188.rds")
 
 ```{r Sup_Fig5, fig.width=10, fig.height=11}
 all <- ggarrange(ggarrange(a$value, d$value,
-                           labels = c("A", "D"), 
+                           labels = c("a", "d"), 
                            nrow = 2),
                  ggarrange(b$value, c$value, e$value, f$value,
-                           labels = c("B", "C", "E", "F"),
+                           labels = c("b", "c", "e", "f"),
                            nrow = 4),
                  ncol = 2,
                  widths = c(1.4, 1),
@@ -72,7 +85,7 @@ all <- ggarrange(ggarrange(a$value, d$value,
 all
 
 ## Save Supplementary Figure 3
-png("manuscript_Sup_Fig5.png", width = 1000, height = 1100)
+png("Figures/manuscript_Sup_Fig5.png", width = 1000, height = 1100)
 all
 dev.off()
 
@@ -94,10 +107,10 @@ e <- readRDS("outputs/10_CRC_datasets/boxplot_PCSS_vs_834_833.rds")
 
 ```{r Sup_Fig6, fig.width=9.7, fig.height=11}
 all <- ggarrange(ggarrange(a, b$value,
-                           labels = c("A", "B"), 
+                           labels = c("a", "b"), 
                            nrow = 2),
                  ggarrange(c$value, d$value, e$value,
-                           labels = c("C", "D", "E"),
+                           labels = c("c", "d", "e"),
                            nrow = 3),
                  ncol = 2,
                  widths = c(1.4, 1),
@@ -106,7 +119,7 @@ all <- ggarrange(ggarrange(a, b$value,
 all
 
 ## Save Supplementary Figure 3
-png("manuscript_Sup_Fig6.png", width = 700, height = 770)
+png("Figures/manuscript_Sup_Fig6.png", width = 700, height = 770)
 all
 dev.off()
 

@@ -224,14 +224,14 @@ Fig1B_topleft
 
 ```{r echo=FALSE, eval=FALSE}
 ## Save the Figure 1B top-left
-png("manuscript_Fig1B_topleft.png", width = 1500, height = 1500, res = 300)
+png("Figures/manuscript_Fig1B_topleft.png", width = 1500, height = 1500, res = 300)
 Fig1B_topleft
 dev.off()
 ```
 
 ```{r 1B_top_left, out.height="60%", out.width="60%", echo=FALSE}
 ## SampleScore heatmap
-img <- readImage("manuscript_Fig1B_topleft.png")
+img <- readImage("Figures/manuscript_Fig1B_topleft.png")
 display(img, method = "raster")
 ```
 
@@ -239,14 +239,14 @@ display(img, method = "raster")
 Output from `drawWordcloud(RAVmodel, 1551)`.
 ```{r echo=FALSE, eval=FALSE}
 ## Save the Figure 1B bottom-left
-png("manuscript_Fig1B_bottomleft.png", width = 1500, height = 1500, res = 300)
+png("Figures/manuscript_Fig1B_bottomleft.png", width = 1500, height = 1500, res = 300)
 drawWordcloud(RAVmodel, 1551)
 dev.off()
 ```
 
 ```{r 1B_bottom_left, echo=FALSE, out.height="60%", out.width="60%"}
 ## wordcloud
-img <- readImage("manuscript_Fig1B_bottomleft.png")
+img <- readImage("Figures/manuscript_Fig1B_bottomleft.png")
 display(img, method = "raster")
 ```
 
@@ -284,14 +284,14 @@ Fig1B_bottomright
 
 ```{r echo=FALSE, eval=FALSE}
 ## Save the Figure 1B bottom-right
-png("manuscript_Fig1B_bottomright.png", width = 1500, height = 1500, res = 300)
+png("Figures/manuscript_Fig1B_bottomright.png", width = 1500, height = 1500, res = 300)
 Fig1B_bottomright
 dev.off()
 ```
 
 ```{r 1B_bottom_right, echo=FALSE, out.height="80%", out.width="80%"}
 ## Annotated PCA plot
-img <- readImage("manuscript_Fig1B_bottomright.png")
+img <- readImage("Figures/manuscript_Fig1B_bottomright.png")
 display(img, method = "raster")
 ```
 
@@ -302,7 +302,7 @@ dataset by default. Different cutoff parameters for GSEA annotation, such as
 minimum validation score or NES, can be set.
 
 ```{r eval=FALSE, fig.width=6.5, fig.height=9.5}
-supFig8 <- ggpubr::ggarrange(a14_ft, b, labels = c("A", "B"),
+supFig8 <- ggpubr::ggarrange(a14_ft, b, labels = c("a", "b"),
                              nrow = 2, heights = c(1.7, 5), align = "hv") 
 
 supFig8
@@ -310,13 +310,13 @@ supFig8
 
 ```{r echo=FALSE, eval=FALSE}
 ## Save the Supplementary Figure 8
-png("manuscript_Sup_Fig8.png", width = 650, height = 950)
+png("Figures/manuscript_Sup_Fig8.png", width = 650, height = 950)
 supFig8
 dev.off()
 ```
 
 ```{r echo=FALSE, out.height="100%", out.width="100%"}
-img <- readImage("manuscript_Sup_Fig8.png")
+img <- readImage("Figures/manuscript_Sup_Fig8.png")
 display(img, method = "raster")
 ```
 

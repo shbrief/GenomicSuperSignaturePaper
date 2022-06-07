@@ -83,6 +83,7 @@ represented by the mean (point) and standard deviation (error bar) of the
 sample scores. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+val_only <- FALSE # PCSSs subtyping plot with 18 validation datasets
 source("R/Fig4A_PCSS.R")
 ```
 
@@ -102,6 +103,7 @@ setNames <- validationSetNames
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+val_only <- TRUE # PCSSs subtyping plot with only 10 validation datasets
 source("R/Fig4A_PCSS.R")
 ```
 
@@ -278,7 +280,6 @@ detail can be found [here](https://shbrief.github.io/GenomicSuperSignaturePaper/
 ```{r message=FALSE, warning=FALSE}
 sampleScore1 <- 834
 sampleScore2 <- 833
-val_only <- TRUE   # FALSE for 18 datasets, TRUE for 10 validation datasets
 source("R/Fig4A_plotting.R", print.eval = TRUE)
 ```
 

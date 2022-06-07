@@ -25,6 +25,13 @@ df.results <- df.results %>%
                      sd_PCSS1 = sd(PCSS1),
                      sd_PCSS2 = sd(PCSS2))
 
+# Save the table for Supplementary Data
+sup_data <- df.results
+colnames(sup_data)[2] <- "CMS_label"
+if (isTRUE(val_only)) {valData_num <- 10} else {valData_num <- 18}
+fname <- paste0("rawData_PCSS1_PCSS2_", valData_num, "valData", ".csv")
+write.csv(sup_data, file = file.path("Figures", fname))
+
 ## Plot Figure 4A
 colors <- gg_color_hue(4)
 colors.toplot <- c(colors, 'grey')

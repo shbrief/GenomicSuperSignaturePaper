@@ -133,14 +133,14 @@ for (numOfDataset in numOfDatasets) {
 plot <- ComplexHeatmap::Heatmap(as.matrix(res.dist.neg),
                                 row_names_gp = grid::gpar(fontsize = 5),
                                 column_names_gp = grid::gpar(fontsize = 5),
-                                column_title = "A. Distance Matrix",
+                                column_title = "Distance Matrix",
                                 column_title_side = "top",
                                 column_title_gp = grid::gpar(fontsize = 14, fontface = "bold"),
                                 col = circlize::colorRamp2(breaks = c(0, dist_med, dist_max), 
                                                 colors = c("blue", "white", "red")),
                                 heatmap_legend_param = list(title = "Distance"))
 
-png("outputs/png/A.heatmap_neg50.png", width = 400, height = 380)
+png("outputs/png/A.heatmap_neg50.png", res = 500, width = 4, height = 3.8, units = "in")
 plot
 dev.off()
 ```
@@ -185,13 +185,13 @@ negative controls, more than 90% of them were separated when **d = 4** and
 plot1 <- ggplot(df, aes(x = numOfCluster, y = separtedPortion)) + 
   geom_line(aes(colour = numOfControls)) + 
   geom_point() + 
-  ggtitle("B. Proportion of separated negative controls") + 
+  ggtitle("Proportion of separated negative controls") + 
   theme(plot.title = element_text(size = 14, face = "bold"))
 
 plot1
 
 ## Save plot1
-png("outputs/png/B.separatedPortion.png", width = 500, height = 350)
+png("outputs/png/B.separatedPortion.png", res = 500, width = 5, height = 3.5, units = "in")
 plot1
 dev.off()
 ```
@@ -209,13 +209,13 @@ df$numUnseparated <- as.numeric(df$numOfControls) - as.numeric(df$numSeparated)
 plot2 <- ggplot(df, aes(x = numOfCluster, y = numUnseparated)) + 
   geom_line(aes(colour = numOfControls)) + 
   geom_point() + 
-  ggtitle("C. Number of non-separated negative controls") + 
+  ggtitle("Number of non-separated negative controls") + 
   theme(plot.title = element_text(size = 14, face = "bold"))
 
 plot2
 
 ## Save plot2
-png("outputs/png/C.numUnseparated.png", width = 500, height = 350)
+png("outputs/png/C.numUnseparated.png", res = 500, width = 5, height = 3.5, units = "in")
 plot2
 dev.off()
 ```

@@ -33,6 +33,19 @@ df.results.new <- df.results.new %>%
                    sd_sampleScore1 = sd(sampleScore1),
                    sd_sampleScore2 = sd(sampleScore2))
 
+# Save the table for Supplementary Data
+sup_data <- df.results.new
+colnames(sup_data) <- c("study", "CMS_label",
+                        paste0("mean_RAV", sampleScore1),
+                        paste0("mean_RAV", sampleScore2),
+                        paste0("sd_RAV", sampleScore1),
+                        paste0("sd_RAV", sampleScore2))
+
+if (isTRUE(val_only)) {valData_num <- 10} else {valData_num <- 18}
+fname <- paste0("rawData_", sampleScore1, "_", sampleScore2, "_",
+                valData_num, "valData", ".csv")
+write.csv(sup_data, file = file.path("Figures", fname))
+
 # Plot Figure 4A
 colors <- gg_color_hue(4)
 colors.toplot <- c(colors, 'grey')

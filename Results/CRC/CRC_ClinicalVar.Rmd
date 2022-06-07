@@ -66,14 +66,18 @@ be compared to CMS)
 # upper or xupper : upper hinge, 75% quantile
 # ymax or xmax : upper whisker = largest observation less than or equal to upper hinge + 1.5 * IQR
 
-boxplot_summary <- as.data.frame(matrix(nrow = 8*9, ncol = 10))
-colnames(boxplot_summary) <- c("figure", "panel", "group", "minima", 
-                               "whisker_min", "first_quartile", "median", 
-                               "third_quartile", "whisker_max", "maxima")
+boxplot_summary <- as.data.frame(matrix(nrow = 8*9, ncol = 11))
+colnames(boxplot_summary) <- c("figure", "panel", "group", "datasets_used", 
+                               "minima", "whisker_min", "first_quartile", 
+                               "median", "third_quartile", "whisker_max", 
+                               "maxima")
 boxplot_fig <- c("3B","3C","Sup5B","Sup5C","Sup5E","Sup5F","Sup6C","Sup6D","Sup6E")
 boxplot_summary$figure <- rep(boxplot_fig, each = 8)
 boxplot_summary$panel <- rep(rep(c(1,2,3,4), each = 2), 9)
 boxplot_summary$group <- rep(c(1,2), 36)
+
+## 4 panels and 2 groups
+ref <- data.frame(panel = rep(1:4, each = 2), group = 1:2)
 
 ##### statsSummary function to extract boxplot stats
 # plotRes : ggplot object (e.g. x$value from the above script)
@@ -81,9 +85,24 @@ boxplot_summary$group <- rep(c(1,2), 36)
 
 statsSummary <- function(plotRes, figName) {
     res <- ggplot_build(plotRes)
-    res_box <- res$data[[1]]
+    res_box <- res$data[[1]]  # Summary
+    res_dat <- res$data[[2]]  # Data points
     ind <- which(boxplot_summary$figure == figName)
     
+    ## the number of datasets used
+    for (i in seq_len(nrow(ref))) {
+        panel <- ref$panel[i]
+        group <- ref$group[i]
+        sub <- res_dat[which(res_dat$PANEL == panel & res_dat$group == group),]
+        
+        ## row to add sample size info
+        datasets_used_ind <- which(boxplot_summary$figure == figName &
+                                     boxplot_summary$panel == panel &
+                                     boxplot_summary$group == group)
+        
+        boxplot_summary$datasets_used[datasets_used_ind] <- sum(!is.na(sub$y))
+    }
+
     ## if there is no outlier, just assign median value for the function
     no_outlier_ind <- which(isEmpty(res_box$outliers)) 
     res_box$outliers[no_outlier_ind] <- res_box$middle[no_outlier_ind]
@@ -362,6 +381,10 @@ saveRDS(x, "outputs/boxplot_PCSS_vs_834_596.rds")
 ```
 
 ```{r save_stats_summary, echo=FALSE, eval=FALSE}
+##### Change Supplementary Figures number
+boxplot_fig <- c("3B","3C","Sup8B","Sup8C","Sup8E","Sup8F","Sup9C","Sup9D","Sup9E")
+boxplot_summary$figure <- rep(boxplot_fig, each = 8)
+
 write.csv(boxplot_summary, "outputs/boxplot_summary.csv", row.names = FALSE)
 ```
 

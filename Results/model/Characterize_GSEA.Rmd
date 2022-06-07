@@ -354,7 +354,7 @@ length(intersect(noGSEA_C2, noGSEA_PLIERpriors))
 ## Supplementary Figure 11
 ```{r fig.width=13, fig.height=4.5, out.height="120%", out.width="120%"}
 plot_all <- ggpubr::ggarrange(p_c2, p_plier, 
-                              labels = c("A", "B"), 
+                              labels = c("a", "b"), 
                               font.label = list(size = 20),
                               ncol = 2)
 plot_all

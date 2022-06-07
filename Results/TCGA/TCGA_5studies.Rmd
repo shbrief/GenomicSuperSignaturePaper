@@ -237,16 +237,16 @@ A RAVmodel provides a rich resource for understanding new or user-supplied datas
 
 ```{r save_Fig2, fig.width=11, fig.height=8, echo=FALSE, eval=FALSE}
 ## Draw Fig2A/2B heatmapTable 
-a <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_all)))
-b <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_brca)))
+a <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_all, RAVmodel)))
+b <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_brca, RAVmodel)))
 
-## Save Fig2C wordcloud
-png("manuscript_Fig2C.png", width = 350, height = 350)
+## Save Fig2c wordcloud
+png("Figures/manuscript_Fig2c.png", width = 350, height = 350)
 drawWordcloud(RAVmodel, ind = 221)
 dev.off()
 
 ## Import Fig2C in the way I can combine with others
-c <- png::readPNG("manuscript_Fig2C.png") %>% 
+c <- png::readPNG("Figures/manuscript_Fig2c.png") %>% 
   grid::rasterGrob() %>% 
   gridExtra::grid.arrange()
 
@@ -274,12 +274,12 @@ e <- grid::rasterGrob(as_raster(e))
 
 ## Make the complete Figure 2
 ac <- ggarrange(a, c, 
-                labels = c("A", "C"), vjust = c(2, 6), hjust = -1.5,
+                labels = c("a", "c"), vjust = c(2, 6), hjust = -1.5,
                 nrow = 2, 
                 heights = c(0.5, 1),
                 font.label = list(size = 15))
 bde <- ggarrange(b, d, e, 
-                 labels = c("B", "D", "E"), vjust = c(2,1,1), hjust = c(-5,0,0),
+                 labels = c("b", "d", "e"), vjust = c(2,1,1), hjust = c(-5,0,0),
                  nrow = 3, align = "v",
                  heights = c(0.4, 0.5, 0.75),
                  font.label = list(size = 15))
@@ -288,19 +288,38 @@ Fig2_all <- ggarrange(ac, bde, ncol = 2, widths = c(1, 1.2), align = "hv")
 Fig2_all
 
 ## Save the complete Figure 2
-# png("manuscript_Fig2.png", width = 715, height = 520)
+# png("Figures/manuscript_Fig2.png", width = 715, height = 520)
 # Fig2_all
 # dev.off()
 
-ggsave(filename = "manuscript_Fig2.png", 
+ggsave(filename = "Figures/manuscript_Fig2.png", 
        plot = Fig2_all,
        width = 11, height = 8, units = "in",
        device = "png", dpi = 700)
 ```
 
+```{r bitmapped_files_for_manuscript, eval=FALSE, echo=FALSE}
+## Save each panel as bitmapped file
+png("Figures/manuscript_Fig2a.png", res = 500, width = 5, height = 3, units = "in")
+heatmapTable(val_all, RAVmodel)
+dev.off()
+png("Figures/manuscript_Fig2b.png", res = 500, width = 5, height = 3, units = "in")
+heatmapTable(val_brca, RAVmodel)
+dev.off()
+png("Figures/manuscript_Fig2c.png", res = 500, width = 5, height = 5, units = "in")
+drawWordcloud(RAVmodel, ind = 221)
+dev.off()
+
+## Save flextable objects as images
+save_as_image(flextable(fig2d) %>% width(., j = c(1,2,4), width = c(0.4,0.4,4)),
+              path = "Figures/manuscript_Fig2d.png")
+save_as_image(flextable(fig2e) %>% width(., j = 1, width = 5.3),
+              path = "Figures/manuscript_Fig2e.png")
+```
+
 ```{r out.width="100%", out.height="100%", echo=FALSE}
 library(EBImage)
-img <- readImage("manuscript_Fig2.png")
+img <- readImage("Figures/manuscript_Fig2.png")
 display(img, method = "raster")
 ```
 
@@ -338,16 +357,16 @@ Studies contributing to RAV832. E) MSigDB C2 gene sets enriched in RAV832.
 
 ```{r make_SupFig4, fig.width=11, fig.height=8, echo=FALSE, eval=FALSE}
 ## Draw Sup.Fig4A/4B heatmapTable 
-a <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_coad)))
-b <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_read)))
+a <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_coad, RAVmodel)))
+b <- grid::grid.grabExpr(ComplexHeatmap::draw(heatmapTable(val_read, RAVmodel)))
 
 ## Save Sup.Fig4C wordcloud
-png("manuscript_Sup_Fig4C.png", width = 350, height = 350)
+png("Figures/manuscript_Sup_Fig4C.png", res = 500, width = 5, height = 5, units = "in")
 drawWordcloud(RAVmodel, ind = 832)
 dev.off()
 
 ## Import Sup.Fig4C in the way I can combine with others
-c <- png::readPNG("manuscript_Sup_Fig4C.png") %>% 
+c <- png::readPNG("Figures/manuscript_Sup_Fig4C.png") %>% 
   grid::rasterGrob() %>% 
   gridExtra::grid.arrange()
 
@@ -371,32 +390,31 @@ e <- grid::rasterGrob(as_raster(e))
 ## Make the complete Sup.Figure 4
 abc <- ggarrange(a, b, c, 
                  nrow = 3, heights = c(0.7, 0.7, 1.4), 
-                 labels = c("A", "B", "C"), vjust = 1.5, hjust = -2,
-                 font.label = list(size = 15))
+                 labels = c("a", "b", "c"), vjust = 1.5, hjust = -2,
+                 font.label = list(size = 15, face = "bold"))
 de <- ggarrange(d, e, 
                 nrow = 2, heights = c(1, 1.3),
-                labels = c("D", "E"), vjust = c(3, 6), hjust = 2.5,
+                labels = c("d", "e"), vjust = c(3, 6), hjust = 2.5,
                 align = "v",
-                font.label = list(size = 15))
+                font.label = list(size = 15, face = "bold"))
 
 Sup_Fig4_all <- ggarrange(abc, de, ncol = 2, align = "h")
 Sup_Fig4_all
 
 ## Save the complete Sup.Figure 4
-##### Worked better to save it as Rmd display
-# png("manuscript_Sup_Fig4.png", width = 950, height = 650)
-# Sup_Fig4_all
-# dev.off()
+png("Figures/manuscript_Sup_Fig4.png", width = 9.5, height = 6.5, units = "in", res = 500)
+Sup_Fig4_all
+dev.off()
 
-ggsave(filename = "manuscript_Sup_Fig4.png", 
-       plot = Sup_Fig4_all,
-       width = 9.5, height = 6.5, units = "in",
-       device = "png", dpi = 700)
+# ggsave(filename = "Figures/manuscript_Sup_Fig4.png", 
+#        plot = Sup_Fig4_all,
+#        width = 9.5, height = 6.5, units = "in",
+#        device = "png", dpi = 700)
 ```
 
 ```{r out.width="100%", out.height="100%", echo=FALSE}
 library(EBImage)
-img <- readImage("manuscript_Sup_Fig4.png")
+img <- readImage("Figures/manuscript_Sup_Fig4.png")
 display(img, method = "raster")
 ```
 

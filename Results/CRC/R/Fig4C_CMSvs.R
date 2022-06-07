@@ -122,6 +122,10 @@ df.toplot$Variable <- factor(df.toplot$Variable, levels = c("MSI status", "grade
 
 main <- paste0("CMS vs.", m2_name,
                readr::parse_number(m2_1), "/", readr::parse_number(m2_2))
+
+write.csv(df.toplot, file = file.path("data/results/model_comparison/CMS",
+                                      paste0(output.dir.name, ".csv")))
+
 df.toplot %>%
   ggplot(aes(x = Model, y = -log10(log10_pvalue))) +
   geom_boxplot(outlier.shape = NA) +
