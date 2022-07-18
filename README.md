@@ -24,7 +24,7 @@ through GenomicSuperSignaturePaper package.
 
 ```
 ## Install GenomicSuperSignaturePaper
-devtools::document("shbrief/GenomicSuperSignaturePaper")
+devtools::install_github("shbrief/GenomicSuperSignaturePaper")
 ```
 
 You can check the available RAVmodels through `availableRAVmodel` function:
