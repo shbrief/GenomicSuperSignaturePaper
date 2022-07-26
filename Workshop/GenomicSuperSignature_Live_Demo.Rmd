@@ -1,0 +1,79 @@
+---
+title: "BioC2022 GenomicSuperSignature Package Demo"
+author: "Sehyun Oh"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+## getModel
+library(GenomicSuperSignature)
+system.time(RAVmodel <- getModel("PLIERpriors"))   
+
+## Check the model
+RAVmodel
+geneSets(RAVmodel)
+
+library(bcellViper)
+data(bcellViper)
+dset
+
+## validate
+system.time(val_all <- validate(dset, RAVmodel)) 
+heatmapTable(val_all, RAVmodel)
+val_ind <- validatedSignatures(val_all, RAVmodel, indexOnly = TRUE)
+
+## MeSH terms
+# for (i in val_ind) {drawWordcloud(RAVmodel, ind = i)}
+drawWordcloud(RAVmodel, val_ind[5])
+
+## GSEA
+subsetEnrichedPathways(RAVmodel, val_ind[5]) %>% as.data.frame
+
+## relevant study
+findStudiesInCluster(RAVmodel, val_ind[5], studyTitle = TRUE)
+
+## Misc metadata
+getRAVInfo(RAVmodel, val_ind[5])
+getStudyInfo(RAVmodel, "SRP095405")
+```
+
+
+# [Slide 16] TCGA-BRCA
+```{r}
+
+```
+
+
+
+# [Slide 17] Annotated PCA plot
+E-MTAB-2452 dataset
+```{r}
+annot.dat <- readr::read_tsv("data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl") %>% as.data.frame
+rownames(annot.dat) <- annot.dat[, 2]
+
+dataset <- as.matrix(annot.dat[, 3:ncol(annot.dat)])
+rownames(dataset) <- annot.dat$GeneSymbol
+dataset[1:3, 1:3]
+```
+
+```{r}
+plotAnnotatedPCA()
+```
+
+
+
+# Misc
+```{r}
+data(droplist)
+head(droplist)
+```
+
