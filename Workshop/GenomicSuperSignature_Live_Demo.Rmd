@@ -14,15 +14,24 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-## getModel
-library(GenomicSuperSignature)
-system.time(RAVmodel <- getModel("PLIERpriors"))   
+suppressPackageStartupMessages({
+    library(GenomicSuperSignature)
+    library(bcellViper)
+    library(dplyr)
+})
+```
 
+```{r}
+## getModel
+system.time(RAVmodel <- getModel("PLIERpriors"))   
+```
+
+```{r}
 ## Check the model
 RAVmodel
 geneSets(RAVmodel)
 
-library(bcellViper)
+## Input data
 data(bcellViper)
 dset
 
@@ -46,10 +55,11 @@ getRAVInfo(RAVmodel, val_ind[5])
 getStudyInfo(RAVmodel, "SRP095405")
 ```
 
-
 # [Slide 16] TCGA-BRCA
 ```{r}
-
+tcga <- GSEABenchmarkeR::loadEData("tcga", cache = FALSE, 
+                                   paired = FALSE,
+                                   map2entrez = FALSE)
 ```
 
 
@@ -57,7 +67,9 @@ getStudyInfo(RAVmodel, "SRP095405")
 # [Slide 17] Annotated PCA plot
 E-MTAB-2452 dataset
 ```{r}
-annot.dat <- readr::read_tsv("data/E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl") %>% as.data.frame
+dir <- "~/GSS/GenomicSuperSignaturePaper/Results/E-MTAB-2452/data"
+fpath <- file.path(dir, "E-MTAB-2452_hugene11st_SCANfast_with_GeneSymbol.pcl")
+annot.dat <- readr::read_tsv(fpath, show_col_types = FALSE) %>% as.data.frame
 rownames(annot.dat) <- annot.dat[, 2]
 
 dataset <- as.matrix(annot.dat[, 3:ncol(annot.dat)])
