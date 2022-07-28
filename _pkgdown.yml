@@ -37,6 +37,10 @@ navbar:
         href: articles/SLE-WB/neutrophil_counts_SLE-WB.html
       - text: Neutrophil (NARES)
         href: articles/NARES/neutrophil_counts_NARES.html
+    - text: Workshop
+      menu:
+      - text: BioC Pkg Demo
+        href: articles/GenomicSuperSignature_Live_Demo.html
   right:
    - icon: fa-github fa-lg
      href: https://github.com/shbrief/GenomicSuperSignaturePaper
