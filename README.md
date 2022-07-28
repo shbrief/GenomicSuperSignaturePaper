@@ -1,11 +1,19 @@
 ## GenomicSuperSignaturePaper
 
-This repository contains the model building processes and the validation steps
+This repository describes the model building processes and the validation steps
 for [GenomicSuperSignature](https://github.com/shbrief/GenomicSuperSignature) 
-package and the accompanying [manuscript](https://www.biorxiv.org/content/10.1101/2021.05.26.445900v1).
+package. All the Figures and Tables in GenomicSuperSignature [paper](https://www.nature.com/articles/s41467-022-31411-3) 
+can be reproduced using the codes and instruction in this repository. 
 
-To run analyses under `Results` and `Methods`, you need to download the 
-RAVmodel from Google bucket (it's free, FYI). Currently, two different 
+To run analyses under `Results` and `Methods`, we recommend to clone this 
+repository. 
+
+```
+git clone git@github.com:shbrief/GenomicSuperSignaturePaper.git
+```
+
+You can download RAVmodels from Google bucket (it's free, FYI) using `wget` or
+`GenomicSuperSignature::getModel()` function. Currently, two different 
 RAVmodels are available, annotated with different prior gene sets. 
 
 ```

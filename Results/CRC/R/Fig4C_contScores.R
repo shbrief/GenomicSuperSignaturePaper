@@ -118,6 +118,11 @@ df.toplot$Variable <- factor(df.toplot$Variable, levels = c("MSI status", "grade
 main <- paste0(m1_name, readr::parse_number(m1_1), "/", readr::parse_number(m1_2), " vs. ",
                m2_name, readr::parse_number(m2_1), "/", readr::parse_number(m2_2))
 
+# Save the raw data table for the manuscript
+fname <- paste(m1_1, m1_2, m2_1, m2_2, num_dat, "valData", sep = "_")
+write.csv(df.toplot, file = file.path("data/results/model_comparison/CMS",
+                                      paste0(fname, ".csv")))
+
 df.toplot %>%
     ggplot(aes(x = Model, y = -log10(log10_pvalue))) +
     geom_boxplot(outlier.shape = NA) +

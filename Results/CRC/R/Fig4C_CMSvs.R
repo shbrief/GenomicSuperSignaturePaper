@@ -123,6 +123,7 @@ df.toplot$Variable <- factor(df.toplot$Variable, levels = c("MSI status", "grade
 main <- paste0("CMS vs.", m2_name,
                readr::parse_number(m2_1), "/", readr::parse_number(m2_2))
 
+# Save the raw data table for the manuscript
 write.csv(df.toplot, file = file.path("data/results/model_comparison/CMS",
                                       paste0(output.dir.name, ".csv")))
 

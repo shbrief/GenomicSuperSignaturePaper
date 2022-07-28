@@ -295,7 +295,7 @@ img <- readImage("Figures/manuscript_Fig1B_bottomright.png")
 display(img, method = "raster")
 ```
 
-## Supplementary Figure 8
+## Supplementary Figure 10
 PCA result of leukocyte gene expression data (E-MTAB-2452) is displayed in A) a 
 table or B) a scatter plot. PCA is done on a centered, but not scaled, input 
 dataset by default. Different cutoff parameters for GSEA annotation, such as 

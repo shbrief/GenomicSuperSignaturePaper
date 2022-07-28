@@ -1,7 +1,14 @@
 # GenomicSuperSignaturePaper
-Here, we presents the usecases and benchmarking examples of [GenomicSuperSignature](http://www.bioconductor.org/packages/release/bioc/html/GenomicSuperSignature.html) R/Bioconductor package. More description on these examples can be found in the 
-[manuscript](https://www.biorxiv.org/content/10.1101/2021.05.26.445900v1).
+Here, we presents the usecases and benchmarking examples of [GenomicSuperSignature](http://www.bioconductor.org/packages/release/bioc/html/GenomicSuperSignature.html) 
+R/Bioconductor package. All the codes to reproduce Figures and Tables in our 
+paper is included as well. ( _**Note**_: To check the source code of vignettes,
+click the "Source Code" link under the *Abstract* section, not the *Source* 
+section.) You can check our paper for more details.
 
+> Oh S, Geistlinger L, Ramos M, Blankenberg D, van den Beek M, Taroni JN, Carey VJ, Waldron L, Davis S. 
+> GenomicSuperSignature facilitates interpretation of RNA-seq experiments through robust, efficient comparison to public databases. 
+> *Nature Communications* **2022**;13: 3695.
+> [doi: 10.1038/s41467-022-31411-3](https://www.nature.com/articles/s41467-022-31411-3)
 
 
 
