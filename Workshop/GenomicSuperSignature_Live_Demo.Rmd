@@ -7,11 +7,12 @@ output:
     toc: true
     toc_float: false
     toc_depth: 2
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Workshop/GenomicSuperSignature_Live_Demo.Rmd)"
 ---
 
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
-                      # eval = FALSE,
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, eval=FALSE,
                       out.width = "70%", out.height = "70%")
 ```
 
@@ -26,8 +27,6 @@ Oh S, Geistlinger L, Ramos M, Blankenberg D, van den Beek M, Taroni JN, Carey VJ
 
 ### Use case and reproducible codes
 [GenomicSuperSignaturePaper](https://shbrief.github.io/GenomicSuperSignaturePaper/)
-
-
 
 
 # Setup
