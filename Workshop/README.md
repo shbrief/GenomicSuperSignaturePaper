@@ -1,6 +1,5 @@
 ### [BioC2022 Package Demo] GenomicSuperSignature
 
-Check the following links:    
 [Paper](https://www.nature.com/articles/s41467-022-31411-3)    
 [Bioconductor Package](https://bioconductor.org/packages/release/bioc/html/GenomicSuperSignature.html)   
 [Use cases](https://shbrief.github.io/GenomicSuperSignaturePaper/)   
