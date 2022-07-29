@@ -12,7 +12,7 @@ abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePap
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, eval=FALSE,
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE, 
                       out.width = "70%", out.height = "70%")
 ```
 
