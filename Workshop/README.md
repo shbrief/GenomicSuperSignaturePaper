@@ -6,4 +6,4 @@
 
 [Workshop vignette](https://rpubs.com/shbrief/bioc2022_GSS_pkg_demo)   
 [Workshop vignette source](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Workshop/BioC2022_GSS_vignette.Rmd)   
-[Workshop slide](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Workshop/BioC2022_GSS_slide.pdf)   
+[Workshop slide](https://doi.org/10.7490/f1000research.1119069.1)   
