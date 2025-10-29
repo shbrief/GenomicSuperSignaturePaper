@@ -6,6 +6,9 @@
 # 3. `val_only` : A logical. If it's `TRUE`, only 10 CRC datasets will be used instead of 18 datasets.
 ################################################################################
 
+library(metafolio)
+library(ggplot2)
+
 if (isTRUE(val_only)) {
   load("data/eSets/setNames.RData")
   load("data/eSets/trainingSetNames.RData")
