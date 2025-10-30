@@ -1,0 +1,348 @@
+---
+title: "Find the relavant adaptive RAVs using metadata"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+  BiocStyle::pdf_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/CRC/metadata_based_search.Rmd)"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE,
+                      out.height="70%", out.width="70%")
+knitr::opts_knit$set(root.dir = "~/GSS/GenomicSuperSignaturePaper/Results/CRC") 
+```
+
+
+# Setup
+## Load packages
+```{r}
+if (!"GenomicSuperSignaturePaper" %in% installed.packages())
+    devtools::install_github("shbrief/GenomicSuperSignaturePaper")
+
+## Load packages
+suppressPackageStartupMessages({
+  library(GenomicSuperSignature)
+  library(GenomicSuperSignaturePaper)
+  library(ggplot2)
+  library(ggpubr)
+  library(dplyr)
+  library(Biobase)
+})
+```
+
+## RAVmodel
+```{r message=FALSE, warning=FALSE}
+RAVmodel <- GenomicSuperSignature::getModel("C2")
+model_fpath <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq"
+adaptive <- readRDS(file.path(model_fpath, 
+                              "RAVmodel_536_adaptive/refinebioRseq_RAVmodel_c2_20251013.rds"))
+adaptive_smaller <- readRDS(file.path(model_fpath, 
+                                "RAVmodel_536_adaptive_smaller/refinebioRseq_RAVmodel_c2_20251015.rds"))
+```
+
+
+## CRC validation datasets
+```{r}
+load("data/eSets/setNames.RData")
+```
+
+```{r echo=FALSE, eval=FALSE}
+## CRC paper actually used both training and validation datasets (total of 18)
+## for Figure 4. So here, we are using all of them. However, for Figure 4C, 
+## we'll try to use only 10 validation datasets. 
+# load(file.path(wd, "trainingSetNames.RData"))
+# validationSetNames <- setdiff(setNames, trainingSetNames)
+```
+
+```{r echo=FALSE}
+val_only = FALSE   # all 18 CRC datasets for `subtype_plot` chunk (line 208)
+```
+
+`eSets_new` data is available upon request.
+```{r}
+## Load validation samples
+for (set in setNames) {
+  load(paste0("data/eSets_new/", set, '.RData'))
+}
+```
+
+### Get phenotype data
+Combine all the phenotype data from CRC validation datasets.
+
+```{r}
+## phenotype tables combined
+pdata_df <- setNames %>% lapply(function(set) {
+  eSet <- get(set)
+  pdata <- pData(eSet)
+  eSet_tmp <- eSet[, pdata$sample_type %in% "tumor"]
+  pdata_tmp <- pData(eSet_tmp)
+  
+  ind_rm <- grep("CRIS_", colnames(pdata_tmp))
+  if (length(ind_rm) != 0) {pdata_tmp <- pdata_tmp[,-ind_rm]}
+  pdata_tmp$study <- set  # add 'study' column
+  
+  return(pdata_tmp)
+}) %>% Reduce('rbind', .)
+```
+
+### Get expression data
+Combine all the expression profiles from CRC validation datasets and subset 
+it with the common genes among them.
+
+```{r}
+## common genes between all validation datasets
+all_genes <- list()
+for (set in setNames) {
+  eSet <- get(set)
+  exprs <- exprs(eSet) %>% rmNaInf
+  all_genes[[set]] <- rownames(exprs)
+}
+cg <- Reduce(intersect, all_genes)
+
+## expression matrix combined
+exprs_df <- setNames %>% lapply(function(set) {
+  eSet <- get(set)
+  pdata <- pData(eSet)
+  eSet_tmp <- eSet[cg, pdata$sample_type %in% "tumor"]
+  exprs_tmp <- exprs(eSet_tmp) %>% rmNaInf
+  exprs_tmp <- apply(exprs_tmp, 1, function(x) x - mean(x)) %>% t
+  return(exprs_tmp)  
+}) %>% Reduce('cbind', .)   # 8219 genes x 3567 samples
+```
+
+### Calculate sample scores
+Calculate sample scores and combine them with the phenotype data.
+
+#### adaptive
+```{r}
+# RAVmodel <- adaptive_smaller
+```
+
+```{r}
+sampleScore <- calculateScore(exprs_df, RAVmodel)
+data_all <- cbind(sampleScore, pdata_df)
+```
+
+```{r rm_duplicated, echo=FALSE}
+## I added the scores from a few major RAVs to a pData. So remove duplicates.
+rm_ind <- which(duplicated(colnames(data_all)))
+data_all <- data_all[, -rm_ind]
+```
+
+
+
+# Metadata-based search
+In this section, we identified the desired RAVs using metadata. As an example 
+of discrete, multivariate metadata, we used four CMS subtypes.
+
+## Multivariable
+### ANOVA
+```{r ANOVA}
+f.stat.all <- sapply(seq_len(ncol(RAVmodel)), function(x) {
+  res.aov <- aov(data_all[,x] ~ data_all$cms_label_SSP)
+  f.stat <- summary(res.aov)[[1]][1,4]   # extract F-statistics from ANOVA 
+  return(f.stat)
+})
+
+names(f.stat.all) <- paste0("RAV", seq_len(ncol(RAVmodel)))
+head(f.stat.all[order(f.stat.all, decreasing = TRUE)])
+```
+
+### Kruskal-Wallis Rank Sum Test
+Based on the Q-Q plot below, the normality assumption is not met.
+
+```{r}
+res.aov <- aov(data_all[,"RAV834"] ~ data_all[,"cms_label_SSP"])
+plot(res.aov, 2)
+```
+
+```{r normality_test, echo=FALSE, eval=FALSE}
+## Test normality using Shapiro.test :
+## [Wikipedia] The null-hypothesis of this test is that the population is normally 
+## distributed. Thus, if the p-value is less than the chosen alpha level, then the 
+## null hypothesis is rejected and there is evidence that the data tested are not 
+## normally distributed. 
+
+## Shapiro.test is too sensitive to normality. For example, even if the sample size
+## is large enough to ignore normality, Shapiro.test can alarm the normality issue 
+## with really high power (with large dataset). Just use Q-Q plot.
+
+normality <- sapply(seq_len(ncol(RAVmodel)), function(x) {
+  res.aov <- aov(data_all[,x] ~ data_all$cms_label_SSP)
+  aov_residuals <- residuals(object = res.aov)  # Extract the residuals
+  res <- shapiro.test(x = aov_residuals)$p.value  # Run Shapiro-Wilk test
+  return(res)
+})
+
+names(normality) <- paste0("RAV", seq_len(ncol(RAVmodel)))
+summary(normality)
+```
+
+<br>
+
+Try Kruskal-Wallis Rank Sum Test
+```{r Kruskal-Wallis}
+# Kruskal-Wallis Rank Sum Test : a non-parametric alternative to one-way ANOVA, 
+# when normality assumption is not met
+kw.chi.sqr <- sapply(seq_len(ncol(RAVmodel)), function(x) {
+  kw.test <- kruskal.test(data_all[,x] ~ data_all$cms_label_SSP)
+  kw.stat <- kw.test$statistic
+  return(kw.stat)
+})
+
+names(kw.chi.sqr) <- paste0("RAV", seq_len(ncol(RAVmodel)))
+head(kw.chi.sqr[order(kw.chi.sqr, decreasing = TRUE)])
+```
+
+
+
+## Binary variables
+We ran `t.test` between the four clinical variables and all sample scores. The 
+test results were ordered based on p-value and the top 6 of them are printed.
+Both MSI and tumor location are explained best with RAV834 while tumor grade
+and stage seem to be more closely associated with RAV596 and RAV3290, 
+respectively.
+
+```{r echo=FALSE}
+vars <- c("msi", "summarylocation", "summarygrade", "summarystage")
+```
+
+### MSI
+Microsatellite instability
+```{r echo=FALSE}
+# MSI
+var <- vars[1]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+msi.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  if (res$p.value < 0.05) {
+      t <- res$statistic
+      names(t) <- paste0("RAV", x)
+  } else (t <- NA)
+  return(t)
+})
+
+head(sort(abs(msi.t.test), decreasing = TRUE))
+```
+
+### Location
+Tumor location
+```{r echo=FALSE}
+# Location
+var <- vars[2]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+location.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  if (res$p.value < 0.05) {
+      t <- res$statistic
+      names(t) <- paste0("RAV", x)
+  } else (t <- NA)
+  return(t)
+})
+
+head(sort(abs(location.t.test), decreasing = TRUE))
+```
+
+### Grade
+```{r echo=FALSE}
+# Grade
+var <- vars[3]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+grade.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  if (res$p.value < 0.05) {
+      t <- res$statistic
+      names(t) <- paste0("RAV", x)
+  } else (t <- NA)
+  return(t)
+})
+
+head(sort(abs(grade.t.test), decreasing = TRUE))
+```
+
+### Stage
+```{r echo=FALSE}
+# Stage
+var <- vars[4]
+rm_ind <- which(is.na(data_all[,var]))
+dat <- data_all[-rm_ind,]
+
+stage.t.test <- sapply(seq_len(ncol(RAVmodel)), function(x) {
+  res <- t.test(dat[,x] ~ dat[,var])
+  if (res$p.value < 0.05) {
+      t <- res$statistic
+      names(t) <- paste0("RAV", x)
+  } else (t <- NA)
+  return(t)
+})
+
+head(sort(abs(stage.t.test), decreasing = TRUE))
+```
+
+
+
+
+
+# Subtyping with RAVs
+## Score plot
+Top two RAVs, RAV834 and RAV833, are identified from both ANOVA and 
+Kruskal-Wallis Rank Sum Test. Below plot shows how these two RAVs are 
+differentiating 18 CRC datasets. More related analyses are done in [here](https://shbrief.github.io/GenomicSuperSignaturePaper/articles/CRC/CRC_Subtyping.html). 
+
+
+```{r subtype_plot, message=FALSE, warning=FALSE}
+sampleScore1 <- 834
+sampleScore2 <- 596
+df.results <- data_all
+source("R/Fig4A_plotting.R", print.eval = TRUE)
+```
+
+## Mean comparing methods
+We further quantified how RAV834 separates four CMS subtypes using different 
+mean comparing methods.
+
+### t.test for a few pairs
+```{r collapse=FALSE, warning=FALSE, out.height="75%", out.width="60%"}
+my_comparisons <- list(c("CMS1", "CMS2"),c("CMS1", "CMS3"),c("CMS1", "CMS4"))
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV249", fill = "cms_label_SSP") +
+  stat_compare_means(comparisons = my_comparisons, 
+                     method = "t.test", aes(label = ..p.adj..))
+```
+
+### ANOVA
+```{r collapse=FALSE, warning=FALSE, out.height="75%", out.width="60%"}
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV178", fill = "cms_label_SSP") +
+  stat_compare_means(method = "anova", label.y = 7) # Add global p-value
+```
+
+### Kruskal-Wallis Rank Sum Test
+```{r collapse=FALSE, warning=FALSE, out.height="75%", out.width="60%"}
+ggboxplot(data_all, x = "cms_label_SSP", y = "RAV178", fill = "cms_label_SSP") +
+  stat_compare_means(method = 'kruskal.test', label.y = 7) # Add global p-value
+```
+
+
+
+
+
+# Session Info
+
+<details>
+```{r}
+sessionInfo()
+```
+</details>

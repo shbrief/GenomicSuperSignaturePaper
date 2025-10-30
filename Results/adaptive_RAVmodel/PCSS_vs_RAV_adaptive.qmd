@@ -1,0 +1,170 @@
+---
+title: "Compare RAVs across different RAVmodels"
+author: "Sehyun Oh"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 3
+abstract: "[**Source Code**](https://github.com/shbrief/GenomicSuperSignaturePaper/blob/master/Results/CRC/PCSS_vs_RAV.Rmd)"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+
+# Setup
+## Load package
+```{r}
+suppressPackageStartupMessages({
+  library(GenomicSuperSignature)
+})
+```
+
+
+## PCSSs
+[Ma *et al.*](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1511-4) 
+proposed a continuous scoring system (PCSS) based on the analysis of eight 
+colorectal cancer microarray datasets comprising 1,867 samples, and found that
+PCSSs are more closely correlated to microsatellite instability (MSI), grade, 
+stage, and tumor location. 
+
+```{r}
+setwd("~/GSS/GenomicSuperSignaturePaper/Results/CRC")
+avgLoading <- read.table("data/avg_loadings.csv", 
+                         header = TRUE, sep = ",")
+avgLoading <- tibble::column_to_rownames(avgLoading, var="X")
+colnames(avgLoading) <- paste0("PCSS", 1:4)
+
+head(avgLoading)
+```
+
+## RAVmodel
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## If GenomicSuperSignaturePaper is built locally with RAVmodel in inst/extdata
+data.dir <- system.file("extdata", package = "GenomicSuperSignaturePaper")
+RAVmodel <- readRDS(file.path(data.dir, "RAVmodel_C2.rds"))
+```
+
+```{r eval=FALSE}
+RAVmodel <- getModel("C2", load=TRUE)
+```
+
+```{r}
+RAVmodel
+
+version(RAVmodel)
+```
+
+# RAVs vs. PCSSs
+## Most similar to PCSS1/2
+### RAVmodel_C2
+We identified RAV1575 (0.59) and RAV834 (0.56) as the most similar RAVs to PCSS1 and PCSS2, 
+respectively, based on Pearson correlation coefficient. 
+
+```{r}
+cg <- intersect(rownames(avgLoading), rownames(RAVmodel))
+loading_cor <- abs(stats::cor(avgLoading[cg,], RAVindex(RAVmodel)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
+
+max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
+max2 <- which.max(loading_cor[2,])  # max. correlation with PCSS2
+
+loading_cor[1, max1, drop = FALSE]
+loading_cor[2, max2, drop = FALSE]
+```
+
+### adaptive_RAVmodel_C2
+We identified RAV244 (0.63) and RAV186 (0.53) as the most similar RAVs to PCSS1 and PCSS2, 
+respectively, based on Pearson correlation coefficient. 
+
+```{r}
+model_fpath <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq"
+adaptive <- readRDS(file.path(model_fpath, 
+                              "RAVmodel_536_adaptive/refinebioRseq_RAVmodel_c2_20251013.rds"))
+```
+
+```{r}
+cg <- intersect(rownames(avgLoading), rownames(adaptive))
+loading_cor <- abs(stats::cor(avgLoading[cg,], RAVindex(adaptive)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
+
+max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
+max2 <- which.max(loading_cor[2,])  # max. correlation with PCSS2
+
+loading_cor[1, max1, drop = FALSE]
+loading_cor[2, max2, drop = FALSE]
+```
+
+
+
+
+### small_adaptive_RAVmodel_C2
+We identified RAV514 (0.55) and RAV373 (0.45) as the most similar RAVs to PCSS1 and PCSS2, 
+respectively, based on Pearson correlation coefficient.
+
+```{r}
+model_fpath <- "~/GSS/GenomicSuperSignatureLibrary/refinebioRseq"
+adaptive_smaller <- readRDS(file.path(model_fpath, 
+                                     "RAVmodel_536_adaptive_smaller/refinebioRseq_RAVmodel_c2_20251015.rds"))
+```
+
+```{r}
+cg <- intersect(rownames(avgLoading), rownames(adaptive_smaller))
+loading_cor <- abs(stats::cor(avgLoading[cg,], RAVindex(adaptive_smaller)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
+
+max1 <- which.max(loading_cor[1,])  # max. correlation with PCSS1
+max2 <- which.max(loading_cor[2,])  # max. correlation with PCSS2
+
+loading_cor[1, max1, drop = FALSE]
+loading_cor[2, max2, drop = FALSE]
+```
+
+
+## Most similar to RAV834/1575
+### adaptive_RAVmodel_C2
+We identified RAV80 (0.30) and RAV250 (0.67) as the most similar RAVs to RAV834/1575, 
+respectively, based on Pearson correlation coefficient.
+
+```{r}
+## Similarity between RAV and adaptive_RAV
+cg <- intersect(rownames(RAVmodel), rownames(adaptive))
+loading_cor <- abs(stats::cor(RAVindex(RAVmodel)[cg,c(834, 1575)], RAVindex(adaptive)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
+
+max1 <- which.max(loading_cor[1,])  # max. correlation with RAV1575
+max2 <- which.max(loading_cor[2,])  # max. correlation with RAV834
+
+loading_cor[1, max1, drop = FALSE]
+loading_cor[2, max2, drop = FALSE]
+```
+
+### small_adaptive_RAVmodel_C2
+We identified RAV178 (0.35) and RAV533 (0.73) as the most similar RAVs to RAV834/1575, 
+respectively, based on Pearson correlation coefficient.
+
+```{r}
+## Similarity between RAV and adaptive_RAV
+cg <- intersect(rownames(RAVmodel), rownames(adaptive_smaller))
+loading_cor <- abs(stats::cor(RAVindex(RAVmodel)[cg,c(834, 1575)], RAVindex(adaptive_smaller)[cg,], 
+                              use="pairwise.complete.obs", method="pearson"))
+
+max1 <- which.max(loading_cor[1,])  # max. correlation with RAV1575
+max2 <- which.max(loading_cor[2,])  # max. correlation with RAV834
+
+loading_cor[1, max1, drop = FALSE]
+loading_cor[2, max2, drop = FALSE]
+```
+
+
+# Session Info
+
+<details>
+```{r}
+sessionInfo()
+```
+</details>
+
